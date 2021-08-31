@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- create by autoCode,v1.0.0 -->
+<mapper namespace="agentCommission">
+
+   <select id="agentCommission.rate" parameterType="com.shop.model.Agent" resultType="com.shop.model.CommissionRate">
+       select * from t_commission_rate where seller_id=#sellerId
+   </select>
+
+    <select id="agentCommission.agent" parameterType="com.shop.model.Agent" resultType="com.shop.model.Agent">
+       select * from t_agent where parent_id=#parentId
+   </select>
+
+    <select id="list">
+        select ac.total_commission, a.id, bu.nickname, bu.headimgurl, a.agent_name, a.agent_phone from
+		 (select sum(commission_value) as total_commission, agent_id from t_agent_commission group by agent_id) ac
+		left join t_agent a on ac.agent_id = a.id
+		 left join t_user bu on a.buyer_id = bu.id
+		 where a.seller_id = ?
+    </select>
+
+
+</mapper>

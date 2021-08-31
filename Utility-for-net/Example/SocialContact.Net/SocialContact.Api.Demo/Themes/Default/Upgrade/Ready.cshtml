@@ -1,0 +1,79 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>使用协议</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <!--框架样式-->
+    <link rel="stylesheet" href="../css/tnui.css">
+    <link rel="stylesheet" href="../css/jh-install.css">
+    <script type="text/javascript" src="../js/modernizr-2.8.3.min.js"></script>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/html5shiv.min.js"></script>
+    <script type="text/javascript" src="../js/respond.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    
+    <div class="tn-doc">
+        <div class="tn-content">
+            <div class="container">
+                <div class="jh-install-logo">
+                    <img alt="..." src="../img/logo-big.png" width="124">
+                    <span class="jh-install-wizard"> v5.2 升级向导</span>
+                </div>
+                <div class="jh-install-block">
+                    <div class="jh-wizard-content">
+                        <p>用户升级向导</p>
+                        <p>
+                            1 升级说明<br />
+                            1.1 本次更新主要简介：重构资讯、文章、组图、视频、贴子、问答等主要核心功能，优化其展示速度，简化其学习曲线，大大降低企业和用户的生产成本，可以快速搭建社区，贴吧，文章，资讯，问答等模块。<br />
+                         
+                            1.2  V5.2升级保留V4.X版本数据有：附件、计数、收藏、友情链接、用户、用户资料、第三方账号绑定、关注、邀请、评论、点赞、分类、标签、资讯、贴子、问答、博客、推荐等。其中，博客和资讯数据合并。<br />
+                            1.3 V5.2升级初始化数据有：操作日志，定时任务，地区，配置数据，租户服务，举报，角色，积分类型，广告，等级规则，权限规则，推荐类别，内容模型，导航等。其中，操作日志清空。<br />
+                            1.4 V5.2升级忽略数据有：评价、私信、会话、主题、外观、呈现、邮件队列、学校、敏感词、短网址、统计、身份认证、站点公告、教育经历、工作经历、在线用户、访客记录、AT用户、积分统计、用户屏蔽、隐私、黑名单、通知、请求、提醒、动态、星级评价、日志、群组、相册、商品、兑换、举报、百科、微博、通知、客服消息等<br />
+                            2 升级注意事项<br />
+                            2.1 本次升级程序应在安装完V5.2近乎并初始化数据(不需要含示例数据)后执行。<br />
+                            2.2 本次升级的附件路径需要是本地Uploads的根路径<br />
+                            2.3 本次升级适用于V4.X内所有版本的近乎。<br />
+                            2.4 本次升级请关闭分布式存储,防止附件丢失。<br />
+                            2.5 升级后需要进入后台重建索引才能正常使用搜索功能。<br />
+                            2.6 SqlServer和MySql不能跨库升级,只能同库升级。<br />
+                        </p>
+                    </div>
+                    <div class="form-inline tn-tool-column tn-mt-35 pull-right" >
+                        <div class="form-group  tn-mr-10" >
+                            <input id="Check" type="checkbox" />
+                            我已经备份好数据库及站点
+                        </div>
+                        <div class="form-group " >
+                            <a id="start" href="@CachedUrlHelper.Action("Upgrade_Start1", "Upgrade")" class="btn btn-primary disabled ">开始升级</a>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../js/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="../js/main.js"></script>
+    <script >
+        $("#Check").click(function myfunction() {
+            if (this.checked) {
+                $("#start").removeClass("disabled");
+            } else {
+                $("#start").addClass("disabled");
+            }
+        })
+       
+    </script>
+</body>
+</html>

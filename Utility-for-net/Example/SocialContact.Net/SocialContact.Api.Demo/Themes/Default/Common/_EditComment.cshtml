@@ -1,0 +1,98 @@
+﻿@model CommentEditModel
+@{
+    var currentUser = UserContext.CurrentUser;
+    var userId = ViewData.Get<long>("userId", 0);
+    var isUEditor = ViewData.Get<bool>("isUEditor", false);
+    var isParent = ViewData.Get<bool>("isParent", false);
+    var onSuccessCallback = ViewData.Get<string>("onSuccessCallback", "");
+}
+
+@if (currentUser != null)
+{
+    using (Html.BeginAjaxForm("_EditComment", "Common", "", FormMethod.Post, new AjaxFormOptions { OnSuccessCallBack = onSuccessCallback }, new
+    { @id = "createComment-" + Model.ParentId, @class = "CommentControl tn-form-validation" }))
+    {
+        @Html.HiddenFor(n => n.ParentId)
+        @Html.HiddenFor(n => n.CommentedObjectId)
+        @Html.HiddenFor(n => n.TenantTypeId)
+        @Html.HiddenFor(n => n.AttachmentIds)
+
+        if (isUEditor)
+        {
+            @Html.HtmlEditor(
+                settings =>
+                {
+                    settings.Id = "Body-"+Model.ParentId;
+                    settings.Name = "Body";
+                    settings.TenantTypeId = TenantTypeIds.Instance().Comment();
+                    settings.Body = "";
+                    settings.HtmlAttributes = new Dictionary<string, object> {
+                        { "style", "height:200px;" },
+                        { "maximumWords", 20000 } };
+                    settings.UEditorExtensionsCollection.Add(new UEditorExtensionUploadFile() { UploadUrl = SiteUrls.Instance().Uploads(AttachmentPosition.AttachmentList) });
+                    settings.UEditorExtensionsCollection.Add(new UEditorExtensionUploadImage() { UploadUrl = SiteUrls.Instance().Uploads(AttachmentPosition.Body, "") });
+                    settings.UEditorExtensionsCollection.Add(new UEditorExtensionFace() { FacePath = Tunynet.Utilities.WebUtility.ResolveUrl("~/img/Emotions/default/") });
+                })
+            <div class="btn-toolbar tn-mt-20" role="toolbar">
+                <button class="btn btn-primary btn-sm tn-btn-wp pull-right commentsubmit" data-id="@Model.ParentId" type="button">发布</button>
+            </div>
+        }
+        else
+        {
+            <textarea name="Body" class="form-control" rows="3" placeholder="添加评论" id="textareaBody"></textarea>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm pull-left" role="group">
+                    <a class="btn btn-default emotion" href="javascript:;" role="button"><i class="fa fa-smile-o"></i></a>
+                </div>
+                <button class="btn btn-primary btn-sm tn-btn-wp pull-right commentsubmit" data-id="@Model.ParentId" type="button">评论</button>
+            </div>
+        }
+    }
+
+    <script>
+        require(['jquery'], function () {
+
+            //提交评论
+            $(".commentsubmit").off("click").on("click", function () {
+                var id = $(this).data('id');
+                var input = $('#createComment-' + id).find('input[name="Body"]').first();
+                input.val(body);
+                if (input.val().length == 0) {
+                    layer.msg("内容不能为空", { icon: 2 });
+                    return;
+                }
+                $.fn.getAttachmentIds(undefined, undefined, ["Body-" + id]);
+                $('#createComment-' + id).submit();
+            })
+
+        })
+    </script>
+
+    if (isUEditor)
+    {
+        @Styles.Render("~/js/lib/qqFace/css/qqFace")
+        <style>
+            #facebox {
+                background-color: #fff;
+            }
+        </style>
+
+        <script type="text/javascript">
+            require(['jquery', 'qqFace'], function ($) {
+                $('.emotion').qqFace({
+                    id: 'facebox',
+                    assign: 'textareaBody',
+                    ohref: '@CachedUrlHelper.Action("GetEmotions", "Common")',
+                    directoryname: 'default',
+                });
+            })
+        </script>
+    }
+}
+else
+{
+    <div class="jh-textarea-button">
+        <textarea name="Body" id="textBody" class="form-control tn-mb-15" rows="5" style="text-align:center;" placeholder="登录后才能评论" disabled></textarea>
+        <a class="btn btn-primary tn-btn-wp" href="@SiteUrls.Instance().Login()" data-id="0">登录</a>
+    </div>
+}

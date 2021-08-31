@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="PromotionSet" table="t_promotion_set" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="promotion" foreign-key="fk_promotion_id" column="promotion_id" cascade="all" fetch="join"  />
+ <many-to-one name="product" foreign-key="fk_product_id" column="product_id" cascade="all" fetch="join"  />
+<property name="promotionType" column="promotion_type" type="int" />
+ <many-to-one name="promotionSetDiscount" foreign-key="fk_promotionSetDiscount_id" column="promotionSetDiscount_id" cascade="all" fetch="join"  />
+ <many-to-one name="promotionSetReduce" foreign-key="fk_promotionSetReduce_id" column="promotionSetReduce_id" cascade="all" fetch="join"  />
+ <many-to-one name="promotionValue" foreign-key="fk_promotionValue_id" column="promotionValue_id" cascade="all" fetch="join"  />
+<property name="promotionId" column="promotion_id" type="java.lang.Integer" />
+<property name="productId" column="product_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

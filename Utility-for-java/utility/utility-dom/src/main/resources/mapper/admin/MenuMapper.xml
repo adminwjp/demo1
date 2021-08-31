@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- create by autoCode,v1.0.0 -->
+<mapper namespace="menu">
+
+    <resultMap id="menuResultMap" type="com.shop.model.Menu">
+        <result property="id" column="id" javaType="java.lang.Integer"></result>
+        <result property="flag" column="flag"  javaType="com.shop.model.enums.MenuFlag"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"></result>
+        <result property="logo" column="logo" javaType="java.lang.String"></result>
+        <result property="icon" column="icon" javaType="java.lang.String"></result>
+        <result property="name" column="name" javaType="java.lang.String"></result>
+        <result property="href" column="logo" javaType="java.lang.String"></result>
+        <result property="count" column="count" javaType="java.lang.Integer"></result>
+        <result property="parentId" column="parent_id" javaType="java.lang.Integer"></result>
+        <result property="createDate" column="create_date" javaType="java.util.Date"></result>
+        <result property="modifyDate" column="modify_date" javaType="java.util.Date"></result>
+    </resultMap>
+
+
+    <insert id="menu.add" parameterType="com.shop.model.Menu" useGeneratedKeys="true" keyProperty="id">
+        insert into t_menu
+        (
+        createDate
+        <if test="flag!=null">
+            ,flag
+        </if>
+        <if test="logo!=null and logo!=''">
+            ,logo
+        </if>
+        <if test="icon!=null and icon!=''">
+            ,icon
+        </if>
+        <if test="name!=null and name!=''">
+            ,name
+        </if>
+        <if test="href!=null and href!=''">
+            ,href
+        </if>
+        <if test="count!=null">
+            ,count
+        </if>
+        <if test="parentId!=null">
+            ,parentId
+        </if>
+        )
+        values
+        (
+        now()
+        <if test="flag!=null">
+            ,#{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        <if test="logo!=null and logo!=''">
+            , #{logo}
+        </if>
+        <if test="icon!=null and icon!=''">
+            , #{icon}
+        </if>
+        <if test="name!=null and name!=''">
+            , #{name}
+        </if>
+        <if test="href!=null and href!=''">
+            ,  #{href}
+        </if>
+        <if test="count!=null">
+            , #{count}
+        </if>
+        <if test="parentId!=null">
+            ,  #{parentId}
+        </if>
+        )
+        </insert>
+
+    <update id="menu.modify" parameterType="com.shop.model.Menu" >
+        update  t_menu set modifyDate=now()
+        <if test="flag!=null">
+            ,flag=#{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        <if test="logo!=null and logo!=''">
+            ,logo=#{logo}
+        </if>
+        <if test="icon!=null and icon!=''">
+            ,icon=#{icon}
+        </if>
+        <if test="name!=null and name!=''">
+            ,name=#{name}
+        </if>
+        <if test="href!=null and href!=''">
+            ,href=#{href}
+        </if>
+        <if test="count!=null">
+            ,count=#{count}
+        </if>
+        <if test="parentId!=null">
+            ,parentId=#{parentId}
+        </if> where id =#{id}
+    </update>
+
+    <sql id="deleteSql">delete from  t_menu where id </sql>
+
+    <delete id="menu.delete" parameterType="java.lang.Integer" >
+        <include refid="deleteSql"  /> =#{id}
+     </delete>
+
+    <delete id="menu.deleteMany" >
+       <include refid="deleteSql"  />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+     </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="flag!=null">
+                or  flag=#{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+            </if>
+            <if test="logo!=null and logo!=''">
+                or logo=#{obj.logo}
+            </if>
+            <if test="icon!=null and icon!=''">
+                or icon=#{obj.icon}
+            </if>
+            <if test="name!=null and name!=''">
+                or name=#{obj.name}
+            </if>
+            <if test="href!=null and href!=''">
+                or href=#{obj.href}
+            </if>
+            <if test="count!=null">
+                or count=#{count}
+            </if>
+            <if test="parentId!=null">
+                or parentId=#{parentId}
+            </if>
+            <if test="createDate!=null">
+                or createDate=#{createDate}
+            </if>
+            <if test="modifyDate!=null">
+                or modifyDate=#{modifyDate}
+            </if>
+        </where>
+    </sql>
+
+    <select id="menu.select" resultMap="menuResultMap">
+        select * from  t_menu
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="menu.selectPage" resultType="com.shop.model.Menu">
+        select * from  t_menu
+        <where>
+            <if test="obj.flag!=null">
+                or  flag=#{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+            </if>
+            <if test="obj.logo!=null and obj.logo!=''">
+                or logo=#{obj.logo}
+            </if>
+            <if test="obj.icon!=null and obj.icon!=''">
+                or icon=#{obj.icon}
+            </if>
+            <if test="obj.name!=null and obj.name!=''">
+                or name=#{obj.name}
+            </if>
+            <if test="obj.href!=null and obj.href!=''">
+                or href=#{obj.href}
+            </if>
+            <if test="obj.count!=null">
+                or count=#{obj.count}
+            </if>
+            <if test="obj.parentId!=null">
+                or parentId=#{obj.parentId}
+            </if>
+            <if test="obj.createDate!=null">
+                or createDate=#{obj.createDate}
+            </if>
+            <if test="obj.modifyDate!=null">
+                or modifyDate=#{obj.modifyDate}
+            </if>
+        </where>
+        limit #{(page-1)*size} , #{size}
+    </select>
+
+    <select id="menu.count" parameterType="com.shop.model.Menu" resultType="java.lang.Integer">
+        select count(id) from  t_menu
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="menu.agent" resultMap="menuResultMap">
+        select * from  t_menu where flag=0
+    </select>
+
+</mapper>

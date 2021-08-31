@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>添加token计划</title>
+    <link rel="stylesheet" type="text/css" href="/src/plugin/jquery-easyui-1.7.0/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/src/plugin/jquery-easyui-1.7.0/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/src/plugin/jquery-easyui-1.7.0/demo/demo.css">
+    <script type="text/javascript" src="/src/plugin/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/src/plugin/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/src/js/index.js"></script>
+</head>
+<body>
+    <!-- bug dialog 中 文本不显示 分开可以-->
+    <form id="token" method="post" data-options="novalidate:true" style="width: 100%; max-width: 500px; padding:30px 60px;">
+        <div style="margin-bottom:20px">
+            <select class="easyui-combobox" name="appid" id="appid" style="width:100%" data-options="label:'凭证:',labelAlign:'left',labelPosition:'before'">
+                <option value="请选择">请选择</option>
+            </select>
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-textbox" name="grant_type" style="width:100%" data-options="label:'type:',labelAlign:'left',labelPosition:'before'" />
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-textbox" name="secret" style="width:100%" data-options="label:'密钥:',labelAlign:'left',labelPosition:'before'">
+        </div>
+
+        <div id="dialog_button" style="text-align:center;padding:5px 0">
+            <a href="javascript:void(0)" class="easyui-linkbutton " onclick="submitForm()" style="width:80px">确定</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">清空</a>
+        </div>
+    </form>
+    <div style="margin-top:20px; width: 100%; max-width: 500px; padding:30px 60px;">
+        <h3>结果为：</h3>
+        <div style="margin-bottom:20px">
+            <input class="easyui-textbox" name="errcode" style="width:100%" data-options="label:'错误码:',labelAlign:'left',labelPosition:'before'">
+        </div>
+        <div style=" margin-bottom: 20px">
+            <input class="easyui-textbox" name="access_token" style="width:100%;" data-options="label:'token:',labelAlign:'left',labelPosition:'before'">
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-textbox" name="expires_in" style="width:100%;" data-options="label:'有效时间:',labelAlign:'left',labelPosition:'before'">
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-textbox" name="errmsg" style="width:100%;" data-options="label:'错误信息:',labelAlign:'left',labelPosition:'before'">
+        </div>
+    </div>
+    <script>
+        function submitForm() {
+            //得到表单窗口中的form对象
+            var fm = $('#token');
+            let appid = $('#appid');
+            let val = appid.combobox('getText');
+            console.log(val);
+            //let allData = appid.combobox('getData');//获取combobox所有数据
+            //console.log(allData);
+            //if (allData.some(it => it.value == val)) {
+
+            //} else {
+            //    allData.push({text:val,value:val});
+            //    appid.combobox('loadData',allData);
+            //}
+
+            //初始化表单中的验证器 验证失效 初始化才有效
+            $('input[type!="hidden"],select,textarea', fm).each(function () {
+
+                $(this).validatebox({ required: true });
+            });
+            $('select').combo({ required: true });
+            let edit = location.href.indexOf("edit") > -1;
+            if (edit) {
+                document.title = "编辑token计划";
+            }
+            appid.combobox('setValue', val);
+            fm.form('submit', {
+                // url: title.indexOf("编辑") > -1 ? urls.advert.tencent.plan.update : urls.advert.tencent.plan.create,
+                onSubmit: function () {
+                  
+                    //if ($(this).form('validate')) {
+                    if ($(this).form('enableValidation').form('validate')) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            });
+        }
+        function loadForm(data) {
+            $('#token').form('load', data);
+        }
+        function clearForm() {
+            $('#token').form('clear');
+        }
+    </script>
+</body>
+</html>

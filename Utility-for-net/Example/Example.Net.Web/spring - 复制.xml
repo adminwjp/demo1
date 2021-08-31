@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net" xmlns:db="http://www.springframework.net/database">
+   <!-- 数据库和Nhibernate的相关配置 --> 
+  <!--<db:provider id="DbProvider" provider="SqlServer-2.0" connectionString="server=.;database=test1;uid=sa;pwd=123456;"/> -->
+   <!--<db:provider id="DbProvider" provider="MySql.Data" connectionString="Database=Shop;Data Source=localhost;User Id=root;Password=wjp930514.;Old Guids=True;charset=utf8;"/> -->
+    <db:provider id="DbProvider" provider="MySql.Data" connectionString="Database=Shop;Data Source=localhost;User Id=root;Password=wjp930514.;Old Guids=True;charset=utf8;"/> 
+  <!--SessionFactory对象，其中包括一些比较重要的属性 -->  
+  <!--<object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate30">-->
+  <object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate40" singleton="true">
+     <property name="DbProvider" ref="DbProvider"/>   
+     <property name="MappingAssemblies">
+       <list>
+          <!--这里是实体 xml 的命名空间 程序集-->
+         <value>Shop.Spring.Advert.Api</value>            
+      </list>   
+    </property>   
+    <property name="HibernateProperties">
+       <dictionary>
+         <entry key="hibernate.connection.provider" value="NHibernate.Connection.ConnectionProvider"/>      
+         <property name="connection.driver_class">NHibernate.Driver.MySqlDataDriver</property>
+         <property name="connection.connection_string">
+           Database=Shop;Data Source=localhost;User Id=root;Password=wjp930514.;Old Guids=True;charset=utf8;
+         </property>
+         <property name="dialect">NHibernate.Dialect.MySQL5Dialect</property>
+         <entry key="use_outer_join" value="true"/>      
+         <entry key="show_sql" value="true"/>    
+         <!--自动建表(反向映射)-->       
+         <entry key="hbm2ddl.auto" value="update"/>  
+         <entry key="adonet.batch_size" value="10"/>       
+         <entry key="command_timeout" value="60"/>      
+         <!--显式启用二级缓存-->        
+         <entry key="cache.use_second_level_cache" value="true"/>  
+         <!--启动查询缓存-->        
+         <entry key="cache.use_query_cache" value="false"/>  
+         <entry key="query.substitutions" value="true 1, false 0, yes 'Y', no 'N"/>   
+         <entry key="hbm2ddl.keywords" value="none"/>        
+         <!--<entry key="proxyfactory.factory_class" value="NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle"/>-->      
+         <entry key="proxyfactory.factory_class" value="Spring.Data.NHibernate.Bytecode.ProxyFactoryFactory, Spring.Data.NHibernate40"/>     
+      </dictionary>   
+    </property>  
+    <property name="ExposeTransactionAwareSessionFactory" value="true" /> 
+  </object> 
+  <!--将id为NHibernateSessionFactory的对象注入到HibernateTemplate中-->
+  <!--数据适配模板--> 
+  <object id="HibernateTemplate" type="Spring.Data.NHibernate.Generic.HibernateTemplate">
+     <property name="SessionFactory" ref="NHibernateSessionFactory" />  
+    <property name="TemplateFlushMode" value="Auto" />  
+    <property name="CacheQueries" value="true" /> 
+  </object>
+    <!--事务控制管理器--> 
+   <object id="transactionManager" type="Spring.Data.NHibernate.HibernateTransactionManager, Spring.Data.NHibernate40">
+     <property name="DbProvider" ref="DbProvider"/>  
+     <property name="SessionFactory" ref="NHibernateSessionFactory"/> 
+  </object>
+    <!--事务拦截器-->
+  <object id="TransactionInterceptor" type="Spring.Transaction.Interceptor.TransactionInterceptor, Spring.Data">
+     <property name="TransactionManager" ref="transactionManager"/>  
+     <property name="TransactionAttributeSource">
+     <object type="Spring.Transaction.Interceptor.AttributesTransactionAttributeSource, Spring.Data"/>   
+    </property> 
+  </object>
+    <!--事务代理工厂--> 
+   <object id="BaseTransactionManager" type="Spring.Transaction.Interceptor.TransactionProxyFactoryObject" abstract="true">
+     <property name="PlatformTransactionManager" ref="transactionManager"/>  
+     <property name="TransactionAttributes">
+       <name-values>
+         <add key="Save*" value="PROPAGATION_REQUIRED"/>     
+         <add key="Set*" value="PROPAGATION_REQUIRED"/>       
+         <add key="Finish*" value="PROPAGATION_REQUIRED"/>       
+         <add key="Update*" value="PROPAGATION_REQUIRED"/>       
+         <add key="Delete*" value="PROPAGATION_REQUIRED"/>       
+         <add key="Add*" value="PROPAGATION_REQUIRED"/>      
+         <add key="Insert*" value="PROPAGATION_REQUIRED"/>  
+         <add key="Update*" value="PROPAGATION_REQUIRED"/> 
+         <add key="Get*" value="PROPAGATION_REQUIRED,readOnly"/>    
+         <add key="Find*" value="PROPAGATION_REQUIRED,readOnly"/>    
+         <add key="Load*" value="PROPAGATION_REQUIRED,readOnly"/>     
+         <add key="Search*" value="PROPAGATION_SUPPORTS,readOnly"/>    
+         <add key="*" value="PROPAGATION_REQUIRED"/>     
+      </name-values>   
+    </property> 
+  </object>
+</objects>

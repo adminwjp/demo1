@@ -1,0 +1,106 @@
+﻿@model UserPointTaskEditModel
+@{
+    var pointName = ViewData.Get("pointName", "");
+    var goldName = ViewData.Get("goldName", "");
+}
+<div class="panel">
+    <div class="panel-body">
+        @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-horizontal tn-form-validation tn-survey-form", @id = "edittaskform" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(n => n.TaskId)
+            @Html.ValidationMessageFor(n => n.TaskId)
+            @Html.HiddenFor(n => n.TypeId)
+            @Html.ValidationMessageFor(n => n.TypeId)
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.LabelFor(n => n.TaskName)
+                    @Html.TextBoxFor(n => n.TaskName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(n => n.TaskName)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.LabelFor(n => n.Description)
+                    @Html.TextAreaFor(n => n.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(n => n.Description)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12 row">
+                    <div class="col-xs-12">
+                        <label class="form-control-static text-center">奖励</label>
+                    </div>
+                    <div class="col-xs-3">
+                        @Html.TextBoxFor(n => n.AwardPoints, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(n => n.AwardPoints)
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.Label(pointName, new { @class = "form-control-static text-center" })
+                    </div>
+                    <div class="col-xs-3">
+                        @Html.TextBoxFor(n => n.AwardGolds, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(n => n.AwardGolds)
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.Label(goldName, new { @class = "form-control-static text-center" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12 row">
+                    <div class="col-xs-12">
+                        <label class="form-control-static text-center">申请条件</label>
+                    </div>
+                    <div class="col-xs-4">
+                        @Html.LabelFor(n => n.MinUserRank, new { @class = "form-control-static text-center" })
+                    </div>
+                    <div class="col-xs-2 tn-no-padding">
+                        @Html.TextBoxFor(n => n.MinUserRank, new { @class = "form-control" })
+                    </div>
+                    <div class="col-xs-1">
+                        <label class="form-control-static text-center">级</label>
+                    </div>
+                    @Html.ValidationMessageFor(n => n.MinUserRank)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <label>分享页面URL</label>
+                    @Html.TextBoxFor(n => n.LinkUrl, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(n => n.LinkUrl)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <label>分享方式（完成以下选择的任一分享方式即视为完成任务）</label>
+                    <br />
+                    @Html.CheckBoxFor(n => n.ShareWeiXin)@ShareType.WeiXin.GetDisplayName()&nbsp;&nbsp;&nbsp;
+                    @Html.CheckBoxFor(n => n.ShareQQ)@ShareType.QQ.GetDisplayName()
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6 has-feedback">
+                    @Html.LabelFor(n => n.Deadline)
+                    <div class="input-group tn-width-300">
+                        @Html.DateTimePickerFor(n => n.Deadline)
+                    </div>
+                    @Html.ValidationMessageFor(n => n.Deadline)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.CheckBoxFor(n => n.IsUsing)
+                    @Html.LabelFor(n => n.IsUsing)
+                </div>
+            </div>
+            <div class="form-group">
+                &nbsp;&nbsp;&nbsp;<button type="button" id="edittasksubmit" class="btn btn-primary tn-btn-wp">确定</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-default tn-btn-wp" onclick="layer.closeAll();">取消</button>
+            </div>
+        }
+    </div>
+</div>
+
+

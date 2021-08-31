@@ -1,0 +1,14 @@
+{
+  "register_type": {
+    "mobile": "手机号码/昵称",
+    "email": "邮箱/昵称",
+    "mobile_or_email": "手机号码/邮箱/昵称",
+    "email_or_mobile": "邮箱/手机号码/昵称"
+  },
+  "thrid_login": {
+    "qq": true,
+    "wechat": true,
+    "weibo": true,
+    "alipay": true
+  }
+}

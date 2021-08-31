@@ -1,0 +1,322 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="lib/html5shiv.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+    <link href="lib/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" />
+
+    <!--<link rel="stylesheet" href="lib/jqgrid/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="lib/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+    <link rel="stylesheet" href="lib/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="lib/jqgrid/css/css/redmond/jquery-ui-1.8.16.custom.css" />-->
+
+    <link rel="stylesheet" href="lib/jqgrid1/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="lib/jqgrid1/css/css/redmond/jquery-ui-1.8.16.custom.css" />
+    <link rel="stylesheet" href="lib/jqgrid1/datepicker/jquery.ui.datepicker.css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>公司管理</title>
+    <style>
+        td.highlight {
+            font-weight: bold;
+            color: blue;
+        }
+
+        .table td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 官网中心 <span class="c-gray en">&gt;</span> 公司管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div class="text-c">
+            创建日期范围：
+            <input type="text" onfocus="WdatePicker({ createMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="createdatemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ createMinDate:'#F{$dp.$D(\'datemin\')}',createMaxDate:'%y-%M-%d' })" id="createdatemax" class="input-text Wdate" style="width:120px;">
+            修改日期范围：
+            <input type="text" onfocus="WdatePicker({ modifyMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="modifydatemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ modifyMinDate:'#F{$dp.$D(\'datemin\')}',modifyMaxDate:'%y-%M-%d' })" id="modifydatemax" class="input-text Wdate" style="width:120px;">
+            <input type="text" class="input-text" style="width:250px" placeholder="输入名称 英文 名称" id="name" name="">
+            <span class="select-box" style="width:150px;">
+                <select id="enable" class="select">
+                    <option value="">请选择</option>
+                    <option value="true">启用</option>
+                    <option value="false">禁用</option>
+                </select>
+            </span>
+
+            <button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+            <button type="reset" class="btn btn-success radius" id="clear" name="">清空</button>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="l">
+                <a href="javascript:;" onclick="datadelJqGrid()" class="btn btn-danger radius">
+                    <i class="Hui-iconfont">&#xe6e2;</i>
+                    批量删除
+                </a> <a href="javascript:;" onclick="operatorJqGrid('添加公司信息','add')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加公司信息</a>
+                <a href="javascript:;" onclick="operatorJqGrid('编辑公司信息','edit')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑公司信息</a>
+                <a href="javascript:;" onclick="operatorJqGrid('搜索公司信息','query')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe665;</i> 搜索</a>
+            </span> <span class="r">共有数据：<strong>0</strong> 条</span>
+        </div>
+        <div class="mt-20">
+            <table id="table" class="table table-border table-bordered table-hover table-bg table-sort">
+            </table>
+            <div id="page"></div>
+            <div id="dialog" style="display:none;">
+                <form method="post" onsubmit="return false;" name="dialog" title=''
+                      style="width: 350px; margin: 0px;">
+                    <fieldset>
+                        <legend>添加公司信息</legend>
+                        <table>
+                            <tbody>
+                                <tr class="id_show" style="display:none">
+                                    <td>编号:</td>
+                                    <td><input type="text" name="id" readonly="readonly" id="id" /></td>
+                                </tr>
+                                <tr>
+                                    <td>启用:</td>
+                                    <td><input type="checkbox" name="enable" value="true" />启用&nbsp;<input type="checkbox" name="enable" value="false" />停用</td>
+                                </tr>
+                                <tr>
+                                    <td>电话:</td>
+                                    <td><input type="text" name="tel" /></td>
+                                </tr>
+                                <tr class="logo_show" style="display:none">
+                                    <td>Logo显示:</td>
+                                    <td><img src="" width="100" height="100" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Logo:</td>
+                                    <td><input type="file" name="logo" /></td>
+                                </tr>
+                                <tr>
+                                    <td>公司名称:</td>
+                                    <td><input type="text" name="name" /></td>
+                                </tr>
+                                <tr>
+                                    <td>公司英文名称:</td>
+                                    <td><input type="text" name="english_name" /></td>
+                                </tr>
+                                <tr>
+                                    <td>公司描述:</td>
+                                    <td>
+                                        <textarea name="english_remark" id="english_remark" cols="" rows="" class="textarea" placeholder="说点什么...500个字符以内" dragonfly="true" onKeyUp="$.fn.Huitextarealength(this, 500)"></textarea>
+                                        <p class="textarea-numberbar"><em class="textarea-length">0</em>/500</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>公司英文描述:</td>
+                                    <td>
+                                        <textarea name="english_remark" id="english_remark" cols="" rows="" class="textarea" placeholder="说点什么...500个字符以内" dragonfly="true" onKeyUp="$.fn.Huitextarealength(this, 500)"></textarea>
+                                        <p class="textarea-numberbar"><em class="textarea-length">0</em>/500</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td><input type="submit" id="savedata" value="保存" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+
+
+    <!--<script type="text/javascript" href="lib/bootstrap-timepicker/css/bootstrap-timepicker.js"></script>
+    <script type="text/javascript" href="lib/daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="lib/jqgrid/js/jquery.jqGrid.src.js"></script>
+    <script type="text/javascript" src="lib/jqgrid/js/i18n/grid.locale-cn.js"></script>
+    <script type="text/javascript" src="lib/jqgrid/js/jquery.jqGrid.src.js"></script>-->
+
+    <script type="text/javascript" src="lib/jqgrid1/js/jquery.jqGrid.src.js"></script>
+    <script type="text/javascript" src="lib/jqgrid1/js/i18n/grid.locale-cn.js"></script>
+    <script type="text/javascript" href="lib/jquery-ui-1.12.1/jquery-ui.js"></script>
+    <!--<script type="text/javascript" src="lib/jqgrid1/datepicker/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="lib/jqgrid1/datepicker/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="lib/jqgrid1/datepicker/jquery.ui.datepicker.js"></script>-->
+    <script src="/js/index.js"></script>
+    <script type="text/javascript">
+        //$.jgrid.regional["en"] = {
+        //    del: {
+        //        caption: "删除",
+        //        msg: "Delete selected record(s)?",
+        //        bSubmit: "删除",
+        //        bCancel: "取消"
+        //    }
+        //};
+        $("form[name='dialog']").attr("action", urls.company.add);
+        //http://www.guriddo.net/documentation/guriddo/javascript/user-guide/editing/
+        var adminJqGrid = new AdminJqGrid();
+        adminJqGrid.options.caption = "公司列表信息";
+        adminJqGrid.options.url = urls.company.query;
+        adminJqGrid.options.editurl = urls.company.edit;
+        adminJqGrid.options.toolbar = [true, "top"];
+        adminJqGrid.options.cellsubmit = "clientArray";
+        adminJqGrid.options.cellEdit = true;
+        adminJqGrid.options.style = "";
+        adminJqGrid.options.beforeEditCell = function (rowid, cellname, value, iRow, iCol) {
+            lastrow = iRow;  //给全局变量赋值
+            lastcell = iCol;
+        };
+        adminJqGrid.options.afterEditCell = function (rowid, cellname, value, iRow, iCol) {
+            console.info(value);
+        };
+        adminJqGrid.options.beforeSaveCell = function (rowid, cellname, value, iRow, iCol) {
+            console.info(value);
+        };
+        adminJqGrid.options.afterSaveCell = function (rowid, cellname, value, iRow, iCol) {
+            console.info(value);
+        };
+
+        adminJqGrid.options.colModel = [
+            { label: "编号", name: 'id', index: 'id', width: 90, align: 'center' },
+            {
+                label: "启用", name: 'enable', index: 'enable', width: 90, editable: true, edittype: "checkbox", editoptions: { value: "已启用:已停用" },
+                align: 'center', formatter: function (cellvalue, options, rowObject) { return cellvalue ? "已启用" : "已停用" }
+            },
+            { label: "电话", name: 'tel', index: 'tel', width: 100, editable: true, editoptions: { size: "20", maxlength: "30" }, align: 'center' },
+            {
+                label: "Logo", name: 'src', index: 'src', width: 100, editable: true, edittype: "file",
+                editoptions: { size: "20", maxlength: "30", enctype: "multipart/form-data" }, align: 'center',
+                formatter: function (cellvalue, options, rowObject) {
+                    return cellvalue && cellvalue != "无" ? ("<img width='100' height='100' src='" + urls.img.get + "/" + cellvalue + "' />") : "无";
+                }, dataEvents: function () {
+                    for (var i = 0; i < arguments.length; i++) {
+                        console.log(arguments[i]);
+                    }
+                }
+            },
+            { label: "名称", name: 'name', index: 'name', width: 150, editable: true, editoptions: { size: "20", maxlength: "30" }, align: 'center' },
+            { label: "英文名称", name: 'english_name', index: 'english_name', width: 60, editable: true, align: 'center' },
+            // { label: "描述", name: 'ship', index: 'ship', width: 90, editable: true, edittype: "select", editoptions: { value: "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX" }, align: 'center' },
+            {
+                label: "描述", name: 'description', index: 'description', width: 200, sortable: false, editable: true,
+                // edittype: "textarea", editoptions: { rows: "2", cols: "10" },
+                edittype: 'custom',
+                editoptions: {
+                    custom_element: function (val) {
+                        return "<textarea name=\"english_description\" id=\"english_description\" cols=\"\" rows=\"\" class=\"textarea\" placeholder=\"说点什么...500个字符以内\" value=\"" + val + "\" dragonfly=\"true\" onKeyUp=\"$.fn.Huitextarealength(this, 500)\"></textarea> <p class=\"textarea-numberbar\"><em class=\"textarea-length\">0</em>/500</p>";
+                    },
+                    custom_value: function (val) {
+                        return $(val).val();
+                    }
+                },
+                align: 'center',
+            },
+            {
+                label: "英文描述", name: 'english_description', index: 'english_description', width: 200, sortable: false, editable: true,
+                //edittype: "textarea", editoptions: { rows: "2", cols: "10" },
+                edittype: 'custom',
+                editoptions: {
+                    custom_element: function (val) {
+                        return "<textarea name=\"english_description\" id=\"english_description\" cols=\"\" rows=\"\" class=\"textarea\" placeholder=\"说点什么...500个字符以内\" value=\"" + val + "\" dragonfly=\"true\" onKeyUp=\"$.fn.Huitextarealength(this, 500)\"></textarea> <p class=\"textarea-numberbar\"><em class=\"textarea-length\">0</em>/500</p>";
+                    },
+                    custom_value: function (val) {
+                        return $(val).val();
+                    }
+                },
+                align: 'center',
+            },
+            { label: "加入时间", name: 'create_date', index: 'create_date', width: 150, align: 'center' },
+            { label: "修改时间", name: 'modify_date', index: 'modify_date', width: 150, align: 'center' },
+            { label: "操作", name: 'act', index: 'act', width: 75, sortable: false, align: 'center' },
+        ];
+        adminJqGrid.options.gridComplete = function () {
+            var ids = jQuery("#table").jqGrid('getDataIDs');
+            for (var i = 0; i < ids.length; i++) {
+                var cl = ids[i];
+                be = "<input  type='button' value='编辑' onclick=\"jQuery('#table').editRow('"
+                    + cl + "');\" />";
+                se = "<input  type='button' value='保存' onclick=\"jQuery('#table').saveRow('"
+                    + cl + "');\" />";
+                ce = "<input  type='button' value='取消' onclick=\"jQuery('#table').restoreRow('"
+                    + cl + "');\" />";
+                jQuery("#table").jqGrid('setRowData', ids[i],
+                    {
+                        act: be + se + ce
+                    });
+            }
+        };
+        jQuery(function () {
+            //配置对话框 提示 库太多 受影响 无法使用 
+            //$("#dialog").dialog({
+            //    autoOpen: false,
+            //    modal: true      //设置对话框为模态对话框
+            //});
+            $(":checkbox").click(function () {
+                //设置当前选中checkbox的状态为checked
+                $(this).attr("checked", true);
+                $(this).siblings().attr("checked", false); //设置当前选中的checkbox同级(兄弟级)其他checkbox状态为未选中
+            });
+            jQuery("#table").jqGrid(adminJqGrid.options);
+
+            // jQuery("#table").jqGrid('addRowData', mydata3[i].id, mydata3[i]);
+            //jQuery("#table").jqGrid('navGrid', '#page', { edit: false, add: false, del: false, search: false });
+            jQuery("#table").jqGrid('navGrid', "#page",
+                {
+                    refresh: true,
+                    edit: true,
+                    add: true,
+                    del: true,
+                    search: false,
+                    addfunc: function () {
+                        var dialog = $("#dialog");
+                        $("#dialog").show();
+                        $("form[name='dialog']").attr("action", urls.company.add);
+                        $("#savedata").click(function () {
+                            $('form[name=\'dialog\']').ajaxSubmit(function (data) { console.log(data); });
+                        });
+                    },
+                    editfunc: function () {
+                        var gsr = jQuery("#table").jqGrid('getGridParam', 'selrow');
+                        if (gsr) {
+                            jQuery("#table").jqGrid('GridToForm', gsr, "#dialog > form");
+                        } else {
+                            alert("请先选择需要编辑的行!");
+                        }
+                    },
+                    delfunc: function () {
+
+                    }
+                }
+            );	
+            //jQuery("#table").jqGrid('inlineNav', "#page");
+            //$("#table").append(
+            //    "<input type='button' value='添加' style='height:20px;font-size:-3'/>");
+
+
+        });
+    </script>
+
+</body>
+</html>

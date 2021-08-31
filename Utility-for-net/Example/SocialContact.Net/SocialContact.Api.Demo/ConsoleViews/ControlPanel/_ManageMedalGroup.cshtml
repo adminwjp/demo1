@@ -1,0 +1,18 @@
+﻿<div class="panel">
+    <a class="btn btn-default" id="addmedalgroup"><i class="fa fa-plus"></i> 添加互斥组</a>
+    <div id="_ListMedalGroup">
+        @Html.Action("_ListMedalGroup", "ControlPanel")
+    </div>
+    <div class="col-xs-12 tn-mt-15">
+        <label id="addgrouplabel" class="help-block">添加互斥组</label>
+        <label id="editgrouplabel" class="help-block tn-display-none">编辑互斥组</label>
+    </div>
+    <div class="col-xs-12 row tn-mt-15">
+        <div class="col-xs-2  form-control-static">组名</div>
+        @Html.Hidden("groupid",0)
+        <div class="col-xs-7 tn-no-padding">@Html.TextBox("groupname", "", new { @class = "form-control" })</div>
+        <div class="col-xs-3"><button class="btn btn-primary tn-btn-wp" id="groupsubmit">提交</button></div>
+    </div>
+</div>
+
+

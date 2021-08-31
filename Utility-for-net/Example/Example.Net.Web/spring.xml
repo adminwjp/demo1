@@ -1,0 +1,47 @@
+﻿<objects xmlns='http://www.springframework.net'
+         xmlns:db="http://www.springframework.net/database">
+   <!-- Property placeholder configurer for database settings -->
+
+  <!--<object type="Spring.Objects.Factory.Config.PropertyPlaceholderConfigurer, Spring.Core">
+    <property name="ConfigSections" value="databaseSettings"/>
+  </object>-->
+  
+  <!-- Database and NHibernate Configuration -->
+  <object id="MySqlDbMetadata" type="Utility.Spring.MySqlDbMetadata,Shop.Spring.Advert.Api" />
+  
+  <object id="DbProvider" type="Spring.Data.Common.DbProvider,Spring.Data">
+    <constructor-arg index="0" ref="MySqlDbMetadata"></constructor-arg>
+  </object>
+
+  <!-- 未能加载文件或程序集“Spring.Northwind.Dao.NHibernate”或它的某一个依赖项。系统找不到指定的文件 -->
+   <object id="MySessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate4" >
+    <property name="DbProvider" ref="DbProvider"/>
+    <property name="MappingAssemblies">
+      <list>
+        <value>Spring.Northwind.Dao.NHibernate</value>
+      </list>
+    </property>
+    <property name="HibernateProperties">
+      <dictionary>
+
+        <entry key="hibernate.connection.provider"
+               value="NHibernate.Connection.DriverConnectionProvider"/>
+
+        <entry key="hibernate.dialect"
+               value="NHibernate.Dialect.MySQL5Dialect"/>
+
+        <entry key="hibernate.connection.driver_class"
+               value="NHibernate.Driver.MySqlDataDriver"/>
+        
+        <!--  Initialization of object failed : 已添加了具有相同键的项 -->
+        <!--<entry key="connection.connection_string"
+               value="Database=Shop;Data Source=localhost;User Id=root;Password=wjp930514.;Old Guids=True;charset=utf8;"/>-->
+ 
+      <entry key="hbm2ddl.auto"
+               value="update"/>
+      </dictionary>
+    </property>
+
+  </object>
+
+</objects>

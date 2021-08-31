@@ -1,0 +1,218 @@
+﻿@model IEnumerable<Category>
+@{
+    var index = -1;
+}
+<div>
+    @if (Model == null || Model.Count() == 0)
+    {
+        <div class="row text-warning text-center wrapper">
+            没有查询到类别数据
+        </div>
+    }
+    else
+    {
+        <table class="table table-hover tn-va-middle">
+            <thead>
+                <tr>
+                    <th>类别名称</th>
+                    <th>类别Id</th>
+                    <th>类别描述</th>
+                    <th>内容数</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    index++;
+                    <tr name="tableRow" data-index="@index" data-depth="@item.Depth" class="parent-@item.ParentId " data-itemcategoryid="@item.CategoryId" data-itemparentcategoryid="@item.ParentId">
+                        <td style="padding-left:@(item.Depth)em">
+                            @*<i class="fa fa-minus-square-o show-or-hide" data-isshowchildren="true" data-index="@index" data-depth="@item.Depth"></i>*@
+                            @if (item.Depth > 0)
+                            {
+                                if (item.ChildCount == 0)
+                                {
+                                    <span title="@item.CategoryName">└─@HtmlUtility.TrimHtml(item.CategoryName, 30)</span>
+                                }
+                                else
+                                {
+                                    <span title="@item.CategoryName">
+                                        ├─@HtmlUtility.TrimHtml(item.CategoryName, 30)
+                                    </span>
+                                    <a>
+                                        <i class="fa fa-minus-square-o show-or-hide tn-cursor-pointer hidden" data-isshowchildren="true" data-index="@index" data-depth="@item.Depth"></i>
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                <span title="@item.CategoryName">@HtmlUtility.TrimHtml(item.CategoryName, 30)</span>
+                                if (item.ChildCount != 0)
+                                {
+                                    <a>
+                                        <i class="fa fa-minus-square-o show-or-hide tn-cursor-pointer hidden" data-isshowchildren="true" data-index="@index" data-depth="@item.Depth"></i>
+                                    </a>
+                                }
+                            }
+                        </td>
+                        <td>@item.CategoryId</td>
+                        <td title="@HtmlUtility.StripHtml(item.Description,false,false)">@HtmlUtility.TrimHtml(item.Description, 20)</td>
+                        <td>@item.ItemCount</td>
+                        <td>
+                            <a class="newcategory tn-mr-10" data-itemcategoryid="@item.CategoryId" role="button" title="添加子类别"><i class="fa fa-plus fa-lg"></i></a>
+                            <a class="editcategory tn-mr-10" data-itemcategoryid="@item.CategoryId" data-itemparentcategoryid="@item.ParentId" role="button" title="编辑类别"><i class="fa fa-pencil fa-lg"></i></a>
+                            <a class="deletecategory tn-mr-10" data-itemcategoryid="@item.CategoryId" role="button" title="删除栏目"><i class="fa fa-trash fa-lg"></i></a>
+
+                            @*找出在同一个父类别下的，深度相同的兄弟节点，计算出比自己展示顺序（DisplayOrder）小的个数，如果为0个说明自己位于兄弟节点中的第一个无法上移*@
+                            @if (Model.Where(n => n.ParentId == item.ParentId && n.Depth == item.Depth && n.DisplayOrder < item.DisplayOrder).Count() > 0)
+                            {
+                                <a href="javascript:;" class="upanddown tn-mr-10" data-upordown="up" role="button" title="上移"><i class="fa fa-arrow-up fa-lg"></i></a>
+                            }
+                            @*找出在同一个父类别下的，深度相同的兄弟节点，计算出比自己展示顺序（DisplayOrder）大的个数，如果为0个说明自己位于兄弟节点中的最后一个无法下移*@
+                            @if (Model.Where(n => n.ParentId == item.ParentId && n.Depth == item.Depth && n.DisplayOrder > item.DisplayOrder).Count() > 0)
+                            {
+                                <a href="javascript:;" class="upanddown tn-mr-10" data-upordown="down" role="button" title="下移"><i class="fa fa-arrow-down fa-lg"></i></a>
+                            }
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+</div>
+
+<script>
+
+    require(['jquery'], function () {
+
+        //$('[name="tableRow"]').on('click', function () {
+        //    var $this = $(this);
+
+
+        //    var categoryId = $this.data('itemcategoryid');
+        //    var parentCategoryId = $this.data('itemparentcategoryid');
+
+        //    var $rows = $('[name="tableRow"]');
+        //    var rowsToggle = [];
+
+        //    var $childrenRows = $('tr[data-itemparentcategoryid="' + categoryId + '"]');
+        //    var childrenRowsIndexArry = [];
+
+        //    //var $siblingsRows = $('tr[data-itemparentcategoryid="' + parentCategoryId + '"]');
+
+        //    //endRangeIndex = $($rows[$rows.length - 1]).data('index');
+        //    //for (var i = 0; i < $siblingsRows.length; i++) {
+        //    //    var $siblingsRow = $($siblingsRows[i]);
+        //    //    if ($siblingsRow.data('index') > startRangeIndex) {
+        //    //        endRangeIndex = $siblingsRow.data('index');
+        //    //        break;
+        //    //    }
+        //    //}
+
+        //    //父节点行
+        //    var $parentRow = $('tr[data-itemcategoryid="' + parentCategoryId + '"]');
+        //    //父父节点CategoryId
+        //    var grandParentCategoryId = $parentRow.data('itemparentcategoryid');
+        //    var $grandParentRow = $('tr[data-itemcategoryid="' + grandParentCategoryId + '"]');
+        //    var grandParentParentCategoryId = $grandParentRow.data('itemparentcategoryid');
+        //    var $grandParentSiblingsRows = $('tr[data-itemparentcategoryid="' + grandParentParentCategoryId + '"]');
+
+        //    //父节点的兄弟节点集合
+        //    var $parentSiblingsRows = $('tr[data-itemparentcategoryid="' + grandParentCategoryId + '"]');
+
+        //    //需要展开折叠的区域初始值 为父节点index 到 父父节点兄弟节点的最后一个index
+        //    var startRangeIndex = $grandParentRow.data('index');
+        //    var endRangeIndex = $($grandParentSiblingsRows[$grandParentSiblingsRows.length - 1]).data('index');
+
+        //    for (var i = 0; i < $grandParentSiblingsRows.length; i++) {
+        //        var $parentSiblingsRow = $($grandParentSiblingsRows[i]);
+        //        //找到父节点的下一个兄弟节点并更新展开折叠区域的结束边界
+        //        if ($parentSiblingsRow.data('index') > startRangeIndex) {
+        //            endRangeIndex = $parentSiblingsRow.data('index');
+        //            break;
+        //        }
+        //    }
+
+
+        //    //获取直接孩子行的Index数组
+        //    for (var i = 0; i < $childrenRows.length; i++) {
+        //        var $childrenRow = $($childrenRows[i]);
+        //        childrenRowsIndexArry.push($childrenRow.data('index'));
+        //    }
+
+        //    for (var i = 0; i < childrenRowsIndexArry.length; i++) {
+        //        var startIndex = childrenRowsIndexArry[i];
+        //        var endIndex = startIndex;
+        //        if (i < childrenRowsIndexArry.length - 1) {
+        //            endIndex = childrenRowsIndexArry[i + 1];
+        //        } else {
+        //            endIndex = endRangeIndex-1;
+        //        }
+        //        for (var i = startIndex; i <= endIndex; i++) {
+        //            var $row = $($rows[i]);
+        //            $row.toggle(function () {
+        //                $(this).addClass('hidden');
+        //            }, function () {
+        //                $(this).removeClass('hidden');
+        //            });
+        //        }
+        //    }
+
+        //})
+
+        $('[name="tableRow"]').on('mouseover', function () {
+            $(this).find('.show-or-hide').removeClass('hidden');
+        })
+
+        $('.show-or-hide').on('click', function () {
+            var $this = $(this);
+            var status = $this.data('isshowchildren');
+
+            var categoryId = $this.closest('tr').data('itemcategoryid');
+            var parentCategoryId = $this.closest('tr').data('itemparentcategoryid');
+            var depth = $this.data('depth');
+
+            var $rows = $('[name="tableRow"]');
+            var rowsToggle = [];
+
+            //需要展开折叠的区域初始值 当前节点的index 到 下一个比当前节点depth大的行的index
+            var startRangeIndex = $this.data('index') + 1;
+            var endRangeIndex = $rows.length - 1;
+
+
+            for (var i = startRangeIndex ; i < $rows.length; i++) {
+                var $row = $($rows[i]);
+                var rowIndex = $row.data('index');
+                if (rowIndex >= startRangeIndex && $row.data('depth') <= depth) {
+                    endRangeIndex = rowIndex - 1;
+                    break;
+                }
+                rowsToggle.push(rowIndex);
+            }
+
+            for (var i = 0; i < rowsToggle.length; i++) {
+                var $row = $($rows[rowsToggle[i]]);
+                if (status == true) {
+                    $row.addClass('hidden');
+                    $row.find('.show-or-hide').addClass('fa-plus-square-o').removeClass('fa-minus-square-o');
+                    $row.find('.show-or-hide').data('isshowchildren', false);
+                } else {
+                    $row.removeClass('hidden');
+                    $row.find('.show-or-hide').addClass('fa-minus-square-o').removeClass('fa-plus-square-o');
+                    $row.find('.show-or-hide').data('isshowchildren', true);
+                }
+            }
+
+            if (status == true) {
+                $this.addClass('fa-plus-square-o').removeClass('fa-minus-square-o')
+            } else {
+                $this.addClass('fa-minus-square-o').removeClass('fa-plus-square-o')
+            }
+            var status = $this.data('isshowchildren', !status);
+        })
+
+    })
+
+</script>

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<PointTask>
+@{
+    var pointName = ViewData["pointName"];
+    var goldName = ViewData["goldName"];
+}
+@if (Model.Any())
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>任务名称</th>
+                <th>说明</th>
+                <th>奖励</th>
+                <th>是否启用</th>
+                <th>截止时间</th>
+                <th>发布时间</th>
+                <th>领取人数</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pointTask in Model)
+            {
+                <tr>
+                    <td title="@pointTask.TaskName"><img src="@Tunynet.Utilities.WebUtility.ResolveUrl(pointTask.TaskType.ImageUrl)" width="20" height="20" alt="@pointTask.TaskName" />&nbsp;@StringUtility.Trim(pointTask.TaskName, 18)</td>
+                    <td title="@pointTask.Description">@StringUtility.Trim(pointTask.Description, 30)</td>
+                    <td>
+                        @(pointTask.AwardPoints > 0 ? pointTask.AwardPoints + pointName.ToString() : "")
+                        @((pointTask.AwardPoints > 0 && pointTask.AwardGolds > 0) ? "+" : "")
+                        @(pointTask.AwardGolds > 0 ? pointTask.AwardGolds + goldName.ToString() : "")
+                    </td>
+                    <td>
+                        @if (pointTask.Status == PointTaskStatus.Normal)
+                        {
+                            <i class="fa fa-check-circle tn-green-color fa-2x" title="@PointTaskStatus.Normal.GetDisplayName()"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-ban tn-red-color fa-2x" title="@PointTaskStatus.Disabled.GetDisplayName()"></i>
+                        }
+                    </td>
+                    <td>
+                        @(pointTask.TaskType.IsSetDeadline ? pointTask.Deadline.ToString("yyyy-MM-dd") : "不限")
+                    </td>
+                    <td>
+                        @pointTask.DateCreated.ToString("yyyy-MM-dd")
+                    </td>
+                    <td>
+                        <a href="@SiteUrls.Instance().ManageTasktoUsers(pointTask.TaskId)" target="_blank" class="a">@pointTask.GetTaskToUserNum()</a>
+                    </td>
+                    <td>
+                        @if (pointTask.TaskType.CanAddTask)
+                        {
+                            <a class="edittask" data-taskid="@pointTask.TaskId" data-editurl="@Tunynet.Utilities.WebUtility.ResolveUrl("~"+pointTask.TaskType.RouteName)" data-typename="@pointTask.TaskType.TypeName" role="button" title="编辑任务">编辑</a><text> &nbsp;</text>
+
+                            <a class="deletetask" data-taskid="@pointTask.TaskId" role="button" title="删除任务">删除</a><text> &nbsp;</text>
+
+                        }
+                        else
+                        {
+                            <a class="edittask" data-taskid="@pointTask.TaskId" data-editurl="@Tunynet.Utilities.WebUtility.ResolveUrl("~"+pointTask.TaskType.RouteName)" data-typename="@pointTask.TaskType.TypeName" role="button" title="编辑任务">编辑</a>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center text-warning">
+        还没有任何积分任务
+    </div>
+}
+<script>
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+    })
+</script>

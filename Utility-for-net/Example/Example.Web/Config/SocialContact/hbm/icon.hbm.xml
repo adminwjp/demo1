@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
+  <!-- start icon info -->
+  <class name="SocialContact.Domain.Entities.IconEntity,Utility.Demo"  table="t_icon" discriminator-value="0">
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property column="create_date" name="CreateDate" type="System.Int64"/>
+    <property column="update_date" name="UpdateDate" type="System.Int64"/>
+    <property  name="Name" column="name" length="20" type="System.String"/>
+    <property  name="Style" column="style" length="500" type="System.String"/>
+    <property  name="Description" column="description" length="500" type="System.String"/>
+  
+  </class>
+  <!-- end icon info -->
+</hibernate-mapping>

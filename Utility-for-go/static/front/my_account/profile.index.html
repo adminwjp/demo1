@@ -1,0 +1,167 @@
+{{ define "buyer_profile.html"}}
+<!--
+买家 资料
+1 基本信息
+2 修改密码
+3 修改邮箱
+4 修改手机号
+ -->
+{{if .profile.basic}}
+<!--基本信息-->
+<div class="public">
+    <form method="post" enctype="multipart/form-data">
+        <div class="information">
+            <div class="photo relative1">
+                <p><img id="headimgurl_id" width="120" height="120" /></p>
+                <div class="filePicker" style=" position:absolute; left:0; top:131px; height:30px; width:120px;"></div>
+                <input type="hidden" name="portrait" value="{{.visitor.portrait}}" />
+                <b>
+                    <div class="txt" style="position:absolute;z-index:9;">{{.lang.change_portrait}}</div>
+                </b> </div>
+            <div class="info individual">
+                <table>
+                    <tr>
+                        <th class="width4">{{.lang.username}}: </th>
+                        <td class="username"></td>
+                    </tr>
+                    <tr>
+                        <th>{{.lang.email}}:</th>
+                        <td class="email"></td>
+                    </tr>
+                    <tr>
+                        <th>{{.lang.phone}}:</th>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>{{.lang.real_name}}:</th>
+                        <td><input type="text" class="text width_normal" name="realname" class="realname"  /></td>
+                    </tr>
+                    <tr>
+                        <th>{{.lang.gender}}: </th>
+                        <td class="label"><label>
+                            <input type="radio" name="gender" value="0" />
+                            {{.lang.unknown}} </label>
+                            <label>
+                                <input type="radio" name="gender" value="1"/>
+                                {{.lang.male}} </label>
+                            <label>
+                                <input type="radio" name="gender" value="2"  />
+                                {{.lang.female}} </label></td>
+                    </tr>
+                    <tr>
+                        <th>{{.lang.birthday}}: </th>
+                        <td><input type="text" class="text width_normal" name="birthday" id="birthday"  /></td>
+                    </tr>
+                    <tr>
+                        <th>{{.lang.im_qq}}:</th>
+                        <td><input type="text" class="text width_normal" name="im_qq"  /></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td><input type="submit" class="btn" value="{{.lang.save_edit}}" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(function (){
+        $.getJson("basic?token=&r="+Math.random(),
+            function (data){
+                if (data.status){
+                    var user=data.data;
+                    $("#headimgurl_id").attr("src",data.headimgurl);
+                    $('input[name="portrait"]').val(data.headimgurl);
+                    $(".username").html(user.username);
+                    $(".email").html(user.email);
+                    $(".phone").html(user.phone);
+                    $(".real_name").val(user.real_name);
+                    var index=user.gender;
+                    $("input[name='gender']")[index].attr("checked","checked");
+                    $(".birthday").val(user.birthday);
+                    $(".im_qq").val(user.im_qq);
+                }
+            },
+            function (error) {
+
+            });
+
+        $('.filePicker').compressUpload({
+            server: "upload/index",
+            pick: '.filePicker',
+            fileVal: 'portrait',
+            formData: {
+                "{{.csrfParam}}": "{{.csrfToken}}",
+                belong: "50",
+                filename: "portrait"
+            },
+            crop: false,
+            callback: function(file, response, pick, target) {
+                $(pick).parent().find('img').attr( 'src', url_format(response.retval)+"?"+Math.random());
+                $('input[name="portrait"]').val(response.retval);
+            }
+        });
+    });
+</script>
+
+{{else}}
+<!-- 修改密码 -->
+<div class="wrap">
+    <div class="eject_con bgwhite">
+        <div class="add">
+            <form method="post">
+                <ul>
+                    <li>
+                        <h3>{{.lang.orig_password}}:</h3>
+                        <p>
+                            <input type="password" class="text width_normal" name="oldPassword" />
+                        </p>
+                    </li>
+
+
+                    {{if profile.phone}}
+                    <!-- 修改手机号 -->
+                    <li>
+                        <h3>{$lang.phone_mob}:</h3>
+                        <p>
+                            <input class="text width_normal" type="text" name="phone_mob" value="{$visitor.phone_mob}" id="phone_mob"/>
+                        </p>
+                    </li>
+                    {{else}}
+
+                    {{if profile.email}}
+                    <!-- 修改邮箱 -->
+                    <li>
+                        <h3>{{.lang.email}}:</h3>
+                        <p>
+                            <input class="text width_normal" type="text" name="email" id="email" value="{$visitor.email}" />
+                        </p>
+                    </li>
+                    {{else}}
+
+                    <li>
+                        <h3>{{.lang.new_password}}:</h3>
+                        <p>
+                            <input type="password" class="text width_normal" name="password" id="password"/>
+                        </p>
+                    </li>
+                    <li>
+                        <h3>{{.lang.confirm_password}}:</h3>
+                        <p>
+                            <input type="password" class="text width_normal" name="confirmPassword" />
+                        </p>
+                    </li>
+                    {{end}}
+
+                    {{end}}
+                </ul>
+                <div class="submit">
+                    <input class="btn-alipay J_AjaxSubmit" type="submit" value="{$lang.submit}" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{end}}

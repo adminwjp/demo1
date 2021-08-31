@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="CommissionRate" table="t_commission_rate" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity"></generator>
+        </id>
+        <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+        <property name="selfUpRate" column="self_up_rate" type="java.math.BigDecimal" length="20"></property>
+        <property name="secondUpRate" column="second_up_rate" type="java.math.BigDecimal" length="20"></property>
+        <property name="thirdUpRate" column="third_up_rate" type="java.math.BigDecimal" length="20"></property>
+        <property name="selfBuyRate" column="self_buy_rate" type="java.lang.Boolean" length="20"></property>
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

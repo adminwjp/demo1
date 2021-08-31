@@ -1,0 +1,335 @@
+﻿@{
+    var userHolder = ViewData.Get<User>("userHolder", null);
+    var contentItems = ViewData.Get<PagingDataSet<ContentItem>>("contentItems", null);
+    var threads = ViewData.Get<PagingDataSet<Thread>>("threads", null);
+    var currentUser = UserContext.CurrentUser;
+    //我的关注
+    var follows = ViewData.Get<IEnumerable<FollowEntity>>("follows", new List<FollowEntity>());
+    //粉丝列表
+    var follow = ViewData.Get<IEnumerable<User>>("follow", new List<User>());
+    var userProfile = ViewData.Get<UserProfile>("userProfile", new UserProfile());
+    //我的、他的勋章
+    var medaltoUsers = ViewData.Get<PagingDataSet<MedalToUser>>("medals", null);
+    TempData["myhome-check"] = "myhome";
+    var gender = "他";
+    if (userProfile.Gender == GenderType.FeMale)
+    {
+        gender = "她";
+    }
+
+}
+
+<div class="row jh-my-index tn-mb-50">
+    <div class="tn-plr-15">
+        <div class="col-xs-9">
+            <div class="jh-index-block">
+                <div class="tn-title">
+                    <h5><a href="javascript:;" class="morecms">文章</a></h5>
+                </div>
+                <ul class="list-unstyled">
+                    @if (contentItems.Any())
+                    {
+                        foreach (var item in contentItems)
+                        {
+                            <li class="clearfix">
+                                <ul class="list-inline">
+                                    <li class="tn-text"><a href="@SiteUrls.Instance().CMSDetail(item.ContentItemId)" target="_blank" title="@item.Subject">@HtmlUtility.TrimHtml(item.Subject, 30)</a></li>
+                                    <li class="text-muted"><i class="fa fa-commenting" aria-hidden="true"></i> @item.CommentCount()</li>
+                                    <li class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> @item.DatePublished.ToFriendlyDate()</li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="text-center clearfix text-warning">
+                            暂无任何文章
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="jh-index-block">
+                <div class="tn-title">
+                    <h5><a href="javascript:;" class="morethreads">贴子</a></h5>
+                </div>
+                <ul class="list-unstyled">
+                    @if (threads.Any())
+                    {
+                        foreach (var item in threads)
+                        {
+                            <li class="clearfix">
+                                <ul class="list-inline">
+                                    <li class="tn-text"><a href="@SiteUrls.Instance().ThreadDetail(item.ThreadId)" target="_blank" title="@item.Subject">@HtmlUtility.TrimHtml(item.Subject, 30)</a></li>
+                                    <li class="text-muted"><i class="fa fa-commenting" aria-hidden="true"></i> @item.CommentCount</li>
+                                    <li class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> @item.LastModified.ToFriendlyDate()</li>
+                                    <li class="text-muted"><a title="@item.BarSection.Name" href="@CachedUrlHelper.Action("BarSectionDetail","Post",null,new RouteValueDictionary { {"sectionId",item.BarSection.SectionId }})" target="_blank">@HtmlUtility.TrimHtml(item.BarSection.Name, 15) </a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="text-center clearfix text-warning">
+                            暂无任何贴子
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            @if (currentUser == userHolder)
+            {
+                <div class="tn-gray-bg tn-mb-20 calendar" style="z-index:999" id="_SignIn">
+                    @Html.Action("_SignIn", "Portal")
+                </div>
+                <div class="tn-gray-bg tn-mb-20">
+                    <div class="tn-title">
+                        <h5>我的积分</h5>
+                    </div>
+                    <div class="tn-mb-10">@(DIContainer.Resolve<PointService>().GetPointCategory(PointCategoryKeys.Instance().TradePoints()).CategoryName)：@userHolder.TradePoints <i class="fa fa-database tn-yellow-color"></i></div>
+                    <div class="tn-mb-10">@(DIContainer.Resolve<PointService>().GetPointCategory(PointCategoryKeys.Instance().ExperiencePoints()).CategoryName)：@userHolder.ExperiencePoints <i class="fa fa-tint tn-gray-color"></i></div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <a href="@SiteUrls.Instance().PointTask()" class="a">领任务赚积分</a>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <a href="@SiteUrls.Instance().MyPoints()" class="a">了解积分规则</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="tn-gray-bg tn-mb-20">
+                <div class="tn-title">
+                    <h5><a href="@SiteUrls.Instance().MedalShop()">@(currentUser == userHolder ? "我" : gender)的勋章<span>（@(medaltoUsers == null ? 0 : medaltoUsers.TotalRecords)）</span></a></h5>
+                </div>
+                <div class="row jh-home-medal">
+                    @if (medaltoUsers != null && medaltoUsers.Any())
+                    {
+                        foreach (var medaltoUser in medaltoUsers)
+                        {
+                            var medal = medaltoUser.GetMedalInfo();
+                            <div class="col-xs-2">
+                                <a href="@SiteUrls.Instance().MedalShop()" title="@medal.MedalName"><img src="@medal.GetImageUrl()" width="30" /></a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-xs-12 text-center">
+                            还未获得勋章@(currentUser == userHolder ? "，继续努力吧！" : "")
+                            <br />
+                            <a class="a" href="@SiteUrls.Instance().MedalShop()">如何获得勋章</a>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="jh-index-right tn-gray-bg">
+
+                <div class="tn-title">
+                    @if (currentUser == userHolder)
+                    {
+                        <h5><a href="javascript:;" class="myfans">我的粉丝</a><span>（@userHolder.FollowerCount）</span></h5>
+                    }
+                    else
+                    {
+                        <h5><a href="javascript:;" class="myfans">@(gender)的粉丝</a><span>（@userHolder.FollowerCount）</span></h5>
+                    }
+                </div>
+                <div class="row">
+                    @if (follow.Count() > 5)
+                    {
+                        var count = 0;
+                        foreach (var user in follow)
+                        {
+                            if (user != null)
+                            {
+                                <div class="col-xs-4">
+                                    @Html.ShowUserAvatar(user.UserId, AvatarSizeType.Small, htmlAttributes: new RouteValueDictionary { { "width", "60" }, { "height", "60" } })
+                                    <p class="tn-text"><a href="@SiteUrls.Instance().SpaceHome(user.UserName)" title="@user.DisplayName" target="_blank">@user.DisplayName</a></p>
+                                </div>
+                                count++;
+                            }
+                            if (count == 5)
+                            {
+                                break;
+                            }
+
+                        }
+                        <div class="col-xs-4">
+                            <a href="javascript:;" class="myfans"><img class="img-circle" alt="..." src="~/img/more.png" width="60" height="60"></a>
+                        </div>
+                    }
+                    else
+                    {
+                        foreach (var user in follow)
+                        {
+                            if (user != null)
+                            {
+                                <div class="col-xs-4">
+                                    @Html.ShowUserAvatar(user.UserId, AvatarSizeType.Small, htmlAttributes: new RouteValueDictionary { { "width", "60" }, { "height", "60" } })
+                                    <p class="tn-text"><a href="@SiteUrls.Instance().SpaceHome(user.UserName)" title="@user.DisplayName" target="_blank">@user.DisplayName</a></p>
+                                </div>
+                            }
+
+                        }
+                    }
+                </div>
+            </div>
+            <div class="jh-index-right tn-gray-bg">
+                <div class="tn-title">
+                    @if (currentUser == userHolder)
+                    {
+                        //此处用列表中的数量解决user缓存计数错误问题
+                        <h5><a href="javascript:;" class="myfocus">我的关注</a><span>（@userHolder.FollowedCount）</span></h5>
+                    }
+                    else
+                    {
+                        <h5><a href="javascript:;" class="myfocus">@(gender)的关注</a><span>（@userHolder.FollowedCount）</span></h5>
+                    }
+                </div>
+                <div class="row">
+                    @if (follows.Count() > 5)
+                    {
+                        var count = 0;
+                        foreach (var user in follows)
+                        {
+                            if (user != null)
+                            {
+                                <div class="col-xs-4">
+                                    @Html.ShowUserAvatar(user.FollowedUserId, AvatarSizeType.Small, htmlAttributes: new RouteValueDictionary { { "width", "60" }, { "height", "60" } })
+                                    <p class="tn-text"><a href="@SiteUrls.Instance().SpaceHome(user.followuser().UserName)" title="@user.followuser().DisplayName" target="_blank">@user.followuser().DisplayName</a></p>
+                                </div>
+                                count++;
+                            }
+                            if (count == 5)
+                            {
+                                break;
+                            }
+
+                        }
+                        <div class="col-xs-4">
+                            <a class="myfocus" href="javascript:;"><img class="img-circle" alt="..." src="~/img/more.png" width="60" height="60"></a>
+                        </div>
+                    }
+                    else
+                    {
+                        foreach (var user in follows)
+                        {
+                            if (user != null)
+                            {
+                                <div class="col-xs-4">
+                                    @Html.ShowUserAvatar(user.FollowedUserId, AvatarSizeType.Small, htmlAttributes: new RouteValueDictionary { { "width", "60" }, { "height", "60" } })
+                                    <p class="tn-text"><a href="@SiteUrls.Instance().SpaceHome(user.followuser()?.UserName)" title="@(user.followuser()?.DisplayName)" target="_blank">@(user.followuser()?.DisplayName)</a></p>
+                                </div>
+                            }
+
+                        }
+
+                    }
+
+                </div>
+            </div>
+            <div class="jh-index-right" id="advertisingDiv">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    require(['jquery', 'tnlayer', 'calendar'], function ($, tnlayer, calendar) {
+
+        $(function () {
+            $("#calendar").hide();
+            /*签到*/
+            $(document).on("mouseleave", "#calendar", function () {
+                $("#calendar").stop().hide();
+
+            })
+            var recentMonths = 0;
+            var GoldEnd = "@(DIContainer.Resolve<PointService>().GetPointCategory(PointCategoryKeys.Instance().TradePoints()))";
+            //用户签到
+            $(document).on("click", ".calendar-show", function () {
+                $.ajax({
+                    type: "post",
+                    async: false,
+                    url: "@CachedUrlHelper.Action("SignIn", "Portal")",
+                    success: function (data) {
+                        if (data.state) {
+                            layer.msg(data.msg, { icon: 1 });
+                            window.setTimeout(function myfunction() {
+                                $.get("@CachedUrlHelper.Action("_SignIn", "Portal")?t=" + new Date().getTime(), function (SignInData) {
+                                    recentMonths = 0;
+                                    $("#_SignIn").html(SignInData);
+                                });
+                            }, 300)
+
+                        } else {
+                            $.get("@CachedUrlHelper.Action("_SignIn", "Portal")?t=" + new Date().getTime(), function (SignInData) {
+                                recentMonths = 0;
+                                $("#_SignIn").html(SignInData);
+                            });
+                        }
+
+
+
+                    }
+                });
+
+            });
+
+            //绑定上个月事件
+            $(document).on("click", ".calendar_month_prev", function () {
+                $("#sign_cal").remove();
+                $.get('@CachedUrlHelper.Action("GetSignInDetail", "Portal")?t=' + new Date().getTime(), { recentMonths: recentMonths, status: '1' }, function (data) {
+                    recentMonths = data.recentMonths;
+                    Gold = data.goldSum;
+                    eventName = "prev";
+                    calendar.calUtilup(data.signList, eventName, Gold, GoldEnd);
+                });
+            });
+
+
+
+            //绑定下个月事件
+            $(document).on("click", ".calendar_month_next", function () {
+                $("#sign_cal").remove();
+                $.get('@CachedUrlHelper.Action("GetSignInDetail", "Portal")?t=' + new Date().getTime(), { recentMonths: recentMonths, status: '-1 ' }, function (data) {
+                    recentMonths = data.recentMonths;
+                    Gold = data.goldSum;
+                    eventName = "next";
+                    calendar.calUtilup(data.signList, eventName, Gold, GoldEnd);
+                });
+            });
+
+            //加载广告
+            $.get("@CachedUrlHelper.Action("_Advertising","Common")", { positionId: "1000002", requesttime: new Date().getTime() }, function (data) {
+                $("#advertisingDiv").html(data);
+
+            })
+            //贴子点击
+            $('.morethreads').on("click", function () {
+                $('a[data-type="post"]').click();
+            })
+
+            //文章
+            $('.morecms').on("click", function () {
+                $('a[data-type="cms"]').click();
+            })
+            //粉丝点击
+            $(".myfans").click(function () {
+                $.get("@CachedUrlHelper.Action("_ManageMyFollow", "UserSpace")", { userId: '@userHolder.UserId', follow: "fans", type: "fans", requestTime: new Date().getTime() }, function (data) {
+                    replaceUrl("follow-fans")
+                    $("#my-content").html(data);
+                })
+            })
+
+            //关注点击
+            $(".myfocus").click(function () {
+                $.get("@CachedUrlHelper.Action("_ManageMyFollow", "UserSpace")", { userId: '@userHolder.UserId', follow: "focus", requestTime: new Date().getTime() }, function (data) {
+                    replaceUrl("follow-focus")
+                    $("#my-content").html(data);
+                })
+            })
+        })
+
+    })
+</script>

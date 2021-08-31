@@ -1,0 +1,61 @@
+﻿@model PagingDataSet<Comment>
+@{
+    var tenantTypeId = ViewData.Get<string>("tenantTypeId", string.Empty);
+    var commentedObjectId = ViewData.Get<long>("commentedObjectId", 0);
+    var currentUser = UserContext.CurrentUser;
+    Authorizer authorizer = new Authorizer();
+}
+@foreach (var item in Model)
+{
+    var commentContent = HtmlUtility.CloseHtmlTags(HtmlUtility.StripScriptTags(item.Body));
+    <div class="tn-floor-box" id="commentdetail-@item.Id">
+        <h4 class="media-heading"><a target="_blank" href="@SiteUrls.Instance().SpaceHome(item.UserId)">@item.Author</a> 回复 <a target="_blank" href="@SiteUrls.Instance().SpaceHome(item.OwnerId)">@DefaultUserIdToUserNameDictionary.GetDisplayName(item.OwnerId)</a></h4>
+        <p class="message">@Html.Raw(commentContent)</p>
+        <div class="tn-feedback">
+            <small class="pull-left text-muted">@item.DateCreated.ToFriendlyDate()</small>
+
+            <ul class="list-inline text-right text-muted" onmouseover="$.fn.showoperation(this);" onmouseout="$.fn.hideoperation(this);">
+
+                @if (currentUser != null)
+                {
+                    if (currentUser.UserId == item.UserId || authorizer.IsCategoryManager(tenantTypeId, currentUser, null))
+                    {
+                        <li>
+                            <a href="javascript:;" id="commentdelete-@item.Id" style="display:none"><i class="fa fa-trash"></i> 删除</a>
+                        </li>
+                    }
+
+                    <li><a href="javascript:;" name="report" style="display:none" data-url="@CachedUrlHelper.Action("_EditImpeachReport", "Common", null, new RouteValueDictionary { { "tenantTypeId", TenantTypeIds.Instance().Comment() }, { "reportObjectId", item.Id }, { "subject", StringUtility.Trim(commentContent,15) } })"><i class="fa fa-exclamation-circle"></i> 举报</a></li>
+
+
+
+                    bool? isSupport = item.IsSupport(currentUser.UserId);
+                    var supportCount = item.GetSupportCount();
+                    if (isSupport.HasValue && isSupport.Value)
+                    {
+                        <li><a href="javascript:;"><i class="fa fa-thumbs-o-up"></i> 已赞(<span id="SupportCount-@item.Id">@supportCount</span> )</a></li>
+                    }
+                    else
+                    {
+                        <li id="commentsupport-@item.Id">
+                            <a href="javascript:;"><i class="fa fa-thumbs-o-up"></i> 赞(<span id="SupportCount-@item.Id">@supportCount</span>)</a>
+                        </li>
+
+                    }
+
+
+                    <li>
+
+                        <a id="commentcreate-@item.Id" href="javascript:;" data-href="@SiteUrls.Instance()._Comment(item.Id, tenantTypeId, commentedObjectId)"><i class="fa fa-reply"></i> 回复</a>
+                    </li>
+                }
+                else
+                {
+                    <li></li>
+                }
+
+            </ul>
+        </div>
+    </div>
+}
+

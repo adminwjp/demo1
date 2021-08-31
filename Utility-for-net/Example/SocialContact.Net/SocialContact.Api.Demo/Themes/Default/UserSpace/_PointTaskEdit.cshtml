@@ -1,0 +1,49 @@
+﻿@model PointTask
+@{
+    var options = ViewData.Get<List<PointTaskSetting>>("options", null);
+    var contents = ViewData.Get<List<PointTaskSetting>>("contents", null);
+    var record = ViewData.Get<PointTaskRecord>("record", null);
+    int index = 0;
+}
+
+
+@foreach (var option in options)
+{
+    <div class="form-group">
+        <label title="@option.SettingName">@StringUtility.Trim(option.SettingName, 15)</label>
+        @if (record.Status == TaskRecordStatus.Applying && !string.IsNullOrEmpty(record.ResultContent))
+        {
+            <p>@(contents != null ? contents.ElementAtOrDefault(index).SettingName : "")</p>
+        }
+        else
+        {
+            <textarea class="form-control content" rows="2">@(contents != null ? contents.ElementAtOrDefault(index).SettingName : "")</textarea>
+        }
+
+    </div>
+    index++;
+}
+@if (record != null && record.Status == TaskRecordStatus.Refused)
+{
+    <div class="form-group">
+        <label>反馈意见</label>
+        <p>@record.Feedback?.Replace("<br />", "")</p>
+    </div>
+}
+
+<div class="form-group">
+    @if (record.Status == TaskRecordStatus.Applying && !string.IsNullOrEmpty(record.ResultContent))
+    {
+    }
+    else if (!string.IsNullOrEmpty(record.Feedback) || record.Status == TaskRecordStatus.Refused)
+    {
+        <a class="btn btn-danger" id="tasksubmit">再次提交</a>
+        <a class="btn btn-default" id="taskcancel">取消</a>
+    }
+    else
+    {
+        <a class="btn btn-danger" id="tasksubmit">提交任务</a>
+    }
+
+</div>
+

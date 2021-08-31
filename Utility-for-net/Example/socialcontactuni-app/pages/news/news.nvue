@@ -1,0 +1,733 @@
+<template>
+      <!--<view class="page">
+     <page-head :title="title"></page-head>
+     -->
+     <view class="tabs" >
+         <scroll-view id="tab-bar" class="scroll-h" :scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
+             <view v-for="(tab,index) in tabBars" :key="tab.id" class="uni-tab-item" :id="tab.id" :data-current="index" @click="ontabtap">
+                 <text class="uni-tab-item-title" :class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.category}}</text>
+             </view>
+         </scroll-view>
+         <view class="line-h"></view>
+         <swiper :current="tabIndex" class="swiper-box" style="flex: 1;" :duration="300" @change="ontabchange">
+             <swiper-item class="swiper-item" v-for="(tab,index1) in newsList" :key="index1">
+                <!-- #ifdef APP-NVUE -->
+                <list class="scroll-v list" enableBackToTop="true" scroll-y loadmoreoffset="15" @loadmore="loadMore(index1)">
+                    <refresh class="refresh" @refresh="onrefresh(index1)" @pullingdown="onpullingdown" :display="tab.refreshing ? 'show' : 'hide'">
+                        <div class="refresh-view">
+                            <image class="refresh-icon" :src="refreshIcon" :style="{width: (tab.refreshing || pulling) ? 0: '30px'}" :class="{'refresh-icon-active': tab.refreshFlag}"></image>
+                            <loading-indicator class="loading-icon" animating="true" v-if="tab.refreshing"></loading-indicator>
+                            <text class="loading-text">{{tab.refreshText}}</text>
+                        </div>
+                    </refresh>
+                    <cell v-for="(newsitem,index2) in tab.data" :key="newsitem.id">
+                        <media-item :options="newsitem" @close="close(index1,index2)" @click="goDetail(newsitem)"></media-item>
+                    </cell>
+                    <cell class="loading-more" v-if="tab.isLoading || tab.data.length > 4">
+                        <text class="loading-more-text">{{tab.loadingText}}</text>
+                    </cell>
+                </list>
+                <!-- #endif -->
+                <!-- #ifndef APP-NVUE -->
+                <scroll-view class="scroll-v list" enableBackToTop="true" scroll-y @scrolltolower="loadMore(index1)">
+                    <view v-for="(newsitem,index2) in tab.data" :key="newsitem.id">
+                        <media-item :options="newsitem" @close="close(index1,index2)" @click="goDetail(newsitem)"></media-item>
+                    </view>
+                    <view class="loading-more" v-if="tab.isLoading || tab.data.length > 4">
+                        <text class="loading-more-text">{{tab.loadingText}}</text>
+                    </view>
+                </scroll-view>
+                <!-- #endif -->
+             </swiper-item>
+         </swiper>
+        <!-- city -->
+         <!-- #ifdef APP-PLUS || H5  -->
+        <mpvue-picker
+            :themeColor="themeColor"
+            ref="mpvuePicker"
+            :mode="mode"
+            :deepLength="deepLength"
+            :pickerValueDefault="pickerValueDefault"
+            @onConfirm="onConfirm"
+            @onCancel="onCancel"
+            :pickerValueArray="pickerValueArray"
+        ></mpvue-picker>
+         <!-- #endif -->
+     </view>
+    <!--  </view> -->
+
+
+</template>
+<script>
+    import mediaItem from './news-item.nvue';
+       import {urls} from '../utility.js';
+       import {
+       	friendlyDate
+       } from './common/util.js';
+    // #ifdef APP-PLUS || H5
+	// https://github.com/zhetengbiji/mpvue-picker
+	import mpvuePicker from '../../components/mpvue-picker/mpvuePicker.vue';
+	// https://github.com/zhetengbiji/mpvue-citypicker
+    // #endif
+
+    // 缓存每页最多
+    const MAX_CACHE_DATA = 100;
+    // 缓存页签数量
+    const MAX_CACHE_PAGE = 3;
+
+    const newsData = {
+        data0: {
+            "datetime": "40分钟前",
+            "article_type": 0,
+            "title": "uni-app行业峰会频频亮相，开发者反响热烈!",
+            "source": "DCloud",
+            "comment_count": 639
+        },
+        data1: {
+            "datetime": "一天前",
+            "article_type": 1,
+            "title": "DCloud完成B2轮融资，uni-app震撼发布!",
+            "image_url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90",
+            "source": "DCloud",
+            "comment_count": 11395
+        },
+        data2: {
+            "datetime": "一天前",
+            "article_type": 2,
+            "title": "中国技术界小奇迹：HBuilder开发者突破200万",
+            "image_url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg?imageView2/3/w/200/h/100/q/90",
+            "source": "DCloud",
+            "comment_count": 11395
+        },
+        data3: {
+            "article_type": 3,
+            "image_list": [{
+                "url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg?imageView2/3/w/200/h/100/q/90",
+                "width": 563,
+                "height": 316
+            }, {
+                "url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg?imageView2/3/w/200/h/100/q/90",
+                "width": 641,
+                "height": 360
+            }, {
+                "url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90",
+                "width": 640,
+                "height": 360
+            }],
+            "datetime": "5分钟前",
+            "title": "uni-app 支持使用 npm 安装第三方包，生态更趋丰富",
+            "source": "DCloud",
+            "comment_count": 11
+        },
+        data4: {
+            "datetime": "2小时前",
+            "article_type": 4,
+            "title": "uni-app 支持原生小程序自定义组件，更开放、更自由",
+            "image_url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg?imageView2/3/w/200/h/100/q/90",
+            "source": "DCloud",
+            "comment_count": 69
+        }
+    };
+
+    export default {
+        components: {
+            mediaItem
+           // #ifdef APP-PLUS || H5
+            ,
+			mpvuePicker
+            // #endif
+        },
+       	// #ifdef APP-PLUS || H5
+		//city
+		onBackPress() {
+			if (this.$refs.mpvuePicker.showPicker) {
+				this.$refs.mpvuePicker.pickerCancel();
+				return true;
+			}
+		},
+		onUnload() {
+			if (this.$refs.mpvuePicker.showPicker) {
+				this.$refs.mpvuePicker.pickerCancel();
+			}
+		},
+		onNavigationBarButtonTap(e) {
+			if (e.index === 0) {
+				this.showSinglePicker();
+			}
+		},
+         onReady() {
+        	  //this.setStyle(0, '上海市');
+        },
+		// #endif
+        data() {
+            return {
+                title: '新闻资讯',
+                hasSetText:false,
+                hasSetBg:false,
+               	// #ifdef APP-PLUS || H5
+				pickerValueArray: [],
+                pullTimer : null,
+                requestParams : {
+                	columnId: '',
+                	minId: 0,
+                	pageSize: 10,
+                	column: 'id,post_id,title,author_name,cover,published_at,comments_count',
+                    time:''
+                },
+                isLoading:false,
+                isNoData:false,
+				themeColor: '#007AFF',
+				mode: '',
+				deepLength: 1,
+				pickerValueDefault: [0],
+				// #endif
+                newsList: [],
+                cacheTab: [],
+                tabIndex: 0,
+                tabBars:[{
+					id: "tab01",
+					category: '最新',
+					newsid: 0
+				}, {
+					id: "tab02",
+					category: '大公司',
+					newsid: 23
+				}, {
+					id: "tab03",
+					category: '内容',
+					newsid: 223
+				}, {
+					id: "tab04",
+					category: '消费',
+					newsid: 221
+				}, {
+					id: "tab05",
+					category: '娱乐',
+					newsid: 225
+				}, {
+					id: "tab06",
+					category: '区块链',
+					newsid: 208
+				}],
+                scrollInto: "",
+                showTips: false,
+                navigateFlag: false,
+                pulling: false,
+                refreshIcon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAB5QTFRFcHBw3Nzct7e39vb2ycnJioqK7e3tpqam29vb////D8oK7wAAAAp0Uk5T////////////ALLMLM8AAABxSURBVHja7JVBDoAgDASrjqj//7CJBi90iyYeOHTPMwmFZrHjYyyFYYUy1bwUZqtJIYVxhf1a6u0R7iUvWsCcrEtwJHp8MwMdvh2amHduiZD3rpWId9+BgPd7Cc2LIkPyqvlQvKxKBJ//Qwq/CacAAwDUv0a0YuKhzgAAAABJRU5ErkJggg=="
+            }
+        },
+        created() {
+
+		},
+		async onLoad() {
+           // this.getCategory();
+           const $self=this;
+           $self.tabBars.forEach((tabBar) => {
+               $self.newsList.push({
+                   data: [],
+                   isLoading: false,
+                   refreshText: "",
+                   loadingText: '加载更多...'
+               });
+           });
+           this.loadData(0);
+            this.loadCity();
+        },
+        methods: {
+            loadData(index,refresh) {
+            	if (this.isLoading) {
+            		return;
+            	}
+
+            	this.isLoading = true;
+            	this.isNoData = false;
+            	this.requestParams.time = new Date().getTime() + '';
+
+            	var startTime = new Date();
+            	uni.request({
+            		// url: this.$host + 'api/news',
+            		url: 'https://unidemo.dcloud.net.cn/api/news',
+            		data: this.requestParams,
+            		success: (result) => {
+            			var endTime = new Date();
+            			console.log("request time " + new Date(endTime - startTime).getTime());
+            			const data = result.data;
+            			this.isNoData = (data.length <= 0);
+
+            			const data_list = data.map((news) => {
+            				return {
+            					id: this.newGuid() + news.id,
+            					newsid: news.id,
+            					article_type: 1,
+            					datetime: friendlyDate(new Date(news.published_at.replace(/\-/g,
+            						'/')).getTime()),
+            					title: news.title,
+            					image_url: news.cover,
+            					source: news.author_name,
+            					comment_count: news.comments_count,
+            					post_id: news.post_id
+            				};
+            			});
+
+            			if (refresh) {
+            				this.newsList[index].data = data_list;
+            				this.requestParams.minId = 0;
+            			} else {
+            				this.newsList[index].data = this.newsList[index].data.concat(data_list);
+            				this.requestParams.minId = data[data.length - 1].id;
+            			}
+            		},
+            		fail: (err) => {
+            			console.log(err);
+            			if (this.newsList.length == 0) {
+            				this.isNoData = true;
+            			}
+            		},
+            		complete: (e) => {
+            			this.isLoading = false;
+            			if (refresh) {
+            				this.refreshing = false;
+            				this.refreshFlag = false;
+            				this.refreshText = "已刷新";
+            				if (this.pullTimer) {
+            					clearTimeout(this.pullTimer);
+            				}
+            				this.pullTimer = setTimeout(() => {
+            					this.pulling = false;
+            				}, 1000);
+            			}
+            		}
+            	});
+            },
+
+              	// #ifdef APP-PLUS || H5
+			//city
+			onCancel(e) {
+				console.log(e);
+			},
+			// 单列
+			showSinglePicker() {
+				this.mode = 'selector';
+				this.deepLength = 1;
+				this.pickerValueDefault = [0];
+				this.$refs.mpvuePicker.show();
+			},
+			onConfirm(e) {
+				console.log(e.label);
+				this.setStyle(0, e.label);
+			},
+			/**
+			 * 修改导航栏buttons
+			 * index[number] 修改的buttons 下标索引，最右边索引为0
+			 * text[string] 需要修改的text 内容
+			 */
+			setStyle(index, text) {
+				let pages = getCurrentPages();
+				let page = pages[pages.length - 1];
+				if (text.length > 3) {
+					text = text.substr(0, 3) + '...';
+				}
+				// #ifdef APP-PLUS
+				let currentWebview = page.$getAppWebview();
+				let titleNView = currentWebview.getStyle().titleNView;
+				// 添加文字过长截取为3个字符，请根据自己业务需求更改
+				titleNView.buttons[0].text = text;
+				currentWebview.setStyle({
+					titleNView: titleNView
+				});
+				// #endif
+				// #ifdef H5
+				// h5 临时方案
+				document.getElementsByClassName('uni-btn-icon')[1].innerText = text;
+				// #endif
+			},
+			// #endif
+
+             getCategory(result){
+                const $self=this;
+                uni.request({
+                    url:urls.new.category,
+                    method:"GET",
+                    success:function(res) {
+                       // console.log(res);
+                        if(res.data.success){
+                            //bug  id 开头不能为数字 否则 报错
+                           let datas=[];
+                           if(res.data.data&&res.data.data.length>0){
+                               for (let i = 0; i < res.data.data.length; i++) {
+                                   let it=res.data.data[i];
+                                   it.id='c'+it.id;
+                                   //这里一动 页面 显示 一部分 不知道 啥 回事 这一步必须要 搞错了 缓存 造成的需要刷新
+                                   //datas.push({id:'c'+it.id,category:it.category});
+                               }
+                           }
+                            $self.tabBars=res.data.data;
+                            // 必须  setTimeout 使用 不然 页面 显示 一部分 不知道 啥 回事 缓存 造成的需要刷新
+                           // setTimeout(()=>{
+                                $self.tabBars.forEach((tabBar) => {
+                                    $self.newsList.push({
+                                        data: [],
+                                        isLoading: false,
+                                        refreshText: "",
+                                        loadingText: '加载更多...'
+                                    });
+                                });
+                                $self.getList(0);
+                            //},350);
+                        }
+                    },
+                    fail:function(res) {
+                        console.log(res);
+                    }
+                });
+             },
+             async loadCity(){
+                 await this.getCity();
+                  await this.getCurrentCity();
+             },
+             async getCity(){
+                 const $self=this;
+                 return new Promise((resolve,reject)=>{
+                     uni.request({
+                         url:urls.new.city,
+                         method:"GET",
+                         success:function(res) {
+                             //console.log(res);
+                             if(res.data.success){
+                              $self.pickerValueArray=res.data.data;
+                             }
+                             resolve("suc");
+                         },
+                         fail:function(res) {
+                             console.log(res);
+                             reject("err");
+                         }
+                     });
+                 });
+             },
+             async getCurrentCity(){
+                 const $self=this;
+                 return new Promise((resolve,reject)=>{
+                     uni.request({
+                         url:urls.new.current_city,//urls.currentCity,
+                         method:"GET",
+                        /**
+                        header:{
+                          'Content-Type':"text/json; charset=utf-8",
+                          'Access-Control-Allow-Origin':'*'
+                         },
+                         */
+                         success:function(res) {
+                             //console.log(res);
+                             if(res.data.success){
+                                 let str=res.data.data;
+                                /**
+                                 *
+                                  * if(res.data.endsWith("省"))
+                                  {
+                                      str=new RegExp("\"cname\": \".*?省(.*?)市\"").exec(res.data)[1];
+                                  }
+                                  else{
+                                      str=new RegExp("\"cname\": \"(.*?)市\"").exec(res.data)[1];
+                                  }
+                                 * */
+                                 $self.setStyle(0, str);
+                             }
+                             resolve("suc");
+                         },
+                         fail:function(res) {
+                             console.log(res);
+                             reject("err");
+                         }
+                     });
+                 });
+             },
+            setText(title) {
+            	uni.setNavigationBarTitle({
+            		title: title
+            	})
+            },
+            setBg() {
+            	this.hasSetBg = !this.hasSetBg;
+            	uni.setNavigationBarColor({
+            		frontColor: this.hasSetBg ?  "#000000" : "#ffffff",
+            		backgroundColor: this.hasSetBg ? "#F8F8F8" : "#007AFF"
+            	})
+            },
+             getList(index) {
+                 this.loadData(index);
+                 return;
+                let activeTab = this.newsList[index];
+                let list = [];
+                for (let i = 1; i <= 10; i++) {
+                    let item = Object.assign({}, newsData['data' + Math.floor(Math.random() * 5)]);
+                    item.id = this.newGuid();
+                    list.push(item);
+                }
+                activeTab.data = activeTab.data.concat(list);
+            },
+            goDetail(e) {
+                if (this.navigateFlag) {
+                    return;
+                }
+                this.navigateFlag = true;
+                uni.navigateTo({
+                	url: './detail/detail?query=' + encodeURIComponent(JSON.stringify(e))
+                });
+               /*
+               uni.navigateTo({
+                   url: './detail/detail?title=' + e.title
+               });
+               */
+                setTimeout(() => {
+                    this.navigateFlag = false;
+                }, 200)
+            },
+            close(index1, index2) {
+                uni.showModal({
+                    content: '是否删除本条信息？',
+                    success: (res) => {
+                        if (res.confirm) {
+                            this.newsList[index1].data.splice(index2, 1);
+                        }
+                    }
+                })
+            },
+            loadMore(e) {
+                setTimeout(() => {
+                    this.getList(this.tabIndex);
+                }, 500)
+            },
+            ontabtap(e) {
+                let index = e.target.dataset.current || e.currentTarget.dataset.current;
+                this.switchTab(index);
+            },
+            ontabchange(e) {
+                let index = e.target.current || e.detail.current;
+                this.switchTab(index);
+            },
+            switchTab(index) {
+                if (this.newsList[index].data.length === 0) {
+                    this.getList(index);
+                }
+
+                if (this.tabIndex === index) {
+                    return;
+                }
+
+                // 缓存 tabId
+                if (this.newsList[this.tabIndex].data.length > MAX_CACHE_DATA) {
+                    let isExist = this.cacheTab.indexOf(this.tabIndex);
+                    if (isExist < 0) {
+                        this.cacheTab.push(this.tabIndex);
+                        //console.log("cache index:: " + this.tabIndex);
+                    }
+                }
+
+                this.tabIndex = index;
+                this.scrollInto = this.tabBars[index].id;
+                this.setText(this.tabBars[index].category+"资讯");
+                // 释放 tabId
+                if (this.cacheTab.length > MAX_CACHE_PAGE) {
+                    let cacheIndex = this.cacheTab[0];
+                    this.clearTabData(cacheIndex);
+                    this.cacheTab.splice(0, 1);
+                    //console.log("remove cache index:: " + cacheIndex);
+                }
+            },
+            clearTabData(e) {
+                this.newsList[e].data.length = 0;
+                this.newsList[e].loadingText = "加载更多...";
+            },
+            refreshData() {},
+            onrefresh(e) {
+                var tab = this.newsList[this.tabIndex];
+                if (!tab.refreshFlag) {
+                    return;
+                }
+                tab.refreshing = true;
+                tab.refreshText = "正在刷新...";
+
+                setTimeout(() => {
+                    this.refreshData();
+                    this.pulling = true;
+                    tab.refreshing = false;
+					tab.refreshFlag = false;
+                    tab.refreshText = "已刷新";
+                    setTimeout(() => { // TODO fix ios和Android 动画时间相反问题
+                        this.pulling = false;
+                    }, 500);
+                }, 2000);
+            },
+            onpullingdown(e) {
+                var tab = this.newsList[this.tabIndex];
+                if (tab.refreshing || this.pulling) {
+                    return;
+                }
+                if (Math.abs(e.pullingDistance) > Math.abs(e.viewHeight)) {
+                    tab.refreshFlag = true;
+                    tab.refreshText = "释放立即刷新";
+                } else {
+                    tab.refreshFlag = false;
+                    tab.refreshText = "下拉可以刷新";
+                }
+            },
+            newGuid() {
+                let s4 = function() {
+                    return (65536 * (1 + Math.random()) | 0).toString(16).substring(1);
+                }
+                return (s4() + s4() + "-" + s4() + "-4" + s4().substr(0, 3) + "-" + s4() + "-" + s4() + s4() + s4()).toUpperCase();
+            }
+        }
+    }
+</script>
+
+<style>
+    /* #ifndef APP-PLUS */
+    page {
+        width: 100%;
+        min-height: 100%;
+        display: flex;
+    }
+
+    /* #endif */
+
+    .tabs {
+        flex: 1;
+        flex-direction: column;
+        overflow: hidden;
+        background-color: #ffffff;
+        /* #ifdef MP-ALIPAY || MP-BAIDU */
+        height: 100vh;
+        /* #endif */
+    }
+
+    .scroll-h {
+        width: 750upx;
+        height: 80upx;
+        flex-direction: row;
+        /* #ifndef APP-PLUS */
+        white-space: nowrap;
+        /* #endif */
+        /* flex-wrap: nowrap; */
+        /* border-color: #cccccc;
+		border-bottom-style: solid;
+		border-bottom-width: 1px; */
+    }
+
+    .line-h {
+        height: 1upx;
+        background-color: #cccccc;
+    }
+
+    .uni-tab-item {
+        /* #ifndef APP-PLUS */
+        display: inline-block;
+        /* #endif */
+        flex-wrap: nowrap;
+        padding-left: 34upx;
+        padding-right: 34upx;
+    }
+
+    .uni-tab-item-title {
+        color: #555;
+        font-size: 30upx;
+        height: 80upx;
+        line-height: 80upx;
+        flex-wrap: nowrap;
+        /* #ifndef APP-PLUS */
+        white-space: nowrap;
+        /* #endif */
+    }
+
+    .uni-tab-item-title-active {
+        color: #007AFF;
+    }
+
+    .swiper-box {
+        flex: 1;
+    }
+
+    .swiper-item {
+        flex: 1;
+        flex-direction: row;
+    }
+
+    .scroll-v {
+        flex: 1;
+        /* #ifndef MP-ALIPAY */
+        flex-direction: column;
+        /* #endif */
+        width: 750upx;
+    }
+
+    .update-tips {
+        position: absolute;
+        left: 0;
+        top: 41px;
+        right: 0;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        background-color: #FDDD9B;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .update-tips-text {
+        font-size: 14px;
+        color: #ffffff;
+    }
+
+    .refresh {
+        width: 750upx;
+        height: 64px;
+        justify-content: center;
+    }
+
+    .refresh-view {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+	.refresh-icon {
+		width: 30px;
+		height: 30px;
+		transition-duration: .5s;
+		transition-property: transform;
+		transform: rotate(0deg);
+		transform-origin: 15px 15px;
+	}
+
+	.refresh-icon-active {
+		transform: rotate(180deg);
+	}
+
+	.loading-icon {
+		width: 20px;
+		height: 20px;
+		margin-right: 5px;
+		color: #999999;
+	}
+
+    .loading-text {
+        margin-left: 2px;
+        font-size: 16px;
+        color: #999999;
+    }
+
+    .loading-more {
+        align-items: center;
+        justify-content: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+    }
+
+    .loading-more-text {
+        font-size: 28upx;
+        color: #999;
+    }
+</style>

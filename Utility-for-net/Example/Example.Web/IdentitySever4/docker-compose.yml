@@ -1,0 +1,15 @@
+version: "3"
+services:
+  #指定服务名称
+  identity-server:
+    #指定服务使用的镜像
+    image: identityserver:v1
+    #指定容器名称
+    container_name: identityserver
+    restart: always
+    #指定服务运行的端口
+    ports :
+      - 6000:6000
+    #指定容器的环境变量
+    environment:
+      test : 11

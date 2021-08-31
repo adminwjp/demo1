@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
+  
+  <class name="Utility.Demo.Domain.Entities.AddressEntity,Utility.Core.Demo" table="t_address" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- ContactName -->
+    <property column="contact_name" name="ContactName" type="string" length="255"/>
+    <!-- Address -->
+    <property column="address" name="Address" type="string" length="255"/>
+    <!-- Area -->
+    <property column="area" name="Area" type="string" length="255"/>
+    <!-- City -->
+    <property column="city" name="City" type="string" length="255"/>
+    <!-- Province -->
+    <property column="province" name="Province" type="string" length="255"/>
+    <!-- Country -->
+    <property column="country" name="Country" type="string" length="255"/>
+    <!-- Memo -->
+    <property column="memo" name="Memo" type="string" length="255"/>
+    <!-- Phone -->
+    <property column="phone" name="Phone" type="string" length="255"/>
+    <!-- PostCode -->
+    <property column="post_code" name="PostCode" type="string" length="255"/>
+    <!-- IsDefault -->
+    <property column="is_default" name="IsDefault" type="bool" />
+    <!-- UserId -->
+    <property column="user_id" name="UserId" type="long" />
+  </class>  
+ 
+  <class name="Utility.Demo.Domain.Entities.BankEntity,Utility.Core.Demo" table="t_bank" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- BankId -->
+    <property column="bank_id" name="BankId" type="string" length="255"/>
+    <!-- BankName -->
+    <property column="bank_name" name="BankName" type="string" length="255"/>
+    <!-- BankPhoto1 -->
+    <property column="bank_photo1" name="BankPhoto1" type="string" length="255"/>
+    <!-- BankPhoto2 -->
+    <property column="bank_photo2" name="BankPhoto2" type="string" length="255"/>
+    <!-- BankPhotoId1 -->
+    <property column="bank_photo_id1" name="BankPhotoId1" type="long" />
+    <!-- BankPhotoId2 -->
+    <property column="bank_photo_id2" name="BankPhotoId2" type="long" />
+    <!-- BankAddress -->
+    <property column="bank_address" name="BankAddress" type="string" length="255"/>
+    <!-- BankUserName -->
+    <property column="bank_user_name" name="BankUserName" type="string" length="255"/>
+    <!-- BankUserAddress -->
+    <property column="bank_user_address" name="BankUserAddress" type="string" length="255"/>
+    <!-- IsDefault -->
+    <property column="is_default" name="IsDefault" type="bool" />
+    <!-- UserId -->
+    <property column="user_id" name="UserId" type="long" />
+  </class>  
+ 
+  <class name="Utility.Demo.Domain.Entities.CityEntity,Utility.Core.Demo" table="t_city" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- Prodive -->
+    <property column="prodive" name="Prodive" type="string" length="255"/>
+    <!-- City -->
+    <property column="city" name="City" type="string" length="255"/>
+    <!-- Area -->
+    <property column="area" name="Area" type="string" length="255"/>
+    <!-- ProdiveCode -->
+    <property column="prodive_code" name="ProdiveCode" type="string" length="255"/>
+    <!-- CityCode -->
+    <property column="city_code" name="CityCode" type="string" length="255"/>
+    <!-- AreaCode -->
+    <property column="area_code" name="AreaCode" type="string" length="255"/>
+    <!-- ParentId -->
+    <property column="parent_id" name="ParentId" type="long" />
+  </class> 
+ 
+  <class name="Utility.Demo.Domain.Entities.MenuEntity,Utility.Core.Demo" table="t_menu" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <many-to-one name="Parent" column="parent_id" foreign-key="fk_parent_id"  class="Utility.Demo.Domain.Entities.MenuEntity,Utility.Core.Demo"/>
+    <set name="Children"   inverse="true" lazy="false" cascade="all">
+      <key column="parent_id" foreign-key="fk_parent_id" />
+      <one-to-many class="Utility.Demo.Domain.Entities.MenuEntity,Utility.Core.Demo"/>
+    </set>
+    <!-- ParentId -->
+    <!--<property column="parent_id" name="ParentId" type="long" />-->
+    <!-- Soure -->
+    <property column="soure" name="Soure" type="string" length="255"/>
+    <!-- Orders -->
+    <property column="orders" name="Orders" type="int" />
+    <!-- CreationTime -->
+    <property column="creation_time" name="CreationTime" type="long" />
+    <!-- LastModificationTime -->
+    <property column="last_modification_time" name="LastModificationTime" type="long" />
+    <!-- IsDeleted -->
+    <property column="is_deleted" name="IsDeleted" type="bool" />
+    <!-- DeletionTime -->
+    <property column="deletion_time" name="DeletionTime" type="long" />
+  
+    <!-- Text -->
+    <property column="text" name="Text" type="string" length="255"/>
+    <!-- State -->
+    <property column="state" name="State" type="string" length="255"/>
+    <!-- Checked -->
+    <property column="checked" name="Checked" type="bool" />
+    <!-- AttributesJson -->
+    <property column="attributes_json" name="AttributesJson" type="string" length="255"/>
+    <!-- IconCls -->
+    <property column="icon_cls" name="IconCls" type="string" length="255"/>
+    <!-- Name -->
+    <property column="name" name="Name" type="string" length="255"/>
+    <!-- Collpse -->
+    <property column="collpse" name="Collpse" type="bool" />
+    <!-- Groups -->
+    <property column="groups" name="Groups" type="string" length="255"/>
+    <!-- Icon -->
+    <property column="icon" name="Icon" type="string" length="255"/>
+    <!-- Href -->
+    <property column="href" name="Href" type="string" length="255"/>
+    <!-- Description -->
+    <property column="description" name="Description" type="string" length="255"/>
+    <!-- HuiIcon -->
+    <property column="hui_icon" name="HuiIcon" type="string" length="255"/>
+    <!-- IdName -->
+    <property column="id_name" name="IdName" type="string" length="255"/>
+    <!-- AceIcon -->
+    <property column="ace_icon" name="AceIcon" type="string" length="255"/>
+ 
+  </class> 
+  
+  <class name="Utility.Demo.Domain.Entities.TokenEntity,Utility.Core.Demo" table="t_token" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- Token -->
+    <property column="token" name="Token" type="string" length="255"/>
+    <!-- TokenExpried -->
+    <property column="token_expried" name="TokenExpried" type="long" />
+    <!-- RefreshToken -->
+    <property column="refresh_token" name="RefreshToken" type="string" length="255"/>
+    <!-- RefreshTokenExpried -->
+    <property column="refresh_token_expried" name="RefreshTokenExpried" type="long" />
+    <!-- CreateDate -->
+    <property column="create_date" name="CreateDate" type="long" />
+    <!-- UserId -->
+    <property column="user_id" name="UserId" type="long" />
+    <!-- Flag -->
+    <property column="flag" name="Flag" type="int" />
+  </class> 
+  
+  <class name="Utility.Demo.Domain.Entities.UserEntity,Utility.Core.Demo" table="t_user" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- ParentId -->
+    <!--<property column="parent_id" name="ParentId" type="long" />-->
+
+    <!--<many-to-one name="Parent" column="parent_id" foreign-key="fk_parent_id"  class="Utility.Demo.Domain.Entities.MenuEntity,Utility.Core.Demo"/>
+    <set name="Children"   inverse="true" lazy="false" cascade="all">
+      <key column="parent_id" foreign-key="fk_parent_id" />
+      <one-to-many class="Utility.Demo.Domain.Entities.MenuEntity,Utility.Core.Demo"/>
+    </set>-->
+    <!-- Account -->
+    <property column="account" name="Account" type="string" length="255"/>
+    <!-- Email -->
+    <property column="email" name="Email" type="string" length="255"/>
+    <!-- Phone -->
+    <property column="phone" name="Phone" type="string" length="255"/>
+    <!-- Pwd -->
+    <property column="pwd" name="Pwd" type="string" length="255"/>
+    <!-- NickName -->
+    <property column="nick_name" name="NickName" type="string" length="255"/>
+    <!-- RealName -->
+    <property column="real_name" name="RealName" type="string" length="255"/>
+    <!-- Birthday -->
+    <property column="birthday" name="Birthday" type="long" />
+    <!-- HeadPic -->
+    <property column="head_pic" name="HeadPic" type="string" length="255"/>
+    <!-- HeadPicId -->
+    <property column="head_pic_id" name="HeadPicId" type="long" />
+    <!-- RegisterDate -->
+    <property column="register_date" name="RegisterDate" type="long" />
+    <!-- LoginDate -->
+    <property column="login_date" name="LoginDate" type="long" />
+    <!-- RegisterIp -->
+    <property column="register_ip" name="RegisterIp" type="long" />
+    <!-- LoginIp -->
+    <property column="login_ip" name="LoginIp" type="long" />
+    <!-- Edution -->
+    <property column="edution" name="Edution" type="string" length="255"/>
+    <!-- School -->
+    <property column="school" name="School" type="string" length="255"/>
+    <!-- JobCompany -->
+    <property column="job_company" name="JobCompany" type="string" length="255"/>
+    <!-- Job -->
+    <property column="job" name="Job" type="string" length="255"/>
+    <!-- Likes -->
+    <property column="likes" name="Likes" type="string" length="255"/>
+    <!-- Description -->
+    <property column="description" name="Description" type="string" length="255"/>
+    <!-- CardId -->
+    <property column="card_id" name="CardId" type="string" length="255"/>
+    <!-- CardPhoto1 -->
+    <property column="card_photo1" name="CardPhoto1" type="string" length="255"/>
+    <!-- CardPhoto2 -->
+    <property column="card_photo2" name="CardPhoto2" type="string" length="255"/>
+    <!-- HandCardPhoto1 -->
+    <property column="hand_card_photo1" name="HandCardPhoto1" type="string" length="255"/>
+    <!-- HandCardPhoto2 -->
+    <property column="hand_card_photo2" name="HandCardPhoto2" type="string" length="255"/>
+    <!-- CardPhotoStatus -->
+    <property column="card_photo_status" name="CardPhotoStatus" type="bool" />
+    <!-- CardPhotoId1 -->
+    <property column="card_photo_id1" name="CardPhotoId1" type="string" length="255"/>
+    <!-- CardPhotoId2 -->
+    <property column="card_photo_id2" name="CardPhotoId2" type="string" length="255"/>
+    <!-- HandCardPhotoId1 -->
+    <property column="hand_card_photo_id1" name="HandCardPhotoId1" type="string" length="255"/>
+    <!-- HandCardPhotoId2 -->
+    <property column="hand_card_photo_id2" name="HandCardPhotoId2" type="string" length="255"/>
+    <!-- Level -->
+    <property column="level" name="Level" type="int" />
+    <!-- BankId -->
+    <property column="bank_id" name="BankId" type="string" length="255"/>
+    <!-- FailCount -->
+    <property column="fail_count" name="FailCount" type="int" />
+    <!-- RoleId -->
+    <property column="role_id" name="RoleId" type="long" />
+
+    
+  </class> 
+ 
+  <class name="Utility.Demo.Domain.Entities.UserFriendEntity,Utility.Core.Demo" table="t_user_friend" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- UserId -->
+    <property column="user_id" name="UserId" type="long" />
+    <!-- FriendId -->
+    <property column="friend_id" name="FriendId" type="long" />
+    <!-- Agree -->
+    <property column="agree" name="Agree" type="bool" />
+    <!-- DeleteFlag -->
+    <property column="delete_flag" name="DeleteFlag" type="int" />
+  </class> 
+  
+  <class name="Utility.Demo.Domain.Entities.UserLogEntity,Utility.Core.Demo" table="t_user_log" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- UserId -->
+    <property column="user_id" name="UserId" type="long" />
+    <!-- Account -->
+    <property column="account" name="Account" type="string" length="255"/>
+    <!-- Email -->
+    <property column="email" name="Email" type="string" length="255"/>
+    <!-- Phone -->
+    <property column="phone" name="Phone" type="string" length="255"/>
+    <!-- OldPwd -->
+    <property column="old_pwd" name="OldPwd" type="string" length="255"/>
+    <!-- NewPwd -->
+    <property column="new_pwd" name="NewPwd" type="string" length="255"/>
+    <!-- NewAccount -->
+    <property column="new_account" name="NewAccount" type="string" length="255"/>
+    <!-- NewEmail -->
+    <property column="new_email" name="NewEmail" type="string" length="255"/>
+    <!-- NewPhone -->
+    <property column="new_phone" name="NewPhone" type="string" length="255"/>
+    <!-- AddDate -->
+    <property column="add_date" name="AddDate" type="long" />
+  </class>
+
+
+  <class name="Utility.Demo.Domain.Entities.SourceMaterialEntity,Utility.Core.Demo" table="t_source_material" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- Src -->
+    <property name="Src" column="src" type="string" length="255"/>
+    <!-- TokenExpried -->
+    <property name="Key" column="key" type="string" />
+    <!-- Base64 -->
+    <property name="Base64" column="base64" type="string" length="255"/>
+    <!-- Description -->
+    <property name="Description" column="description" type="string" />
+    <!-- Buket -->
+    <property name="Buket" column="buket" type="string" />
+    <!-- UserId -->
+    <property name="ObjectName" column="object_name" type="string" />
+  </class>
+</hibernate-mapping>

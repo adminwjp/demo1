@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Generated from NHibernate.Mapping.Attributes on 2021-07-19 13:14:46Z.-->
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="OA.Domain.Entities.AccountItemEntity, Utility.Demo" lazy="false" table="account_item_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Name" column="name" length="20" />
+    <property name="Type" column="type" length="4" />
+    <property name="Utit" column="utit" length="20" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+  </class>
+  <class name="OA.Domain.Entities.AuthorityOperatorEntity, Utility.Demo" lazy="false" table="authority_operator_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Table" column="`table`" length="50" />
+    <property name="EntityType" column="entity_type" length="50" not-null="true" />
+    <property name="AddFalg" column="add_falg" />
+    <property name="EditFalg" column="edit_falg" />
+    <property name="DeleteFalg" column="delete_falg" />
+    <property name="SelectFalg" column="selete_falg" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="Role" class="OA.Domain.Entities.RoleEntity, Utility.Demo" column="role_id" />
+  </class>
+  <class name="OA.Domain.Entities.BringUpContentEntity, Utility.Demo" lazy="false" table="bring_up_content_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Name" column="name" length="50" />
+    <property name="Content" column="content" length="100" />
+    <property name="StartDate" column="start_date" />
+    <property name="EndDate" column="end_date" />
+    <property name="Unit" column="unit" length="50" />
+    <property name="Lecturer" column="lecturer" length="50" />
+    <property name="Place" column="place" length="100" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+  </class>
+  <class name="OA.Domain.Entities.BringUpPersonEntity, Utility.Demo" lazy="false" table="bring_up_person_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="SEntities" type="Int32" column="sEntities" />
+    <property name="UpToGrate" column="up_to_grate" length="2" />
+    <property name="Remark" column="remark" length="200" not-null="true" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="BringUpContent" class="OA.Domain.Entities.BringUpContentEntity, Utility.Demo" column="bring_up_content_id" />
+    <many-to-one name="Record" class="OA.Domain.Entities.RecordEntity, Utility.Demo" column="record_id" />
+  </class>
+  <class name="OA.Domain.Entities.DutyEntity, Utility.Demo" lazy="false" table="duty_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="AccessionDate" column="accession_date" />
+    <property name="DimissionDate" column="dimission_date" />
+    <property name="DimissionReason" column="dimission_reason" />
+    <property name="FirstPactDate" column="first_pact_date" />
+    <property name="PactStartDate" column="pact_start_date" />
+    <property name="PactEndDate" column="pact_end_date" />
+    <property name="BankName" column="bank_name" length="50" />
+    <property name="BandId" column="bank_id" length="20" />
+    <property name="SocietySafefyNo" column="society_safefy_no" length="20" />
+    <property name="AnnuitySafefyNo" column="annuity_safefy_no" length="20" />
+    <property name="DoleSafefyNo" column="dole_safefy_no" length="20" />
+    <property name="MedicareSafefyNo" column="medicare_safefy_no" length="20" />
+    <property name="CompoSafefyNo" column="compo_safefy_no" length="20" />
+    <property name="AcoumulationFundNo" column="acoumulation_fund_no" length="20" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+  </class>
+  <class name="OA.Domain.Entities.FamousRaceEntity, Utility.Demo" lazy="false" table="famous_race_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Name" column="name" length="50" not-null="true" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="User" class="OA.Domain.Entities.OAUserEntity, Utility.Demo" column="user_id" />
+  </class>
+  <class name="OA.Domain.Entities.ModuleEntity, Utility.Demo" lazy="false" table="module_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Name" type="String" column="name" length="50" not-null="true" />
+    <property name="Href" type="String" column="href" length="100" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="Parent" class="OA.Domain.Entities.ModuleEntity, Utility.Demo" column="parent_id" />
+    <many-to-one name="User" class="OA.Domain.Entities.OAUserEntity, Utility.Demo" column="user_id" />
+    <bag name="Modules" table="module_info" lazy="false">
+      <key column="parent_id" />
+      <one-to-many class="OA.Domain.Entities.ModuleEntity, Utility.Demo" />
+    </bag>
+  </class>
+  <class name="OA.Domain.Entities.OAUserEntity, Utility.Demo" lazy="false" table="user_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Account" type="String" column="account" length="20" not-null="true" />
+    <property name="Password" type="String" column="password" length="50" not-null="true" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="Role" class="OA.Domain.Entities.RoleEntity, Utility.Demo" column="role_id" />
+  </class>
+  <class name="OA.Domain.Entities.PersonEntity, Utility.Demo" lazy="false" table="person_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="QQ" column="qq" length="15" />
+    <property name="Email" column="eamil" length="20" />
+    <property name="Handset" column="handset" length="15" />
+    <property name="Telphone" column="telphone" length="15" />
+    <property name="Address" column="address" length="100" />
+    <property name="Postlacode" column="postlacode" length="5" />
+    <property name="SecondSchoolAge" column="second_school_age" length="10" />
+    <property name="SecondSpeciaity" column="second_speciaity" length="40" />
+    <property name="GraduateSchool" column="graduate_school" length="40" />
+    <property name="GraduateDate" column="graduate_date" />
+    <property name="PartyMemberDate" column="party_member_date" />
+    <property name="ComputerGrate" column="computer_grate" length="10" />
+    <property name="Likes" column="likes" length="50" />
+    <property name="OnesStrongSuit" column="ones_strong_suit" length="50" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="User" class="OA.Domain.Entities.OAUserEntity, Utility.Demo" column="user_id" />
+  </class>
+  <class lazy="false" table="reawrds_and_punishment_info" name="OA.Domain.Entities.ReawrdsAndPunishmentEntity, Utility.Demo">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Type" column="type" />
+    <property name="Reason" column="reason" length="500" />
+    <property name="Content" column="content" length="200" />
+    <property name="Money" column="money" />
+    <property name="StartDate" column="start_date" />
+    <property name="EndDate" column="end_date" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="Record" column="record_id" />
+  </class>
+  <class lazy="false" table="reckoning_info" name="OA.Domain.Entities.ReckoningEntity, Utility.Demo">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Money" column="money" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="Record" column="reEntities" />
+    <many-to-one name="AccountItem" column="account_item_id" />
+  </class>
+  <class name="OA.Domain.Entities.ReckoningListEntity, Utility.Demo" lazy="false" table="reckoning_list_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="Record" column="record_id" />
+    <many-to-one name="ReckoningName" column="reckoning_name_id" />
+  </class>
+  <class lazy="false" table="reckoning_name_info" name="OA.Domain.Entities.ReckoningNameEntity, Utility.Demo">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Name" column="name" length="20" />
+    <property name="Explain" column="`explain`" length="200" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+  </class>
+  <class name="OA.Domain.Entities.RecordEntity, Utility.Demo" lazy="false" table="record_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="RecordNumber" column="record_number" length="5" not-null="true" />
+    <property name="Name" column="name" length="10" not-null="true" />
+    <property name="Sex" column="sex" length="2" not-null="true" />
+    <property name="Birthday" type="DateTime" column="birthday" not-null="true" />
+    <property name="CardNo" column="card_no" length="18" not-null="true" />
+    <property name="Photo" column="photo" length="50" not-null="true" />
+    <property name="MaritalStatus" column="marital_status" length="4" not-null="true" />
+    <property name="Addrees" column="address" length="100" not-null="true" />
+    <property name="Postlacode" column="postlacode" length="5" not-null="true" />
+    <property name="PartyMember" column="party_member" length="2" />
+    <property name="SchoolAge" column="school_age" />
+    <property name="Speciaity" column="speciaity" length="10" not-null="true" />
+    <property name="ForeignLanguage" column="foreign_language" length="10" not-null="true" />
+    <property name="Grate" column="grate" length="10" not-null="true" />
+    <property name="FamousRace" column="famous_race" length="10" not-null="true" />
+    <property name="NativePlace" column="native_place" length="10" not-null="true" />
+    <property name="PoliticalOutlook" column="political_outlook" length="10" not-null="true" />
+    <property name="Education" column="education" length="50" not-null="true" />
+    <property name="Major" column="major" length="100" not-null="true" />
+    <property name="EmploymentForm" column="employment_form" length="100" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="User" class="OA.Domain.Entities.OAUserEntity, Utility.Demo" column="user_id" />
+  </class>
+  <class name="OA.Domain.Entities.RoleEntity, Utility.Demo" lazy="false" table="role_info">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Name" type="String" column="name" length="50" not-null="true" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="Parent" class="OA.Domain.Entities.RoleEntity, Utility.Demo" column="parent_id" />
+    <many-to-one name="User" class="OA.Domain.Entities.OAUserEntity, Utility.Demo" column="user_id" />
+    <bag name="Roles" table="role_info" lazy="false">
+      <key column="parent_id" />
+      <one-to-many class="OA.Domain.Entities.RoleEntity, Utility.Demo" not-found="ignore" />
+    </bag>
+  </class>
+  <class lazy="false" table="time_card_nfo" name="OA.Domain.Entities.TimeCardEntity, Utility.Demo">
+    <id name="Id" column="id" type="Int32" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property name="Explain" column="`explain`" length="200" />
+    <property name="StartDate" column="start_date" />
+    <property name="EndDate" column="end_date" />
+    <property name="RatifierDate" column="ratifier_date" />
+    <property name="CreateDate" type="DateTime" column="create_date" />
+    <property name="UpdateDate" type="DateTime" column="update_date" />
+    <many-to-one name="Record" column="record_id" />
+    <many-to-one name="User" column="user_id" />
+    <many-to-one name="RatifierRecord" column="ratifier_record_id" />
+  </class>
+
+
+</hibernate-mapping>

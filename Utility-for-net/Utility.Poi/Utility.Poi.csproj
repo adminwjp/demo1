@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- excel word pdf ... >=net40  >=netcoreapp2.0 >=netstandard2.0 -->
+  <Import Project="Props\NPOI.props" />
+  <!-- excel >=net10  >=netcoreapp2.0 >=netstandard2.0 -->
+  <Import Project="Props\AsposeCells.props" />
+  <PropertyGroup>
+    <!--<TargetFrameworks>net10;net11;net20;net30;net35;net40;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0;
+   netstandard2.0;netstandard2.1;</TargetFrameworks>-->
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Utility.Poi</AssemblyName>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>e:\work\Package\Utility.Poi\</OutputPath>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <RepositoryUrl>e:\work\Package\Utility.Poi\</RepositoryUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>e:\work\Package\Utility.Poi\</PackageProjectUrl>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>e:\work\Package\Utility.Poi\Utility.Poi.xml</DocumentationFile>
+    <Version>1.0.0.0</Version>
+    <Description>Aspose 、nopi</Description>
+    <SignAssembly>false</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <Authors>wjp</Authors>
+    <Company>wjp</Company>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utility.Simple\Utility.Simple.csproj" />
+  </ItemGroup>
+
+</Project>

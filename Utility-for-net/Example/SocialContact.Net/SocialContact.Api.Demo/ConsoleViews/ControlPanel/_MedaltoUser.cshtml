@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Medal>
+@{
+    var user = ViewData.Get<User>("user", null);
+}
+<div class="panel">
+    <div class="panel-body">
+        @using (Html.BeginForm("_MedaltoUser", "ControlPanel", FormMethod.Post, new { @class = " tn-form-validation" }))
+        {
+            @Html.Hidden("userId", user.UserId)
+            <div class="form-group">
+                <label style="color:gray">为 @user.TrueName 授予勋章</label>
+            </div>
+            <div class="col-xs-12 row">
+                @if (Model.Any())
+                {
+                    var index = 1;
+                    foreach (var medal in Model)
+                    {
+                        <div class="col-xs-4 tn-no-padding" title="@medal.MedalName">
+                            @Html.CheckBox("group_" + medal.GroupId, medal.HasMedaltoUser(user.UserId) > 0, new { @class = "medal tn-cursor-pointer" + (medal.GroupId > 0 ? " group" : ""), @id = "medal_" + medal.MedalId })
+                            <img src="@medal.GetImageUrl()" width="20" alt="@medal.MedalName" />&nbsp;
+                            @if (medal.HasMedaltoUser(user.UserId) > 0)
+                            {
+                                <span class="tn-font-bold">@StringUtility.Trim(medal.MedalName, 4)</span>
+                            }
+                            else
+                            {
+                                @StringUtility.Trim(medal.MedalName, 4)
+                            }
+
+                        </div>
+                        if (index % 3 == 0)
+                        {
+                            <div class="col-xs-12 tn-mt-10"></div>
+                        }
+                        index++;
+                    }
+                }
+                else
+                {
+                    <div class="text-center text-warning">
+                        还没有任何用户勋章
+                    </div>
+                }
+            </div>
+            <div class="col-xs-12 tn-mt-15"></div>
+            <div class="form-col-xs-12">
+                @if (Model.Any())
+                {
+                    <button type="button" class="btn btn-primary tn-mr-10 tn-btn-wp" id="medalToUserSubmit">确定</button>
+                }
+                <button type="button" class="btn btn-default tn-btn-wp" onclick="layer.closeAll()">关闭</button>
+            </div>
+        }
+    </div>
+</div>

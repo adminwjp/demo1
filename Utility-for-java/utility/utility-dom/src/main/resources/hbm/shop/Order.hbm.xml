@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="Order" table="t_order" >
+        <id name="id" column="id" unsaved-value="0">
+            <!-- 主键生成策略 -->
+            <generator class="identity"></generator>
+        </id>
+        <!-- 外键分类 unique="true" error 唯一键 无法关联多次-->
+        <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+        <many-to-one name="buyer" column="buyer_id" foreign-key="fk_buyer_id" cascade="all" fetch="join"  />
+        <property name="orderSn" column="order_sn" type="java.lang.String" length="20"></property>
+        <property name="orderStatus" column="order_status" type="java.lang.Integer" ></property>
+        <property name="paymentStatus" column="payment_status" type="java.lang.Integer" ></property>
+        <property name="shippingStatus" column="shipping_status" type="java.lang.Integer" ></property>
+        <property name="receiverId" column="receiver_id" type="java.lang.Integer" ></property>
+        <property name="totalPrice" column="total_price" type="java.math.BigDecimal" ></property>
+        <property name="postFee" column="post_fee" type="java.math.BigDecimal" ></property>
+        <property name="payFee" column="pay_fee" type="java.math.BigDecimal" ></property>
+        <property name="point" column="point" type="java.lang.Integer" ></property>
+        <property name="memo" column="memo" type="java.lang.String" length="500"></property>
+        <property name="tradeNo" column="trade_no" type="java.lang.String" length="20"></property>
+        <property name="transactionId" column="transaction_id" type="java.lang.String" length="20"></property>
+        <property name="invoiceTitle" column="invoice_title" type="java.lang.String" length="20"></property>
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

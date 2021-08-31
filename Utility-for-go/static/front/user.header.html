@@ -1,0 +1,17 @@
+{{ define "user.header.html" }}
+{{template "top"}}
+<div id="header">
+    <div class="w clearfix">
+        <div class="logo" title="{{.site_title}}"><a href="{{.siteUrl}}"><img height="46" src="{{.site_logo}}" alt="{{.site_title}}" /></a></div>
+        <div class="shopnav">
+            <ul class="clearfix">
+                <li class="first"><a href="index"><span>首页</span></a></li>
+                <li class="{if in_array($smarty.session.userRole, array('buyer')) && !in_array($app->controller->id, array('user','deposit', 'bind', 'bank')) && !in_array($app->controller->action->id, array('profile', 'setting'))}current{/if}"><a href="buyer/index"><span>我是买家</span></a></li>
+                <li class="{if in_array($smarty.session.userRole, array('seller')) && !in_array($app->controller->id, array('user','deposit', 'bind', 'bank')) && !in_array($app->controller->action->id, array('profile', 'setting'))}current{/if}"><a href="seller/index"><span>我是卖家</span></a></li>
+                <li class="{if in_array($app->controller->id, array('user')) && in_array($app->controller->action->id, array('index','profile','setting')) || in_array($app->controller->id, array('bind'))}current{/if}"><a href="user/setting"><span>账户管理</span></a></li>
+                <li class="last {if in_array($app->controller->id, array('deposit', 'bank'))}current{/if}"><a href="deposit/index"><span>交易管理</span></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{{end}}

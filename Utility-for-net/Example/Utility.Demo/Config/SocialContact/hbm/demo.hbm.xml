@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
+  
+ 
+ 
+  <class name="Utility.Demo.Domain.Entities.MenuEntity,Utility.Simple" table="t_s_menu" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <many-to-one name="Parent" column="parent_id" foreign-key="fk_parent_id"  class="Utility.Demo.Domain.Entities.MenuEntity,Utility.Simple"/>
+    <set name="Children"   inverse="true" lazy="false" cascade="all">
+      <key column="parent_id" foreign-key="fk_parent_id" />
+      <one-to-many class="Utility.Demo.Domain.Entities.MenuEntity,Utility.Simple"/>
+    </set>
+    
+    <!-- Soure -->
+    <property column="soure" name="Soure" type="string" length="255"/>
+    <!-- Orders -->
+    <property column="orders" name="Orders" type="int" />
+    <!-- CreationTime -->
+    <property column="creation_time" name="CreationTime" type="long" />
+    <!-- LastModificationTime -->
+    <property column="last_modification_time" name="LastModificationTime" type="long" />
+    <!-- IsDeleted -->
+    <property column="is_deleted" name="IsDeleted" type="bool" />
+    <!-- DeletionTime -->
+    <property column="deletion_time" name="DeletionTime" type="long" />
+    <!-- Text -->
+    <property column="text" name="Text" type="string" length="255"/>
+    <!-- State -->
+    <property column="state" name="State" type="string" length="255"/>
+    <!-- Checked -->
+    <property column="checked" name="Checked" type="bool" />
+    <!-- AttributesJson -->
+    <property column="attributes_json" name="AttributesJson" type="string" length="255"/>
+    <!-- IconCls -->
+    <property column="icon_cls" name="IconCls" type="string" length="255"/>
+    <!-- Name -->
+    <property column="name" name="Name" type="string" length="255"/>
+    <!-- Collpse -->
+    <property column="collpse" name="Collpse" type="bool" />
+    <!-- Groups -->
+    <property column="groups" name="Groups" type="string" length="255"/>
+    <!-- Icon -->
+    <property column="icon" name="Icon" type="string" length="255"/>
+    <!-- Href -->
+    <property column="href" name="Href" type="string" length="255"/>
+    <!-- Description -->
+    <property column="description" name="Description" type="string" length="255"/>
+    <!-- HuiIcon -->
+    <property column="hui_icon" name="HuiIcon" type="string" length="255"/>
+    <!-- IdName -->
+    <property column="id_name" name="IdName" type="string" length="255"/>
+    <!-- AceIcon -->
+    <property column="ace_icon" name="AceIcon" type="string" length="255"/>
+  
+  </class> 
+  
+
+
+
+  <class name="Utility.Demo.Domain.Entities.SourceMaterialEntity,Utility.Simple" table="t_s_source_material" discriminator-value="0">
+    <!-- Id -->
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- Src -->
+    <property name="Src" column="src" type="string" length="255"/>
+    <!-- TokenExpried -->
+    <property name="Key" column="key" type="long" />
+    <!-- Base64 -->
+    <property name="Base64" column="base64" type="string" length="255"/>
+    <!-- Description -->
+    <property name="Description" column="description" type="long" />
+    <!-- Buket -->
+    <property name="Buket" column="buket" type="string" />
+    <!-- UserId -->
+    <property name="ObjectName" column="object_name" type="string" />
+  </class>
+</hibernate-mapping>

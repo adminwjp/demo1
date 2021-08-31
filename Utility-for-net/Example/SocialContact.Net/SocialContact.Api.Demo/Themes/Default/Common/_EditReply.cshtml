@@ -1,0 +1,40 @@
+﻿@{
+    var parentId = ViewData.Get<long>("parentId", 0);
+    var commentedObjectId = ViewData.Get<long>("commentedObjectId", 0);
+    var isParent = ViewData.Get("isParent", true);
+}
+@Styles.Render("~/js/lib/qqFace/css/qqFace")
+<style>
+    #facebox {
+        background-color: #fff;
+    }
+</style>
+
+<div class="CommentControl tn-mt-10">
+    @using (Html.BeginAjaxForm("EditComment", "Post", "", FormMethod.Post, new AjaxFormOptions { OnSuccessCallBack = "commentCallBack" }, new
+    { @id = "createComment-" + parentId, @class = "tn-form-validation" }))
+    {
+        @Html.Hidden("ParentId", 0)
+        @Html.Hidden("CommentedObjectId", commentedObjectId)
+        @Html.Hidden("TenantTypeId", TenantTypeIds.Instance().Thread())
+        @Html.Hidden("AttachmentIds", "")
+
+        @Html.HtmlEditor(
+          settings =>
+          {
+              settings.Id = "Body-"+parentId;
+              settings.Name = "Body";
+              settings.TenantTypeId = TenantTypeIds.Instance().Comment();
+              settings.Body = "";
+              settings.HtmlAttributes = new Dictionary<string, object> {
+                  { "style", "height:200px;" },
+                  { "maximumWords", 20000 } };
+              settings.UEditorExtensionsCollection.Add(new UEditorExtensionUploadFile() { UploadUrl = SiteUrls.Instance().Uploads(AttachmentPosition.AttachmentList) });
+              settings.UEditorExtensionsCollection.Add(new UEditorExtensionUploadImage() { UploadUrl = SiteUrls.Instance().Uploads(AttachmentPosition.Body, "") });
+              settings.UEditorExtensionsCollection.Add(new UEditorExtensionFace() { FacePath = Tunynet.Utilities.WebUtility.ResolveUrl("~/img/Emotions/default/") });
+          })
+        <div class="btn-toolbar tn-mt-20" role="toolbar">
+            <button class="btn btn-primary btn-sm tn-btn-wp pull-right commentsubmit" data-id="@parentId" type="button">评论</button>
+        </div>
+    }
+</div>

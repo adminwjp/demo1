@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <description>utility 公共帮助包</description>
+    <groupId>com.utility</groupId>
+    <artifactId>utility</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <properties>
+
+
+
+        <lombok.version>1.18.8</lombok.version>
+        <spring.version>5.2.9.RELEASE</spring.version>
+
+        <!-- datasource start -->
+        <HikariCP.version>4.0.1</HikariCP.version>
+        <c3p0.version>0.9.1.2</c3p0.version>
+        <alibaba.druid.version>1.2.4</alibaba.druid.version>
+        <commons-dbcp.version>20030825.184428</commons-dbcp.version>
+        <!-- datasource end -->
+
+
+        <!-- db start-->
+        <sqlite.version>3.8.9.1</sqlite.version>
+        <oracle.version>11.2.0.3</oracle.version>
+        <postgresql.version>9.4.1212</postgresql.version>
+        <mssql.version>9.2.0.jre8</mssql.version>
+        <!-- <mysql.version>5.1.29</mysql.version>-->
+        <mysql.version>8.0.9-rc</mysql.version>
+        <!-- db end-->
+
+        <!-- orm start-->
+        <hibernate.version>5.4.9.Final</hibernate.version>
+        <mybatis-generator.version>1.4.0</mybatis-generator.version>
+        <mybatis-spring.version>2.0.6</mybatis-spring.version>
+        <mybatis.version>3.5.6</mybatis.version>
+        <!-- orm end-->
+
+        <!-- <jdk.version>12.0.2</jdk.version>-->
+        <!-- <jdk.version>12</jdk.version>-->
+        <jdk.version>1.8</jdk.version>
+        <compiler.version>3.1</compiler.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>utility-spring</module>
+        <module>utility-db</module>
+        <module>utility-orm</module>
+        <module>utility-common</module>
+        <module>utility-nosql</module>
+        <module>utility-demo</module>
+        <module>utility-log</module>
+        <module>utility-commons</module>
+      <!--  <module>eukeka-server</module>-->
+  <!--    <module>utility-sdk</module>-->
+    </modules>
+	
+</project>

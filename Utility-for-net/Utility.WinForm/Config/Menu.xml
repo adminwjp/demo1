@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Menu Header="工具">
+    <Children>
+      <Menu Header="平台工具" TypeName="Tool.PlatControl,WinForm.Admin" />
+      <Menu Header="字符串转义工具" TypeName="Tool.StrControl,WinForm.Admin" />
+      <Menu Header="Docker工具" TypeName="Tool.DockerControl,WinForm.Admin" />
+    </Children>
+  </Menu>
+
+</Root>

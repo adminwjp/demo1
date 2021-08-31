@@ -1,0 +1,114 @@
+﻿@model IEnumerable<dynamic>
+@{
+
+    var trade = ViewData.Get<string>("trade", string.Empty);
+    var newModel = Model.ToList();
+}
+
+
+<div class="panel">
+    <div class="panel-body">
+        @using (Html.BeginForm("_SetPointSetting", "ControlPanel", FormMethod.Post, new { @class = "tn-form-validation ", @id = "SetPointSettingForm" }))
+        {
+            <div class="form-group has-feedback">
+                <div class="row">
+
+                    <label class="help-block col-xs-4">人民币金额</label>
+                    <label class="help-block col-xs-4">@(trade)数量</label>
+                </div>
+            </div>
+            if (Model.Any())
+            {
+                for (int i = 0; i < newModel.Count(); i++)
+                {
+
+                    <div class="form-group has-feedback">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <input class="pointSettinginput form-control" name="TotalPrice-@i" value="@newModel[i].TotalPrice" />
+                            </div>
+                            <div class="col-xs-4">
+                                <input class="pointSettinginputs form-control"  name="TradePoints-@i" value="@newModel[i].TradePoints" />
+                            </div>
+                            <div class="col-xs-4">
+                                <a name="deletesetting" class="tn-cursor-pointer">删除</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+           
+                    @*@Html.HiddenFor(m => m.UserId)
+                    <div class="form-group">
+                        <label class="help-block">为 @(user!=null?user.DisplayName:string.Empty) 设置密码</label>
+                    </div>
+                    <div class="form-group has-feedback" id="passwordInput">
+                        <label for="Password">新密码</label>
+                        @Html.PasswordFor(m => m.Password, htmlAttributes: new { @class = "form-control" })
+                        <span class="form-control-feedback"><i class="fa fa-eye-slash"></i></span>
+                        <input id="newpassword" type="button"  class="tn-click-eye " />
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>*@
+
+        }
+
+        <div class="form-group">
+            <button class="btn btn-default " id="addPointSetting" type="button"><i class="fa fa-plus"></i> 添加充值选项</button>
+
+        </div>
+        <div class="form-group">
+            <button type="submit" id="submit" class="btn btn-primary tn-mr-10 tn-btn-wp">确定</button>
+            <button type="button" class="btn btn-default tn-btn-wp" data-dismiss="modal" id="cancel">关闭</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    require(['jquery'], function () {
+
+       
+        var index = @Model.Count();
+        //增加
+        $("#addPointSetting").click(function myfunction() {
+            $("#SetPointSettingForm").append(' <div class="form-group has-feedback"><div class="row"><div class="col-xs-4"><input  class="pointSettinginput form-control" name="TotalPrice-'+index+'" value="" /></div><div class="col-xs-4"><input class= "pointSettinginput  form-control" name="TradePoints-'+index+'"value="" /></div> <div class="col-xs-4"><a name="deletesetting" class="tn-cursor-pointer">删除</a></div></div> </div>')
+            index++;
+        });
+        $(document).on("blur",".pointSettinginput" ,function myfunction() {
+            $(this).val($(this).val().replace(/[^\d\.]/g,''));
+        }).on ("keyup",".pointSettinginput" ,function myfunction() {
+            $(this).val($(this).val().replace(/[^\d\.]/g,''));
+        });
+        $(document).on("blur",".pointSettinginputs" ,function myfunction() {
+            $(this).val($(this).val().replace(/[^\d]/g,''));
+        }).on ("keyup",".pointSettinginputs" ,function myfunction() {
+            $(this).val($(this).val().replace(/[^\d]/g,''));
+        })
+
+        //取消
+        $("#cancel").click(function () {
+            layer.closeAll();
+        });
+        //删除
+        $(document).on("click", "[name='deletesetting']", function myfunction() {
+            var $this = $(this);
+
+            $this.parents(".form-group").remove();
+        })
+        $("#submit").click(function myfunction() {
+            $.post("@CachedUrlHelper.Action("_SetPointSetting","ControlPanel")", $("#SetPointSettingForm").serialize(), function myfunction(data) {
+                if (data.state)
+                {
+                    layer.closeAll();
+                } else {
+                    layer.msg(data.msg, { icon: 2 });
+                }
+            })
+
+
+        })
+    })
+
+
+</script>

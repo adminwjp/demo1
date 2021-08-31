@@ -1,0 +1,199 @@
+	* {
+		padding: 0;
+		margin: 0;
+	}
+
+	#nav-site {
+		overflow: hidden;
+		width: 100%;
+		z-index: 10001;
+		position: absolute;
+		left: auto;
+		right: 0;
+	}
+
+	#nav-site>li>ul>li>a:hover {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	
+		padding: 3px;
+		background-color: burlywood;
+	}
+
+	.banner {
+		background-color: #f40d4d;
+		height: 70px;
+	}
+
+	.banner-inner,
+	.banner-inner>a,
+	.banner-inner>a>img {
+		display: block;
+	}
+
+	.banner-inner>a {
+		width: 100%;
+		height: 100%;
+		background: url('https://gw.alicdn.com/tfs/TB1DP0yAoY1gK0jSZFMXXaWcVXa-1190-70.png') no-repeat;
+	}
+
+	.nav_inner,
+	.banner-inner,
+	.banner-inner img,
+	.products-inner {
+		margin: 0 auto;
+	}
+
+
+
+	/* .banner-inner {
+		overflow: hidden;
+	} */
+
+	@media screen and (max-width: 1180px) {
+
+		.nav_inner,
+		#nav-site,
+		.banner-inner,
+		.products-inner {
+			width: 100%;
+		}
+
+		* {
+			font-size: 5px;
+		}
+	}
+
+	@media screen and (min-width: 1180px) {
+
+		.nav_inner,
+		#nav-site,
+		.banner-inner,
+		.products-inner {
+			width: 1180px;
+		}
+	}
+
+
+	.nav {
+		width: 100%;
+		height: 35px;
+		line-height: 35px;
+		background-color: gainsboro !important;
+		font-size: 12px;
+	}
+
+
+
+	.left {
+		float: left;
+		margin-left: 5px;
+	}
+
+	.right {
+		float: right;
+		margin-left: 5px;
+	}
+
+	ul {
+		list-style: none;
+	}
+
+	ul>li {
+		float: left;
+		margin-right: 10px;
+		display: list-item;
+		text-align: -webkit-match-parent;
+		vertical-align: middle;
+	}
+
+	.nav-panel {
+		min-height: 100px;
+		max-height: 10px;
+	}
+
+
+
+	/* li::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-bottom: 2px solid #000;
+	} */
+
+	a {
+		text-decoration: none;
+		color: black !important;
+		cursor: pointer;
+	}
+
+	.login,
+	.left>li>a:hover,
+	.right>li>a:hover {
+		color: orange !important;
+	}
+
+	.show {
+		display: block;
+	}
+
+	.hide {
+		display: none;
+	}
+
+	.addressu-list>ul>li,
+	.right>li>ul.nav-right>li {
+		line-height: normal;
+		margin: 0;
+		float: none;
+		padding: 5px 2px;
+		display: list-item;
+		text-align: -webkit-match-parent;
+		background-color: #fff;
+	}
+
+	/* 
+	.addressu-list>ul>li:first,
+	.right>li>ul.nav-right>li:first,
+	.addressu-list>ul>li:last-child,
+	.right>li>ul.nav-right>li:last-child {
+		margin: 5px 0;
+	} */
+
+	.addressu-list>ul>li:hover,
+	.right>li>ul.nav-right>li:hover {
+		display: block;
+		background-color: darkgrey;
+	}
+
+	.address>span:last-child,
+	.nav-show>span,
+	.nav-site-show>span {
+		padding-left: 5px;
+	}
+
+	#nav-site {
+		background-color: #fff;
+	}
+
+	#nav-site>li,
+	#nav-site>li>ul>li {
+		float: left;
+		text-align: -webkit-match-parent;
+	}
+
+	#nav-site>li>h4 {
+		margin: 0;
+		text-align: left;
+		line-height: normal;
+	}
+
+	#nav-site>li {
+		border-right: 1px beige solid;
+		padding: 0 5px;
+		overflow: hidden;
+	}

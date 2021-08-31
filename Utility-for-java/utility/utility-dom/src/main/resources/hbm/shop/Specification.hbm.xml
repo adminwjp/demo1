@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="Specification" table="t_specification">
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity"></generator>
+        </id>
+        <many-to-one name="sellerUser" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+        <property name="name" column="name" type="java.lang.String" length="20"></property>
+        <property name="type" column="type" type="java.lang.Integer" ></property>
+        <property name="memo" column="memo" type="java.lang.String" length="500"></property>
+        <property name="orders" column="orders" type="java.lang.Integer" ></property>
+    </class>
+</hibernate-mapping>

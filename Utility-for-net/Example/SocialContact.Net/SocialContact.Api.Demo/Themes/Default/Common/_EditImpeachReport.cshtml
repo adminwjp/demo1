@@ -1,0 +1,55 @@
+﻿@model ImpeachReportEditModel
+@{
+    var _listReason = ViewData.Get<List<SelectListItem>>("_listReason", null);
+
+ }
+
+<div class="panel-body jn-training-creation jn-block" >
+    @using (Html.BeginForm("EditReport", "Common", FormMethod.Post, new { @class = "form-horizontal tn-form-validation", @id = "reportform" }))
+    {
+
+        @Html.HiddenFor(n => n.Title)
+        @Html.HiddenFor(n => n.ReportObjectId)
+        @Html.HiddenFor(n => n.TenantTypeId)
+        <div class="form-group" id="ImpeachReport">
+            @Html.LabelFor(n=>n.Reason, new { @class = "col-xs-3 control-label" })           
+          <div class="col-xs-12">
+              @Html.DropDownListFor(n => n.Reason, _listReason, "请选择举报原因", new { @class = "form-control reason" })
+              @Html.ValidationMessageFor(n => n.Reason)
+          </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(n => n.Description, new { @class = "col-xs-3 control-label" })
+            <div class="col-xs-12">
+                @Html.TextAreaFor(n => n.Description, new { @class = "form-control description" })
+                @Html.ValidationMessageFor(n => n.Description)
+            </div>
+            </div>
+        <div class="form-group">  
+            <div class="col-xs-12">
+                <button id="btn_submit" type="button" class="btn btn-primary tn-btn-wp">提交</button>
+                </div>
+            </div>
+    }
+</div>
+<script>
+    require(['jquery','tnlayer'], function ($,tnlayer) {
+        $("#btn_submit").click(function () {
+            $("#reportform").validate();
+            if ($("#reportform").valid()) {
+                var url = '@CachedUrlHelper.Action("EditReport", "Common")';
+            
+                $.post(url,$("#reportform").serialize(), function (data) {
+                    if (data.MessageType == 1) {
+                        $("#btn_submit").attr("disabled", true);
+                        layer.msg(data.MessageContent, { icon: 1 }, function () { parent.layer.closeAll(); });
+                    }
+                    else {
+                        layer.msg(data.MessageContent, { icon: 2 });
+                    }
+                });
+            }
+           
+        });
+    });
+</script>

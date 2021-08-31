@@ -1,0 +1,53 @@
+syntax = "proto3";
+//import "google/protobuf/any.proto";
+option csharp_namespace = "Config.GrpcService";
+
+package config;
+
+service Config{
+	rpc Register (ServiceRequest) returns (ResultReply);
+	rpc Get (NameRequest) returns (AddressReply);
+    rpc GetAddress(ServiceRequest) returns  (AddressReply);
+    rpc GetAll(NoceRequest) returns  (ServiceReply);
+}
+
+message ServiceRequest{
+	string address=1;
+	string name=2;
+	string ip=3;
+	int32 port=4;
+	string flag=5;
+	int32 status=6;
+	string user=7;
+	string pwd=8;
+}
+
+
+
+message ServiceReply{
+	//google.protobuf.Any data=1;
+    //ServiceRequest data=1;
+    //map<string,string> data=1;
+    string data=1;
+}
+
+message ResultReply{
+	int32 code=1;
+	string node=2;
+	bool success=3;
+}
+
+message NameRequest{
+	string name=1;
+	string id=2;
+    string noce=3;
+}
+
+message NoceRequest{
+    string noce=1;
+}
+
+message AddressReply{
+	string address=1;
+}
+

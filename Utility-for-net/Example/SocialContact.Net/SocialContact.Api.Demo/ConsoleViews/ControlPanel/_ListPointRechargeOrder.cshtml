@@ -1,0 +1,50 @@
+﻿@model PagingDataSet<PointRechargeOrder>
+@{
+  
+    var trade = ViewData.Get<string>("trade", string.Empty);
+}
+@if (Model.Any())
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th style="width:120px;">时间</th>
+                <th style="width:80px;">订单号</th>
+                <th style="width:80px;">支付方式</th>
+                <th style="width:80px;">支付账号</th>
+                <th style="width:80px;">交易号</th>
+                <th style="width:80px;">充值金额</th>
+                <th style="width:80px;">获得@(trade)</th>
+                <th style="width:80px;">支付状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+                {
+                <tr>
+
+
+                    <td>@item.DateCreated.ToyyyyMMddHHmm()</td>
+                    <td>@item.Id</td>
+                    <td>@(item.Buyway > 0 ? item.Buyway.GetDisplayName() : "--")</td>
+                    <td>@(string.IsNullOrEmpty(item.TradingAccount) ? "--" : item.TradingAccount)</td>
+                    <td>@(string.IsNullOrEmpty(item.TradeNo) ? "--" : item.TradeNo)</td>
+                    <td>@(item.TotalPrice)元</td>
+                    <td>@item.TradePoints</td>
+                    <td>@item.Status.GetDisplayName()</td>
+
+                
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        @Html.AjaxPagingButton(Model, "listPointRechargeOrder", CachedUrlHelper.Action("_ListPointRechargeOrder", "ControlPanel", null, new RouteValueDictionary { { "userId", Request.QueryString.Get("userId", string.Empty) }, { "startDate", Request.QueryString.Get("startDate", string.Empty) }, { "endDate", Request.QueryString.Get("endDate", string.Empty) } }))
+    </div>
+}
+else
+{
+    <div class="text-center text-warning">
+        暂无任何记录
+    </div>
+}

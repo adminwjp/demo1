@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.title}}</title>
+</head>
+<body>
+
+{{ template "t1.html"}}
+
+    <!--invalid memory address or nil pointer dereference-->
+    {{if  .list }}
+    aa
+    {{end}}
+    <!--  list  -->
+    {{range .items}}
+    <p>{{.}}</p>
+    {{end}}
+    <!-- 服务器渲染 每种 语言 渲染方式不同 真麻烦 语法 怎么 写的
+    数组 第一个 格式改变, 不支持 获取索引 逻辑 运算符 不支持 只能做简单处理 不灵活   -->
+    {{
+    $i:=0
+    }}
+
+    <!--  map  -->
+    {{range $key,$val:= .test}}
+
+    <p>{{$key}}{{$val}}</p>
+
+    {{end}}
+
+    <!-- list map  -->
+    {{range  .test1}}
+        {{range $key,$val:= .}}
+        <p>{{$key}}{{$val}}</p>
+        {{end}}
+
+    {{end}}
+
+    <!-- list map  -->
+    {{if .test1}}
+        {{range $i:= .test1}}
+            {{range $key,$val:= $i}}
+            <p>{{$key}}{{$val}}</p>
+            {{end}}
+
+        {{end}}
+    {{end}}
+
+    <p>class </p>
+    <p>{{.test2.Id}} {{.test2.Name}}</p>
+
+    <p> map  list [] not support </p>
+    <p>{{.test.a}} {{.test.c}}</p>
+</body>
+</html>

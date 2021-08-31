@@ -1,0 +1,94 @@
+﻿@{
+    //视频附件以及封面图
+    var videoAttachment = ViewData.Get<Attachment>("videoAttachment", null);
+    var videoCoverImage = ViewData.Get<Attachment>("videoCoverImage", null);
+}
+
+@Styles.Render("~/js/lib/plupload/upload")
+@if (videoAttachment != null)
+{
+    var videoAttachmentId = videoAttachment.AttachmentId;
+    <div class="form-group" id="threadVideo-@videoAttachmentId">
+        @*<label class="col-xs-1 control-label tn-width-90"></label>*@
+        <div class="thumbnail col-xs-2" style="margin-left: 15px;">
+            <div id="UploadFileImgs-@videoAttachmentId" class="text-center">
+                @if (videoCoverImage != null)
+                {
+                    <div class="tn-pic-attachment">
+                        <input type="hidden" class="videoCoverAttachmentId" value="@videoCoverImage.AttachmentId" />
+                        <img class="img-thumbnail img-responsive" src="@videoCoverImage.GetDirectlyUrl("Small")" alt="...">
+                        <button class="btn btn-default btn-xs btn-removeImage" type="button"><i class="fa fa-remove"></i></button>
+                    </div>
+                }
+                else
+                {
+                    @Html.FileUploader(setting =>
+               {
+                   setting.Name = "UploadFileImg";
+                   setting.TenantTypeId = TenantTypeIds.Instance().Thread();
+                   setting.InnerContent = "上传视频封面";
+                   setting.Extensions = "jpg,jpeg,png,bmp";
+                   setting.Position = AttachmentPosition.Cover;
+                   setting.Callbacks.Add("uploadSuccess", "succeedImageSyntony_" + videoAttachmentId);
+                   setting.IsPreview = false;
+               })
+                }
+            </div>
+            <div class="caption">
+                <p id="attname" class="tn-no-mb tn-overflow-hidden tn-break-word" style="height:70px;">
+                    @videoAttachment.FriendlyFileName
+                </p>
+                <input type="hidden" class="videoAttachmentId" value="@videoAttachmentId" />
+                <a class="btn-removeVideo pull-right" href="javascript:;">删除</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        require(['jquery', 'tnlayer','livequery'], function ($) {
+
+            //移除视频
+            $('.btn-removeVideo').off('click').on('click', function () {
+                $('#upload').html('@Html.FileUploader(setting =>
+                              { setting.Name = "UploadFileVideo";
+                                  setting.TenantTypeId = TenantTypeIds.Instance().Thread();
+                                  setting.InnerContent = "上传视频";
+                                  setting.Extensions = "mp4";
+                                  setting.IsPreview =false;
+                                  setting.Position = AttachmentPosition.Body;
+                                  setting.Callbacks.Add("uploadSuccess", "succeedSyntony");
+                              })');
+                $('#threadVideo-' + '@videoAttachmentId').remove();
+            });
+
+            //上传成功回调
+            $.fn.succeedImageSyntony_@videoAttachmentId = function (file, data) {
+                var $this = $("#UploadFileImgs-" + "@videoAttachmentId");
+                var itemTmpl = '<div class="tn-pic-attachment">\
+                                    <input type="hidden" class="videoCoverAttachmentId" value="'+ data.attachmentId + '" />\
+                                    <img class="img-thumbnail img-responsive" src="' + data.url + '" alt="...">\
+                                    <button class="btn btn-default btn-xs btn-removeImage" type="button"><i class="fa fa-remove"></i></button>\
+                                </div>';
+                $this.append(itemTmpl);
+                $this.find("div[id^='uploader-UploadFile']").remove();
+            }
+
+            //移除标题图
+            $('.btn-removeImage').livequery('click', function () {
+                var temp = '@Html.FileUploader(setting =>
+                               {
+                                   setting.Name = "UploadFileImg";
+                                   setting.TenantTypeId = TenantTypeIds.Instance().Thread();
+                                   setting.InnerContent = "上传视频封面";
+                                   setting.Extensions = "jpg,jpeg,png,bmp";
+                                   setting.Position = AttachmentPosition.Cover;
+                                   setting.Callbacks.Add("uploadSuccess", "succeedImageSyntony_"+videoAttachmentId);
+                               })';
+                var $this = $(this);
+                $("#UploadFileImgs-" + "@videoAttachmentId").append(temp);
+                $this.parent().remove();
+            });
+
+        });
+    </script>
+}

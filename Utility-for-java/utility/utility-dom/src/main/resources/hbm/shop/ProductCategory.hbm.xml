@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="ProductCategory" table="t_product_category" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+        <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+        <many-to-one name="parent" column="parent_id" foreign-key="fk_parent_id" cascade="all" fetch="join" />
+      <!--  <set name="children"    inverse="false" lazy="false" cascade="save-update,delete">
+            <key column="parent_id" foreign-key="fk_parent_id" />
+            <one-to-many class="com.shop.pojo.ProductCategory" not-found="ignore"/>
+        </set>-->
+        <list name="children" inverse="false" lazy="false"  cascade="save-update,delete">
+            <key column="parent_id" foreign-key="fk_parent_id" />
+            <list-index />
+            <one-to-many class="com.shop.model.ProductCategory" not-found="ignore"/>
+        </list>
+
+        <property name="name" column="name" type="java.lang.String" length="20"></property>
+        <property name="imgPath" column="imgPath" type="java.lang.String" length="50"></property>
+        <property name="orders" column="orders" type="java.lang.Integer" length="20"></property>
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

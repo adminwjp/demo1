@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="column">
+    <resultMap id="columnResultMap" type="com.template.dao.model.Column">
+        <result property="id" column="id" javaType="long"></result>
+        <result property="database" column="`database`" javaType="java.lang.String"></result>
+        <result property="table" column="`table`" javaType="java.lang.String"></result>
+        <result property="referenceTable" column="reference_table" javaType="java.lang.String"></result>
+        <result property="referenceColumn" column="reference_column" javaType="java.lang.String"></result>
+        <result property="isPk" column="is_pk" javaType="boolean"></result>
+        <result property="isIdentity" column="is_identity" javaType="boolean"></result>
+        <result property="isFk" column="is_fk" javaType="boolean"></result>
+        <result property="column" column="`column`" javaType="java.lang.String"></result>
+        <result property="dataType" column="data_type" javaType="java.lang.String"></result>
+        <result property="isNull" column="is_null" javaType="boolean"></result>
+        <result property="length" column="length" javaType="int"></result>
+        <result property="comment" column="comment" javaType="java.lang.String"></result>
+        <result property="title" column="title" javaType="java.lang.String"></result>
+        <result property="flag" column="flag"  javaType="com.template.dao.model.enums.DataFlag"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"></result>
+    </resultMap>
+
+
+    <insert id="column.add" parameterType="com.template.dao.model.Column" useGeneratedKeys="true" keyProperty="id">
+        insert into t_column
+        <trim suffixOverrides=",">
+        (
+           <if test="database!=null and database!=''">
+               `database`,
+           </if>
+           <if test="table!=null and table!=''">
+               `table`,
+           </if>
+           <if test="referenceTable!=null and referenceTable!=''">
+               reference_table,
+           </if>
+           <if test="referenceColumn!=null and referenceColumn!=''">
+               reference_column,
+           </if>
+           <if test="isPk!=null and isPk!=''">
+               is_pk,
+           </if>
+           <if test="isIdentity!=null and isIdentity!=''">
+               is_identity,
+           </if>
+           <if test="isFk!=null and isFk!=''">
+               is_fk,
+           </if>
+           <if test="column!=null and column!=''">
+               `column`,
+           </if>
+           <if test="dataType!=null and dataType!=''">
+               data_type,
+           </if>
+           <if test="isNull!=null and isNull!=''">
+               is_null,
+           </if>
+           <if test="length!=0">
+               length,
+           </if>
+           <if test="comment!=null and comment!=''">
+               comment,
+           </if>
+           <if test="title!=null and title!=''">
+               title,
+           </if>
+        <if test="flag!=null">
+            ,flag
+        </if>
+        </trim>
+        )
+        values
+        (
+        <trim suffixOverrides=",">
+           <if test="database!=null and database!=''">
+               #{database},
+           </if>
+           <if test="table!=null and table!=''">
+               #{table},
+           </if>
+           <if test="referenceTable!=null and referenceTable!=''">
+               #{referenceTable},
+           </if>
+           <if test="referenceColumn!=null and referenceColumn!=''">
+               #{referenceColumn},
+           </if>
+           <if test="isPk!=null and isPk!=''">
+               #{isPk},
+           </if>
+           <if test="isIdentity!=null and isIdentity!=''">
+               #{isIdentity},
+           </if>
+           <if test="isFk!=null and isFk!=''">
+               #{isFk},
+           </if>
+           <if test="column!=null and column!=''">
+               #{column},
+           </if>
+           <if test="dataType!=null and dataType!=''">
+               #{dataType},
+           </if>
+           <if test="isNull!=null and isNull!=''">
+               #{isNull},
+           </if>
+           <if test="length!=0">
+               #{length},
+           </if>
+           <if test="comment!=null and comment!=''">
+               #{comment},
+           </if>
+           <if test="title!=null and title!=''">
+               #{title},
+           </if>
+        <if test="flag!=null">
+            ,#{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        </trim>
+        )
+        </insert>
+
+    <update id="column.modify" parameterType="com.template.dao.model.Column" >
+        update  t_column  
+        <trim prefix="set" suffixOverrides=",">
+            <if test="database!=null and database!=''">
+               `database`=#{database},
+            </if>
+            <if test="table!=null and table!=''">
+               `table`=#{table},
+            </if>
+            <if test="referenceTable!=null and referenceTable!=''">
+               reference_table=#{referenceTable},
+            </if>
+            <if test="referenceColumn!=null and referenceColumn!=''">
+               reference_column=#{referenceColumn},
+            </if>
+            <if test="isPk!=null and isPk!=''">
+               is_pk=#{isPk},
+            </if>
+            <if test="isIdentity!=null and isIdentity!=''">
+               is_identity=#{isIdentity},
+            </if>
+            <if test="isFk!=null and isFk!=''">
+               is_fk=#{isFk},
+            </if>
+            <if test="column!=null and column!=''">
+               `column`=#{column},
+            </if>
+            <if test="dataType!=null and dataType!=''">
+               data_type=#{dataType},
+            </if>
+            <if test="isNull!=null and isNull!=''">
+               is_null=#{isNull},
+            </if>
+            <if test="length!=0">
+               length=#{length},
+            </if>
+            <if test="comment!=null and comment!=''">
+               comment=#{comment},
+            </if>
+            <if test="title!=null and title!=''">
+               title=#{title},
+            </if>
+        <if test="flag!=null">
+            flag=#{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        </if>
+        </trim>
+         where id =#{id}
+    </update>
+
+    <sql id="deleteSql">delete from  t_column where id </sql>
+
+    <delete id="column.delete" parameterType="long" >
+        <include refid="deleteSql"  /> =#{id}
+     </delete>
+
+    <delete id="column.deleteMany" >
+       <include refid="deleteSql"  />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+     </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="id!=0">
+                or  id=#{id}
+            </if>
+            <if test="database!=null and database!=''">
+                or  `database`=#{database}
+            </if>
+            <if test="table!=null and table!=''">
+                or  `table`=#{table}
+            </if>
+            <if test="referenceTable!=null and referenceTable!=''">
+                or  reference_table=#{referenceTable}
+            </if>
+            <if test="referenceColumn!=null and referenceColumn!=''">
+                or  reference_column=#{referenceColumn}
+            </if>
+            <if test="isPk!=null and isPk!=''">
+                or  is_pk=#{isPk}
+            </if>
+            <if test="isIdentity!=null and isIdentity!=''">
+                or  is_identity=#{isIdentity}
+            </if>
+            <if test="isFk!=null and isFk!=''">
+                or  is_fk=#{isFk}
+            </if>
+            <if test="column!=null and column!=''">
+                or  `column`=#{column}
+            </if>
+            <if test="dataType!=null and dataType!=''">
+                or  data_type=#{dataType}
+            </if>
+            <if test="isNull!=null and isNull!=''">
+                or  is_null=#{isNull}
+            </if>
+            <if test="length!=0">
+                or  length=#{length}
+            </if>
+            <if test="comment!=null and comment!=''">
+                or  comment=#{comment}
+            </if>
+            <if test="title!=null and title!=''">
+                or  title=#{title}
+            </if>
+            <if test="flag!=null">
+                or  flag=#{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+            </if>
+        </where>
+    </sql>
+
+    <select id="column.select" parameterType="com.template.dao.model.Column" resultMap="columnResultMap">
+        select * from  t_column
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="column.count" parameterType="com.template.dao.model.Column" resultType="java.lang.Integer">
+        select count(id) from  t_column
+        <include refid="whereIf"/>
+    </select>
+
+</mapper>

@@ -1,0 +1,632 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/html5shiv.js"></script>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/h-ui.admin/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<link rel="stylesheet" href="http://192.168.1.3:5000/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<title>分类管理</title>
+	<style>
+        td.img {
+            background-color: #808080;
+        }
+		td.highlight {
+			font-weight: bold;
+			color: blue;
+		}
+
+		.table td {
+			text-align: center;
+		}
+
+		.ui-jqgrid tr.jqgrow td {
+			white-space: normal !important;
+			height: auto;
+			/*   vertical-align: text-top;
+		padding-top: 10px; */
+		}
+
+
+		.clearfix:after {
+			content: "\20";
+			display: block;
+			height: 0;
+			clear: both;
+			visibility: hidden
+		}
+
+		.clearfix {
+			zoom: 1
+		}
+
+		.tabBar {
+			border-bottom: 2px solid #222
+		}
+
+			.tabBar span {
+				background-color: #e8e8e8;
+				cursor: pointer;
+				display: inline-block;
+				float: left;
+				font-weight: bold;
+				height: 30px;
+				line-height: 30px;
+				padding: 0 15px
+			}
+
+				.tabBar span.current {
+					background-color: #222;
+					color: #fff
+				}
+
+		.tabCon {
+			display: none
+		}
+	</style>
+</head>
+<body>
+	<div class="pos-a" style="width:200px;left:0;top:0; bottom:0; height:100%; border-right:1px solid #e5e5e5; background-color:#f5f5f5; overflow:auto;">
+		<ul id="treeDemo" class="ztree"></ul>
+	</div>
+
+	<div style="margin-left:200px;">
+		<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 分类中心 <span class="c-gray en">&gt;</span> 分类管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+		<div class="page-container">
+			<div class="text-c">
+				创建日期范围：
+				<input type="text" onfocus="WdatePicker({ createMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="createdatemin" class="input-text Wdate" style="width:120px;">
+				-
+				<input type="text" onfocus="WdatePicker({ createMinDate:'#F{$dp.$D(\'datemin\')}',createMaxDate:'%y-%M-%d' })" id="createdatemax" class="input-text Wdate" style="width:120px;">
+				修改日期范围：
+				<input type="text" onfocus="WdatePicker({ modifyMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="modifydatemin" class="input-text Wdate" style="width:120px;">
+				-
+				<input type="text" onfocus="WdatePicker({ modifyMinDate:'#F{$dp.$D(\'datemin\')}',modifyMaxDate:'%y-%M-%d' })" id="modifydatemax" class="input-text Wdate" style="width:120px;">
+				<input type="text" class="input-text" style="width:250px" placeholder="输入名称 英文 名称" id="name" name="">
+				<span class="select-box" style="width:150px;">
+					<select id="enable" class="select">
+						<option value="">请选择</option>
+						<option value="true">启用</option>
+						<option value="false">禁用</option>
+					</select>
+				</span>
+
+				<button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+				<button type="reset" class="btn btn-success radius" id="clear" name="">清空</button>
+			</div>
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
+				<span class="l">
+					<a href="javascript:;" onclick="operator('delete')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+					<a href="javascript:;" onclick="operator('add')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加分类</a>
+					<a href="javascript:;" onclick="operator('edit')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑分类</a>
+					<a href="javascript:;" onclick="modifyEnable(urls.category.editstatus, true)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6e1;</i>启用</a>
+					<a href="javascript:;" onclick="modifyEnable(urls.category.editstatus, false)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe631;</i> 暂停</a>
+				</span>
+				<span class="r">共有数据：<strong>0</strong> 条</span>
+			</div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead>
+						<tr class="text-c">
+							<th width="25"><input type="checkbox" name="" value=""></th>
+							<th width="80">ID</th>
+							<th width="150">启用</th>
+							<th width="100">名称</th>
+							<th width="200">描述</th>
+							<th width="200">分类Id</th>
+							<th width="100">背景图片</th>
+							<th width="100">Logo</th>
+							<th width="100">标题</th>
+							<th width="100">特征</th>
+							<th width="100">电话</th>
+							<th width="100">Logo2</th>
+							<th width="100">按钮名称</th>
+							<th width="100">按钮链接</th>
+							<th width="100">按钮名称2</th>
+							<th width="100">按钮链接2</th>
+							<!--<th width="100" style="display:none;">分类标识</th>-->
+							<!--<th width="130">加入时间</th>
+	<th width="130">修改时间</th>-->
+							<th width="100">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+
+
+		</div>
+		<article class="page-container" style="display: none">
+			<form class="form form-horizontal" id="form">
+				<div class="row cl id_show" style="display:none;">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>编号：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" readonly placeholder="" id="id" name="id">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3">分类标识：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box" style="width:150px;">
+							<select class="select" name="flag" size="1">
+								<option value="">请选择</option>
+							</select>
+						</span>
+					</div>
+				</div>
+				<div class="row cl name_show">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="name" name="name">
+					</div>
+				</div>
+				<div class="row cl  parent_show">
+					<label class="form-label col-xs-4 col-sm-3">分类：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box" style="width:150px;">
+							<select class="select" name="category.id" id="category.id" size="1">
+								<option value="">请选择</option>
+							</select>
+						</span>
+					</div>
+				</div>
+				<div class="row cl title_show">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>图文标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="title" name="title">
+					</div>
+				</div>
+				<div class="row cl bg_show background_image_show" style="display:none;">
+					<label class="form-label col-xs-4 col-sm-3">背景图片展示：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+
+					</div>
+				</div>
+				<div class="row cl background_image_show_src">
+					<label class="form-label col-xs-4 col-sm-3">背景图片图标：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="btn-upload form-group">
+							<input class="input-text upload-url" type="text" id="bg_show" readonly style="width:200px">
+							<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 上传背景logo</a>
+							<input type="file" name="background_image" onchange="uploadBg(this)" class="input-file">
+						</span>
+					</div>
+				</div>
+				<div class="row cl img_show logo_show" style="display:none;">
+					<label class="form-label col-xs-4 col-sm-3">图文Logo展示：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+
+					</div>
+				</div>
+				<div class="row cl logo_show_src">
+					<label class="form-label col-xs-4 col-sm-3">图文Logo：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="btn-upload form-group">
+							<input class="input-text upload-url" type="text" id="img_show" readonly style="width:200px">
+							<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 上传logo</a>
+							<input type="file" name="image" onchange="upload(this)" class="input-file">
+						</span>
+					</div>
+				</div>
+				<div class="row cl description_show">
+					<label class="form-label col-xs-4 col-sm-3">描述：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="description" id="description" cols="" rows="" class="textarea" placeholder="说点什么...500个字符以内" dragonfly="true" onKeyUp="$.fn.Huitextarealength(this, 500)"></textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/500</p>
+					</div>
+				</div>
+				<div class="row cl title_show">
+					<label class="form-label col-xs-4 col-sm-3">标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="title" name="title">
+					</div>
+				</div>
+				<div class="row cl feature_show">
+					<label class="form-label col-xs-4 col-sm-3">特征：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="feature" name="feature">
+					</div>
+				</div>
+				<div class="row cl tel_show">
+					<label class="form-label col-xs-4 col-sm-3">电话：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="tel" name="tel">
+					</div>
+				</div>
+				<div class="row cl button_name1_show">
+					<label class="form-label col-xs-4 col-sm-3">按钮1名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="button_name1" name="button_name1">
+					</div>
+				</div>
+				<div class="row cl button_href1_show">
+					<label class="form-label col-xs-4 col-sm-3">按钮1链接：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="button_href1" name="button_href1">
+					</div>
+				</div>
+				<div class="row cl button_name2_show">
+					<label class="form-label col-xs-4 col-sm-3">按钮2名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="button_name2" name="button_name2">
+					</div>
+				</div>
+				<div class="row cl button_href2_show">
+					<label class="form-label col-xs-4 col-sm-3">按钮2链接：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="" placeholder="" id="button_href2" name="button_href2">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>状态：</label>
+					<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+						<div class="radio-box">
+							<input name="enable" value="true" type="radio" id="sex-1" checked>
+							<label for="sex-1">启用</label>
+						</div>
+						<div class="radio-box">
+							<input type="radio" value="false" id="sex-2" name="enable">
+							<label for="sex-2">禁用</label>
+						</div>
+					</div>
+				</div>
+				<div class="row cl">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+						<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+					</div>
+				</div>
+			</form>
+		</article>
+
+	
+
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/laypage/1.2/laypage.js"></script>
+
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript" src="http://192.168.1.3:5000/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+	<script src="/company/admin/js/index.js"></script>
+	<script src="/company/admin/js/common.js"></script>
+	<script type="text/javascript">
+			var setting = {
+			view: {
+				dblClickExpand: false,
+				showLine: false,
+				selectedMulti: false
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "pId",
+					rootPId: ""
+				}
+			},
+			callback: {
+				beforeClick: function (treeId, treeNode) {
+					var zTree = $.fn.zTree.getZTreeObj("tree");
+					if (treeNode.isParent) {
+						zTree.expandNode(treeNode);
+						return false;
+					} else {
+						//demoIframe.attr("src",treeNode.file + ".html");
+						return true;
+					}
+				}
+			}
+		};
+
+		var zNodes = [
+			{ id: 1, pId: 0, name: "一级分类", open: true },
+			{ id: 11, pId: 1, name: "二级分类" },
+			{ id: 111, pId: 11, name: "三级分类" },
+			{ id: 112, pId: 11, name: "三级分类" },
+			{ id: 113, pId: 11, name: "三级分类" },
+			{ id: 114, pId: 11, name: "三级分类" },
+			{ id: 115, pId: 11, name: "三级分类" },
+			{ id: 12, pId: 1, name: "二级分类 1-2" },
+			{ id: 121, pId: 12, name: "三级分类 1-2-1" },
+			{ id: 122, pId: 12, name: "三级分类 1-2-2" },
+		];
+		$(document).ready(function () {
+			var t = $("#treeDemo");
+			t = $.fn.zTree.init(t, setting, zNodes);
+			//demoIframe = $("#testIframe");
+			//demoIframe.on("load", loadReady);
+			var zTree = $.fn.zTree.getZTreeObj("tree");
+			//zTree.selectNode(zTree.getNodeByParam("id",'11'));
+		});
+		//id enable create_date update_date
+        var None = 0; //[] name desc back Catagory_id(Basic)
+		var	Role = 1; //角色分类
+        var Nav = 2;//官网导航信息 name href parent_id
+        var Service = 3; //官网服务信息 name desc logo Catagory_id(Catagory)
+        var Work = 4; //工作分类 logo   Catagory_id(Catagory) 
+        var Brand = 5;//公司品牌  name desc logo href fea Catagory_id(Catagory)
+        var BasicCategory = 6; //基础 分类 name
+        var Social = 7; // icon href
+        var Media = 8; //媒体 name body 
+        var Skill = 9; //技能 name proc style Catagory_id(Catagory)
+        var Skin = 10; //皮肤 name color
+        var TestimonialPerson = 11; //关于我们 团队 name desc   Catagory_id(Catagory) 
+        var Theme = 12;//官网主题信息 分类 1:公司 2:支持 3 :开发者 4 :我们的合作伙伴 name href  Catagory_id(Catagory) 
+        var Company = 13; //name desc logo logo1 tel
+        var Team = 14;// name logo  Catagory_id(Catagory) service_id
+        var WorkCategory = 15;//name filter work_id   parend_id
+        var About = 16; //name desc back logo title
+        var Main = 17;//name desc back btnxxname btnxxxhref
+		//id enable name description parent_id background_image
+		//logo title feature tel logo2
+		//button_name1 button_href1 button_name2 button_href2
+		var cols = ['id', 'enable', 'name', 'description', 'parent_id', 'background_image',
+			'logo', 'title', 'feature', 'tel', 'logo2', 'button_name1', 'button_href1', 'button_name2',
+            'button_href2'];
+		var notsupports = {
+            name: { no: [Work, Social]},
+			description: { yes: [None, Brand, TestimonialPerson, Company, About, Main]},
+            parent_id: { no: [BasicCategory, Social, Media, Skin, Company, About, Main]},
+            background_image: {  yes: [None, About, Main]},
+			logo: { yes: [Service, Work, Brand, Company, Team, About] },
+			title: { yes: [About] },
+			feature: { yes: [Brand] },
+			tel: { yes: [Company] },
+            logo2: { yes: [Company] },
+			button_name1: { yes: [Main] },
+			button_href1: { yes: [Main] },
+            button_name2: { yes: [Main] },
+            button_href2: { yes: [Main] },
+		};
+		let admin = new Admin();
+		admin.url = urls.category;
+		admin.columns.push(admin.checkbox);
+        admin.columns.push(admin.id);
+		admin.columns.push(admin.enable);
+		function setColumn(item, col) {
+			var co = notsupports[col];
+            if (co.no && co.no.indexOf(item.flag)>-1) return "x";
+            if (co.yes && co.yes.indexOf(item.flag)<0) return "x";
+            return item[col];
+        }
+		admin.columns.push({
+			data: function (item) {
+				//if (notsupports.name.indexOf(item.flag)) return "x";
+				//return item.name;
+                return setColumn(item,'name');
+			}
+		});
+        admin.columns.push({
+            data: function (item) {
+                return setColumn(item, 'description');
+            }
+        });
+        admin.columns.push({
+            data: function (item) {
+                return setColumn(item, 'parent_id');
+            }
+        });
+		admin.columns.push( {
+            data: function (item) {
+                var co = notsupports['background_image'];
+                if (co.no && co.no.indexOf(item.flag) > -1) return "x";
+                if (co.yes && co.yes.indexOf(item.flag) <0) return "x";
+				if (item.background_image) {
+					let src = SourceUrl  + item.background_image;
+					return "<img width='100' src='" + src + "' />";
+				}
+				return "无";
+			}
+		});
+		admin.columns.push( {
+			data: function (item) {
+                var co = notsupports['logo'];
+                if (co.no && co.no.indexOf(item.flag) > -1) return "x";
+                if (co.yes && co.yes.indexOf(item.flag) < 0) return "x";
+                if (item.logo) {
+                    let src = SourceUrl + item.logo;
+                    return "<img width='100' src='" + src + "' />";
+                }
+                return "无";
+			}
+		});
+		$.getJSON(urls.category.flag, function (data) {
+                let da = data;
+                for (let i in da) {
+                    $("select[name='flag']").append("<option value='" + da[i].value + "'>" + getName(da[i], getLanguage()) + "</option>");
+                }
+				$("select[name='flag']").change(function () {
+					let va = $(this).val();
+					console.log(va);
+					if (va && va != "" && $(this).text() != "value__") {
+						va = Number(va);
+                        for (var i in cols) {
+                            var $id_show = $("div." + cols[i] + "_show");
+                            var $id_show_src = $("div." + cols[i] + "_show_src");
+							var col = notsupports[cols[i]];
+                            //console.log(col);
+							//console.log($id_show);
+							//console.log($id_show_src);
+
+							if ($id_show && col) {
+                                if (col.no ) {
+									if (col.no.indexOf(va) > -1) {
+										$id_show.hide();
+										//console.log("hide");
+									} else {
+                                        $id_show.show();
+                                    }
+								} else if (col.yes) {
+									if (col.yes.indexOf(va) > -1) {
+										$id_show.show();
+									} else {
+                                        $id_show.hide(); //console.log("hide");
+                                    }
+                                } 
+                            }
+                            if ($id_show_src && col) {
+								if (col.no) {
+									if (col.no.indexOf(va) > -1) {
+										$id_show_src.hide(); //console.log("hide");
+									} else {
+                                        $id_show_src.show();
+                                    }
+                                    
+								} else if (col.yes) {
+									if (col.yes.indexOf(va) > -1) {
+                                        $id_show_src.show();
+                                    } else {
+                                        $id_show_src.hide(); //console.log("hide");
+                                    }
+								} 
+                            }
+                        }
+					}
+                });
+        }, function () {
+        });
+        admin.columns.push({
+            data: function (item) {
+                return setColumn(item, 'title');
+            }
+        });
+		admin.columns.push({
+            data: function (item) {
+                return setColumn(item, 'feature');
+			}
+		});
+		admin.columns.push( {
+            data: function (item) {
+                return setColumn(item, 'tel');
+			}
+		});
+		admin.columns.push( {
+            data: function (item) {
+                var co = notsupports['logo2'];
+                if (co.no && co.no.indexOf(item.flag) > -1) return "x";
+                if (co.yes && !co.yes.indexOf(item.flag) < 0) return "x";
+                if (item.logo2) {
+                    let src = SourceUrl + item.logo2;
+                    return "<img width='100' src='" + src + "' />";
+                }
+                return "无";
+			}
+		});
+		admin.columns.push( {
+            data: function (item) {
+                return setColumn(item, 'button_name1');
+			}
+		});
+		admin.columns.push( {
+            data: function (item) {
+                return setColumn(item, 'button_href1');
+			}
+		});
+		admin.columns.push( {
+            data: function (item) {
+                return setColumn(item, 'button_name2');
+			}
+		});
+		admin.columns.push( {
+            data: function (item) {
+                return setColumn(item, 'button_href2');
+			}
+		});
+		//admin.columns.push(admin.create_date);
+		//admin.columns.push(admin.modify_date);
+		admin.columns.push(admin.operator);
+		$(function () {
+			admin.tableInit(admin);
+
+		});
+        /*-添加 编辑*/
+        function operator(flag, self) {
+            if (flag == "delete") {
+                datadel();
+                return;
+            }
+            let title = "添加分类信息";
+            let url = "about_operator.html";
+            if (flag == "edit") {
+                if (!self && !hasChecked()) {
+                    return;
+                }
+                title = "编辑关于我们信息";
+                url += "?edit";
+				let tr = getTrItem(self);
+				//id enable name description parent_id background_image
+		//logo title feature tel logo2
+		//button_name1 button_href1 button_name2 button_href2
+                let obj = {
+                    id: tr.find("td:eq(1)").text(),
+					enable: tr.find("td:eq(2)").text() == "已启用"
+						|| tr.find("td:eq(2)").text() == "已发布",
+					name: tr.find("td:eq(3)").text(),
+					description: tr.find("td:eq(4)").text(),
+					parent_id: tr.find("td:eq(5)").text(),
+                    background_image: tr.find("td:eq(6) > img")? tr.find("td:eq(6) > img").attr("src"):"",
+                    img: tr.find("td:eq(7) > img") ? tr.find("td:eq(7) > img").attr("src"):"",
+					title: tr.find("td:eq(8)").text(),
+                    feature: tr.find("td:eq(9)").text(),
+                    tel: tr.find("td:eq(10)").text(),
+                    logo2: tr.find("td:eq(11) > img") ? tr.find("td:eq(11) > img").attr("src") : "",
+                    button_name1: tr.find("td:eq(12)").text(),
+                    button_href1: tr.find("td:eq(13)").text(),
+                    button_name2: tr.find("td:eq(14)").text(),
+                    button_href2: tr.find("td:eq(15)").text(),
+				};
+                for (var i in cols) {
+                    var $id = $("#" + cols[i]);
+                    var $id_show = $("." + cols[i] + "_show");
+                    var $id_show_src = $("." + cols[i] + "_show_src");
+                    if ($id && obj[cols[i]]) {
+                        $id.val(obj[cols[i]]);
+					}
+                    if ($id_show) {
+
+					}
+                    if ($id_show_src) {
+
+                    }
+                }
+			}
+            else {
+                $(':input', '#form')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+            }
+			//layer_show(title, url, '', 610);
+            layer_show(title, $("article.page-container"), '', 540, undefined, 1);//page-container
+		}
+		
+	</script>
+</body>
+</html>

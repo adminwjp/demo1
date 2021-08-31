@@ -1,0 +1,148 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{365CFBBE-B40C-4765-94F2-91019F82001C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{B22AB55F-D16D-48D5-A897-785E8422BA1F}"
+	ProjectSection(SolutionItems) = preProject
+		build\build.bat = build\build.bat
+		build\build.sh = build\build.sh
+		build\elasticsearch.bat = build\elasticsearch.bat
+		build\estool.bat = build\estool.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{9206571B-7CA0-4A75-BAFB-863D6B25470A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{DA91E297-8082-4AAD-9754-507D5B6EDF9F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokerConsoleApp", "PokerConsoleApp\PokerConsoleApp.csproj", "{D988BE36-49B8-4F8C-88C1-5FC6DC16F0B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialContact.Api.Demo", "SocialContact.Api.Demo\SocialContact.Api.Demo.csproj", "{F52B140E-7B95-4C4C-88FD-0C0FB6635EC9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialContact.UnitTest", "SocialContact.UnitTest\SocialContact.UnitTest.csproj", "{24F23C45-F227-417D-86F2-5CF2AED09DDE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialContact.WebApi", "SocialContact.WebApi\SocialContact.WebApi.csproj", "{CCCB24B0-3314-4A8E-ADF8-4003FC135C70}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{EF04C227-62D2-4368-8229-36E22FA2B944}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "..\..\csharp\src\IdentityServer\IdentityServer\IdentityServer.csproj", "{7F0D7EA4-E753-4BEC-AF1D-E08F77EA00DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TakeOutFoot.Api", "..\..\csharp\src\TakeOutFoot\src\TakeOutFoot.Api\TakeOutFoot.Api.csproj", "{A75FC2FC-7A2D-4A79-9F9D-B0C2A21F9F83}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Utility.Simple.Shared", "..\..\csharp\src\Utility\Shared\Utility.Simple.Shared\Utility.Simple.Shared.shproj", "{C947A847-0107-42CA-A2A6-AC64EC83164D}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Utility.Shared", "..\..\csharp\src\Utility\Shared\Utility.Shared\Utility.Shared.shproj", "{8FA75A51-A3BF-4ADD-A256-FFC889D02582}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Utility.AspNet.RegisterService.Shared", "..\..\csharp\src\Utility\Shared\Utility.AspNet.RegisterService.Shared\Utility.AspNet.RegisterService.Shared.shproj", "{943793FF-0DB2-4B70-879F-7EBF6C425759}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Utility.RegisterService.Shared", "..\..\csharp\src\Utility\Shared\Utility.RegisterService.Shared\Utility.RegisterService.Shared.shproj", "{6943C6B1-3EA8-4582-8CD2-EC76D900D373}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Utility.Web.Ioc.Shared", "..\..\csharp\src\Utility\Shared\Utility.Web.Ioc.Shared\Utility.Web.Ioc.Shared.shproj", "{12B3866B-8B55-4200-9469-36CD78B8F6B6}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Utility.Web.Json.Shared", "..\..\csharp\src\Utility\Shared\Utility.Web.Json.Shared\Utility.Web.Json.Shared.shproj", "{17676C87-41CF-4F9D-A91E-F8EA2DB3BB64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility.Simple", "..\..\csharp\src\Utility\Utility.Simple\Utility.Simple.csproj", "{70BF5A15-996C-4961-A1C8-A4A165691843}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility.Dappper.Simple", "..\..\csharp\src\Utility\Utility.Dappper.Simple\Utility.Dappper.Simple.csproj", "{0F7389DC-A5CE-481C-960A-6E1D2D78BF80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility.Nhibernate.Simple", "..\..\csharp\src\Utility\Utility.Nhibernate.Simple\Utility.Nhibernate.Simple.csproj", "{143C1AB0-0E61-4286-80E0-DA5FA33A0809}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility.AspNet.Simple", "..\..\csharp\src\Utility\Utility.AspNet.Simple\Utility.AspNet.Simple.csproj", "{31ACB4E5-AE7D-43B6-9618-0A95656ECEF8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility.RegisterService", "..\..\csharp\src\Utility\Utility.RegisterService\Utility.RegisterService.csproj", "{4D1CCBF5-A96A-4CFF-B9CA-45EE014C49A8}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\csharp\src\Utility\Shared\Utility.Web.Ioc.Shared\Utility.Web.Ioc.Shared.projitems*{12b3866b-8b55-4200-9469-36cd78b8f6b6}*SharedItemsImports = 13
+		..\..\csharp\src\Utility\Shared\Utility.Web.Json.Shared\Utility.Web.Json.Shared.projitems*{17676c87-41cf-4f9d-a91e-f8ea2db3bb64}*SharedItemsImports = 13
+		..\..\csharp\src\Utility\Shared\Utility.AspNet.RegisterService.Shared\Utility.AspNet.RegisterService.Shared.projitems*{31acb4e5-ae7d-43b6-9618-0a95656ecef8}*SharedItemsImports = 5
+		..\..\csharp\src\Utility\Shared\Utility.Web.Json.Shared\Utility.Web.Json.Shared.projitems*{31acb4e5-ae7d-43b6-9618-0a95656ecef8}*SharedItemsImports = 5
+		..\..\csharp\src\Utility\Shared\Utility.RegisterService.Shared\Utility.RegisterService.Shared.projitems*{4d1ccbf5-a96a-4cff-b9ca-45ee014c49a8}*SharedItemsImports = 5
+		..\..\csharp\src\Utility\Shared\Utility.RegisterService.Shared\Utility.RegisterService.Shared.projitems*{6943c6b1-3ea8-4582-8cd2-ec76d900d373}*SharedItemsImports = 13
+		..\..\csharp\src\Utility\Shared\Utility.Simple.Shared\Utility.Simple.Shared.projitems*{70bf5a15-996c-4961-a1c8-a4a165691843}*SharedItemsImports = 5
+		..\..\csharp\src\Utility\Shared\Utility.Shared\Utility.Shared.projitems*{8fa75a51-a3bf-4add-a256-ffc889d02582}*SharedItemsImports = 13
+		..\..\csharp\src\Utility\Shared\Utility.AspNet.RegisterService.Shared\Utility.AspNet.RegisterService.Shared.projitems*{943793ff-0db2-4b70-879f-7ebf6c425759}*SharedItemsImports = 13
+		..\..\csharp\src\Utility\Shared\Utility.Simple.Shared\Utility.Simple.Shared.projitems*{c947a847-0107-42ca-a2a6-ac64ec83164d}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D988BE36-49B8-4F8C-88C1-5FC6DC16F0B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D988BE36-49B8-4F8C-88C1-5FC6DC16F0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D988BE36-49B8-4F8C-88C1-5FC6DC16F0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D988BE36-49B8-4F8C-88C1-5FC6DC16F0B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F52B140E-7B95-4C4C-88FD-0C0FB6635EC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F52B140E-7B95-4C4C-88FD-0C0FB6635EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F52B140E-7B95-4C4C-88FD-0C0FB6635EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F52B140E-7B95-4C4C-88FD-0C0FB6635EC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24F23C45-F227-417D-86F2-5CF2AED09DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24F23C45-F227-417D-86F2-5CF2AED09DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24F23C45-F227-417D-86F2-5CF2AED09DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24F23C45-F227-417D-86F2-5CF2AED09DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCCB24B0-3314-4A8E-ADF8-4003FC135C70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCCB24B0-3314-4A8E-ADF8-4003FC135C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCCB24B0-3314-4A8E-ADF8-4003FC135C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCCB24B0-3314-4A8E-ADF8-4003FC135C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F0D7EA4-E753-4BEC-AF1D-E08F77EA00DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0D7EA4-E753-4BEC-AF1D-E08F77EA00DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0D7EA4-E753-4BEC-AF1D-E08F77EA00DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0D7EA4-E753-4BEC-AF1D-E08F77EA00DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A75FC2FC-7A2D-4A79-9F9D-B0C2A21F9F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A75FC2FC-7A2D-4A79-9F9D-B0C2A21F9F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A75FC2FC-7A2D-4A79-9F9D-B0C2A21F9F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A75FC2FC-7A2D-4A79-9F9D-B0C2A21F9F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70BF5A15-996C-4961-A1C8-A4A165691843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70BF5A15-996C-4961-A1C8-A4A165691843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70BF5A15-996C-4961-A1C8-A4A165691843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70BF5A15-996C-4961-A1C8-A4A165691843}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F7389DC-A5CE-481C-960A-6E1D2D78BF80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F7389DC-A5CE-481C-960A-6E1D2D78BF80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F7389DC-A5CE-481C-960A-6E1D2D78BF80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F7389DC-A5CE-481C-960A-6E1D2D78BF80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{143C1AB0-0E61-4286-80E0-DA5FA33A0809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{143C1AB0-0E61-4286-80E0-DA5FA33A0809}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{143C1AB0-0E61-4286-80E0-DA5FA33A0809}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{143C1AB0-0E61-4286-80E0-DA5FA33A0809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31ACB4E5-AE7D-43B6-9618-0A95656ECEF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31ACB4E5-AE7D-43B6-9618-0A95656ECEF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31ACB4E5-AE7D-43B6-9618-0A95656ECEF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31ACB4E5-AE7D-43B6-9618-0A95656ECEF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D1CCBF5-A96A-4CFF-B9CA-45EE014C49A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D1CCBF5-A96A-4CFF-B9CA-45EE014C49A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D1CCBF5-A96A-4CFF-B9CA-45EE014C49A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D1CCBF5-A96A-4CFF-B9CA-45EE014C49A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B22AB55F-D16D-48D5-A897-785E8422BA1F} = {365CFBBE-B40C-4765-94F2-91019F82001C}
+		{9206571B-7CA0-4A75-BAFB-863D6B25470A} = {365CFBBE-B40C-4765-94F2-91019F82001C}
+		{DA91E297-8082-4AAD-9754-507D5B6EDF9F} = {9206571B-7CA0-4A75-BAFB-863D6B25470A}
+		{D988BE36-49B8-4F8C-88C1-5FC6DC16F0B1} = {365CFBBE-B40C-4765-94F2-91019F82001C}
+		{F52B140E-7B95-4C4C-88FD-0C0FB6635EC9} = {365CFBBE-B40C-4765-94F2-91019F82001C}
+		{24F23C45-F227-417D-86F2-5CF2AED09DDE} = {365CFBBE-B40C-4765-94F2-91019F82001C}
+		{CCCB24B0-3314-4A8E-ADF8-4003FC135C70} = {365CFBBE-B40C-4765-94F2-91019F82001C}
+		{EF04C227-62D2-4368-8229-36E22FA2B944} = {365CFBBE-B40C-4765-94F2-91019F82001C}
+		{7F0D7EA4-E753-4BEC-AF1D-E08F77EA00DB} = {EF04C227-62D2-4368-8229-36E22FA2B944}
+		{A75FC2FC-7A2D-4A79-9F9D-B0C2A21F9F83} = {365CFBBE-B40C-4765-94F2-91019F82001C}
+		{C947A847-0107-42CA-A2A6-AC64EC83164D} = {DA91E297-8082-4AAD-9754-507D5B6EDF9F}
+		{8FA75A51-A3BF-4ADD-A256-FFC889D02582} = {DA91E297-8082-4AAD-9754-507D5B6EDF9F}
+		{943793FF-0DB2-4B70-879F-7EBF6C425759} = {DA91E297-8082-4AAD-9754-507D5B6EDF9F}
+		{6943C6B1-3EA8-4582-8CD2-EC76D900D373} = {DA91E297-8082-4AAD-9754-507D5B6EDF9F}
+		{12B3866B-8B55-4200-9469-36CD78B8F6B6} = {DA91E297-8082-4AAD-9754-507D5B6EDF9F}
+		{17676C87-41CF-4F9D-A91E-F8EA2DB3BB64} = {DA91E297-8082-4AAD-9754-507D5B6EDF9F}
+		{70BF5A15-996C-4961-A1C8-A4A165691843} = {9206571B-7CA0-4A75-BAFB-863D6B25470A}
+		{0F7389DC-A5CE-481C-960A-6E1D2D78BF80} = {9206571B-7CA0-4A75-BAFB-863D6B25470A}
+		{143C1AB0-0E61-4286-80E0-DA5FA33A0809} = {9206571B-7CA0-4A75-BAFB-863D6B25470A}
+		{31ACB4E5-AE7D-43B6-9618-0A95656ECEF8} = {9206571B-7CA0-4A75-BAFB-863D6B25470A}
+		{4D1CCBF5-A96A-4CFF-B9CA-45EE014C49A8} = {9206571B-7CA0-4A75-BAFB-863D6B25470A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {51DBBF92-5221-43BA-BBD6-20CE7BB2F2D6}
+	EndGlobalSection
+EndGlobal

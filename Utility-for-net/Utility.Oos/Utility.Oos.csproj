@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Minio net46 - net48 netcoreapp2.0 - net5.0 netstandard2.0 - netstandard2.1 -->
+  <Import Project="Props\Minio.props" />
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+
+    <RootNamespace>Utility</RootNamespace>
+
+    <OutputPath>e:\work\Package\Utility.Oos\</OutputPath>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <RepositoryUrl>e:\work\Package\Utility.Oos\</RepositoryUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>e:\work\Package\Utility.Oos\</PackageProjectUrl>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>e:\work\Package\Utility.Oos\Utility.Oos.xml</DocumentationFile>
+    <Version>1.0.0.0</Version>
+    <Description>minio</Description>
+    <SignAssembly>false</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <Authors>wjp</Authors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Aliyun.OSS.SDK.NetCore" Version="2.13.0" />
+  </ItemGroup>
+
+</Project>

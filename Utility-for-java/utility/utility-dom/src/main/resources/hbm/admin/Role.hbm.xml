@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="Role" table="t_role" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+<property name="name" column="name" type="java.lang.String" />
+<property name="value" column="value" type="java.lang.String" />
+<property name="description" column="description" type="java.lang.String" />
+ <many-to-one name="isSystem" foreign-key="fk_isSystem_id" column="isSystem_id" cascade="all" fetch="join"  />
+<property name="createBy" column="create_by" type="java.lang.String" />
+<property name="lastUpdatedBy" column="last_updated_by" type="java.lang.String" />
+    </class>
+</hibernate-mapping>

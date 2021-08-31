@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="PrizeSendRecord" table="t_prize_send_record" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="prize" foreign-key="fk_prize_id" column="prize_id" cascade="all" fetch="join"  />
+ <many-to-one name="buyer" foreign-key="fk_buyer_id" column="buyer_id" cascade="all" fetch="join"  />
+ <many-to-one name="activityId" foreign-key="fk_activityId_id" column="activityId_id" cascade="all" fetch="join"  />
+ <many-to-one name="activityType" foreign-key="fk_activityType_id" column="activityType_id" cascade="all" fetch="join"  />
+<property name="status" column="status" type="java.lang.Integer" />
+<property name="prizeId" column="prize_id" type="java.lang.Integer" />
+<property name="buyerId" column="buyer_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

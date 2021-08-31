@@ -1,0 +1,17 @@
+<Project>
+  <!-- HttpClient >=net45  -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'net451' OR '$(TargetFramework)' == 'net452'  ">
+    <!-- HttpClient -->
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'  OR '$(TargetFramework)' == 'net461' OR '$(TargetFramework)' == 'net462' ">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' OR '$(TargetFramework)' == 'net471' OR '$(TargetFramework)' == 'net472' OR '$(TargetFramework)' == 'net48'  ">
+      <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+</Project>

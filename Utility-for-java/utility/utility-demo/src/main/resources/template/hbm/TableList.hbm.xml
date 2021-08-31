@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.template.model">
+    <class name="com.template.dao.model.TableList" table="t_table_list" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+        <property name="title" column="title" type="java.lang.String" ></property>
+        <property name="add" column="`add`" type="boolean" ></property>
+        <property name="modify" column="`modify`" type="boolean" ></property>
+        <property name="delete" column="`delete`" type="boolean" ></property>
+        <property name="tableModify" column="table_modify" type="boolean" ></property>
+        <property name="tableDelete" column="table_delete" type="boolean" ></property>
+        <property name="tablePreview" column="table_preview" type="boolean" ></property>
+        <set name="columns"    inverse="false" lazy="false" cascade="all">
+            <key column="table_list_id" foreign-key="fk_table_list_id" />
+            <one-to-many class="com.template.dao.model.ColumnRelation" not-found="ignore"/>
+        </set>
+    </class>
+</hibernate-mapping>

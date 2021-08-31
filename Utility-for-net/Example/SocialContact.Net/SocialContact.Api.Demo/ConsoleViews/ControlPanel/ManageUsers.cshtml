@@ -1,0 +1,124 @@
+﻿@{
+    TempData["subMenu-check"] = new string[] { "User", "ManageUser" };
+    IEnumerable<SelectListItem> roleSelectList = ViewData.Get<List<SelectListItem>>("roleSelectList", new List<SelectListItem>());
+    IEnumerable<SelectListItem> stateList = ViewData.Get<List<SelectListItem>>("stateList", new List<SelectListItem>());
+    ViewData["Title"] = new string[] { "用户管理" };
+    var startDate = Utility.ConvertToDateTime(Request.QueryString.Get("minDate", string.Empty));
+    var endDate = Utility.ConvertToDateTime(Request.QueryString.Get("maxDate", string.Empty));
+}
+<div class="row tn-page-heading tn-mb-10">
+    <div class="col-lg-12">
+        <h3>用户管理</h3>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body ">
+        <div class="form-inline tn-tool-column">
+            <div class="form-group" style="width:265px">
+                <label for="keyword">关键字：</label>
+                @Html.TextBox("keyword", null, new RouteValueDictionary { { "class", "color form-control" }, { "placeholder", "昵称/姓名/邮箱/手机号" } })
+            </div>
+            <div class="form-group">
+                <label for="registeDate">注册日期：</label>
+                <div class="input-group tn-width-300">
+                    @Html.DateRangePicker("registeDate", startDate, endDate)
+                </div>
+            </div>
+            <div class="form-group" style="width:280px">
+                <label for="state">用户状态：</label>
+                @Html.DropDownList("state", stateList, "全部状态", new RouteValueDictionary { { "class", "color form-control" } })
+            </div>
+            <div class="form-group" style="width:280px">
+                <label for="role">用户角色：</label>
+                @Html.DropDownList("role", roleSelectList, "全部角色", new RouteValueDictionary { { "class", "form-control" } })
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" type="button" id="search">搜索</button>
+            </div>
+        </div>
+        <hr />
+        <div class="form-inline tn-tool-column">
+            <div class="form-group">
+                <a class="btn btn-default edit-user layeruser" href="javascript:;"><i class="fa fa-plus"></i> 添加用户</a>
+                <a class="btn btn-default delete-user" href="javascript:;"><i class="fa fa-trash"></i> 删除</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div id="_listUsers" class="panel-body">
+        @Html.Action("_ListUsers", "ControlPanel", new RouteValueDictionary(new { roleId = 0, state = 0 }))
+    </div>
+</div>
+@Styles.Render("~/js/lib/daterangepicker/daterangepicker")
+
+<script>
+    require(['jquery', 'tnlayer', 'page', 'datepicker'], function ($, tnlayer) {
+
+        /***********授予用户勋章 add By zhoums 2017-7-21********/
+        $(document).on("click", ".medaltouser", function () {
+            //点击授予勋章
+            var userId = $(this).data("id");
+            tnlayer.layermodal('授予勋章', '@CachedUrlHelper.Action("_MedaltoUser", "ControlPanel")?userId=' + userId + '&t=' + new Date().getTime(), '460px', 'auto');
+        }).on("click", "#medalToUserSubmit", function () {
+            //点击授予勋章确定
+            var userId = $("#userId").val();
+            var medalIds = [];
+            $(".medal:checked").each(function () {
+                var medalId = $(this).attr("id").split("_")[1];
+                medalIds.push(medalId);
+            });
+            var url = '@CachedUrlHelper.Action("MedaltoUserDeal", "ControlPanel")';
+            $.post(url, { userId: userId, medalIds: medalIds }, function (data) {
+                if (data.MessageType == 1) {
+                    layer.closeAll();
+                    layer.msg("授予成功！", { icon: 1 });
+                }
+                else {
+                    layer.msg(data.MessageContent, { icon: 2 });
+                }
+            });
+        }).on("click", ".group", function () {
+            //控制互斥组选中状态
+            var $this = $(this);
+            var name = $this.attr("name");
+            $(".group[name='" + name + "']").each(function () {
+                if ($this.attr("id") != $(this).attr("id"))
+                    $(this).get(0).checked = false;
+            });
+        });
+        /***********授予用户勋章 end **************************/
+
+
+        $(".layeruser").click(function () {
+            tnlayer.layermodal('添加用户', '@SiteUrls.Instance()._EditUser(0)', '450px', '550px')
+        })
+
+        $(".tn-main").keydown(function () {
+            if (event.keyCode == "13") {
+                $('#search').click();
+            }
+        })
+
+        //搜索
+        $("#search").click(function () {
+            var keyword = $("#keyword").val();
+            var dateRange = $("#registeDate").val();
+            var startDate = dateRange.split(' - ')[0];
+            var endDate = dateRange.split(' - ')[1];
+            var state = $("#state option:selected").val();
+            var roleId = $("#role option:selected").val();
+            if (roleId == "") {
+                roleId = 0;
+            }
+            if (state == "") {
+                state = 0;
+            }
+            $.get('@CachedUrlHelper.Action("_ListUsers","ControlPanel")',
+                { keyword: keyword, startDate: startDate, endDate: endDate, state: state, roleId: roleId, requestDate: new Date().getTime() }
+                , function (data) {
+                    $("#_listUsers").html(data)
+                })
+        })
+    })
+</script>

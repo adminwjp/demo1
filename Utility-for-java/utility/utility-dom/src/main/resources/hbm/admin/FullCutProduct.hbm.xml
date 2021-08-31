@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="FullCutProduct" table="t_full_cut_product" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="fullCut" foreign-key="fk_fullCut_id" column="fullCut_id" cascade="all" fetch="join"  />
+ <many-to-one name="product" foreign-key="fk_product_id" column="product_id" cascade="all" fetch="join"  />
+<property name="fullCutId" column="full_cut_id" type="java.lang.Integer" />
+<property name="productId" column="product_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

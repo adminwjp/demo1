@@ -1,0 +1,77 @@
+﻿@model PagingDataSet<Comment>
+@{
+    var parentId = ViewData.Get<long>("parentId", 0);
+    var commentedObjectId = ViewData.Get<long>("commentedObjectId", 0);
+    var _currentUser = UserContext.CurrentUser;
+    Authorizer authorizer = new Authorizer();
+}
+@if (Model != null && Model.Any())
+{
+    foreach (var comment in Model)
+    {
+        var attachments = comment.Attachments?.Where(n => n.Position == AttachmentPosition.AttachmentList);
+        <div class="tn-floor-box childrenCommentContent" name="commentdetail-@comment.Id" id="commentdetail-@comment.Id" data-id="@comment.Id">
+            <h4 class="media-heading"><a href="@SiteUrls.Instance().MyHome(comment.UserId)" target="_blank">@comment.Author</a> 回复 <a href="@SiteUrls.Instance().MyHome(comment.OwnerId)" target="_blank">@DefaultUserIdToUserNameDictionary.GetDisplayName(comment.OwnerId)</a></h4>
+
+            <p class="message">
+                @Html.Raw(comment.Body)
+            </p>
+            @if (attachments != null && attachments.Any())
+            {
+                <div class="tn-file-list tn-mt-20">
+                    @foreach (var item in comment.Attachments)
+                        {
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-xs-1">
+                                    @Html.FileTypeIcon(item.ContentType, "")
+                                </div>
+                                <div class="col-xs-7">@item.FriendlyFileName</div>
+                                <div class="col-xs-2 tn-gray-color">@item.FriendlyFileLength</div>
+                                <div class="col-xs-2"><a href="@CachedUrlHelper.Action("AttachmentDownload", "Common", null, new RouteValueDictionary { { "attachmentId", item.AttachmentId },{"tenantTypeId",TenantTypeIds.Instance().Comment() } })" class="a">下载</a></div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            <div class="tn-feedback">
+                <small class="pull-left text-muted">@comment.DateCreated.ToFriendlyDate()</small>
+                <ul class="list-inline text-right text-muted" onmouseover="$.fn.showoperation(this);" onmouseout="$.fn.hideoperation(this);">
+                    @if (_currentUser != null)
+                    {
+                        bool? isSupport = comment.IsSupport(_currentUser.UserId);
+                        var supportCount = comment.GetSupportCount();
+
+                        if (_currentUser.UserId == comment.UserId || authorizer.IsPostManager(_currentUser))
+                        {
+                            <li><a href="javascript:;" class="delete" name="deleteChildrenComment" data-id="@comment.Id" hidden><i class="fa fa-trash"></i> 删除</a></li>
+                        }
+                        <li><a href="javascript:;" name="report" style="display:none" data-url="@CachedUrlHelper.Action("_EditImpeachReport", "Common", null, new RouteValueDictionary { { "tenantTypeId", TenantTypeIds.Instance().Comment() }, { "reportObjectId", comment.Id }, { "subject",StringUtility.Trim(comment.Body,15) } })"><i class="fa fa-exclamation-circle"></i> 举报</a></li>
+
+                        if (isSupport.HasValue && isSupport.Value)
+                        {
+                            <li><a href="javascript:;"><i class="fa fa-thumbs-o-up"></i> 已赞(<span id="SupportCount-@comment.Id">@supportCount</span> )</a></li>
+                        }
+                        else
+                        {
+                            <li id="commentsupport-@comment.Id"><a href="javascript:;"><i class="fa fa-thumbs-o-up"></i> 赞(<span id="SupportCount-@comment.Id">@supportCount</span>)</a></li>
+
+                        }
+
+
+                        <li><a href="javascript:;" class="reply" data-href="@CachedUrlHelper.Action("_Comment","Post",null,new RouteValueDictionary { { "parentId", comment.Id },{ "commentedObjectId", commentedObjectId }, { "isParent", false } })" data-isshow="0"><i class="fa fa-reply"></i> 回复</a></li>
+                    }
+                    else
+                    {
+                        <li></li>
+                    }
+                </ul>
+                <div class="controlContainer">
+
+                </div>
+
+            </div>
+        </div>
+    }
+}

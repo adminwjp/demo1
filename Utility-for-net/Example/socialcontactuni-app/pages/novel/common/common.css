@@ -1,0 +1,161 @@
+@font-face {
+	font-family: texticons;
+	font-weight: normal;
+	font-style: normal;
+	src: url('https://at.alicdn.com/t/font_702773_ttt8tj203j.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'iconfont';
+	/* project id 810125 */
+	src: url('https://at.alicdn.com/t/font_810125_yxded5ozno.ttf') format('truetype');
+}
+
+.index {
+	flex: 1;
+	flex-direction: column;
+}
+
+.row {
+	flex-direction: row;
+}
+
+.column {
+	flex-direction: column;
+}
+
+.card {
+	position: relative;
+	width: 100%;
+	margin: 10upx;
+	border-radius: 10px;
+	overflow: hidden;
+	flex-direction: column;
+	background-color: #FFFFFF;
+}
+
+
+.car-title-view {
+	flex: 1;
+	padding: 15upx;
+}
+
+.car-title-view rich-text {
+	line-height: 1.8;
+}
+
+
+
+.loadMore {
+	font-size: 30px;
+	color: #555;
+	margin: 20px auto;
+	text-align: center;
+
+}
+
+/* 个人中心 */
+
+.center {
+	flex-direction: column;
+}
+
+.logo {
+	width: 750px;
+	height: 240px;
+	padding: 20px;
+	box-sizing: border-box;
+	background-color: #FF80AB;
+	flex-direction: row;
+	align-items: center;
+}
+
+.logo-hover {
+	opacity: 0.8;
+}
+
+.logo-img {
+	width: 150px;
+	height: 150px;
+	border-radius: 150px;
+}
+
+.logo-title {
+	height: 150px;
+	flex: 1;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: row;
+	margin-left: 20px;
+}
+
+.uer-name {
+	height: 60px;
+	line-height: 60px;
+	font-size: 38px;
+	color: #FFFFFF;
+}
+
+.go-login.navigat-arrow {
+	font-size: 38px;
+	color: #FFFFFF;
+}
+
+.login-title {
+	height: 150px;
+	align-items: self-start;
+	justify-content: center;
+	flex-direction: column;
+	margin-left: 20px;
+}
+
+.center-list {
+	background-color: #FFFFFF;
+	margin-top: 20px;
+	width: 750px;
+	flex-direction: column;
+}
+
+.center-list-item {
+	height: 90px;
+	width: 750px;
+	box-sizing: border-box;
+	flex-direction: row;
+	padding: 0px 20px;
+}
+
+.border-bottom {
+	border-bottom-width: 1px;
+	border-color: #f1f1f1;
+	border-bottom-style: solid;
+}
+
+.list-icon {
+	width: 40px;
+	height: 90px;
+	line-height: 90px;
+	font-size: 34px;
+	color: #FF80AB;
+	text-align: center;
+	font-family: texticons;
+	margin-right: 20px;
+}
+
+.list-text {
+	height: 90px;
+	line-height: 90px;
+	font-size: 34px;
+	color: #555;
+	flex: 1;
+	text-align: left;
+}
+
+.navigat-arrow {
+	height: 90px;
+	width: 40px;
+	line-height: 90px;
+	font-size: 34px;
+	color: #555;
+	text-align: right;
+	font-family: texticons;
+}

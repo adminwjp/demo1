@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- create by autoCode,v1.0.0 -->
+<mapper namespace="agentRank">
+    <insert id="agentRank.add" parameterType="com.shop.model.AgentRank" useGeneratedKeys="true" keyProperty="id">
+
+        insert into t_agent_aduit_log
+        (
+        createDate
+        <if test="agentId!=null">
+            ,agentId
+        </if>
+        <if test="aduitOpter!=null">
+            ,aduitOpter
+        </if>
+        <if test="aduitContent!=null and aduitContent!=''">
+            ,aduitContent
+        </if>
+        <if test="aduitStatus!=null">
+            ,aduitStatus
+        </if>
+        )
+        values
+        (
+        now()
+        <if test="agentId!=null">
+            ,#{agentId}
+        </if>
+        <if test="aduitOpter!=null">
+            ,#{aduitOpter}
+        </if>
+        <if test="aduitContent!=null and aduitContent!=''">
+            ,#{aduitContent}
+        </if>
+        <if test="aduitStatus!=null">
+            ,#{aduitStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        )
+    </insert>
+
+    <update id="agentRank.modify" parameterType="com.shop.model.AgentRank" >
+        update  t_user set modifyDate=now()
+        <if test="agentId!=null">
+            ,agentId=#{agentId}
+        </if>
+        <if test="aduitOpter!=null">
+            ,aduitOpter=#{aduitOpter}
+        </if>
+        <if test="aduitContent!=null and aduitContent!=''">
+            ,aduitContent=#{aduitContent}
+        </if>
+        <if test="aduitStatus!=null">
+            ,aduitStatus=#{aduitStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        where id =#{id}
+    </update>
+
+    <sql id="deleteSql">delete from  t_agent_rank where id </sql>
+
+    <delete id="agentRank.delete" parameterType="java.lang.Integer" >
+        <include refid="deleteSql"/>=#{id}
+    </delete>
+
+    <delete id="agentRank.deleteMany" >
+        <include refid="deleteSql" />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="rankName!=null and rankName!=''">
+                or agentName=#{agentName}
+            </if>
+            <if test="rankWeight!=null ">
+                or rankWeight=#{rankWeight}
+            </if>
+            <if test="firstRate!=null">
+                or firstRate=#{firstRate}
+            </if>
+            <if test="secondRate!=null">
+                or secondRate=#{secondRate}
+            </if>
+            <if test="thirdRate!=null">
+                or thirdRate=#{thirdRate}
+            </if>
+            <if test="rewardValue!=null ">
+                or rewardValue=#{rewardValue}
+            </if>
+            <if test="getCashDate!=null">
+                or getCashDate=#{getCashDate}
+            </if>
+            <if test="getCashLimit!=null">
+                or getCashLimit=#{getCashLimit}
+            </if>
+            <if test="childrenCount!=null">
+                or childrenCount=#{childrenCount}
+            </if>
+            <if test="totalCommission!=null">
+                or totalCommission=#{totalCommission}
+            </if>
+            <if test="createDate!=null">
+                or createDate=#{createDate}
+            </if>
+            <if test="modifyDate!=null">
+                or modifyDate=#{modifyDate}
+            </if>
+        </where>
+    </sql>
+
+    <select id="agentRank.select"  parameterType="com.shop.model.AgentRank" resultType="com.shop.model.AgentRank">
+        select * from  t_agent_rank
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="agentRank.count" parameterType="com.shop.model.AgentRank" resultType="java.lang.Integer">
+        select count(id) from  t_agent_rank
+        <include refid="whereIf"/>
+    </select>
+
+
+</mapper>

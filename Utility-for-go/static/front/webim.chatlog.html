@@ -1,0 +1,34 @@
+<link type="text/css" href="css/global.css" rel="stylesheet" />
+<link type="text/css" href="layui/css/modules/layim/layim.css" rel="stylesheet" />
+<style type="text/css">
+body {
+	min-width: 300px;
+	padding-bottom: 30px;
+}
+.layim-chat-main {
+	height: auto
+}
+.pagination {
+	float:none;
+	margin-left:20px;
+}
+</style>
+<div class="layim-chat-main clearfix">
+  <ul>
+    {{range $item := .list }}
+    <li class="{{if eq .visitor.userid  $item.fromid}}layim-chat-mine{{end}}">
+      <div class="layim-chat-user"><img src="{{$item.avatar}}"> <cite>
+        {{if eq .visitor.userid  $item.fromid}}
+        <i>{{$item.add_time}}</i>{{$item.fromName}}
+        {{else}}
+        {{$item.fromName}}<i>{{$item.add_time}}</i>
+        {{end}}
+        </cite> </div>
+      <div class="layim-chat-text">{{$item.formatContent}}</div>
+    </li>
+    {{end}}
+  </ul>
+</div>
+{{if .list}}
+<div class="clearfix">{template "page.bottom.html"}}</div>
+{{end}}

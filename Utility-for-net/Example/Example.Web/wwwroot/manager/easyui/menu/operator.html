@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>添加菜单</title>
+    <link rel="stylesheet" type="text/css" href="/src/plugin/jquery-easyui-1.7.0/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/src/plugin/jquery-easyui-1.7.0/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/src/plugin/jquery-easyui-1.7.0/demo/demo.css">
+    <script type="text/javascript" src="/src/plugin/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/src/plugin/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/src/js/index.js"></script>
+</head>
+<body>
+    <!-- bug dialog 中 文本不显示 分开可以-->
+    <form id="ff" class="easyui-form" method="post" data-options="novalidate:true" style="width: 100%; max-width: 500px; padding:30px 60px;">
+        <!--<div id="id" style="margin-bottom:20px;">
+        <select class="easyui-combobox" name="id" id="id1" style="width:100%" data-options="label:'id:',labelAlign:'left',labelPosition:'before'">
+            <option value="请选择">请选择</option>
+        </select>
+    </div>-->
+        <div id="id" style="margin-bottom:20px;">
+            <input class="easyui-textbox" name="id" id="id1" style="width:100%" data-options="label:'id:',labelAlign:'left',labelPosition:'before'" />
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-textbox" name="text" style="width:100%" data-options="label:'名称:',labelAlign:'left',labelPosition:'before',required:true">
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-checkbox" name="checked" value="true" data-options="label:'选中:',labelAlign:'left',labelPosition:'before'">
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-checkbox" name="state" value="open" data-options="label:'状态:',labelAlign:'left',labelPosition:'before'">
+        </div>
+        <div style="margin-bottom:20px">
+            <input class="easyui-textbox" name="icon_cls" style="width:100%" data-options="label:'图标:',labelAlign:'left',labelPosition:'before',required:true">
+        </div>
+        <div style="text-align:center;padding:5px 0">
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+        </div>
+    </form>
+    <script type="text/javascript" src="resources/js/index.js"></script>
+    <script>
+        //表单
+        function submitForm() {
+            ////得到表单窗口中的form对象
+            var fm = $('#ff');
+            //提交的啥玩意 checkbox 数据提交不上去了
+            fm.form('submit', {
+                url: edit ? urls.menu.update : urls.menu.create,
+                onSubmit: function (param) {
+                    console.log(param);
+                    //if ($(this).form('validate')) {
+                    if ($(this).form('enableValidation').form('validate')) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                },
+                success: function (data) {
+                    // console.log(data);
+                    var res = JSON.parse(data);
+                    if (res.success) {
+                        $.messager.alert("提示：", edit ? "编辑成功" : "添加成功", "info", function () {
+                            
+                            //怎么 重新加载
+                           // parent.$('#dialog_menu').dialog({ closed: true, inParam: { success: true } });//不会执行关闭方法 传输 数据
+                            parent.$('#dialog_menu').dialog({ inParam: { success: true } });
+                            parent.$('#dialog_menu').dialog('close');//关闭父页面 中dialog 执行 OnClose 方法
+                        });
+                    
+                        
+                    }
+                    else {
+                        $.messager.alert('提示：', edit ? "编辑失败" : '添加失败!', 'warn');
+                    }
+                }
+            });
+        }
+        var edit = false;
+       // console.log(parent);
+        //dialog 高度不够,布局会变形
+        //url  获取 不到 地址 不知道 获取 跳转的地址 location
+        if (sessionStorage.getItem("operator") == "edit") {
+            edit = true;
+            // document.title = "编辑菜单";
+            sessionStorage.removeItem("operator");
+            var data = localStorage.getItem("menu");
+           // console.log(data);
+            if (data) {
+                var res = JSON.parse(data);
+                $('#ff').form('load', res);
+                // $("select[name='id']").combobox('loadData', [res.id]);
+                //$("select[name='id']").combobox('setValue', '001');
+                // $("#id1").combobox('setValue', res.id);
+                if (res.state == "open"){
+                   // $("input[name='state']").prop("checked",true);//没啥用 
+                    $("input[name='state']").attr("checked", "checked");
+                    $("input[name='state']").parent().show();//这一步 关键  页面显示出来 
+                }
+                if (res.checked) {
+                    $("input[name='checked']").attr("checked", "checked");
+                    $("input[name='checked']").parent().show();//这一步 关键  页面显示出来 
+                }
+            }
+            $("#id").show();
+        } else {
+            //document.title = "添加菜单";
+            $("#id").hide();
+        }
+        function clearForm() {
+            $('#ff').form('clear');
+        }
+    </script>
+</body>
+</html>

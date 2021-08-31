@@ -1,0 +1,104 @@
+﻿@model PointTask
+@{
+
+    ViewData["Title"] = new string[] { "分享任务" };
+    TempData["SidebarType"] = "PointTask";
+    var setting = ViewData.Get<PointTaskShareSetting>("setting", null);
+}
+
+<div class="row jh-space-setup">
+    @{
+        var sidebarType = TempData.Get<string>("SidebarType", string.Empty);
+
+        Func<string, string> subMenu = (SidebarType) =>
+        {
+
+            if (sidebarType == SidebarType)
+                return "class=active";
+            else
+                return string.Empty;
+        };
+        var accountTypes = new AccountBindingService().GetAccountTypes(true);
+        var user = UserContext.CurrentUser;
+    }
+    @Styles.Render("~/js/lib/plupload/upload")
+    <div class="col-xs-2">
+        <div class="jh-space-left">
+            <div class="jh-user-head">
+                @Html.ShowUserAvatar(userId: user.UserId, avatarSizeType: AvatarSizeType.Big, enableClientCaching: false, enableNavigate: true, isShowUserCard: false)
+                <button class="btn btn-default layerAvatar"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+            </div>
+            <ul class="list-unstyled">
+                <li @subMenu("UserSetting")><a href="@SiteUrls.Instance().UserSetting()">用户资料</a></li>
+                @if (accountTypes != null && accountTypes.Any() && Utility.CheckThirdPartyLogin())
+                {
+                    <li @subMenu("AccountBinding")><a href="@SiteUrls.Instance().AccountBinding()">帐号绑定</a></li>
+                }
+                <li @subMenu("MyNotice")><a href="@SiteUrls.Instance().MyNotice()">我的通知</a></li>
+                <li @subMenu("MyPoints")><a href="@SiteUrls.Instance().MyPoints()">我的积分</a></li>
+                <li @subMenu("PointTask")><a href="@SiteUrls.Instance().PointTask()">积分任务</a></li>
+                <li><a href="@SiteUrls.Instance().MedalShop()">勋章馆</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+        $(".layerAvatar").click(function () {
+            tnlayer.layermodal('头像设置', '@CachedUrlHelper.Action("_Avatar", "UserSpace")', '550px', '510px');
+        });
+    })
+    </script>
+
+    <div class="col-xs-10">
+        <div class="jh-space-right jh-padding-white">
+            <div class="col-xs-5">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <label>分享页面URL</label>
+                        <input type="text" title="@setting.LinkUrl" class="form-control" value="@setting.LinkUrl" disabled="disabled" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <ul class="bdsharebuttonbox list-unstyled">
+                            @if (setting.ShareWeiXin == "True")
+                            {
+                                <li><a class="bds_weixin" data-cmd="weixin">微信朋友圈</a></li>
+                            }
+                            @if (setting.ShareQQ == "True")
+                            {
+                                <li><a class="bds_qzone" data-cmd="qzone">QQ空间</a></li>
+                            }
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+
+        //分享插件
+        window._bd_share_config = {
+            common: {
+                bdText: '积分任务，分享链接',
+                bdUrl: '@setting.LinkUrl',
+                onAfterClick: function () {
+                    var url = '@CachedUrlHelper.Action("ShareCallBack", "UserSpace")';
+                    $.post(url, { taskId:@Model.TaskId,userId:@UserContext.CurrentUser.UserId}, function (data) {
+                    });
+                }
+            },
+            share: [{
+                //分享按钮的尺寸
+                "bdSize": 16,
+            }]
+        }
+        with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5)];
+
+
+    });
+</script>

@@ -1,0 +1,82 @@
+﻿
+@model PagingDataSet<UserSignIn>
+@{ 
+
+    var userSignInOrder = ViewData.Get("userSignInOrder", UserSignInOrder.SignCount_Desc);
+    var pointService = DIContainer.Resolve<PointService>();
+    var tradePoints = pointService.GetPointCategory(PointCategoryKeys.Instance().TradePoints());
+    var experiencePoints = pointService.GetPointCategory(PointCategoryKeys.Instance().ExperiencePoints());
+}
+@if (Model.Count() > 0)
+{
+    <table class="table tn-va-middle">
+        <thead>
+            <tr style="">
+                <th >昵称</th>
+                <th>姓名</th>
+                <th>等级</th>
+                <th>最近连续签到天数</th>
+                @if (userSignInOrder == UserSignInOrder.SignCount_Desc)
+                {
+                    <th>累计签到天数</th>
+                }
+                else
+                {
+                    <th>月累计签到天数</th>
+
+                }
+                <th>签到奖励@(tradePoints.CategoryName)数</th>
+                <th>签到奖励@(experiencePoints.CategoryName)数</th>
+                <th>今日签到</th>
+                <th>最后签到日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userSignIn in Model)
+            {
+                if (userSignIn.User != null)
+                {
+                    <tr id="@userSignIn.UserId">
+                        <td>@userSignIn.User.UserName</td>
+                        <td>@userSignIn.User.TrueName</td>
+                        <td>@userSignIn.User.Rank</td>
+                        <td>@userSignIn.ContinuedSignCount</td>
+                        @if (userSignInOrder == UserSignInOrder.SignCount_Desc)
+                        {
+                            <td>@userSignIn.SignCount</td>
+                        }
+                        else
+                        {
+                            <td>@userSignIn.MonthSignCount</td>
+
+                        }
+
+                        <td>@userSignIn.TradePointSum</td>
+                        <td>@userSignIn.ExperiencePointSum</td>
+                        @if (@userSignIn.IsSign)
+                        {
+                            <td class="tn-green-color">已签到</td>
+                        }
+                        else
+                        {
+                            <td class="tn-gray-color">未签到</td>
+                        }
+                        <td>@userSignIn.LastSignedIn.ToString("yyyy-MM-dd HH:mm")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center clearfix text-warning">无查询用户</div>
+}
+<div class="text-center">
+    @Html.AjaxPagingButton(Model, "_ListUserSignIn", CachedUrlHelper.Action("_ListUserSignIn", "ControlPanel"))
+</div>
+<style>
+    th,td{
+      text-align:center;
+    }
+</style>

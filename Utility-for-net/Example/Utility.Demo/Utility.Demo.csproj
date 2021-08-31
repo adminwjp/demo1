@@ -1,0 +1,98 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- 版本不对 冲突 只能用一个 ef 迁移错误 -->
+    <!--<TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>-->
+    <!--<TargetFrameworks>netstandard2.0;net48;net5.0</TargetFrameworks>-->
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <RootNamespace>Utility</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="OA\NHibernate\app.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+  
+    
+    <Content Include="OA\NHibernate\app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+    <ItemGroup>
+      <!--<PackageReference Include="Utility.NoSql" Version="1.0.0" />
+      <PackageReference Include="Utility.RegisterService" Version="1.0.0" />-->
+    
+        <ProjectReference Include="..\..\Utility.NoSql\Utility.NoSql.csproj" />
+    <ProjectReference Include="..\..\Utility.RegisterService\Utility.RegisterService.csproj" />
+   
+      
+   <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
+    <!--<ProjectReference Include="..\..\Utility.Ef.Simple\Utility.Ef.Simple.csproj" />
+    <ProjectReference Include="..\..\Utility.Ef\Utility.Ef.csproj" />
+     <ProjectReference Include="..\..\Utility.Nhibernate.Simple\Utility.Nhibernate.Simple.csproj" />
+    <ProjectReference Include="..\..\Utility\Utility.csproj" />-->
+    <ProjectReference Include="..\Utility.Core.Demo\Utility.Core.Demo.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Config\address.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Config\hbm\ConfigModel.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Config\hbm\ServiceModel.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Config\hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Demo\hbm\demo.hbm.xml.back">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Demo\hbm\demo.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Demo\hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\demo.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\address.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\catagory.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\edution.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\icon.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\user_menu.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\work.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Demo\SocialContact\Application\Validator\" />
+    <Folder Include="Cap\" />
+    <Folder Include="OA\Application\Services\" />
+  </ItemGroup>
+
+</Project>

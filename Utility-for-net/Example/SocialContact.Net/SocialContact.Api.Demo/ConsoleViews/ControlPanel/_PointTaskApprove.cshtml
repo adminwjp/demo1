@@ -1,0 +1,27 @@
+﻿@{
+    var options = ViewData.Get<List<PointTaskSetting>>("options", null);
+    var contents = ViewData.Get<List<PointTaskSetting>>("contents", null);
+    var record = ViewData.Get<PointTaskRecord>("record", null);
+    int index = 0;
+}
+
+
+@foreach (var option in options)
+{
+    <div class="form-group">
+        <label title="@option.SettingName">@StringUtility.Trim(option.SettingName, 15)</label>
+        <p>@(contents != null ? contents.ElementAtOrDefault(index).SettingName : "")</p>
+    </div>
+    index++;
+}
+
+<div class="form-group">
+    <label>反馈意见</label>
+    <textarea class="form-control" id="feedbackcontent" rows="2">@record.Feedback.Replace("<br />","")</textarea>
+</div>
+
+<div class="form-group">
+    <a class="btn btn-danger" data-recordid="@record.RecordId" id="taskover">完成任务</a>
+    <a class="btn btn-default" data-recordid="@record.RecordId" id="feedback">反馈意见</a>
+</div>
+

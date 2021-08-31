@@ -1,0 +1,31 @@
+﻿
+@inherits Tunynet.Common.HelperPage
+
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@using System.Web.Routing
+@using System.Web.Optimization
+@using Tunynet
+@using Tunynet.Post
+@using Tunynet.Utilities
+@using Tunynet.Spacebuilder
+@using Tunynet.Common
+
+@{ 
+
+    void TouchScreenUrl(string tenantTypeId, long objectId)
+    {
+        var touchScreenUrlGetter = TouchScreenUrlGetterFactory.Get(tenantTypeId);
+        var touchUrl = touchScreenUrlGetter.GetTouchScreenDetailUrl(objectId);
+    <script src="~/js/tn_IsPC.js"></script>
+    <script>
+        ///支持手机访问页面跳转手机客户端
+        (function () {
+            var url = "@Utility.GetTouchScreenUrl()";
+            if (!IsPC() && url != "") {
+                window.location.href = "@touchUrl".replace('&amp;','&');
+            }
+        })();
+    </script>
+        }
+    }

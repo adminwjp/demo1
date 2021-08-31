@@ -1,0 +1,90 @@
+﻿
+@model  SearchWordModel
+@{
+    var _listSearchWord = ViewData.Get<List<SelectListItem>>("_listSearchWord", new List<SelectListItem>());
+    var _searchWordType = Model.SearchTypeCode;
+    Model.SixSearchWordCounts = 0;
+    foreach (var item in _listSearchWord)
+    {
+        if (Model.SearchTypeCode == item.Value)
+        {
+            item.Selected = true;
+        }
+    }
+
+
+}
+<div class="panel tn-survey-form">
+    <div class="panel-body">
+        <div role="tabpanel" class="tab-pane active" id="tab_jcxx">
+            @using (Html.BeginForm("_EditSearch", "ControlPanel", "", FormMethod.Post, new { @class = "form-horizontal tn-form-validation", @id = "searchwordform" }))
+            {
+                @Html.HiddenFor(m=>m.Id)
+              
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-5">
+                            @Html.LabelFor(m => m.word)
+                        </div>
+                    </div>
+                    @Html.TextBoxFor(m => m.word, new { @class = "form-control", @ReadOnly = "true",@Text=Model.word })
+                    @Html.ValidationMessageFor(m => m.word)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SearchTypeCode)
+                    @Html.DropDownListFor(m => m.SearchTypeCode, _listSearchWord, new { @disabled = "disabled", @id= "DropDownList", @style= "background-color:#EEEEEE;",@class = "form-control" })
+                    @Html.HiddenFor(m=>m.SearchTypeCode)
+                    @Html.ValidationMessageFor(m => m.SearchTypeCode)
+                </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    @Html.LabelFor(m => m.SixSearchWordCounts)
+                                </div>
+                            </div>
+                            @Html.TextBoxFor(m => m.SixSearchWordCounts, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.SixSearchWordCounts)
+                        </div>
+                            <div class="form-group">
+
+                                    <button id="btn_submit" type="button" class="btn btn-primary tn-btn-wp">提交</button>
+                                    <button type="button" class="btn btn-default tn-btn-wp " id="cancel">取消</button>
+                            </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+        //提交增加热词
+        $("#btn_submit").click(function () {
+            $("DropDownList").attr("disabled", "false");
+            $("#searchwordform").validate();
+            if ($("#searchwordform").valid()) {
+                var url = '@CachedUrlHelper.Action("_ChangeSearchWord", "ControlPanel")?t=' + (new Date()).getTime();
+                var para = $("#searchwordform").serializeArray();
+                $.post(url, para, function (data) {
+                    if (data.MessageType == 1) {
+                        $("#btn_submit").attr("disabled", true);                       
+                        layer.msg(data.MessageContent, { icon: 1 }, function () { parent.layer.closeAll(); });
+                        $.fn.search(0)
+                    }
+                    else {
+                        layer.msg(data.MessageContent, { icon: 2 });
+                    }
+                   
+                });
+               
+            }
+        });
+
+       
+
+       
+
+        //取消
+        $("#cancel").click(function () {
+            layer.closeAll();
+        });
+    });
+</script>

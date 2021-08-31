@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- message queue >=net10  -->
+  <Import Project="Props\Messaging.props" />
+  <!-- >=net451 >=netcoreapp2.0  >=netstandard2.0  -->
+  <Import Project="Props\ServiceBus.props" />
+  <!-- >=net451 >=netcoreapp2.0 >=netstandard2.0 -->
+  <Import Project="Props\RabbitMQ.props" />
+  <!-- kafka >=net451 >=netcoreapp2.0  >=netstandard2.0  -->
+  <Import Project="Props\kafka.props" />
+  <!-- >=net45  >=netcoreapp2.0  >=netstandard2.0  -->
+  <Import Project="Props\Polly.props" />
+  <PropertyGroup>
+    <!--<TargetFrameworks>net10;net11;net20;net30;net35;net40;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0;netstandard2.0;netstandard2.1;</TargetFrameworks>-->
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>Utility.Message</AssemblyName>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>e:\work\Package\Utility.Message\</OutputPath>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <RepositoryUrl>e:\work\Package\Utility.Message\</RepositoryUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>e:\work\Package\Utility.Message\</PackageProjectUrl>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>e:\work\Package\Utility.Message\Utility.Message.xml</DocumentationFile>
+    <Version>1.0.0.0</Version>
+    <Description>支持rabbitmq、kafka、message、service bus </Description>
+    <SignAssembly>false</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <Authors>wjp</Authors>
+    <Company>wjp</Company>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utility.Simple\Utility.Simple.csproj" />
+  </ItemGroup>
+
+</Project>

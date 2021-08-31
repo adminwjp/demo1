@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- create by autoCode,v1.0.0 -->
+<mapper namespace="home">
+    <select id="total" parameterType="com.shop.result.TotalResult" statementType="CALLABLE">
+		{call total(
+		#{sellerId,mode=IN},#{buyerCount,mode=OUT,jdbcType=INTEGER},#{orderCount,mode=OUT,jdbcType=INTEGER},#{orderPayFee,mode=OUT,jdbcType=DECIMAL},#{productCount,mode=OUT,jdbcType=INTEGER})}
+	</select>
+
+
+	<select id="payOrder">
+		select date_format(createDate,'%Y-%m-%d') as createDate, count(id) as orderCount, to_days(date_format(now(),'%Y-%m-%d')) - to_days(date_format(createDate,'%Y-%m-%d')) as days
+		 from t_order where payment_status=2 group by createDate having days &lt;=30
+	</select>
+
+	<select id="order">
+		select date_format(createDate,'%Y-%m-%d') as createDate, count(id) as orderCount, to_days(date_format(now(),'%Y-%m-%d')) - to_days(date_format(createDate,'%Y-%m-%d')) as days
+		 from t_order  group by createDate having days  <![CDATA[ <= ]]>  30
+	</select>
+
+</mapper>

@@ -1,0 +1,165 @@
+﻿@{
+    TempData["subMenu-check"] = new string[] { "User", "ManagePointTasks" };
+    ViewData["Title"] = new string[] { "积分任务" };
+    var pointTaskStatus = ViewData.Get<List<SelectListItem>>("pointTaskStatus", null);
+    var taskTypes = ViewData.Get<IEnumerable<PointTaskType>>("taskTypes", null);
+}
+@Styles.Render("~/js/lib/datetimepicker/css/datetimepicker")
+@Styles.Render("~/js/lib/daterangepicker/daterangepicker")
+<div class="row tn-page-heading tn-mb-10">
+    <div class="col-xs-12">
+        <h3>积分任务</h3>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-inline tn-tool-column">
+
+            <div class="form-group">
+                @if (taskTypes != null && taskTypes.Any())
+                {
+                    <!--单按钮下拉菜单-->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-plus"></i>发布任务&nbsp;<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            @foreach (var taskType in taskTypes)
+                            {
+                                <li><a class="createtask tn-cursor-pointer" data-typeid="@taskType.TypeId" data-url="@Tunynet.Utilities.WebUtility.ResolveUrl("~"+taskType.RouteName)" title="@taskType.Description">@taskType.TypeName</a></li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+            <div class="form-group pull-right">
+                <a href="@SiteUrls.Instance().ManageTasktoUsers()" class="a">任务领取记录</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                状态&nbsp;&nbsp;@Html.DropDownList("pointTaskStatus", pointTaskStatus, "全部", new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body" id="_ListPointTasks">
+        @Html.Action("_ListPointTasks", "ControlPanel")
+    </div>
+</div>
+<script>
+    require(['jquery', 'tnlayer', 'validate.unobtrusive', 'tokenfield', 'daterangepicker', 'datepicker'], function ($, tnlayer) {
+        $(document).on("click", ".createtask", function () {
+            layer.closeAll();
+            var $this = $(this);
+            var url = $this.data("url")+"?t=" + (new Date).getTime();
+            var typeId = $this.data("typeid");
+            //页面层
+            $.get(url, function (data) {
+                layer.open({
+                    type: 1,
+                    title: "发布" + $this.html() + "任务",
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ["500px", "700px"], //宽高
+                    content: data,
+                    scrollbar: true,
+                    success: function () {
+                        $("#TypeId").val(typeId);
+                    }
+                });
+            });
+        }).on("click", "#edittasksubmit", function () {
+            //点击提交任务
+            var $editTaskForm = $("#edittaskform");
+            $editTaskForm.validate();
+            if ($editTaskForm.valid()) {
+                var url = '@CachedUrlHelper.Action("EditPointTaskDeal", "ControlPanel")';
+                var para = $editTaskForm.serializeArray();
+                //站外分享任务
+                if ($("#ShareWeiXin").length > 0)
+                {
+                    if(!($("#ShareWeiXin").get(0).checked||$("#ShareQQ").get(0).checked))
+                    {
+                        layer.msg("至少选择一个分享！", { icon: 2 });
+                        return false;
+                    }
+
+                }
+                if ($(".TasksSettings").length > 0) {
+                    //人工审核任务
+                    var json = [];
+                    var isempty = false;
+                    $(".TasksSettings").each(function () {
+                        if ($(this).val() == "")
+                            isempty = true;
+                        json.push($(this).val().replace(",","，"));
+                    });
+                    if (isempty)
+                    {
+                        layer.msg("内容项不能为空！", { icon: 2 });
+                        return false;
+                    }
+                       
+                    para.push({ "name": "Options", "value": json });
+
+                }
+                if ($("#AwardGolds").val() * 1 + $("#AwardPoints").val() * 1 == 0)
+                {
+                    layer.msg("奖励不能同时为0！", { icon: 2 });
+                    return false;
+                }
+                $.post(url, para, function (data) {
+                    if (data.MessageType == 1) {
+                        layer.closeAll();
+                        layer.msg("编辑成功！", { icon: 1 });
+                        getTask();
+                    }
+                    else {
+                        layer.msg(data.MessageContent, { icon: 2 });
+                    }
+                });
+            }
+        }).on("click", ".edittask", function () {
+            layer.closeAll();
+            //修改任务
+            var $this = $(this);
+            //页面层
+            $.get($this.data("editurl")+"?t=" + (new Date).getTime(), { taskId: $this.data("taskid") }, function (data) {
+                layer.open({
+                    type: 1,
+                    title: "编辑" + $this.data("typename") + "任务",
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ["500px", "700px"], //宽高
+                    content: data,
+                    scrollbar: true
+                });
+            })
+        }).on("click", ".deletetask", function () {
+            layer.closeAll();
+            //删除任务
+            var taskId = $(this).data("taskid");
+            layer.confirm("确定删除么？", {
+                btn: ['确认', '取消'],//按钮
+                scrollbar: false
+            }, function () {
+                var url = '@CachedUrlHelper.Action("DeletePointTask", "ControlPanel")';
+                $.post(url, { taskId: taskId }, function (data) {
+                    if (data.MessageType == 1) {
+                        getTask();
+                        layer.msg(data.MessageContent, { icon: 1 });
+                    }
+                    else {
+                        layer.msg(data.MessageContent, { icon: 2 });
+                    }
+                });
+            });
+        }).on("change", "#pointTaskStatus", function () {
+            getTask();
+        });
+        //获取勋章列表
+        function getTask() {
+            var url = '@CachedUrlHelper.Action("_ListPointTasks", "ControlPanel")?t=' + (new Date).getTime();
+            $.get(url, { pointTaskStatus: $("#pointTaskStatus").val() }, function (data) {
+                $("#_ListPointTasks").html(data);
+            })
+        }
+    });
+</script>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tableList">
+    <resultMap id="tableListResultMap" type="com.template.dao.model.TableList">
+        <result property="id" column="id" javaType="long"></result>
+        <result property="title" column="title" javaType="java.lang.String"></result>
+        <result property="add" column="`add`" javaType="boolean"></result>
+        <result property="modify" column="`modify`" javaType="boolean"></result>
+        <result property="delete" column="`delete`" javaType="boolean"></result>
+        <result property="tableModify" column="table_modify" javaType="boolean"></result>
+        <result property="tableDelete" column="table_delete" javaType="boolean"></result>
+        <result property="tablePreview" column="table_preview" javaType="boolean"></result>
+    </resultMap>
+
+
+    <insert id="tableList.add" parameterType="com.template.dao.model.TableList" useGeneratedKeys="true" keyProperty="id">
+        insert into t_table_list
+        <trim suffixOverrides=",">
+        (
+           <if test="title!=null and title!=''">
+               title,
+           </if>
+           <if test="add!=null and add!=''">
+               `add`,
+           </if>
+           <if test="modify!=null and modify!=''">
+               `modify`,
+           </if>
+           <if test="delete!=null and delete!=''">
+               `delete`,
+           </if>
+           <if test="tableModify!=null and tableModify!=''">
+               table_modify,
+           </if>
+           <if test="tableDelete!=null and tableDelete!=''">
+               table_delete,
+           </if>
+           <if test="tablePreview!=null and tablePreview!=''">
+               table_preview,
+           </if>
+        </trim>
+        )
+        values
+        (
+        <trim suffixOverrides=",">
+           <if test="title!=null and title!=''">
+               #{title},
+           </if>
+           <if test="add!=null and add!=''">
+               #{add},
+           </if>
+           <if test="modify!=null and modify!=''">
+               #{modify},
+           </if>
+           <if test="delete!=null and delete!=''">
+               #{delete},
+           </if>
+           <if test="tableModify!=null and tableModify!=''">
+               #{tableModify},
+           </if>
+           <if test="tableDelete!=null and tableDelete!=''">
+               #{tableDelete},
+           </if>
+           <if test="tablePreview!=null and tablePreview!=''">
+               #{tablePreview},
+           </if>
+        </trim>
+        )
+        </insert>
+
+    <update id="tableList.modify" parameterType="com.template.dao.model.TableList" >
+        update  t_table_list  
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title!=null and title!=''">
+               title=#{title},
+            </if>
+            <if test="add!=null and add!=''">
+               `add`=#{add},
+            </if>
+            <if test="modify!=null and modify!=''">
+               `modify`=#{modify},
+            </if>
+            <if test="delete!=null and delete!=''">
+               `delete`=#{delete},
+            </if>
+            <if test="tableModify!=null and tableModify!=''">
+               table_modify=#{tableModify},
+            </if>
+            <if test="tableDelete!=null and tableDelete!=''">
+               table_delete=#{tableDelete},
+            </if>
+            <if test="tablePreview!=null and tablePreview!=''">
+               table_preview=#{tablePreview},
+            </if>
+        </trim>
+         where id =#{id}
+    </update>
+
+    <sql id="deleteSql">delete from  t_table_list where id </sql>
+
+    <delete id="tableList.delete" parameterType="long" >
+        <include refid="deleteSql"  /> =#{id}
+     </delete>
+
+    <delete id="tableList.deleteMany" >
+       <include refid="deleteSql"  />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+     </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="id!=0">
+                or  id=#{id}
+            </if>
+            <if test="title!=null and title!=''">
+                or  title=#{title}
+            </if>
+            <if test="add!=null and add!=''">
+                or  `add`=#{add}
+            </if>
+            <if test="modify!=null and modify!=''">
+                or  `modify`=#{modify}
+            </if>
+            <if test="delete!=null and delete!=''">
+                or  `delete`=#{delete}
+            </if>
+            <if test="tableModify!=null and tableModify!=''">
+                or  table_modify=#{tableModify}
+            </if>
+            <if test="tableDelete!=null and tableDelete!=''">
+                or  table_delete=#{tableDelete}
+            </if>
+            <if test="tablePreview!=null and tablePreview!=''">
+                or  table_preview=#{tablePreview}
+            </if>
+        </where>
+    </sql>
+
+    <select id="tableList.select" parameterType="com.template.dao.model.TableList" resultMap="tableListResultMap">
+        select * from  t_table_list
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="tableList.count" parameterType="com.template.dao.model.TableList" resultType="java.lang.Integer">
+        select count(id) from  t_table_list
+        <include refid="whereIf"/>
+    </select>
+
+</mapper>

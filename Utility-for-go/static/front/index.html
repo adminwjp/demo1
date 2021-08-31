@@ -1,0 +1,2847 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="csrf-param" content="_csrf-frontend">
+<meta name="csrf-token" content="Mmix9uawQmdTPYzkHgJ8UCmEvfgDDtlqn_1ViSG5emdeDISwhOV6VgRl64FdRQUkU8nTz3Q_tAzmzx_iVskjAg==">
+<!--remove underline for edge-->
+<meta name="format-detection" content="telephone=no">
+<meta name="author" content="ShopWind" />
+<meta name="generator" content="ShopWind" />
+<meta name="copyright" content="ShopWind Inc. All Rights Reserved" />
+
+<title>ShopWind开源电商系统 - 专业的B2B2C电商系统解决方案 - Powered by ShopWind</title>
+<meta name="Keywords" content="PHP开源系统,多用户商城系统,B2B2C电商软件,O2O本地生活服务" />
+<meta name="Description" content="ShopWind专注于研发符合时代发展需要的电子商务商城系统，以专业化的服务水平为企业级用户提供B2B2C、O2O等电子商务平台解决方案" />
+
+<link rel="shortcut icon" href="#"/>
+<link type="text/css" href="/frontend/web/templates/mall/default/styles/default/css/header.css" rel="stylesheet" />
+<link type="text/css" href="/frontend/web/templates/mall/default/styles/default/css/main.css" rel="stylesheet" />
+<link type="text/css" href="/frontend/web/templates/mall/default/styles/default/css/footer.css" rel="stylesheet" />
+
+<script type="text/javascript">
+var HOME_URL = "http://192.168.1.4:8001/frontend/web";
+var SITE_URL = "http://192.168.1.4:8001/frontend/web";
+var PRICE_FORMAT = "&yen;%s";
+var ENABLE_PRETTY = "1";
+</script>
+<script type="text/javascript" src='/frontend/web/default/jslang.html' charset="UTF-8"></script>
+<script type="text/javascript" src="/frontend/web/assets/fd4f6f84/jquery-1.11.1.js" charset="UTF-8"></script>
+
+<!--<editmode></editmode>-->
+</head>
+<body id="page-layout-default-index">
+<!---->
+<div class="top-ads" area="top-ads" widget_type="area">
+	
+<div id="_widget_693" name="df_image_ads" widget_type="widget" class="widget">
+<!--  -->
+<div class="global-image-ads" style="background-color:rgb(219, 0, 28);">
+
+<div class="global-image-ads-content" style="">
+<a href="channel/index.html?id=154318852528" target="_blank"><img   height="80px" class="lazyload" initial-url="http://192.168.1.4:8001/frontend/web/data/files/mall/template/20181212172931441.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" /></a>
+</div>
+
+<!-- -->
+<div class="J_GlobalImageAdsBotton global-image-ads-botton">x</div>
+<!-- -->
+
+</div>
+<!--  -->
+</div>
+
+</div>
+<!---->
+<div id="site-nav" class="w-full">
+   <div class="shoptop w clearfix">
+      <div class="login_info">
+         您好,
+                  游客
+         <a href="/frontend/web/login.html">登录</a>
+         <a href="/frontend/web/register.html">免费注册</a>
+                  <a style="color: red; font-weight: bold; margin-left: 15px;" target="_blank" href="tencent://message/?uin=1983447904&Site=https://www.shopwind.net&Menu=yes" alt="点击这里给我发消息" title="点击这里给我发消息">授权咨询</a>
+      </div>
+      <ul class="quick-menu J_GlobalPop">
+                <li class="home"><a href="http://192.168.1.4:8001/backend/web">后台管理入口</a></li>
+        <li class="item">
+           <div class="menu iwantbuy">
+              <a class="menu-hd" href="/frontend/web/category/index.html">我要买<b></b></a>
+              <div class="menu-bd J_GlobalPopSub">
+                 <div class="menu-bd-panel">
+                    <div>
+                       <p><a href="/frontend/web/category/index.html">商品分类</a></p>
+                       <p><a href="/frontend/web/search/goods.html?order=sales%7Cdesc">大家都喜欢</a></p>
+					   <p><a href="/frontend/web/search/goods.html?order=g.add_time%7Cdesc">最新上架</a></p>
+                    </div>
+                 </div>
+              </div>
+           </div>
+         </li>
+         <li class="item">
+            <div class="menu mytb">
+               <a class="menu-hd" href="/frontend/web/buyer/index.html">我是买家<b></b></a>
+               <div class="menu-bd J_GlobalPopSub">
+                  <div class="menu-bd-panel">
+                     <div>
+                        <p><a href="/frontend/web/buyer_order/index.html">已买到的宝贝</a></p>
+                        <p><a href="/frontend/web/friend/index.html">我的好友</a></p>
+                        <p><a href="/frontend/web/my_question/index.html">我的咨询</a></p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </li>
+         <li class="item">
+            <div class="menu seller-center">
+               <a class="menu-hd" href="/frontend/web/seller/index.html">我是卖家<b></b></a>
+               <div class="menu-bd J_GlobalPopSub">
+                  <div class="menu-bd-panel">
+                     <div>
+                        <p><a href="/frontend/web/seller_order/index.html">已卖出的宝贝</a></p>
+                        <p><a href="/frontend/web/my_goods/index.html">出售中的宝贝</a></p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </li>
+         <li class="item">
+            <div class="menu sites">
+               <a class="menu-hd" href="javascript:;">用户中心<b></b></a>
+               <div class="menu-bd J_GlobalPopSub">
+                  <div class="cart-list  eject-box">
+				<div class="login-status"> 你好，请 <a href="/frontend/web/login.html">登录</a>				</div>
+				<div class="member-nav-list">
+					<ul class="ls">
+						<li><a href="/frontend/web/buyer_order/index.html" target="_blank">我的订单</a></li>
+						<li><a href="/frontend/web/my_question/index.html" target="_blank">咨询回复</a></li>
+						<li><a href="/frontend/web/my_coupon/index.html" target="_blank">优惠券</a></li>
+					</ul>
+					<ul class="ls">
+						<li><a href="/frontend/web/friend/index.html" target="_blank">我的好友</a></li>
+						<li><a href="/frontend/web/my_favorite/index.html" target="_blank">我的关注</a></li>
+						<li><a href="/frontend/web/user/password.html" target="_blank">修改密码</a></li>
+						<li><a href="/frontend/web/find_password/index.html" target="_blank">找回密码</a></li>
+					</ul>
+				</div>
+				<div class="view-list"> 
+					<!---->
+					<div class="w-full center">暂时没有浏的商品览记录</div>
+					<!----> 
+				</div>
+			</div>
+               </div>
+            </div>
+        </li>
+         <li class="item">
+            <div class="menu favorite">
+               <a class="menu-hd" href="/frontend/web/my_favorite/index.html">收藏夹<b></b></a>
+               <div class="menu-bd J_GlobalPopSub">
+                  <div class="menu-bd-panel">
+                     <div>
+                       <p><a href="/frontend/web/my_favorite/index.html">收藏的宝贝</a></p>
+                       <p><a href="/frontend/web/my_favorite/index.html?type=store">收藏的店铺</a></p>
+                    </div>
+                 </div>
+               </div>
+           </div>
+         </li>
+         <li class="item" style="background:none">
+            <div class="menu sites">
+               <a class="menu-hd" href="javascript:;">网站导航<b></b></a>
+               <div class="menu-bd padding10 J_GlobalPopSub">
+               	  <!---->
+               </div>
+            </div>
+        </li>
+     </ul>
+   </div>
+</div><div id="header" class="w-full">
+	<div class="shop-t w clearfix pb10 mb10 mt5">
+		<div class="logo mt10"> <a href="http://192.168.1.4:8001/frontend/web" title="ShopWind开源电商系统 - 专业的B2B2C电商系统解决方案"><img height="60" alt="ShopWind开源电商系统 - 专业的B2B2C电商系统解决方案" src="http://192.168.1.4:8001/frontend/web/data/system/site_logo.gif" /></a> </div>
+		<div class="top-search"> 
+			<div class="top-search-box clearfix">
+				<div class="form-fields">
+					<form method="GET" action="/frontend/web/search/goods.html" class="clearfix">
+                    	<!---->
+                        <ul class="select-act J_SearchType">
+                        	<li class="current"><span value="index">商品</span></li>
+                            <li class=""><span value="store">店铺</span></li>
+                        </ul>
+                        
+						<input type="text" name="keyword" value="" class="keyword" placeholder="小米" />
+						<input type="submit" value="搜索" class="submit" hidefocus="true" />
+					</form>
+				</div>
+			</div>
+			<div class="top-search-keywords"> <span>热门搜索：</span> 
+				<!----> 
+				<a style="color:#ff0000;" href="/frontend/web/search/goods.html?keyword=%E5%B0%8F%E7%B1%B3">小米</a> 
+				<!----> 
+				<a  href="/frontend/web/search/goods.html?keyword=%E8%8B%B9%E6%9E%9C">苹果</a> 
+				<!----> 
+				<a  href="/frontend/web/search/goods.html?keyword=%E5%8D%8E%E4%B8%BA">华为</a> 
+				<!----> 
+				<a  href="/frontend/web/search/goods.html?keyword=%E5%BA%B7%E4%BD%B3">康佳</a> 
+				<!----> 
+				<a  href="/frontend/web/search/goods.html?keyword=%E6%A0%BC%E5%8A%9B">格力</a> 
+				<!----> 
+				<a  href="/frontend/web/search/goods.html?keyword=GUCCI">GUCCI</a> 
+				<!----> 
+				<a  href="/frontend/web/search/goods.html?keyword=%E5%8F%A4%E6%96%AF%E7%89%B9">古斯特</a> 
+				<!----> 
+				<a  href="/frontend/web/search/goods.html?keyword=ZARA">ZARA</a> 
+				<!----> 
+				<a  href="/frontend/web/search/goods.html?keyword=%E4%BC%98%E8%A1%A3%E5%BA%93">优衣库</a> 
+				<!----> 
+				<a  href="/frontend/web/search/goods.html?keyword=%E9%9F%A9%E9%83%BD%E8%A1%A3%E8%88%8D">韩都衣舍</a> 
+				<!----> 
+			</div>
+		</div>
+		<div class="header_cart J_GlobalPop">
+        	<div class="item">
+			<div class="title clearfix"> <b></b><a href="/frontend/web/cart/index.html">去购物车结算</a><em>></em> </div>
+			<div class="shoping"><span class="count-cart J_C_T_GoodsKinds">0</span></div>
+			<div class="shadow"></div>
+			<div class="cart-list eject-box J_GlobalPopSub J_HasGoods"> 
+				<!---->
+				<div class="nogoods clearfix J_NoGoods"> <b></b>购物车中还没有商品，赶紧选购吧！ </div>
+				<!----> 
+			</div>
+            </div>
+		</div>
+	</div>
+    <!---->
+    <div class="shop-t-pop J_SearchFixed hidden">
+    	<div class="w clearfix">
+    	<div class="logo mt10"> <a href="http://192.168.1.4:8001/frontend/web" title="ShopWind开源电商系统 - 专业的B2B2C电商系统解决方案"><img height="60" alt="ShopWind开源电商系统 - 专业的B2B2C电商系统解决方案" src="http://192.168.1.4:8001/frontend/web/data/system/site_logo.gif" /></a> </div>
+		<div class="top-search"> 
+			
+			<div class="top-search-box clearfix">
+				<div class="form-fields">
+					<form method="GET" action="/frontend/web/search/goods.html" class="clearfix">
+                        <ul class="select-act J_SearchType">
+                        	<li class="current"><span value="index">商品</span></li>
+                            <li class=""><span value="store">店铺</span></li>
+                        </ul>
+                        
+						<input type="text" name="keyword" value="" class="keyword" placeholder="小米" />
+						<input type="submit" value="搜索" class="submit" hidefocus="true" />
+					</form>
+				</div>
+			</div>
+			
+		</div>
+        </div>
+    </div>
+    <!---->
+	<div  class="w-full mall-nav relative ">
+		<div class="mall-bg w">
+			<ul class="w clearfix">
+				<li class="allcategory float-left"> <a class="allsort" >所有商品分类<b></b></a> 
+					<div class="allcategory-list ">
+						<div class="content clearfix J_Gcategory"> 
+							<!---->
+							<!---->
+							<div class="item index" item-id="1,21">
+								<div class="pborder">
+									<ins class="cat-iconfont ico-1"></ins>
+									<p> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=21" target="_blank">家用电器、五金</a>  
+										<!----> 
+									</p>
+									<!---->
+									<h3>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=22" class="child">大家电</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1304" class="child">厨卫大电</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1313" class="child">厨房小电</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1334" class="child">生活电器</a>
+										<!---->
+                                    </h3>
+                                    <!---->
+								</div>
+								<div class="pop" style="top: 0;">
+									<div class="catlist float-left"></div>
+								</div>
+							</div>
+							<!---->
+							<!---->
+							<!---->
+							<div class="item index" item-id="2,63">
+								<div class="pborder">
+									<ins class="cat-iconfont ico-2"></ins>
+									<p> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=63" target="_blank">数码</a> <a href="javascript:;">、</a> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=57" target="_blank">手机</a>  
+										<!----> 
+									</p>
+									<!---->
+									<h3>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=58" class="child">手机通讯</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=60" class="child">运营商</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=61" class="child">手机配件</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=62" class="child">摄影摄像</a>
+										<!---->
+                                    </h3>
+                                    <!---->
+								</div>
+								<div class="pop" style="top: 0;">
+									<div class="catlist float-left"></div>
+								</div>
+							</div>
+							<!---->
+							<!---->
+							<!---->
+							<div class="item index" item-id="3,2">
+								<div class="pborder">
+									<ins class="cat-iconfont ico-3"></ins>
+									<p> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=2" target="_blank">女装</a> <a href="javascript:;">、</a> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=3" target="_blank">男装</a> <a href="javascript:;">、</a> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=4" target="_blank">内衣</a>  
+										<!----> 
+									</p>
+									<!---->
+									<h3>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1212" class="child">女装</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1602" class="child">男装</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1630" class="child">文胸内衣</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1640" class="child">袜子</a>
+										<!---->
+                                    </h3>
+                                    <!---->
+								</div>
+								<div class="pop" style="top: 0;">
+									<div class="catlist float-left"></div>
+								</div>
+							</div>
+							<!---->
+							<!---->
+							<!---->
+							<div class="item index" item-id="4,172">
+								<div class="pborder">
+									<ins class="cat-iconfont ico-4"></ins>
+									<p> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=172" target="_blank">家具家装</a> <a href="javascript:;">、</a> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=1500" target="_blank">家纺装饰</a>  
+										<!----> 
+									</p>
+									<!---->
+									<h3>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1480" class="child">厨具</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1487" class="child">家装建材</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1514" class="child">家具</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1534" class="child">灯具</a>
+										<!---->
+                                    </h3>
+                                    <!---->
+								</div>
+								<div class="pop" style="top: 0;">
+									<div class="catlist float-left"></div>
+								</div>
+							</div>
+							<!---->
+							<!---->
+							<!---->
+							<div class="item index" item-id="8,2541">
+								<div class="pborder">
+									<ins class="cat-iconfont ico-5"></ins>
+									<p> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=2541" target="_blank">女鞋</a> <a href="javascript:;">、</a> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=134" target="_blank">个护化妆</a> <a href="javascript:;">、</a> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=2545" target="_blank">清洁用品</a>  
+										<!----> 
+									</p>
+									<!---->
+									<h3>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1692" class="child">面部护肤</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1703" class="child">洗发护发</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1710" class="child">身体护肤</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1719" class="child">口腔护理</a>
+										<!---->
+                                    </h3>
+                                    <!---->
+								</div>
+								<div class="pop" style="top: 0;">
+									<div class="catlist float-left"></div>
+								</div>
+							</div>
+							<!---->
+							<!---->
+							<!---->
+							<div class="item index" item-id="5,2540">
+								<div class="pborder">
+									<ins class="cat-iconfont ico-6"></ins>
+									<p> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=2540" target="_blank">男鞋</a> <a href="javascript:;">、</a> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=162" target="_blank">箱包珠宝</a>  
+										<!----> 
+									</p>
+									<!---->
+									<h3>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1782" class="child">流行男鞋</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1798" class="child">潮流女包</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1808" class="child">精品男包</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=1816" class="child">功能箱包</a>
+										<!---->
+                                    </h3>
+                                    <!---->
+								</div>
+								<div class="pop" style="top: 0;">
+									<div class="catlist float-left"></div>
+								</div>
+							</div>
+							<!---->
+							<!---->
+							<!---->
+							<div class="item index" item-id="6,1">
+								<div class="pborder">
+									<ins class="cat-iconfont ico-7"></ins>
+									<p> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=1" target="_blank">童装童鞋</a> <a href="javascript:;">、</a> 
+										<!----> 
+										<a href="/frontend/web/search/goods.html?cate_id=2543" target="_blank">儿童玩具</a>  
+										<!----> 
+									</p>
+									<!---->
+									<h3>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=5" class="child">配饰</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=6" class="child">童装童鞋</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=2154" class="child">童车童床</a>
+										<!---->
+										<a href="/frontend/web/search/goods.html?cate_id=2166" class="child">玩具</a>
+										<!---->
+                                    </h3>
+                                    <!---->
+								</div>
+								<div class="pop" style="top: 0;">
+									<div class="catlist float-left"></div>
+								</div>
+							</div>
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+							<!---->
+						</div>
+					</div>
+				</li>
+				<li class="each float-left inline-block"><a class="current" href="http://192.168.1.4:8001/frontend/web">首页</a></li>
+				<!---->
+				<li class="each float-left inline-block"><a class="" href="http://192.168.1.4:8001/frontend/web/channel/index.html?id=154318705971">品牌女装<span class="absolute block">HOT</span></a></li>
+				<!---->
+				<li class="each float-left inline-block"><a class="" href="http://192.168.1.4:8001/frontend/web/channel/index.html?id=154318852528">手机数码</a></li>
+				<!---->
+				<li class="each float-left inline-block"><a class="" href="http://192.168.1.4:8001/frontend/web/search/goods.html?cate_id=21">家用电器</a></li>
+				<!---->
+				<li class="each float-left inline-block"><a class="" href="http://192.168.1.4:8001/frontend/web/search/store.html">店铺街</a></li>
+				<!---->
+				<li class="each float-left inline-block"><a class="" href="http://192.168.1.4:8001/frontend/web/coupon/index.html">领券中心</a></li>
+				<!---->
+				<li class="each float-left inline-block"><a class="" href="http://192.168.1.4:8001/frontend/web/integral/index.html">积分商城</a></li>
+				<!---->
+				<li class="each float-left inline-block"><a class="" href="http://192.168.1.4:8001/frontend/web/limitbuy/index.html">限时促销</a></li>
+				<!---->
+				<li class="each float-left inline-block"><a class="" href="http://192.168.1.4:8001/frontend/web/brand/index.html">品牌专区</a></li>
+				<!---->
+			</ul>
+		</div>
+	</div>
+</div><div id="main" class="w-full" style="background:#f5f5f5">
+  <div id="page-home" class="pb20">
+    <div class="col-1 w-full clearfix">
+      <div class="col-1-r-l" area="col-1-r-l" widget_type="area"> 
+        
+<div id="_widget_684" name="df_slides" widget_type="widget" class="widget">
+<!---->
+<div class="full-slides J_S995107094">
+  <ul class="bd">
+    <!--  -->
+    <li style="height: 500px; background: url(http://192.168.1.4:8001/frontend/web/data/files/mall/template/20181211101259917.jpg) center center; background-size: 100% 100%;">
+      <a href="channel/index.html?id=154318852528" target="_blank" style="display:block; height:500px; width:100%"></a>
+    </li>					
+    <!--  -->
+    <li style="height: 500px; background: url(http://192.168.1.4:8001/frontend/web/data/files/mall/template/20181211112615856.png) center center; background-size: 100% 100%;">
+      <a href="channel/index.html?id=154318705971" target="_blank" style="display:block; height:500px; width:100%"></a>
+    </li>					
+    <!--  -->
+  </ul>
+  <div class="nav-box">
+    <div class="hd"> 
+      <!--  --> 
+      <a class="ks-active" href="javascript:;"><i></i></a> 
+      <!--  --> 
+      <a  href="javascript:;"><i></i></a> 
+      <!--  --> 
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$(".J_S995107094").slide({ titCell:".hd a", mainCell:".bd", effect:"fade",autoPlay:true, titOnClassName:"ks-active", delayTime:1000, interTime: 5000});
+	});
+</script>  
+<!----> 
+
+
+
+
+</div>
+
+      </div>
+    </div>
+    <div class="col-2 w clearfix">
+      <div class="col-1-r-r float-right" area="col-1-r-r" widget_type="area">
+      	
+<div id="_widget_849" name="df_user" widget_type="widget" class="widget">
+<div class="account J_S267848457">
+  <div class="user-info">
+    <div class="avata-pic"> 
+      <a href="javascript:;">
+        <img src="http://192.168.1.4:8001/frontend/web/data/system/default_user_portrait.gif" />
+      </a> 
+    </div>
+    <div class="hello clearfix">
+      <p class="he-tit">您好，欢迎光临</p>
+      <!----> 
+      <a class="login-btn" href="/frontend/web/login.html">请登录</a>
+      <a class="regist-btn" href="/frontend/web/apply/index.html">我要开店</a>
+      <!----> 
+    </div>
+  </div>
+  <div class="index-notice">
+    <div class="no-tit"> 
+      <!---->
+      <a  class="tab-head-item bor-1" href="javascript:;">商城帮助</a> 
+	  <!---->
+      <a  style="margin-right:0; padding-right:0; border-right:0"  class="tab-head-item bor-1" href="javascript:;">入驻指南</a> 
+	  <!---->
+    </div>
+    <div class="no-con">
+      <!---->
+      <ul>
+      	<!---->
+        <li><a href="/frontend/web/article/view.html?id=4" target="_blank">开店协议</a></li>
+		    <!---->
+        <li><a href="/frontend/web/article/view.html?id=3" target="_blank">什么是实体店铺认证</a></li>
+		    <!---->
+        <li><a href="/frontend/web/article/view.html?id=2" target="_blank">什么是实名认证</a></li>
+		    <!---->
+      </ul>
+      <!---->
+      <ul>
+      	<!---->
+      </ul>
+      <!---->
+    </div>
+  </div>
+  <div class="quick">
+    <div class="kj-tit">快捷入口</div>
+    <div class="kj-con clearfix">
+      <div class="kj-item bor-r bor-b"> <a href="javascript:;"> <i class="i-con icon-1"></i> <span>我的浏览</span> </a> </div>
+      <div class="kj-item bor-r bor-b"> <a href="/frontend/web/my_favorite/index.html"> <i class="i-con icon-2"></i> <span>我的收藏</span> </a> </div>
+      <div class="kj-item bor-b"> <a href="/frontend/web/buyer_order/index.html"> <i class="i-con icon-3"></i> <span>我的订单</span> </a> </div>
+      <div class="kj-item bor-r"> <a href="/frontend/web/user/setting.html"> <i class="i-con icon-4"></i> <span>账号安全</span> </a> </div>
+      <div class="kj-item bor-r"> <a href="javascript:;"> <i class="i-con icon-5"></i> <span>我要分享</span> </a> </div>
+      <div class="kj-item"> <a href="/frontend/web/apply/index.html"> <i class="i-con icon-6"></i> <span>商家入驻</span> </a> </div>
+    </div>
+  </div>
+</div>
+<script type="text/jscript">
+$(function(){	
+	$(".J_S267848457").slide({ titCell:'.no-tit .tab-head-item', mainCell:'.no-con', effect:"fade", trigger:"mouseover", autoPlay:true});	
+});
+</script>      
+      
+</div>
+ 
+      </div>
+    </div>
+
+    <div class="col-3 w clearfix mt20" area="col-3" widget_type="area">
+      
+<div id="_widget_423" name="df_seckill" widget_type="widget" class="widget">
+<div class="seckill-channel mt20 mb20 J_S1688571296">
+  <div class="seckill clearfix">  
+    <i class="se-icon"></i>
+    <div class="sk-time-cd">
+      <p class="sk-cd-tit">距结束</p>
+      <div class="cd-time clearfix J_CountDown1688571296">
+        <div class="time"> <span class="days NumDays">137</span>天<span class="hours NumHours">6</span>时<span class="minutes NumMins">38</span>分<span class="seconds NumSeconds">44</span>秒 </div>
+      </div>
+    </div>
+    <div class="sk-more"> 
+      <a href="/frontend/web/limitbuy/index.html" target="_blank">更多秒杀</a> 
+      <i class="arrow"></i> 
+    </div>
+  </div>
+  <div class="seckill-goods">
+    <div class="temp bd">
+      <ul class="clearfix">
+        <!--  -->
+        <li>
+          <div class="p-img"> 
+            <a href="/frontend/web/goods.html?id=20" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121221014676.jpg" />
+            </a> 
+          </div>
+          <div class="p-name"> 
+            <a href="/frontend/web/goods.html?id=20" target="_blank">G2000衬衫男长袖防皱商务男装 工作休闲正装衣服修身薄款白色衬衣</a> 
+          </div>
+          <div class="p-over clearfix">
+            <div class="p-info ">
+              <div class="p-price"> 
+                <span class="shop-price">&yen;50.00</span> 
+                <span class="original-price">&yen;100.00</span> 
+              </div>
+            </div>
+            <div class="p-btn"> <a href="/frontend/web/goods.html?id=20">立即抢购</a> </div>
+          </div>
+        </li>
+ 		<!--  -->
+        <li>
+          <div class="p-img"> 
+            <a href="/frontend/web/goods.html?id=18" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220446153.jpg" />
+            </a> 
+          </div>
+          <div class="p-name"> 
+            <a href="/frontend/web/goods.html?id=18" target="_blank">短裙秋冬装女2018新款韩版百搭毛呢高腰修身显瘦包臀a字半身裙</a> 
+          </div>
+          <div class="p-over clearfix">
+            <div class="p-info ">
+              <div class="p-price"> 
+                <span class="shop-price">&yen;64.00</span> 
+                <span class="original-price">&yen;80.00</span> 
+              </div>
+            </div>
+            <div class="p-btn"> <a href="/frontend/web/goods.html?id=18">立即抢购</a> </div>
+          </div>
+        </li>
+ 		<!--  -->
+        <li>
+          <div class="p-img"> 
+            <a href="/frontend/web/goods.html?id=17" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220320276.jpg" />
+            </a> 
+          </div>
+          <div class="p-name"> 
+            <a href="/frontend/web/goods.html?id=17" target="_blank">七格格高腰半身裙2018新款时尚灯芯绒a字裙子韩版学生短裙女秋冬</a> 
+          </div>
+          <div class="p-over clearfix">
+            <div class="p-info ">
+              <div class="p-price"> 
+                <span class="shop-price">&yen;140.00</span> 
+                <span class="original-price">&yen;200.00</span> 
+              </div>
+            </div>
+            <div class="p-btn"> <a href="/frontend/web/goods.html?id=17">立即抢购</a> </div>
+          </div>
+        </li>
+ 		<!--  -->
+        <li>
+          <div class="p-img"> 
+            <a href="/frontend/web/goods.html?id=12" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121214200514.jpg" />
+            </a> 
+          </div>
+          <div class="p-name"> 
+            <a href="/frontend/web/goods.html?id=12" target="_blank">2018秋冬新款立领荷叶花边雪纺长袖加绒衬衫女装职业OL木耳白衬衣</a> 
+          </div>
+          <div class="p-over clearfix">
+            <div class="p-info ">
+              <div class="p-price"> 
+                <span class="shop-price">&yen;240.00</span> 
+                <span class="original-price">&yen;300.00</span> 
+              </div>
+            </div>
+            <div class="p-btn"> <a href="/frontend/web/goods.html?id=12">立即抢购</a> </div>
+          </div>
+        </li>
+ 		<!--  -->
+        <li>
+          <div class="p-img"> 
+            <a href="/frontend/web/goods.html?id=14" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215535534.jpg" />
+            </a> 
+          </div>
+          <div class="p-name"> 
+            <a href="/frontend/web/goods.html?id=14" target="_blank">纯棉格子保暖衬衫 女长袖秋冬加绒加厚韩范修身打底大码女装衬衣</a> 
+          </div>
+          <div class="p-over clearfix">
+            <div class="p-info ">
+              <div class="p-price"> 
+                <span class="shop-price">&yen;72.00</span> 
+                <span class="original-price">&yen;120.00</span> 
+              </div>
+            </div>
+            <div class="p-btn"> <a href="/frontend/web/goods.html?id=14">立即抢购</a> </div>
+          </div>
+        </li>
+ 		<!--  -->       
+      </ul>
+    </div>
+    <div class="prev"><i class="icon-left"></i></div>
+    <div class="next"><i class="icon-right"></i></div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){		
+	$(".J_S1688571296").slide({ mainCell:'.bd ul', effect:"leftLoop",vis:5,scroll:1, autoPlay:true, autoPage:true, pnLoop:false});
+	
+	$.each($('.J_CountDown1688571296'),function(){
+		var theDaysBox  = $(this).find('.NumDays');
+		var theHoursBox = $(this).find('.NumHours');
+		var theMinsBox  = $(this).find('.NumMins');
+		var theSecsBox  = $(this).find('.NumSeconds');
+			
+		countdown(theDaysBox, theHoursBox, theMinsBox, theSecsBox)
+	});
+});
+</script> 
+
+</div>
+
+<div id="_widget_905" name="df_need_channel" widget_type="widget" class="widget">
+<div class="need-channel clearfix mb20">
+ <!---->
+  <div class="channel-column style-default style-mi">
+    <div class="column-title">
+      <h3>优质新品</h3>
+      <p>专注生活美学</p>
+    </div>
+    <div class="column-img"> 
+      <img class="transform" src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201020512809.png" /> 
+    </div>
+    <a class="column-btn" target="_blank" href="search/goods.html?cate_id=21">去看看</a> 
+  </div>
+  <!-- -->
+  <div class="channel-column style-default style-danh">
+    <div class="column-title">
+      <h3>潮流女装</h3>
+      <p>春装流行款抢购</p>
+    </div>
+    <div class="column-img"> 
+      <img class="transform" src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201022285977.png" /> 
+    </div>
+    <a class="column-btn" target="_blank" href="">去看看</a> 
+  </div>
+  <!-- -->
+  <div class="channel-column style-default style-huang">
+    <div class="column-title">
+      <h3>人气美鞋</h3>
+      <p>新外貌“鞋”会</p>
+    </div>
+    <div class="column-img"> 
+      <img class="transform" src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201022288521.png" /> 
+    </div>
+    <a class="column-btn" target="_blank" href="store/index.html?id=2">去看看</a> 
+  </div>
+  <!-- -->
+  <div class="channel-column style-default style-zi">
+    <div class="column-title">
+      <h3>品牌精选</h3>
+      <p>潮牌尖货 初春换新</p>
+    </div>
+    <div class="column-img"> 
+      <img class="transform" src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201022289922.png" /> 
+    </div>
+    <a class="column-btn" target="_blank" href="">去看看</a> 
+  </div>
+  <!-- -->
+  <div class="channel-column style-default style-danzi" style="margin-right:0">
+    <div class="column-title">
+      <h3>护肤彩妆</h3>
+      <p>春妆必买清单 低至3折</p>
+    </div>
+    <div class="column-img"> 
+      <img class="transform" src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201022285808.png" /> 
+    </div>
+    <a class="column-btn" target="_blank" href="brand/index.html">去看看</a> 
+  </div>
+  <!--  -->
+</div>
+
+</div>
+
+<div id="_widget_474" name="df_bag_brand" widget_type="widget" class="widget">
+<div class="brand-channel mb20 clearfix">
+  <div class="brand-adv slide-lr-info"> 
+    <a href="brand/index.html" target="_blank">
+      <img class="slide-lr-img" src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709261757382322.jpg" />
+    </a> 
+  </div>
+  <div class="brand-list">
+    <ul class="clearfix">
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=1">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/15.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=2">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/16.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=3">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/17.png" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=4">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/18.png" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=5">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/19.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img" style="border-right:0"> 
+          <a href="/frontend/web/brand/view.html?id=6">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/20.png" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=7">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/21.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=8">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/22.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=9">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/23.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=10">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/24.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=11">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/25.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li >
+        <div class="brand-img" style="border-right:0"> 
+          <a href="/frontend/web/brand/view.html?id=12">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/26.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li  style="border-bottom:0" >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=13">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/27.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li  style="border-bottom:0" >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=14">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/28.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li  style="border-bottom:0" >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=15">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/29.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li  style="border-bottom:0" >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=16">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/30.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li  style="border-bottom:0" >
+        <div class="brand-img"> 
+          <a href="/frontend/web/brand/view.html?id=17">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/31.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+      <li  style="border-bottom:0" >
+        <div class="brand-img" style="border-right:0"> 
+          <a href="/frontend/web/brand/view.html?id=18">
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/32.jpg" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!--  -->
+    </ul>
+  </div>
+</div>
+
+</div>
+
+<div id="_widget_132" name="df_clothing" widget_type="widget" class="widget">
+<div class="clothing mb20 J_S902855552">
+  <div class="style-default style-qing">
+    <div class="cl-title  clearfix"> 
+    <p class="cl-tie">韩版女装系列</p>
+    <div class="cl-tags">
+      <ul class="clearfix">
+      	<!---->
+        <!---->
+        <li> <span>精品推荐</span> <i class="arrowImg"></i> </li>
+        <!---->
+        <!---->
+        <!---->
+        <li> <span>新款女装</span> <i class="arrowImg"></i> </li>
+        <!---->
+        <!---->
+        <!---->
+        <li> <span>服饰配件</span> <i class="arrowImg"></i> </li>
+        <!---->
+        <!---->
+        <!---->
+        <li> <span>女士内衣</span> <i class="arrowImg"></i> </li>
+        <!---->
+        <!---->
+        <!---->
+        <li> <span>潮牌男装</span> <i class="arrowImg"></i> </li>
+        <!---->
+        <!---->
+      </ul>
+    </div>
+  </div>
+    <div class="cl-content clearfix">
+    <div class="con-left clearfix">
+      <div class="con-left-slide">
+        <div class="bd">
+          <ul>
+          	<!--  -->
+            <li><a href="brand/index.html" target="_blank"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201600102800.jpg" /></a></li>
+            <!--  -->
+            <li><a href="search/goods.html?cate_id=21" target="_blank"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201600108830.jpg" /></a></li>
+            <!--  -->
+            <li><a href="store/index.html?id=2" target="_blank"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201600105860.jpg" /></a></li>
+            <!--  -->
+          </ul>
+        </div>
+        <div class="hd">
+          <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+      <div class="con-left-adv"> 
+        <a class="mb10" href="channel/index.html?id=154318852528">
+          <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201559279557.jpg" />
+        </a> 
+        <a href="">
+          <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201559277730.jpg" />
+        </a> 
+      </div>
+    </div>
+    <div class="con-right">
+     <!---->
+      <ul class="clearfix">
+      	<!--  -->
+        <li class="con-upload mb10"> 
+          <a href="channel/index.html?id=154318705971">
+            <div class="title">
+              <h3>毛衣</h3>
+              <span>满100减10</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201535256148.jpg" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10"> 
+          <a href="">
+            <div class="title">
+              <h3>随意搭</h3>
+              <span>来潮我看</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201535253177.png" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10" style="margin-right:0"> 
+          <a href="search/goods.html?cate_id=21">
+            <div class="title">
+              <h3>外套</h3>
+              <span>大牌抢好货</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201535258322.png" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10"> 
+          <a href="integral/index.html">
+            <div class="title">
+              <h3>连衣裙</h3>
+              <span>春季流行款抢购</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201602444201.jpg" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10"> 
+          <a href="limitbuy/index.html">
+            <div class="title">
+              <h3>男帽</h3>
+              <span>新款鸭舌帽</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709201602545278.jpg" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10" style="margin-right:0"> 
+          <a href="brand/index.html">
+            <div class="title">
+              <h3>女装内衣馆</h3>
+              <span>盛夏新搭时尚</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709221648508994.png" /> 
+          </a> 
+        </li>
+        <!--  -->
+      </ul>
+      <!---->
+      
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <ul class="clearfix">
+      <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=11" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121213244147.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=11">Midea/美的DJ118抽油烟机侧吸式壁挂吸油烟机厨房家用特价大吸力</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,399.00</del>
+            <p>&yen;1,399.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=10" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121213021455.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=10">Haier/海尔 EG7012B29W 静音消毒洗 超薄机身 BLDC变频</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,699.00</del>
+            <p>&yen;1,699.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=8" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212111597.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=8">Midea/美的 BCD-213TM(E) 节能静音家用三开门小冰箱小型电冰箱</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=7" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212339738.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=7">Haier/海尔 BCD-206STPA 206升三门冷藏小型家用节能小冰箱软冷冻</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=6" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212543181.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=6">MIJIA/米家KFR-35GW-B1ZM-M3小米大1.5P变频冷暖静音挂机智能空调</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;2,049.00</del>
+            <p>&yen;2,049.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=5" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212703151.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=5">AUX/奥克斯 KFR-35GW/NFI19+3大1.5匹冷暖定频壁挂式家用空调挂机</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;2,099.00</del>
+            <p>&yen;2,099.00</p>
+          </div>
+        </li>
+        <!---->
+      </ul>
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <ul class="clearfix">
+      <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=18" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220446153.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=18">短裙秋冬装女2018新款韩版百搭毛呢高腰修身显瘦包臀a字半身裙</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;64.00</del>
+            <p>&yen;64.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=17" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220320276.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=17">七格格高腰半身裙2018新款时尚灯芯绒a字裙子韩版学生短裙女秋冬</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;140.00</del>
+            <p>&yen;140.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=16" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220037806.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=16">2018秋冬小脚运动裤子女宽松韩版显瘦哈伦裤加绒加厚休闲学生长裤</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;200.00</del>
+            <p>&yen;200.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=15" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215835874.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=15">纯棉格子保暖衬衫 女长袖秋冬加绒加厚韩范修身打底大码女装衬衣</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;83.40</del>
+            <p>&yen;83.40</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=14" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215535534.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=14">纯棉格子保暖衬衫 女长袖秋冬加绒加厚韩范修身打底大码女装衬衣</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;72.00</del>
+            <p>&yen;72.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=13" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215053864.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=13">2018秋冬新款韩版亮丝网纱加绒打底衫长袖女闪光丝蕾丝上衣雪纺衫</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+      </ul>
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <ul class="clearfix">
+      <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=11" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121213244147.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=11">Midea/美的DJ118抽油烟机侧吸式壁挂吸油烟机厨房家用特价大吸力</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,399.00</del>
+            <p>&yen;1,399.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=10" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121213021455.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=10">Haier/海尔 EG7012B29W 静音消毒洗 超薄机身 BLDC变频</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,699.00</del>
+            <p>&yen;1,699.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=8" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212111597.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=8">Midea/美的 BCD-213TM(E) 节能静音家用三开门小冰箱小型电冰箱</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=7" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212339738.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=7">Haier/海尔 BCD-206STPA 206升三门冷藏小型家用节能小冰箱软冷冻</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=6" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212543181.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=6">MIJIA/米家KFR-35GW-B1ZM-M3小米大1.5P变频冷暖静音挂机智能空调</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;2,049.00</del>
+            <p>&yen;2,049.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=5" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212703151.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=5">AUX/奥克斯 KFR-35GW/NFI19+3大1.5匹冷暖定频壁挂式家用空调挂机</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;2,099.00</del>
+            <p>&yen;2,099.00</p>
+          </div>
+        </li>
+        <!---->
+      </ul>
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <ul class="clearfix">
+      <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=26" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121224125388.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=26">【以旧换新 门店现货】Samsung/三星 Galaxy S9 SM-G9600曲屏手机</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;4,949.10</del>
+            <p>&yen;4,949.10</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=25" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121223950247.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=25">【现货！领券减4G+64GG送手环】Xiaomi/小米 红米Note 4X 32G红米4x手机5色官方64G智能手机 5.5寸超长note4X</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,052.10</del>
+            <p>&yen;1,052.10</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=24" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121222733481.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=24">【22日下单减200低至2799】Xiaomi/小米 MIX2S 6+128G全面屏骁龙845智能小米官方旗舰正品降价</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;2,999.00</del>
+            <p>&yen;2,999.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=23" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121222347420.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=23">当天发货 vivo Z1手机正品 vivoz1 青春限量版 双十一vivox21 z1i x23 y97 x20 x9 voviz1手机官方旗舰店官</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,598.00</del>
+            <p>&yen;1,598.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=22" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121221946571.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=22">华为荣耀 荣耀play旗舰店paly 10新荣耀piay手机新款plαy官方8x正品v10新品plya</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,699.00</del>
+            <p>&yen;1,699.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=21" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121221617232.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=21">华为honor/荣耀 荣耀8X全面屏手机屏占比高达91%全网通4G智能学生青春官网全新正品官方旗舰店</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+      </ul>
+      <!---->
+      <!---->
+      <!----> 
+    </div>
+  </div>
+  </div>
+</div>
+<script type="text/jscript">
+$(function(){	
+	$(".J_S902855552").slide({ titCell:'.cl-tags ul li', mainCell:'.con-right', effect:"fade", trigger:"mouseover", autoPlay:true});	
+	$(".J_S902855552 .con-left-slide").slide({ titCell:'.hd ul li', mainCell:'.bd ul', effect:"leftLoop", autoPlay:true});
+});
+</script> 
+
+</div>
+
+<div id="_widget_650" name="df_fl_brand" widget_type="widget" class="widget">
+<div class="fl-brand mb20 clearfix">
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=1" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/15.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=2" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/16.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=3" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/17.png" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=4" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/18.png" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=5" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/19.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=6" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/20.png" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=7" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/21.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=8" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/22.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=9" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/23.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=10" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/24.jpg" width="100" height="50" /></div>
+      <b style="display:none"></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=11" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/25.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=12" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/26.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=13" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/27.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=14" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/28.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=15" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/29.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=16" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/30.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=17" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/31.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=18" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/32.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=19" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/33.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--   -->
+  <div class="item"> 
+    <a href="/frontend/web/brand/view.html?id=20" target="_blank">
+      <div class="img"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/brand/34.jpg" width="100" height="50" /></div>
+      <b></b> 
+    </a> 
+  </div>
+  <!--  -->
+</div>
+
+</div>
+
+<div id="_widget_297" name="df_electrical" widget_type="widget" class="widget">
+<div class="clothing mb20 electrical J_S1079601075">
+  <div class="style-default style-cheng">
+    <div class="cl-title  clearfix"> 
+    <p class="cl-tie">箱包鞋帽系列</p>
+    <div class="cl-tags">
+      <ul class="clearfix">
+      	<!---->
+        <!---->
+        <li> <span>精品推荐</span> <i class="arrowImg"></i> </li>
+        <!---->
+        <!---->
+        <!---->
+        <li> <span>功能箱包</span> <i class="arrowImg"></i> </li>
+        <!---->
+        <!---->
+        <!---->
+        <li> <span>流行男鞋</span> <i class="arrowImg"></i> </li>
+        <!---->
+        <!---->
+        <!---->
+        <li> <span>时尚女鞋</span> <i class="arrowImg"></i> </li>
+        <!---->
+        <!---->
+      </ul>
+    </div>
+  </div>
+    <div class="cl-content clearfix">
+      <div class="con-left clearfix">
+        <div class="con-left-slide">
+          <div class="s-content">
+            <ul>
+              <!--  -->          	
+              <li><a href="store/index.html?id=2" target="_blank"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210905555593.jpg" /></a></li>
+              <!--  -->          	
+              <li><a href="brand/index.html" target="_blank"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210905555996.jpg" /></a></li>
+              <!--  -->          	
+              <li><a href="search/goods.html?cate_id=21" target="_blank"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210905553025.jpg" /></a></li>
+              <!--  -->             
+      		</ul>
+          </div>
+        <div class="s-tit">
+          <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+                    
+      <div class="con-adv clearfix">
+      <a class="mr10" href=""><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210905558484.jpg" /></a>
+      <a href="integral/index.html"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210905557542.jpg" /></a>
+      </div>
+      </div>
+    <div class="con-right">
+     <!---->
+      <ul class="clearfix">
+      	<!--  -->
+        <li class="con-upload mb10"> 
+          <a href="channel/index.html?id=154318705971">
+            <div class="title">
+              <h3>防水斜挎包</h3>
+              <span>商城自营闪电发货</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210920332883.png" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10"> 
+          <a href="">
+            <div class="title">
+              <h3>欧时纳女包</h3>
+              <span>跨万店三免一</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210920331370.png" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10" style="margin-right:0"> 
+          <a href="">
+            <div class="title">
+              <h3>大牌精选</h3>
+              <span>满199减100</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210920332771.png" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10"> 
+          <a href="channel/index.html?id=154318852528">
+            <div class="title">
+              <h3>纪梵希</h3>
+              <span>大牌上新</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210920332143.png" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10"> 
+          <a href="search/goods.html?cate_id=63">
+            <div class="title">
+              <h3>阿迪达斯</h3>
+              <span>新款女鞋上线</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210923253273.jpg" /> 
+          </a> 
+        </li>
+        <!--  -->
+        <li class="con-upload mb10" style="margin-right:0"> 
+          <a href="">
+            <div class="title">
+              <h3>LUGAV奢侈品</h3>
+              <span>男士商务皮鞋</span> 
+            </div>
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709210923253216.jpg" /> 
+          </a> 
+        </li>
+        <!--  -->
+      </ul>
+      <!---->
+      
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <ul class="clearfix">
+      <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=11" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121213244147.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=11">Midea/美的DJ118抽油烟机侧吸式壁挂吸油烟机厨房家用特价大吸力</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,399.00</del>
+            <p>&yen;1,399.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=10" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121213021455.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=10">Haier/海尔 EG7012B29W 静音消毒洗 超薄机身 BLDC变频</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,699.00</del>
+            <p>&yen;1,699.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=8" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212111597.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=8">Midea/美的 BCD-213TM(E) 节能静音家用三开门小冰箱小型电冰箱</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=7" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212339738.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=7">Haier/海尔 BCD-206STPA 206升三门冷藏小型家用节能小冰箱软冷冻</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=6" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212543181.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=6">MIJIA/米家KFR-35GW-B1ZM-M3小米大1.5P变频冷暖静音挂机智能空调</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;2,049.00</del>
+            <p>&yen;2,049.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=5" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212703151.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=5">AUX/奥克斯 KFR-35GW/NFI19+3大1.5匹冷暖定频壁挂式家用空调挂机</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;2,099.00</del>
+            <p>&yen;2,099.00</p>
+          </div>
+        </li>
+        <!---->
+      </ul>
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <ul class="clearfix">
+      <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=18" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220446153.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=18">短裙秋冬装女2018新款韩版百搭毛呢高腰修身显瘦包臀a字半身裙</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;64.00</del>
+            <p>&yen;64.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=17" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220320276.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=17">七格格高腰半身裙2018新款时尚灯芯绒a字裙子韩版学生短裙女秋冬</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;140.00</del>
+            <p>&yen;140.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=16" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220037806.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=16">2018秋冬小脚运动裤子女宽松韩版显瘦哈伦裤加绒加厚休闲学生长裤</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;200.00</del>
+            <p>&yen;200.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=15" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215835874.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=15">纯棉格子保暖衬衫 女长袖秋冬加绒加厚韩范修身打底大码女装衬衣</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;83.40</del>
+            <p>&yen;83.40</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=14" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215535534.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=14">纯棉格子保暖衬衫 女长袖秋冬加绒加厚韩范修身打底大码女装衬衣</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;72.00</del>
+            <p>&yen;72.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=13" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215053864.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=13">2018秋冬新款韩版亮丝网纱加绒打底衫长袖女闪光丝蕾丝上衣雪纺衫</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+      </ul>
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <!---->
+      <ul class="clearfix">
+      <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=26" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121224125388.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=26">【以旧换新 门店现货】Samsung/三星 Galaxy S9 SM-G9600曲屏手机</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;4,949.10</del>
+            <p>&yen;4,949.10</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=25" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121223950247.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=25">【现货！领券减4G+64GG送手环】Xiaomi/小米 红米Note 4X 32G红米4x手机5色官方64G智能手机 5.5寸超长note4X</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,052.10</del>
+            <p>&yen;1,052.10</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=24" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121222733481.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=24">【22日下单减200低至2799】Xiaomi/小米 MIX2S 6+128G全面屏骁龙845智能小米官方旗舰正品降价</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;2,999.00</del>
+            <p>&yen;2,999.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=23" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121222347420.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=23">当天发货 vivo Z1手机正品 vivoz1 青春限量版 双十一vivox21 z1i x23 y97 x20 x9 voviz1手机官方旗舰店官</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,598.00</del>
+            <p>&yen;1,598.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=22" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121221946571.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=22">华为荣耀 荣耀play旗舰店paly 10新荣耀piay手机新款plαy官方8x正品v10新品plya</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,699.00</del>
+            <p>&yen;1,699.00</p>
+          </div>
+        </li>
+        <!---->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="/frontend/web/goods.html?id=21" target="_blank">
+              <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121221617232.jpg" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="/frontend/web/goods.html?id=21">华为honor/荣耀 荣耀8X全面屏手机屏占比高达91%全网通4G智能学生青春官网全新正品官方旗舰店</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>&yen;1,499.00</del>
+            <p>&yen;1,499.00</p>
+          </div>
+        </li>
+        <!---->
+      </ul>
+      <!---->
+      <!---->
+      <!---->
+      
+    </div>
+  </div>
+  </div>
+</div>
+<script type="text/jscript">
+$(function(){	
+	$(".J_S1079601075").slide({ titCell:'.cl-tags ul li', mainCell:'.con-right', effect:"fade", trigger:"mouseover", autoPlay:true});	
+	$(".J_S1079601075 .con-left-slide").slide({ titCell:'.s-tit ul li', mainCell:'.s-content ul', effect:"leftLoop", autoPlay:true});
+});
+</script> 
+
+</div>
+
+<div id="_widget_760" name="df_master" widget_type="widget" class="widget">
+<div class="master mb20">
+  <div class="ftit">
+    <h3>还有更多商品</h3>
+  </div>
+  <div class="master-con clearfix">
+    <!--  -->
+    <div class="m-item clearfix m-item-1 style-default style-qing">
+      <div class="m-content clearfix">
+        <div class="title">
+          <h3>纯棉质品</h3>
+          <p>把好货带回家</p>
+        </div>
+        <a class="m-btn" href="brand/index.html" target="_blank">去见识</a> 
+      </div>
+      <div class="m-img transition-3s"> 
+        <a href="javascript:;"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709211012151189.png" /></a> 
+      </div>
+    </div>
+    <!--  -->
+    <div class="m-item clearfix m-item-1 style-default style-danzi">
+      <div class="m-content clearfix">
+        <div class="title">
+          <h3>新品沙发</h3>
+          <p>热卖中</p>
+        </div>
+        <a class="m-btn" href="search/goods.html?cate_id=21" target="_blank">去见识</a> 
+      </div>
+      <div class="m-img transition-3s"> 
+        <a href="javascript:;"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709211015174199.png" /></a> 
+      </div>
+    </div>
+    <!--  -->
+    <div class="m-item clearfix m-item-1 style-default style-danh">
+      <div class="m-content clearfix">
+        <div class="title">
+          <h3>团购热卖</h3>
+          <p>都是好货</p>
+        </div>
+        <a class="m-btn" href="search/goods.html?cate_id=63" target="_blank">去见识</a> 
+      </div>
+      <div class="m-img transition-3s"> 
+        <a href="javascript:;"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709211015178201.png" /></a> 
+      </div>
+    </div>
+    <!--  -->
+    <div class="m-item clearfix m-item-1 style-default style-lan">
+      <div class="m-content clearfix">
+        <div class="title">
+          <h3>舒适童鞋</h3>
+          <p>帮宝宝学走路</p>
+        </div>
+        <a class="m-btn" href="channel/index.html?id=154318705971" target="_blank">去见识</a> 
+      </div>
+      <div class="m-img transition-3s"> 
+        <a href="javascript:;"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709211015177573.png" /></a> 
+      </div>
+    </div>
+    <!--  -->
+    <div class="m-item clearfix m-item-1 style-default style-tao" style="margin-right:0">
+      <div class="m-content clearfix">
+        <div class="title">
+          <h3>双十二运动鞋</h3>
+          <p>品牌直降</p>
+        </div>
+        <a class="m-btn" href="store/index.html?id=2" target="_blank">去见识</a> 
+      </div>
+      <div class="m-img transition-3s"> 
+        <a href="javascript:;"><img src="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709211015176945.png" /></a> 
+      </div>
+    </div>
+    <!--  -->
+  </div>
+</div>
+
+</div>
+
+<div id="_widget_554" name="df_store" widget_type="widget" class="widget">
+<div class="shop mb20">
+  <div class="ftit">
+    <h3>热门商铺</h3>
+  </div>
+  <div class="shop-list clearfix">
+  	<!--  -->
+    <div class="shop-item"> 
+      <a href="/frontend/web/store/index.html?id=2" target="_blank">
+        <div class="shop-img"> 
+          <img class="img lazyload" initial-url="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709261649278403.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" />
+        </div>
+        <div class="shop-info">
+          <div class="s-logo"> 
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/other/store_logo.png"/>
+          </div>
+          <div class="s-title">
+            <p class="s-name">演示店铺</p>
+            <p class="s-tit">女装时尚内衣</p>
+          </div>
+        </div>
+      </a> 
+    </div>
+    <!--  -->
+    <div class="shop-item"> 
+      <a href="/frontend/web/store/index.html?id=2" target="_blank">
+        <div class="shop-img"> 
+          <img class="img lazyload" initial-url="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709261649276004.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" />
+        </div>
+        <div class="shop-info">
+          <div class="s-logo"> 
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/other/store_logo.png"/>
+          </div>
+          <div class="s-title">
+            <p class="s-name">演示店铺</p>
+            <p class="s-tit">夏季潮流女装馆</p>
+          </div>
+        </div>
+      </a> 
+    </div>
+    <!--  -->
+    <div class="shop-item"> 
+      <a href="/frontend/web/store/index.html?id=2" target="_blank">
+        <div class="shop-img"> 
+          <img class="img lazyload" initial-url="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709261649272462.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" />
+        </div>
+        <div class="shop-info">
+          <div class="s-logo"> 
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/other/store_logo.png"/>
+          </div>
+          <div class="s-title">
+            <p class="s-name">演示店铺</p>
+            <p class="s-tit">秋季休闲女装馆</p>
+          </div>
+        </div>
+      </a> 
+    </div>
+    <!--  -->
+    <div class="shop-item" style="margin-right:0"> 
+      <a href="/frontend/web/store/index.html?id=2" target="_blank">
+        <div class="shop-img"> 
+          <img class="img lazyload" initial-url="http://192.168.1.4:8001/frontend/web/data/files/mall/template/201709261649272406.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" />
+        </div>
+        <div class="shop-info">
+          <div class="s-logo"> 
+            <img src="http://192.168.1.4:8001/frontend/web/data/files/store_2/other/store_logo.png"/>
+          </div>
+          <div class="s-title">
+            <p class="s-name">演示店铺</p>
+            <p class="s-tit">校园风格女装馆</p>
+          </div>
+        </div>
+      </a> 
+    </div>
+    <!--  -->
+  </div>
+</div>
+
+
+</div>
+
+<div id="_widget_455" name="df_goods_list" widget_type="widget" class="widget">
+<!---->
+<div class="like-list w mb20 J_S139594983">
+  <div class="ftit">
+    <h3>猜你喜欢</h3>
+  </div>
+  <ul class="bd clearfix">
+    <!--  -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=26" target="_blank" title="【以旧换新 门店现货】Samsung/三星 Galaxy S9 SM-G9600曲屏手机">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121224125388.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">【以旧换新 门店现货】Samsung/三星 Galaxy S9 SM-G9600曲屏手机</div>
+        <p class="pro-price">&yen;4,949.10</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;4,949.10</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=26" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(26, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=25" target="_blank" title="【现货！领券减4G+64GG送手环】Xiaomi/小米 红米Note 4X 32G红米4x手机5色官方64G智能手机 5.5寸超长note4X">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121223950247.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">【现货！领券减4G+64GG送手环】Xiaomi/小米 红米Note 4X 32G红米4x手机5色官方64G智能手机 5.5寸超长note4X</div>
+        <p class="pro-price">&yen;1,052.10</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;1,052.10</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=25" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(25, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=24" target="_blank" title="【22日下单减200低至2799】Xiaomi/小米 MIX2S 6+128G全面屏骁龙845智能小米官方旗舰正品降价">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121222733481.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">【22日下单减200低至2799】Xiaomi/小米 MIX2S 6+128G全面屏骁龙845智能小米官方旗舰正品降价</div>
+        <p class="pro-price">&yen;2,999.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;2,999.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=24" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(24, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=23" target="_blank" title="当天发货 vivo Z1手机正品 vivoz1 青春限量版 双十一vivox21 z1i x23 y97 x20 x9 voviz1手机官方旗舰店官">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121222347420.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">当天发货 vivo Z1手机正品 vivoz1 青春限量版 双十一vivox21 z1i x23 y97 x20 x9 voviz1手机官方旗舰店官</div>
+        <p class="pro-price">&yen;1,598.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;1,598.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=23" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(23, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods"  style="margin-right:0"> 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=22" target="_blank" title="华为荣耀 荣耀play旗舰店paly 10新荣耀piay手机新款plαy官方8x正品v10新品plya">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121221946571.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">华为荣耀 荣耀play旗舰店paly 10新荣耀piay手机新款plαy官方8x正品v10新品plya</div>
+        <p class="pro-price">&yen;1,699.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;1,699.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=22" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(22, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=21" target="_blank" title="华为honor/荣耀 荣耀8X全面屏手机屏占比高达91%全网通4G智能学生青春官网全新正品官方旗舰店">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121221617232.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">华为honor/荣耀 荣耀8X全面屏手机屏占比高达91%全网通4G智能学生青春官网全新正品官方旗舰店</div>
+        <p class="pro-price">&yen;1,499.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;1,499.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=21" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(21, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=20" target="_blank" title="G2000衬衫男长袖防皱商务男装 工作休闲正装衣服修身薄款白色衬衣">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121221014676.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">G2000衬衫男长袖防皱商务男装 工作休闲正装衣服修身薄款白色衬衣</div>
+        <p class="pro-price">&yen;50.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;50.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=20" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(20, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=19" target="_blank" title="G2000衬衫男长袖防皱商务男装 工作休闲正装衣服修身薄款白色衬衣">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220804979.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">G2000衬衫男长袖防皱商务男装 工作休闲正装衣服修身薄款白色衬衣</div>
+        <p class="pro-price">&yen;200.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;200.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=19" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(19, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=18" target="_blank" title="短裙秋冬装女2018新款韩版百搭毛呢高腰修身显瘦包臀a字半身裙">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220446153.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">短裙秋冬装女2018新款韩版百搭毛呢高腰修身显瘦包臀a字半身裙</div>
+        <p class="pro-price">&yen;64.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;64.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=18" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(18, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods"  style="margin-right:0"> 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=17" target="_blank" title="七格格高腰半身裙2018新款时尚灯芯绒a字裙子韩版学生短裙女秋冬">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220320276.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">七格格高腰半身裙2018新款时尚灯芯绒a字裙子韩版学生短裙女秋冬</div>
+        <p class="pro-price">&yen;140.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;140.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=17" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(17, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=16" target="_blank" title="2018秋冬小脚运动裤子女宽松韩版显瘦哈伦裤加绒加厚休闲学生长裤">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121220037806.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">2018秋冬小脚运动裤子女宽松韩版显瘦哈伦裤加绒加厚休闲学生长裤</div>
+        <p class="pro-price">&yen;200.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;200.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=16" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(16, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=15" target="_blank" title="纯棉格子保暖衬衫 女长袖秋冬加绒加厚韩范修身打底大码女装衬衣">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215835874.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">纯棉格子保暖衬衫 女长袖秋冬加绒加厚韩范修身打底大码女装衬衣</div>
+        <p class="pro-price">&yen;83.40</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;83.40</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=15" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(15, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=14" target="_blank" title="纯棉格子保暖衬衫 女长袖秋冬加绒加厚韩范修身打底大码女装衬衣">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215535534.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">纯棉格子保暖衬衫 女长袖秋冬加绒加厚韩范修身打底大码女装衬衣</div>
+        <p class="pro-price">&yen;72.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;72.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=14" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(14, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=13" target="_blank" title="2018秋冬新款韩版亮丝网纱加绒打底衫长袖女闪光丝蕾丝上衣雪纺衫">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121215053864.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">2018秋冬新款韩版亮丝网纱加绒打底衫长袖女闪光丝蕾丝上衣雪纺衫</div>
+        <p class="pro-price">&yen;1,499.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;1,499.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=13" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(13, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods"  style="margin-right:0"> 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=12" target="_blank" title="2018秋冬新款立领荷叶花边雪纺长袖加绒衬衫女装职业OL木耳白衬衣">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121214200514.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">2018秋冬新款立领荷叶花边雪纺长袖加绒衬衫女装职业OL木耳白衬衣</div>
+        <p class="pro-price">&yen;240.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;240.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=12" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(12, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=11" target="_blank" title="Midea/美的DJ118抽油烟机侧吸式壁挂吸油烟机厨房家用特价大吸力">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121213244147.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">Midea/美的DJ118抽油烟机侧吸式壁挂吸油烟机厨房家用特价大吸力</div>
+        <p class="pro-price">&yen;1,399.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;1,399.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=11" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(11, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=10" target="_blank" title="Haier/海尔 EG7012B29W 静音消毒洗 超薄机身 BLDC变频">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121213021455.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">Haier/海尔 EG7012B29W 静音消毒洗 超薄机身 BLDC变频</div>
+        <p class="pro-price">&yen;1,699.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;1,699.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=10" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(10, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=8" target="_blank" title="Midea/美的 BCD-213TM(E) 节能静音家用三开门小冰箱小型电冰箱">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212111597.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">Midea/美的 BCD-213TM(E) 节能静音家用三开门小冰箱小型电冰箱</div>
+        <p class="pro-price">&yen;1,499.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;1,499.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=8" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(8, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=7" target="_blank" title="Haier/海尔 BCD-206STPA 206升三门冷藏小型家用节能小冰箱软冷冻">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212339738.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">Haier/海尔 BCD-206STPA 206升三门冷藏小型家用节能小冰箱软冷冻</div>
+        <p class="pro-price">&yen;1,499.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;1,499.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=7" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(7, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods"  style="margin-right:0"> 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=6" target="_blank" title="MIJIA/米家KFR-35GW-B1ZM-M3小米大1.5P变频冷暖静音挂机智能空调">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212543181.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">MIJIA/米家KFR-35GW-B1ZM-M3小米大1.5P变频冷暖静音挂机智能空调</div>
+        <p class="pro-price">&yen;2,049.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;2,049.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=6" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(6, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=5" target="_blank" title="AUX/奥克斯 KFR-35GW/NFI19+3大1.5匹冷暖定频壁挂式家用空调挂机">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212703151.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">AUX/奥克斯 KFR-35GW/NFI19+3大1.5匹冷暖定频壁挂式家用空调挂机</div>
+        <p class="pro-price">&yen;2,099.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;2,099.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=5" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(5, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=4" target="_blank" title="Gree/格力 KFR-35GW/(35592)Da-3 大1.5匹定频冷暖空调挂机品圆">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121212828709.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">Gree/格力 KFR-35GW/(35592)Da-3 大1.5匹定频冷暖空调挂机品圆</div>
+        <p class="pro-price">&yen;2,699.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;2,699.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=4" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(4, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=3" target="_blank" title="康佳（KONKA）B55U 55英寸4K超高清31核金属边框HDR智能液晶平板电视">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121163057182.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">康佳（KONKA）B55U 55英寸4K超高清31核金属边框HDR智能液晶平板电视</div>
+        <p class="pro-price">&yen;2,499.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;2,499.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=3" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(3, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods" > 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=2" target="_blank" title="索尼（SONY）KD-55A8F 55英寸 OLED 4K HDR安卓7.0智能电视（黑色）">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121162709932.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">索尼（SONY）KD-55A8F 55英寸 OLED 4K HDR安卓7.0智能电视（黑色）</div>
+        <p class="pro-price">&yen;12,999.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;12,999.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=2" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(2, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!-- -->
+    <li class="goods"  style="margin-right:0"> 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="/frontend/web/goods.html?id=1" target="_blank" title="三星（SAMSUNG）UA55MUF30ZJXXZ 55英寸 4K超高清 智能网络 液晶平板电视 黑色">
+            <img class="lazyload main_img" initial-url="http://192.168.1.4:8001/frontend/web/data/files/store_2/goods/20181121161206467.jpg" src="/frontend/web/templates/mall/default/styles/default/images/empty.gif" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">三星（SAMSUNG）UA55MUF30ZJXXZ 55英寸 4K超高清 智能网络 液晶平板电视 黑色</div>
+        <p class="pro-price">&yen;2,999.00</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">&yen;2,999.00</p>
+        <a class="not-interest" href="/frontend/web/goods.html?id=1" target="_blank">查看详情</a>
+        <a onClick="add_to_cart(1, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!---->
+  </ul>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	$('.J_S139594983 .bd li').hover(function(){
+		$(this).addClass('current');
+	}, function(){
+		$(this).removeClass('current');
+	});
+});
+</script>
+<!---->
+
+</div>
+
+    </div>
+  </div>
+</div>
+<div id="footer" class="w-full">
+  <div class="foot-baozhang">
+    <div class="flow w">
+      <div class="item first"><i class="zp"></i><span>正品保障</span></div>
+      <div class="item"><i class="qt"></i><span>七天包退</span></div>
+      <div class="item"><i class="hp"></i><span>好评如潮</span></div>
+      <div class="item"><i class="sd"></i><span>闪电发货</span></div>
+      <div class="item"><i class="ry"></i><span>权威荣誉</span></div>
+    </div>
+  </div>
+  <div class="foot-service">
+    <div class="w clearfix">
+      <dl class="dl-first">
+        <dt class="fts-1">购物保障</dt>
+        <dd><a href="https://www.shopwind.net">官方认证商家</a></dd>
+        <dd><a href="https://www.shopwind.net">100%全场正品</a></dd>
+      </dl>
+      <dl>
+        <dt class="fts-2">新手上路</dt>
+        <dd><a href="https://www.shopwind.net">新手指南</a></dd>
+        <dd><a href="https://www.shopwind.net">官方微博</a></dd>
+      </dl>
+      <dl>
+        <dt class="fts-3">服务热线</dt>
+        <dd><a href="https://www.shopwind.net">客服专线：0771-123456</a></dd>
+        <dd><a href="https://www.shopwind.net">商家入驻：0771-123456</a></dd>
+      </dl>
+      <dl>
+        <dt class="fts-4">商家入驻</dt>
+        <dd><a href="https://www.shopwind.net">优质商家入驻商城</a></dd>
+        <dd><a href="https://www.shopwind.net">了解ShopWind</a></dd>
+      </dl>
+    </div>
+  </div>
+  <div class="foot-group w clearfix">
+    <div class="float-left tel">
+      <dl class="clearfix">
+        <dt class="float-left"><img src="http://192.168.1.4:8001/frontend/web/static/images/call.png"></dt>
+        <dd class="float-left ml20 mt10">
+          <h3>0771-5784532</h3>
+          <p>周一到周五 9:00 - 17:30</p>
+        </dd>
+      </dl>
+    </div>
+    <div class="float-left footnav">
+      <ul class="clearfix">
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">ShopWind</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">支付方式</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">法律条款</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">合作代理</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">电商系统</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">友情链接</a><span>|</span></li>
+        <li class="float-left last"><a href="https://www.shopwind.net" target="_blank">联系我们</a></li>
+      </ul>
+      <div class="copy">
+        <p>Copyright &copy; 2015-2021 <a href="https://www.shopwind.net" class="ml5 mr5">SHOPWIND.NET</a> 版权所有 <!----> </p>
+        <p>常年法律顾问：广西百纳律师事务所 TEL: 0771-5784532</p>
+      </div>
+    </div>
+    <ul class="float-right ewm clearfix">
+      <li> <img src="http://192.168.1.4:8001/frontend/web/static/images/qrcode_for_gh_8658dbe202f2_258.jpg" width="100" alt="微信官网">
+        <p>微信关注</p>
+      </li>
+      <li> <img src="http://192.168.1.4:8001/frontend/web/static/images/jiaqun-86696159.png" width="100" alt="ShopWind开发群">
+        <p>开发交流群</p>
+      </li>
+    </ul>
+  </div>
+  <div class="foot-fixed J_FootFixed">
+    <div class="foot-fixed-box"> 
+	    <a class="cart j-icon J_F_CardItem" href="/frontend/web/cart/index.html"><i></i><em class="count-cart J_C_T_GoodsKinds">0</em></a>
+      <a class="qq j-icon J_Icon"><i>qq</i></a> 
+      <a class="tel j-icon J_Icon"><i>tel</i></a> 
+      <a class="code j-icon J_Icon"><i>code</i></a> 
+      <a class="backtop j-icon J_Icon"><i>back_top</i></a>
+      <div class="tencent j-tencent j-box J_Box"> 
+        <a href="tencent://message/?uin=544500267&Site=http://192.168.1.4:8001/frontend/web&Menu=yes"><i class="tencent-i">tencent</i><b class="tencent-b"><span class="tencent-span"><img style="overflow: hidden; width: 39px; height: 45px; left: 3px;" class="tencent-qq" src="http://192.168.1.4:8001/frontend/web/static/images/qq-tencent.png" alt=""></span></b>
+          <p class="tencent-p">在线客服<br>
+          点击交谈</p>
+        </a>
+      </div>
+      <div class="tel j-box J_Box"><strong>服务热线：</strong>
+        <p>0771-5784532</p>
+        <i></i>
+      </div>
+      <div class="code j-box J_Box"><img width="155" height="155" src="http://192.168.1.4:8001/frontend/web/static/images/qrcode_for_gh_8658dbe202f2_258.jpg" alt="">
+        <p>关注微信公众号</p>
+        <i></i>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  	$(function(){
+		$(".J_FootFixed").find(".J_Icon").hover(function(){  
+        	$(".J_FootFixed").find(".J_Box").eq($(this).index()-1).show().siblings(".J_Box").hide();
+		});
+		$(".J_FootFixed").hover(function(){
+		}, function(){
+			$(".J_FootFixed").find(".J_Box").hide();
+		});
+	});
+  </script> 
+</div>
+<script type="text/javascript" src="/frontend/web/assets/3a6ede95/SuperSlide/jquery.SuperSlide.2.1.2.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/frontend/web/assets/94b9fbca/layer.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/frontend/web/assets/fd4f6f84/shopwind.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/frontend/web/assets/3a6ede95/jquery.lazyload.js" charset="UTF-8" ></script>
+<script type="text/javascript" src="/frontend/web/assets/fd4f6f84/cart.js" charset="UTF-8" ></script>
+<script type="text/javascript" src="/frontend/web/templates/mall/default/styles/default/js/global.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/frontend/web/templates/mall/default/styles/default/js/main.js" charset="UTF-8"></script>
+
+</body>
+</html>

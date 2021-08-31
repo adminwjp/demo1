@@ -1,0 +1,108 @@
+﻿@model IEnumerable<TenantTypeEditModel>
+@{
+
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="table tn-va-middle">
+        <thead>
+            <tr>
+                <th>租户Id</th>
+                <th>租户名称</th>
+                <th>服务</th>
+                <th>ClassType</th>
+                <th>是否存在代码实现</th>
+                <th>是否已存在于数据库</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                //var tenantTypes = Model.Where(n => n.TenantTypeId == item);
+                //var tenantType = tenantTypes.First();
+                //var serviceKeys = tenantTypes.Select(n => n.ServiceKey);
+                <tr>
+                    <td>@item.TenantTypeId</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-xs-10">
+                                @item.Name
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @if (item.ServiceKeys != null && item.ServiceKeys.Any())
+                        {
+                            @Html.Raw(string.Join("<br/>", item.ServiceKeys));
+                        }
+                    </td>
+                    <td>@item.ClassType</td>
+                    <td>
+                        @if (item.IsInCode)
+                        {
+                            <i class="fa fa-check tn-green-color fa-lg"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-close tn-red-color fa-lg"></i>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsInDatabase)
+                        {
+                            <i class="fa fa-check tn-green-color fa-lg"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-close tn-red-color fa-lg"></i>
+                        }
+                    </td>
+                    <td class="text-nowrap">
+                        <a href="javascript:;" title="编辑" data-id="@item.TenantTypeId" class="editTenantType tn-mr-10"><i class="fa fa-pencil"></i></a>
+                        <a href="javascript:;" class="deleteTenantType" title="删除" data-id="@item.TenantTypeId"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center clearfix text-warning">暂无租户信息</div>
+}
+
+<script>
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+
+        $('.editTenantType').on('click', function () {
+            var tenantTypeId = $(this).data('id');
+            tnlayer.layermodal('编辑租户', '@CachedUrlHelper.Action("_EditTenantType", "ControlPanel", "ConsoleViews")?tenantTypeId=' + tenantTypeId + '&t=' + (new Date()).valueOf(), '500px', '600px')
+        })
+
+        $('.deleteTenantType').on('click', function () {
+            var $this = $(this);
+            layer.confirm("删除租户会同时删除与该租户想关联的服务, 确定要删除么？",
+           { btn: ["确定", "取消"], icon: 3 }, function () {
+               var tenantTypeId = $('#TenantTypes').val();
+               var serviceKey = $('#Services').val();
+               $.post('@CachedUrlHelper.Action("DeleteTenantType","ControlPanel")', { tenantTypeId: $this.data('id'), t: (new Date()).valueOf() }, function (data) {
+                   if (data.MessageType) {
+                       layer.msg(data.MessageContent, { icon: 1 });
+                       //异步刷新列表
+                       $.get('@CachedUrlHelper.Action("_ListTenantTypes","ControlPanel")', { tenantTypeId: tenantTypeId, serviceKey: serviceKey, t: (new Date()).valueOf() }, function (html) {
+                           $('#_ListTenantTypes').html(html);
+                       });
+                   }
+                   else {
+                       layer.msg(data.MessageContent, { icon: 2 });
+                   }
+               });
+           });
+
+        })
+
+    })
+
+</script>

@@ -1,0 +1,92 @@
+﻿
+.jh-resetztree .ztree {
+    margin: 0;
+    border-bottom: 0px;
+}
+
+.jh-resetztree .ztreedemobackground {
+    overflow-x: hidden !important;
+}
+
+.jh-resetztree .ztree li a {
+   display:inline-flex;
+    display: -moz-box;
+     display: -ms-flexbox;
+       display: -webkit-box;
+}
+
+
+.jh-resetztree .ztree li a {
+    text-decoration: none;
+}
+
+    .jh-resetztree .ztree li a span {
+        cursor: pointer;
+    }
+
+    .jh-resetztree .ztree li a.curselectednode {
+        color: #337ab7;
+    }
+
+.jh-resetztree .ztree li span.button.ico_docu,
+.jh-resetztree .ztree li span.button.ico_close,
+.jh-resetztree .ztree li span.button.ico_open {
+    display: none;
+}
+
+    .jh-resetztree .ztree li span.button.ico_close:after {
+        content: "";
+    }
+
+.jh-resetztree .ztree li span.button.root_close:after,
+.jh-resetztree .ztree li span.button.roots_close:after,
+.jh-resetztree .ztree li span.button.center_close:after,
+.jh-resetztree .ztree li span.button.bottom_close:after {
+    content: "\f105";
+}
+
+.jh-resetztree .ztree li span.button.root_open:after,
+.jh-resetztree .ztree li span.button.roots_open:after,
+.jh-resetztree .ztree li span.button.center_open:after,
+.jh-resetztree .ztree li span.button.bottom_open:after {
+    content: "\f107";
+}
+
+.jh-resetztree .ztree li span.button.ico_open {
+    display: none;
+}
+
+.jh-resetztree .ztree li span.button.ico_open {
+    display: none;
+}
+
+.jh-resetztree .ztree li span.button.ico_close {
+    display: none;
+}
+
+.jh-resetztree .ztree li span.button.ico_docu {
+    display: none;
+}
+
+.jh-resetztree .ztree li {
+    list-style-type: none;
+    line-height: 24px;
+    white-space: nowrap;
+    outline: 0;
+    border-top: solid #ddd 1px;
+    text-indent: 15px;
+}
+
+.jh-resetztree .ztreedemobackground {
+    overflow-x: auto !important;
+}
+
+.jh-resetztree .ztree li ul {
+    margin: 0;
+    padding: 0;
+    clear: both;
+}
+.ztree li a.curSelectedNode {
+    background-color: #FFE6B0;
+    border: 1px #FFB951 solid;
+}

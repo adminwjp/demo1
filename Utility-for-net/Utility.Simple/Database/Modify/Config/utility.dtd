@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!ELEMENT Note (Insert,Update,Delete,Select) >
+<!ELEMENT Insert (#PCDATA) >
+<!ELEMENT Update (#PCDATA) >
+<!ELEMENT Delete (#PCDATA) >
+<!ELEMENT Select (#PCDATA) >
+<!ATTLIST Note NameSpace CDATA #IMPLIED>
+<!ATTLIST Note Class CDATA #REQUIRED>
+<!ATTLIST Insert Method CDATA #REQUIRED>
+<!ATTLIST Insert Param CDATA #REQUIRED>
+<!ATTLIST Update Method CDATA #REQUIRED>
+<!ATTLIST Update Param CDATA #REQUIRED>
+<!ATTLIST Delete Method CDATA #REQUIRED>
+<!ATTLIST Delete Param CDATA #REQUIRED>
+<!ATTLIST Select Method CDATA #REQUIRED>
+<!ATTLIST Select Param CDATA #REQUIRED>

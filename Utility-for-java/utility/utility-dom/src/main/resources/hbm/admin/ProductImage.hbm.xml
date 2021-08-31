@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="ProductImage" table="t_product_image" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="product" foreign-key="fk_product_id" column="product_id" cascade="all" fetch="join"  />
+<property name="source" column="source" type="java.lang.String" />
+<property name="large" column="large" type="java.lang.String" />
+<property name="medium" column="medium" type="java.lang.String" />
+<property name="thumbnail" column="thumbnail" type="java.lang.String" />
+<property name="orders" column="orders" type="int" />
+<property name="productId" column="product_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

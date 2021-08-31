@@ -1,0 +1,267 @@
+﻿@{
+    TempData["subMenu-check"] = new string[] { "User", "ManageUserMedals" };
+    ViewData["Title"] = new string[] { "用户勋章" };
+    var awardStatus = ViewData.Get<List<SelectListItem>>("awardStatus", null);
+}
+
+<div class="row tn-page-heading tn-mb-10">
+    <div class="col-xs-12">
+        <h3>勋章管理</h3>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-inline tn-tool-column">
+            <div class="form-group">
+                <a class="btn btn-default" id="addmedal"><i class="fa fa-plus"></i> 添加勋章</a>
+            </div>
+            <div class="form-group pull-right">
+                <a href="@SiteUrls.Instance().ManageMedaltoUsers()" class="a">勋章授予记录</a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                状态&nbsp;&nbsp;@Html.DropDownList("AwardStatus", awardStatus, "全部", new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body" id="_ListUserMedals">
+        @Html.Action("_ListUserMedals", "ControlPanel")
+    </div>
+</div>
+@Styles.Render("~/js/lib/plupload/upload")
+<script>
+    require(['jquery', 'tnlayer', 'uploader', 'validate.unobtrusive', 'tokenfield'], function ($, tnlayer) {
+        $(document).on("click", "#addmedal", function () {
+            var url = '@CachedUrlHelper.Action("_EditUserMedal", "ControlPanel")?t='+(new Date()).getTime();
+            //页面层
+            $.get(url, function (data) {
+                layer.open({
+                    type: 1,
+                    title: "添加勋章",
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ["500px", "720px"], //宽高
+                    content: data,
+                    scrollbar: true
+                });
+            })
+        }).on("click", "#editmedalsubmit", function () {
+            //添加勋章
+            if ($("input[name='AwardType']:checked").val() == '@AwardType.AwardBySelf') {
+                var ConditionIds = [];
+                var ConditionValues = [];
+                var isConditionOk = true;
+                $(".medalcondition").each(function (index, item) {
+                    var minCondition = $(this).val();
+                    if (!(minCondition == "" || minCondition > 0) || (minCondition.indexOf(".")!=-1)) {
+                        layer.msg("申请条件必须是大于0的整数！", { icon: 2 });
+                        isConditionOk = false;
+                        return false;
+                    }
+
+                    if (minCondition > 0) {
+                        var conditionId = $(this).attr("id").split("_")[1];
+                        ConditionIds.push(conditionId);
+                        ConditionValues.push(minCondition);
+                    }
+                });
+
+                if (!isConditionOk)
+                    return false;
+                else {
+                    $("#Conditions").val(ConditionIds);
+                    $("#ConditionValues").val(ConditionValues);
+                }
+                if(ConditionIds.length==0)
+                {
+                    layer.msg("至少输入一项条件！", { icon: 2 });
+                    return false;
+                }
+            }
+            //提交编辑勋章表单
+            var $editMedalForm = $("#editmedalform");
+            $editMedalForm.validate();
+            if ($editMedalForm.valid()) {
+                $.fn.getAttachmentIds(undefined, undefined, undefined, undefined, $("[name='ImageAttachmentId']"));
+                var url = '@CachedUrlHelper.Action("EditUserMedalDeal", "ControlPanel")';
+                var para = $editMedalForm.serializeArray();
+                $.post(url, para, function (data) {
+                    if (data.MessageType == 1) {
+                        layer.closeAll();
+                        layer.msg("编辑成功！", { icon: 1 });
+                        getMedal();
+                    }
+                    else {
+                        layer.msg(data.MessageContent, { icon: 2 });
+                    }
+                });
+            }
+        }).on("click", ".editmedal", function () {
+            //修改勋章
+            var medalId = $(this).data("medalid");
+            var url = '@CachedUrlHelper.Action("_EditUserMedal", "ControlPanel")?t='+(new Date()).getTime();
+            //页面层
+            $.get(url, { medalId: medalId }, function (data) {
+                layer.open({
+                    type: 1,
+                    title: "编辑勋章",
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ["500px", "auto"], //宽高
+                    content: data,
+                    scrollbar: true
+                });
+            })
+        }).on("click", ".deletemedal", function () {
+            //删除勋章
+            var medalId = $(this).data("medalid");
+            layer.confirm("确定删除么？", {
+                btn: ['确认', '取消'],//按钮
+                scrollbar: false
+            }, function () {
+                var url = '@CachedUrlHelper.Action("DeleteMedal", "ControlPanel")';
+                $.post(url, { medalId: medalId }, function (data) {
+                    if (data.MessageType == 1) {
+                        getMedal();
+                        layer.msg(data.MessageContent, { icon: 1 });
+                    }
+                    else {
+                        layer.msg(data.MessageContent, { icon: 2 });
+                    }
+                });
+            });
+        }).on("click", ".medalmove", function () {
+            //上移下移勋章
+            var $this = $(this);
+            var fromMedalId = $this.data("frommedalid");
+            var toMedalId = $this.data("tomedalid");
+            var url = '@CachedUrlHelper.Action("ChangeMedalDisplayOrder", "ControlPanel")';
+            $.post(url, { fromMedalId: fromMedalId, toMedalId: toMedalId }, function (data) {
+                if (data.MessageType == 1) {
+                    getMedal();
+                    layer.msg(data.MessageContent, { icon: 1 });
+                }
+                else {
+                    layer.msg(data.MessageContent, { icon: 2 });
+                }
+            });
+        }).on("change", "#AwardStatus", function () {
+            //选择勋章状态筛选
+            getMedal();
+        }).on("click", "input[name='AwardType']", function () {
+            //点击勋章类别点选框事件
+            var AwardType = $(this).val();
+            if (AwardType == '@AwardType.AwardByOther')
+                $("#conditionDiv").addClass("tn-display-none");
+            else
+                $("#conditionDiv").removeClass("tn-display-none");
+        }).on("click", "#editgroup", function () {
+            //互斥组管理
+            var url = '@CachedUrlHelper.Action("_ManageMedalGroup", "ControlPanel")?t=' + (new Date()).getTime();
+            $.get(url, function (data) {
+                editgrouplayerIndex = layer.open({
+                    type: 1,
+                    title: "互斥组管理",
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ["500px", "auto"], //宽高
+                    content: data,
+                    scrollbar: true
+                });
+            })
+        }).on("click", "#groupsubmit", function () {
+            //提交互斥组管理
+            var groupName = $("#groupname").val();
+            var groupId = $("#groupid").val();
+            if (groupName.length == 0) {
+                layer.msg("组名不能为空", { icon: 2 });
+                return false;
+            }
+            if (groupName.length > 64) {
+                layer.msg("组名最多64个字符！", { icon: 2 });
+                return false;
+            }
+            var url = '@CachedUrlHelper.Action("ManageMedalGroupDeal", "ControlPanel")';
+            $.post(url, { groupName: groupName, groupId: groupId }, function (data) {
+                if (data.MessageType == 1) {
+                    getGroup();
+                    layer.msg(data.MessageContent, { icon: 1 });
+                }
+                else {
+                    layer.msg(data.MessageContent, { icon: 2 });
+                }
+            });
+
+        }).on("click", ".editmedalgroup", function () {
+            //编辑互斥组
+            var groupId = $(this).data("groupid");
+            var groupName = $(this).data("groupname");
+            $("#addgrouplabel").addClass("tn-display-none");
+            $("#editgrouplabel").removeClass("tn-display-none");
+            $("#groupname").val(groupName);
+            $("#groupid").val(groupId);
+        }).on("click", "#addmedalgroup", function () {
+            //添加互斥组
+            $("#editgrouplabel").addClass("tn-display-none");
+            $("#addgrouplabel").removeClass("tn-display-none");
+            $("#groupname").val("");
+            $("#groupid").val(0);
+        }).on("click", ".deletemedalgroup", function () {
+            //删除互斥组
+            var groupId = $(this).data("groupid");
+            layer.confirm("确定删除么？", {
+                btn: ['确认', '取消'],//按钮
+                scrollbar: false
+            }, function () {
+                var url = '@CachedUrlHelper.Action("DeleteGroup", "ControlPanel")';
+                $.post(url, { groupId: groupId }, function (data) {
+                    if (data.MessageType == 1) {
+                        getGroup();
+                        layer.msg(data.MessageContent, { icon: 1, time: 1000 });
+                    }
+                    else {
+                        layer.msg(data.MessageContent, { icon: 2 });
+                    }
+                });
+            });
+        })
+
+        //获取勋章列表
+        function getMedal() {
+            var url = '@CachedUrlHelper.Action("_ListUserMedals", "ControlPanel")?t=' + (new Date).getTime();
+            $.get(url, { awardStatus: $("#AwardStatus").val() }, function (data) {
+                $("#_ListUserMedals").html(data);
+            })
+        }
+
+        //获取互斥组列表
+        function getGroup() {
+            var url = '@CachedUrlHelper.Action("_ListMedalGroup", "ControlPanel")?t=' + (new Date).getTime();
+            $.get(url, function (data) {
+                $("#_ListMedalGroup").html(data);
+            })
+            $("#addgrouplabel").removeClass("tn-display-none");
+            $("#editgrouplabel").addClass("tn-display-none");
+            $("#groupname").val("");
+            $("#groupid").val(0);
+            url = '@CachedUrlHelper.Action("_GetGroupDropdown", "ControlPanel")?t=' + (new Date).getTime();
+            $.get(url, function (data) {
+                $("#GroupId").html(data);
+            })
+        }
+
+        //提交回调
+        $.fn._EditUserMedalSucceed = function (data) {
+            if (data.type == true) {
+                layer.msg("保存成功！", { icon: 1 });
+                setTimeout(function () {
+                    var param = jQuery.param({ categoryId: $("#linkTypeSel").val(), t: new Date().getTime() });
+                    $.get("@CachedUrlHelper.Action("_ListLinks", "ControlPanel")", param, function (data) {
+                        $("#listlink").html(data)
+                    })
+                    layer.closeAll();
+                }, 400)
+            } else {
+                layer.msg("保存失败", { icon: 2 });
+            }
+        }
+
+    })
+</script>

@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Medal>
+@if (Model.Any())
+{
+    int index = 1;
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>勋章名称</th>
+                <th>说明</th>
+                <th>发布时间</th>
+                <th>可以授予</th>
+                <th>授予人数</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medal in Model)
+            {
+                <tr>
+                    <td title="@medal.MedalName"><img src="@medal.GetImageUrl()" width="20" alt="@medal.MedalName" />&nbsp;@StringUtility.Trim(medal.MedalName, 18)</td>
+                    <td title="@medal.Description">@StringUtility.Trim(medal.Description, 30)</td>
+                    <td>@medal.DateCreated.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <i class="fa fa-check fa-@(medal.AwardStatus==AwardStatus.AllowAward ? "check" : "ban") tn-@(medal.AwardStatus==AwardStatus.AllowAward ? "green-color" : "red-color")"></i>
+                    </td>
+                    <td>
+                        <a href="@SiteUrls.Instance().ManageMedaltoUsers(medal.MedalId)" target="_blank" class="a">@medal.GetMedalToUserNum()</a>
+                    </td>
+                    <td>
+                        <a class="editmedal" data-medalid="@medal.MedalId" role="button" title="编辑勋章"><i class="fa fa-pencil  fa-lg"></i></a>&nbsp;
+
+                        <a class="deletemedal" data-medalid="@medal.MedalId" role="button" title="删除勋章"><i class="fa fa-trash fa-lg"></i></a>&nbsp;
+                        @if (Model.Count() > 1)
+                        {
+                            if (index > 1)
+                            {
+                                <a role="button" data-fromMedalId="@medal.MedalId" data-toMedalId="@Model.ElementAtOrDefault(index-2).MedalId" class="tn-cursor-pointer medalmove" title="上移"><i class="fa fa-arrow-up fa-lg"></i></a><text>&nbsp;</text>
+                            }
+
+                            if (index < Model.Count())
+                            {
+                                <a role="button" data-fromMedalId="@medal.MedalId" data-toMedalId="@Model.ElementAtOrDefault(index).MedalId" class="tn-cursor-pointer medalmove" title="下移"><i class="fa fa-arrow-down fa-lg"></i></a>
+                            }
+                        }
+                    </td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center text-warning">
+        还没有任何用户勋章
+    </div>
+}
+<script>
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+    })
+</script>

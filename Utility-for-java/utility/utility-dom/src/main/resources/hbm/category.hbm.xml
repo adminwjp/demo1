@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.crawl.model">
+    <!--
+        name：即实体类的全名
+        table：映射到数据库里面的那个表的名称
+        catalog：数据库的名称
+     -->
+    <class name="CategoryModel" table="category" catalog="crawl">
+        <!-- class下必须要有一个id的子元素 -->
+        <!-- id是用于描述主键的 -->
+        <id name="id" column="id" unsaved-value="0">
+            <!-- 主键生成策略 -->
+            <generator class="identity"></generator>
+<!--            <generator class="increment" />-->
+        </id>
+        <!--
+            使用property来描述属性与字段的对应关系
+            如果length忽略不写，且你的表是自动创建这种方案，那么length的默认长度是255
+        -->
+        <property name="name" column="name" length="50"></property>
+        <property name="englishName" column="english_name" length="100"></property>
+        <property name="desc" column="`desc`" length="500"></property>
+        <property name="url" column="url" length="200"></property>
+        <property name="val" column="val" length="50"></property>
+        <property name="flag" column="flag" >
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.crawl.enums.CategoryFlag</param>
+            </type>
+        </property>
+        <!-- 外键分类 unique="true" error 唯一键 无法关联多次-->
+        <many-to-one name="parent" column="parent_id" unique="false" />
+        <!--<list name="children"   inverse="true" lazy="false" cascade="none">
+            <key column="parent_id" foreign-key="fk_parent_id"/>
+            <list-index column="parent_id"/>
+            <one-to-many class="com.crawl.model.CategoryModel"/>
+        </list>
+        <list name="cities"   inverse="true" lazy="false" cascade="none">
+            <key column="category_id" foreign-key="fk_category_id" />
+            <list-index column="category_id"/>
+            <one-to-many class="com.crawl.model.CityModel"/>
+        </list>-->
+        <set name="children"   inverse="false" lazy="false" cascade="save-update,delete">
+            <key column="parent_id" foreign-key="fk_parent_id" />
+            <one-to-many class="com.crawl.model.CategoryModel"/>
+        </set>
+        <set name="cities"   inverse="false" lazy="false" cascade="save-update,delete">
+            <key column="category_id" foreign-key="fk_category_id" />
+            <one-to-many class="com.crawl.model.CityModel"/>
+        </set>
+        <property name="create" column="`create`" ></property>
+        <property name="modify" column="`modify`" ></property>
+    </class>
+</hibernate-mapping>

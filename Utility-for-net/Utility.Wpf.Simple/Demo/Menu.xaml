@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Utility.Wpf.Demo.Menu" xmlns:Ctrls="clr-namespace:Utility.Wpf.Ctrls" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Utility.Wpf.Demo"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DockPanel>
+            <Expander Header="查询" DockPanel.Dock="Top"></Expander>
+            <Ctrls:Page DockPanel.Dock="Bottom" />
+            <DataGrid x:Name="gd_bank" AutoGenerateColumns="False" Grid.Column="0" Margin="-10,40,10,10" 
+                  CanUserAddRows="False" Grid.RowSpan="2" >
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="编号" Width="80" Binding="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="来源" Width="80" Binding="{Binding Soure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="排序" Width="80" Binding="{Binding Orders, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="创建时间" Width="80" Binding="{Binding CreationTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="更新时间" Width="80" Binding="{Binding LastModificationTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="软删除标识" Width="100" Binding="{Binding IsDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="软删除时间" Width="120" Binding="{Binding DeletionTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="名称" Width="80" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="是否折叠" Width="80" Binding="{Binding Collpse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="分组名称" Width="80" Binding="{Binding Groups, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="地址" Width="80" Binding="{Binding Href, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="描述" Width="80" Binding="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="父菜单 id" Width="80" Binding="{Binding ParentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                    <DataGridTemplateColumn Header="操作" Width="40">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <Button Content="编辑菜单" Tag="" />
+                                    <Button Content="删除菜单" Tag="" />
+                                </WrapPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
+</UserControl>

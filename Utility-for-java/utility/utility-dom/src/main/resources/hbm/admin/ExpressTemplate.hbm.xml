@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="ExpressTemplate" table="t_express_template" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+<property name="expKey" column="exp_key" type="java.lang.String" />
+<property name="expName" column="exp_name" type="java.lang.String" />
+<property name="expTplcontent" column="exp_tplcontent" type="java.lang.String" />
+<property name="expDesignhtml" column="exp_designhtml" type="java.lang.String" />
+<property name="expBgimg" column="exp_bgimg" type="java.lang.String" />
+<property name="isDefault" column="is_default" type="java.lang.Integer" />
+<property name="pagewidth" column="pagewidth" type="java.lang.Integer" />
+<property name="pageheight" column="pageheight" type="java.lang.Integer" />
+<property name="offsetx" column="offsetx" type="java.lang.Integer" />
+<property name="offsety" column="offsety" type="java.lang.Integer" />
+<property name="sellerId" column="seller_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+{{template "user.header.html"}}
+<div id="main" class="clearfix"> {{ template "user.menu.html"}}
+  <div id="right"> {{ template "user.curlocal.html"}}
+    <div class="wrapful">{{ template "user.submenu.html"}}
+      <div class="wrap">
+        <div class="public table">
+          <table>
+            {{range  $goods :=  .goodsList }}
+            <tr class="{{if eq $goods.index 0}}line_bold{else}line{{end}}">
+              <td class="align2" style="width:25px"><input type="checkbox" class="checkitem" value="{{$goods.goods_id}}"/></td>
+              <td width="70"><p class="ware_pic"><a href="goods/index?id={{$goods.goods_id}}" target="_blank"><img src="{{$goods.default_image}}" width="50" height="50"  /></a></p></td>
+              <td width="300"><a href="goods/index?id={{$goods.goods_id}}" target="_blank">{{$goods.goods_name}}</a></td>
+              <td align="center"><a href="store/index?id={{$goods.store_id}}" target="_blank">{{$goods.store_name}}</a></td>
+              <td class="width2"><a href="javascript:;" confirm="{{.lang.drop_confirm}}" uri="my_favorite/delete?item_id={{$goods.goods_id}}&type=goods" class="delete J_AjaxRequest">{{.lang.drop}}</a></td>
+            </tr>
+            {{end}}
+            <tr>
+              <td colspan="5"><div class="notice-word">
+                  <p>{{.lang.no_goods}}</p>
+                </div></td>
+            </tr>
+            {{end}}
+            {{if .goodsList}}
+            <tr class="operations btion">
+              <th colspan="5"> <p class="position1 clearfix">
+                  <input type="checkbox" id="all2" class="checkall float-left margin5"/>
+                  <span class="all"><label for="all2">{{.lang.checkall}}</label></span>
+                  <a href="javascript:void(0);" class="delete" uri="my_favorite/delete?type='goods" name="item_id" presubmit="confirm('{{.lang.drop_confirm}}')" ectype="batchbutton">{{.lang.drop}}</a> </p>
+                <div class="position2 clearfix">{{template "page.bottom.html"}}</div>
+              </th>
+            </tr>
+            {{end}}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{template "user.footer.html"}}

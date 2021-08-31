@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- zinkin net45 - net48 netcoreapp2.0 - net5.0  netstandard1.4 - netstandard2.1 -->
+  <Import Project="Props\zipkin4net.props" />
+  <!-- consul  NET45 - NET48  netcoreapp2.0 - net5.0 netstandard1.3 - netstandard2.1 -->
+  <Import Project="Props\Consul.props" />
+  <!--  Eureka NET461 - NET48  netcoreapp2.0 - net5.0 netstandard1.3 - netstandard2.1 -->
+  <Import Project="Props\Eureka.props" />
+  <!-- ZooKeeperNetEx net45 - net48 netcoreapp2.0 - net5.0 netstandard2.0 - netstandard2.1 -->
+  <Import Project="Props\ZooKeeperNetEx.props" />
+
+  <Import Project="..\shared\Utility.RegisterService.Shared\Utility.RegisterService.Shared.projitems" Label="Shared" />
+  <PropertyGroup>
+
+
+    <!--<TargetFrameworks>net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0;
+    netstandard1.3;netstandard1.4;netstandard1.5;netstandard1.6;netstandard2.0;netstandard2.1;</TargetFrameworks>-->
+
+    <!--<TargetFrameworks>net45;net472;netcoreapp2.0;netcoreapp3.1;netstandard2.0;</TargetFrameworks>-->
+
+    <TargetFrameworks>netstandard2.0;net5.0;</TargetFrameworks>
+    <AssemblyName>Utility.RegisterService</AssemblyName>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>e:\work\Package\Utility.RegisterService\</OutputPath>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <RepositoryUrl>e:\work\Package\Utility.RegisterService\</RepositoryUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>e:\work\Package\Utility.RegisterService\</PackageProjectUrl>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>e:\work\Package\Utility.RegisterService\Utility.RegisterService.xml</DocumentationFile>
+    <Version>1.0.0.0</Version>
+    <Description>支持consul、zookeeper、eureka....(&gt;=NET45 &gt;=NETCOREAPP2_0 &gt;=NETSTANDARD1_3)</Description>
+    <SignAssembly>false</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <Authors>wjp</Authors>
+    <Company>wjp</Company>
+    <RootNamespace>Utility</RootNamespace>
+
+
+    <!-- Package contains only the final .nuspec file with a few listed dependencies. -->
+    <!--<GenerateNuspecDependsOn>$(GenerateNuspecDependsOn);PopulateNuspec</GenerateNuspecDependsOn>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeContentInPack>false</IncludeContentInPack>
+    <IncludeSource>false</IncludeSource>
+    <IncludeSymbols>false</IncludeSymbols>
+    <NuspecFile>$(MSBuildProjectName).nuspec</NuspecFile>
+    <MicrosoftExtensionsApiDescriptionServerPackageVersion>1.0.0.0</MicrosoftExtensionsApiDescriptionServerPackageVersion>-->
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utility.Simple\Utility.Simple.csproj" />
+  </ItemGroup>
+
+</Project>

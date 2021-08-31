@@ -1,0 +1,139 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <!--<DefineConstants>V4;MySql;Db</DefineConstants>-->
+    <DefineConstants>V4;Sqlite;Db</DefineConstants>
+    <!--<DefineConstants>V4;SqlServer;Db</DefineConstants>-->
+    <!--<DefineConstants>V4;Oracle;Db</DefineConstants>-->
+    <!--<DefineConstants>V4;Postgre;Db</DefineConstants>-->
+    <!--<DefineConstants>V4;LocalInMemory</DefineConstants>-->
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\oa\**" />
+    <Compile Remove="wwwroot\social_contact\**" />
+    <Content Remove="wwwroot\oa\**" />
+    <Content Remove="wwwroot\social_contact\**" />
+    <EmbeddedResource Remove="wwwroot\oa\**" />
+    <EmbeddedResource Remove="wwwroot\social_contact\**" />
+    <EntityDeploy Remove="wwwroot\oa\**" />
+    <EntityDeploy Remove="wwwroot\social_contact\**" />
+    <None Remove="wwwroot\oa\**" />
+    <None Remove="wwwroot\social_contact\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="app.conf" />
+    <None Remove="socialcontact.db-journal" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="app.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Orleans.Core" Version="3.4.1" />
+    
+    <!-- 版本冲突 nuget 源 找不到 其他版本 -->
+    <PackageReference Include="DotNetCore.CAP" Version="3.0.4" />
+    <!--  冲突怎么 排除 了 难道 只能 排除所有的 用的最新版本  -->
+    <PackageReference Include="DotNetCore.CAP.MySql" Version="3.0.4" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.0.4" />
+    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="3.0.4" />
+    
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <!--<PackageReference Include="Utility.AspNet.Simple" Version="1.0.0" />-->
+   
+    <ProjectReference Include="..\..\Utility.AspNet.Simple\Utility.AspNet.Simple.csproj" />
+   
+    <ProjectReference Include="..\..\Utility.IdentityServer4\Utility.IdentityServer4.csproj" />
+
+    
+    <!-- <ProjectReference Include="..\..\Utility.Nhibernate.Simple\Utility.Nhibernate.Simple.csproj" />
+    <ProjectReference Include="..\..\Utility.Simple\Utility.Simple.csproj" />
+    <ProjectReference Include="..\..\Utility\Utility.csproj" />-->
+    
+    <ProjectReference Include="..\Orleans\Utility.Orleans.Interfaces\Utility.Orleans.Interfaces.csproj" />
+    <ProjectReference Include="..\Utility.Demo\Utility.Demo.csproj" />
+    <ProjectReference Include="..\Utility.Ef.Demo\Utility.Ef.Demo.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Config\address.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Config\hbm\ConfigModel.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Config\hbm\ServiceModel.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Config\hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Demo\hbm\demo.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Demo\hbm\demo.hbm.xml.back">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Demo\hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\address.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\catagory.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\demo.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\edution.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\icon.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\user_menu.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hbm\work.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\SocialContact\hibernate.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="IdentityServer.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="logs\" />
+    <Folder Include="wwwroot\user\admin\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\imgs\bg-img-7.jpg" />
+  </ItemGroup>
+
+</Project>

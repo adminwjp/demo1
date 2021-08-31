@@ -1,0 +1,109 @@
+﻿[
+  {
+    "Flag": "Template.Db",
+    "Title": "数据库管理",
+    "Data": [
+      {
+        "Query": {
+          "Title": "数据库查询",
+          "Columns": [
+            {
+
+              "Name": "Address",
+              "Header": "地址",
+              "MaxLength": 50,
+              "ColumnType": 1
+            },
+            {
+
+              "Name": "Name",
+              "Header": "名称",
+              "ColumnType": 1
+            },
+            {
+
+              "Name": "Flag",
+              "Header": "标识",
+              "ColumnType": 1
+            },
+            {
+
+              "Name": "User",
+              "Header": "账户",
+              "MaxLength": 50,
+              "ColumnType": 1
+            },
+            {
+
+              "Name": "Pwd",
+              "Header": "密码",
+              "ColumnType": 1
+            }
+          ]
+        },
+
+        //列表信息
+        "Lists": [
+          {
+            "Flag": 0,
+            "Title": "配置信息",
+            "Width": 500,
+            "Height": 650,
+            "Columns": [
+              {
+                "Name": "Id",
+                "Header": "编号",
+                "ColumnType": 1
+              },
+              {
+
+                "Name": "Address",
+                "Header": "地址",
+                "MaxLength": 50,
+                "ColumnType": 1
+              },
+              {
+
+                "Name": "Name",
+                "Header": "名称",
+                "ColumnType": 1
+              },
+              {
+
+                "Name": "Flag",
+                "Header": "标识",
+                "ColumnType": 1
+              },
+              {
+
+                "Name": "User",
+                "Header": "账户",
+                "MaxLength": 50,
+                "ColumnType": 1
+              },
+              {
+
+                "Name": "Pwd",
+                "Header": "密码",
+                "ColumnType": 1
+              },
+              {
+
+                "Name": "CreateDate",
+                "Header": "创建时间",
+                "MaxLength": 200,
+                "ColumnType": 1
+              },
+              {
+
+                "Name": "LastDate",
+                "Header": "修改时间",
+                "ColumnType": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

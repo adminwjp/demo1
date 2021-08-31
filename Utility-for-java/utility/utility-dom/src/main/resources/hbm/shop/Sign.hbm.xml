@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="Sign" table="t_sign">
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity"></generator>
+        </id>
+        <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+        <property name="signName" column="sign_name" type="java.lang.String" length="20"></property>
+        <property name="startDate" column="start_date" type="java.util.Date" ></property>
+        <property name="endDate" column="end_date" type="java.util.Date"></property>
+        <property name="activityType" column="activity_type" type="java.lang.Integer" ></property>
+        <property name="signMemo" column="sign_memo" type="java.lang.String" length="500"></property>
+        <property name="wirlessUrl" column="wirless_url" type="java.lang.String" length="100"></property>
+        <property name="qrCode" column="qr_code" type="java.lang.String" length="100"></property>
+        <property name="backImg" column="back_img" type="java.lang.String" length="100"></property>
+        <property name="needCollectShop" column="need_collect_shop" type="java.lang.Integer" ></property>
+        <property name="signType" column="sign_type"  >
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.shop.model.enums.SignType</param>
+            </type>
+        </property>
+        <property name="signPrize" column="sign_prize"  >
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.shop.model.enums.PrizeType</param>
+            </type>
+        </property>
+        <property name="signDay" column="sign_day" type="java.lang.Integer" ></property>
+        <many-to-one name="prize" foreign-key="fk_prize_id" column="prize_id" cascade="all" fetch="join"  />
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

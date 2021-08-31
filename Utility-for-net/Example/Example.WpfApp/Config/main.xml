@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Menu Header="后台系统">
+    <Children>
+      <!--<Menu Header="OA系统" TypeName="Wpf.Utility.Controls.Home">
+        <Constractor Name="config" Value="config/oa.xml"></Constractor>
+      </Menu>
+      <Menu Header="爬虫系统" TypeName="Wpf.Utility.Controls.Home">
+        <Constractor Name="config" Value="config/crawl.xml"></Constractor>
+      </Menu>-->
+      
+      <Menu Header="OA系统" TypeName="Utility.Wpf.Ctrls.HomeCtrl,Utility.Wpf.Simple">
+        <Constractor Name="config" Value="config/oa.xml"></Constractor>
+      </Menu>
+      <Menu Header="爬虫系统" TypeName="Utility.Wpf.Ctrls.HomeCtrl,Utility.Wpf.Simple">
+        <Constractor Name="config" Value="config/crawl.xml"></Constractor>
+      </Menu>
+      
+    </Children>
+  </Menu>
+  
+</Root>

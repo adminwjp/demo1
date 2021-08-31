@@ -1,0 +1,88 @@
+﻿@model  PagingDataSet<SearchWord>
+    @Html.Hidden("SearchWordPageIndex", Model.PageIndex)
+@if (Model.Any())
+{
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>搜索词</th>
+                    <th>搜索类型</th>
+                    <th>近6月搜索次数</th>
+                    <th>累计搜索次数</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="@item.Id">
+                        <td>@item.Word</td>
+                        @switch (item.SearchTypeCode)
+                        {
+                            case "All":<td>全部</td>
+                                break;
+                            case "Cms":<td>资讯</td>
+                                break;
+                            case "Thread":<td>贴吧</td>
+                                break;
+                            case "Doc":<td>文库</td>
+                                break;
+                            case "Ask":
+                        <td>问答</td>;
+
+                                break;
+                            default:
+                                <td></td>
+                                break;
+
+                        }
+                        <td>@item.SixSearchWordCounts</td>
+                        <td>@item.SearchWordCounts</td>
+                        <td>@item.DateCreated.ToUserDateString()</td>
+                        <td>
+                            <a class="a tn-mr-10 updateWord" data-id="@item.Id" href="####" title="编辑"><i class="fa fa-pencil"></i></a>
+                            <a class="a tn-mr-10 deleteType" title="删除" data-id="@item.Id" href="####"><i class="fa fa-trash"></i></a>
+                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="text-center">
+            @Html.AjaxPagingButton(Model, "_listSearchWord", CachedUrlHelper.Action("_ListSearchWord", "ControlPanel"))
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center text-warning tn-mb-20 tn-mt-20">
+        暂无任何热词
+    </div>
+}
+<script>
+    require(['jquery', 'tnlayer','page'], function ($, tnlayer) {
+        //删除
+        $(".deleteType").click(function () {
+                                var id = $(this).data("id");
+                                layer.confirm("是否确认删除这个热词", {
+                                    btn: ['确认', '取消']
+                                }, function () {
+                $.post('@CachedUrlHelper.Action("_DeleteSearchWord","ControlPanel")', { id: id }, function (data) {
+                    if (data.state = 1) {
+                        layer.msg("删除成功", { icon: 1 });
+                    } else {
+                        layer.msg("删除失败", { icon: 2 });
+                    }
+                    $.fn.search(0)
+                });
+            });
+        });
+
+        $(".updateWord").click(function () {
+            var id = $(this).data("id");
+            tnlayer.layermodal("编辑搜索词", '@CachedUrlHelper.Action("_ReviseSearchWord", "ControlPanel")?id=' + id+'&t='+new Date().getTime(), '380px', '430px');
+        });
+    })
+</script>

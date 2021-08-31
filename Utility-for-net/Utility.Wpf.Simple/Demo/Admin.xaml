@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="Utility.Wpf.Demo.Admin" xmlns:Ctrls="clr-namespace:Utility.Wpf.Ctrls" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Utility.Wpf.Demo"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Expander Header="管理员列表" Grid.Row="0">
+            <DockPanel>
+                <Expander Header="查询" DockPanel.Dock="Top"></Expander>
+                <Ctrls:Page DockPanel.Dock="Bottom" />
+                <DataGrid x:Name="gd_bank" AutoGenerateColumns="False" Grid.Column="0" Margin="-10,40,10,10" 
+                  CanUserAddRows="False" Grid.RowSpan="2" >
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox></CheckBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="编号" Width="80" Binding="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户性别" Width="80" Binding="{Binding NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="昵称" Width="80" Binding="{Binding RealName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户真实姓名" Width="80" Binding="{Binding RealName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <DataGridTextColumn Header="出生日期" Width="80" Binding="{Binding Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="账号" Width="80" Binding="{Binding Account, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="手机号" Width="80" Binding="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <DataGridTextColumn Header="邮箱" Width="80" Binding="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="头像  " Width="80" Binding="{Binding HeadPic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                        <DataGridTextColumn Header="状态" Width="80" Binding="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="注册时间" Width="80" Binding="{Binding RegisterDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户注册ip" Width="80" Binding="{Binding RegisterIp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户登录ip  " Width="80" Binding="{Binding LoginIp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户描述" Width="80" Binding="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="登录失败次数" Width="80" Binding="{Binding FailCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="父用户 id(推荐人/创建人)" Width="80" Binding="{Binding ParentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="操作" Width="40">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <WrapPanel>
+                                        <Button Content="编辑菜单" Tag="" />
+                                        <Button Content="删除菜单" Tag="" />
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Expander>
+
+        <Expander Header="用户列表" Grid.Row="1">
+            <DockPanel>
+                <Expander Header="查询" DockPanel.Dock="Top"></Expander>
+                <Ctrls:Page DockPanel.Dock="Bottom" />
+                <DataGrid x:Name="gd_user" AutoGenerateColumns="False" Grid.Column="0" Margin="-10,40,10,10" 
+                  CanUserAddRows="False" Grid.RowSpan="2" >
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox></CheckBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="编号" Width="80" Binding="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户性别" Width="80" Binding="{Binding NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="昵称" Width="80" Binding="{Binding RealName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户真实姓名" Width="80" Binding="{Binding RealName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <DataGridTextColumn Header="出生日期" Width="80" Binding="{Binding Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="账号" Width="80" Binding="{Binding Account, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="手机号" Width="80" Binding="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <DataGridTextColumn Header="邮箱" Width="80" Binding="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="头像  " Width="80" Binding="{Binding HeadPic, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                        <DataGridTextColumn Header="状态" Width="80" Binding="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="注册时间" Width="80" Binding="{Binding RegisterDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户注册ip" Width="80" Binding="{Binding RegisterIp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户登录ip  " Width="80" Binding="{Binding LoginIp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="用户描述" Width="80" Binding="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="登录失败次数" Width="80" Binding="{Binding FailCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="父用户 id(推荐人/创建人)" Width="80" Binding="{Binding ParentId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTemplateColumn Header="操作" Width="40">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <WrapPanel>
+                                        <Button Content="编辑菜单" Tag="" />
+                                        <Button Content="删除菜单" Tag="" />
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Expander>
+    
+    </Grid>
+</UserControl>

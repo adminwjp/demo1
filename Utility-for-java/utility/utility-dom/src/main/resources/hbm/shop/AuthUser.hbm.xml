@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="AuthUser" table="t_auth_user" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity"/>
+        </id>
+        <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+        <property name="appId" column="app_id" type="java.lang.String" length="20"></property>
+        <property name="certFile" column="cert_file"  ></property>
+        <property name="authorizerAccessToken" column="authorizer_access_token" type="java.lang.String" length="50"></property>
+        <property name="authorizerRefreshToken" column="authorizer_refresh_token" type="java.lang.String" length="50"></property>
+        <property name="expiresIn" column="expires_in" type="java.lang.Integer" ></property>
+        <property name="selectFuncInfo" column="select_func_info" type="java.lang.String" length="50"></property>
+        <property name="nickName" column="nick_name" type="java.lang.String" length="20"></property>
+        <property name="headImg" column="head_img" type="java.lang.String" length="20"></property>
+        <property name="serviceTypeInfo" column="service_type_info" type="java.lang.String" length="20"></property>
+        <property name="verifyTypeInfo" column="verify_type_info" type="java.lang.String" length="20"></property>
+        <property name="userName" column="user_name" type="java.lang.String" length="20"></property>
+        <property name="principalName" column="principal_name" type="java.lang.String" length="20"></property>
+        <property name="businessInfo" column="business_info" type="java.lang.String" length="20"></property>
+        <property name="alias" column="alias" type="java.lang.String" length="20"></property>
+        <property name="qrCodeUrl" column="qr_code_url" type="java.lang.String" length="20"></property>
+        <property name="funcInfo" column="func_info" type="java.lang.String" length="20"></property>
+        <property name="payMchId" column="pay_mch_id" type="java.lang.String" length="20"></property>
+        <property name="paySecretKey" column="pay_secret_key" type="java.lang.String" length="20"></property>
+        <property name="isUsed" column="is_used" type="java.lang.Boolean" length="20"></property>
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

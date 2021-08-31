@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="Module" table="t_module" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+<property name="moduleName" column="module_name" type="java.lang.String" />
+<property name="className" column="class_name" type="java.lang.String" />
+<property name="tableName" column="table_name" type="java.lang.String" />
+<property name="paramName" column="param_name" type="java.lang.String" />
+<property name="moduleUrl" column="module_url" type="java.lang.String" />
+<property name="moduleCode" column="module_code" type="java.lang.String" />
+    </class>
+</hibernate-mapping>

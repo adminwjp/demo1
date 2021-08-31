@@ -1,0 +1,133 @@
+﻿@model PagingDataSet<Comment>
+@{
+    var tenantTypeId = ViewData.Get<string>("tenantTypeId", string.Empty);
+    var commentedObjectId = ViewData.Get<long>("commentedObjectId", 0);
+    var currentUser = UserContext.CurrentUser;
+    var pageIndex = Model.PageIndex;
+    var count = ViewData.Get<long>("count", 0);
+    pageIndex--;
+    Authorizer authorizer = new Authorizer();
+
+    var commentId = ViewData.Get("commentId", 0);
+}
+<div class="tn-chat-list">
+    @Html.Hidden("tenantTypeId", tenantTypeId)
+    @Html.Hidden("commentedObjectId", commentedObjectId)
+    @if (Model.Any())
+    {
+        var cn = 0;
+        foreach (var item in Model)
+        {
+            cn++;
+            var commentContent = HtmlUtility.CloseHtmlTags(HtmlUtility.StripScriptTags(item.Body));
+            <div class="media" id="commentdetail-@item.Id">
+                <div class="media-left">
+                    @Html.ShowUserAvatar(userId: item.UserId, avatarSizeType: AvatarSizeType.Micro)
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading"><small class="pull-right">#@(pageIndex * 10 + cn)</small><a target="_blank" href="@SiteUrls.Instance().SpaceHome(item.UserId)">@item.Author</a></h4>
+                    <p class="message">@Html.Raw(commentContent)</p>
+                    <div class="tn-feedback">
+                        <small class="pull-left text-muted">@item.DateCreated.ToFriendlyDate()</small>
+                        <ul class="list-inline text-right text-muted" onmouseover="$.fn.showoperation(this);" onmouseout="$.fn.hideoperation(this);">
+                            @if (currentUser != null)
+                            {
+                                bool? isSupport = item.IsSupport(currentUser.UserId);
+                                var supportCount = item.GetSupportCount();
+                                if (currentUser.UserId == item.UserId || authorizer.IsCategoryManager(tenantTypeId, currentUser, null))
+                                {
+                                    <li>
+                                        <a href="javascript:;" id="commentdelete-@item.Id" style="display:none"><i class="fa fa-trash"></i> 删除</a>
+                                    </li>
+                                }
+                                <li><a href="javascript:;" name="report" style="display:none" data-url="@CachedUrlHelper.Action("_EditImpeachReport", "Common", null, new RouteValueDictionary { { "tenantTypeId", TenantTypeIds.Instance().Comment() }, { "reportObjectId", item.Id }, { "subject", StringUtility.Trim(commentContent,15) } })"><i class="fa fa-exclamation-circle"></i> 举报</a></li>
+
+                                if (isSupport.HasValue && isSupport.Value)
+                                {
+                                    <li><a href="javascript:;"><i class="fa fa-thumbs-o-up"></i> 已赞(<span id="SupportCount-@item.Id">@supportCount</span> )</a></li>
+                                }
+                                else
+                                {
+                                    <li id="commentsupport-@item.Id"><a href="javascript:;"><i class="fa fa-thumbs-o-up"></i> 赞(<span id="SupportCount-@item.Id">@supportCount</span>)</a></li>
+                                }
+                                <li>
+
+                                    <a id="commentcreate-@item.Id" href="javascript:;" data-href="@SiteUrls.Instance()._Comment(item.Id, tenantTypeId, commentedObjectId)"><i class="fa fa-reply"></i> 回复</a><text>&nbsp;</text>
+                                </li>
+                            }
+                            else
+                            {
+                                <li></li>
+                            }
+                        </ul>
+                    </div>
+                    @Html.Action("_ChildComment", "Portal", new { parentId = item.Id, commentedObjectId = commentedObjectId, tenantTypeId = tenantTypeId, pageIndex = 1 })
+                </div>
+            </div>
+        }
+
+        <div class="text-center">
+            @Html.AjaxPagingButton(Model, "CommentLists", CachedUrlHelper.Action("_ListComment", "Portal", null, new RouteValueDictionary { { "commentedObjectId", commentedObjectId }, { "tenantTypeId", tenantTypeId } }))
+        </div>
+    }
+    else
+    {
+        <div class="media">
+            <div class="media-body text-center text-warning">
+                <h4 class="media-heading">暂无评论</h4>
+            </div>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    require(['jquery', 'tnlayer', 'qqFace','page'], function ($) {
+
+        //指向评论详情
+        $(document).ready(function () {
+            if (@commentId > 0) {
+                location.href = "#commentdetail-" +@commentId;
+            }
+        })
+
+        $("[id^='commentsupport-']").click(function myfunction() {
+            var objectId = $(this).attr('id').replace(/[^0-9]/ig, "");
+            $.post("@CachedUrlHelper.Action("Attitude", "Common")",{"tenantTypeId":@tenantTypeId,"objectId":objectId},function myfunction(data) {
+                if(data.state){
+                    layer.msg("点赞成功", { icon: 1 });
+                    var SupportCount = parseInt($("#SupportCount-"+objectId).html());
+                    SupportCount++
+                    $("#commentsupport-"+objectId).html('<a href="javascript:;"><i class="fa fa-thumbs-o-up"></i> 已赞(<span id="SupportCount-+"'+objectId+'>'+SupportCount+'</span>)</a>');
+                    $("#commentsupport-"+objectId).attr("id","");
+                }
+                else {
+                    layer.msg("请先登录", { icon: 0});
+                }
+            })
+        });
+        $.fn.showoperation = function (e) {
+            var commentdel = $(e).find("a");
+            if (commentdel.length >  3) {
+
+                commentdel[0].style.display = "inline";
+                commentdel[1].style.display = "inline";
+
+            }else if (commentdel.length > 2) {
+                commentdel[0].style.display = "inline";
+            }
+        }
+
+        $.fn.hideoperation = function (e) {
+            var commentdel = $(e).find("a");
+            if (commentdel.length > 3) {
+                commentdel[0].style.display = "none";
+                commentdel[1].style.display = "none";
+
+            }else if (commentdel.length > 2) {
+                commentdel[0].style.display = "none";
+            }
+        }
+
+
+
+    })
+</script>

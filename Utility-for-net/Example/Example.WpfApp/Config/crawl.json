@@ -1,0 +1,106 @@
+﻿[
+  //任务信息
+  {
+    "Flag": 0,
+    "Title": "任务管理",
+    "Width": 500,
+    "Height": 650,
+    "Columns": [
+      {
+        "Name": "Id",
+        "Header": "编号",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "TaskId",
+        "Header": "任务Id",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Create",
+        "Header": "创建时间",
+        "MaxLength": 200,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Flag",
+        "Header": "任务状态",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Finish",
+        "Header": "完成时间",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "IsPage",
+        "Header": "分页",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "CityCode",
+        "Header": "城市编码",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "SkillCode",
+        "Header": "技能编码",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "MajorCode",
+        "Header": "行业编码",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "PublishTime",
+        "Header": "发布日期",
+        "ColumnType": 1
+      }
+    ]
+  },
+
+  //分类信息
+  {
+    "Flag": 3,
+    "Width": 500,
+    "Height": 350,
+    "Columns": [
+      {
+        "Name": "Id",
+        "Header": "编号",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Name",
+        "Header": "名称",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Desc",
+        "Header": "描述",
+        "MaxLength": 200,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "ParentId",
+        "Header": "分类",
+        "ColumnType": 2
+      }
+    ]
+  }
+]

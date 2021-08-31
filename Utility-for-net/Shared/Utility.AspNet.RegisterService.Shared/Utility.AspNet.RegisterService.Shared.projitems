@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>943793ff-0db2-4b70-879f-7ebf6c425759</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Utility.AspNet.RegisterService.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AspNetCore\Controllers\HealthController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AspNetCore\Extensions\ConsulExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AspNetCore\Extensions\RegisterServiceExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AspNetCore\LogSimpleHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AspNetCore\StartSimpleHelper.cs" />
+  </ItemGroup>
+</Project>

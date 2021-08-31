@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="ModuleFun" table="t_module_fun" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="module" foreign-key="fk_module_id" column="module_id" cascade="all" fetch="join"  />
+ <many-to-one name="parent" foreign-key="fk_parent_id" column="parent_id" cascade="all" fetch="join"  />
+<property name="funName" column="fun_name" type="java.lang.String" />
+<property name="funUrl" column="fun_url" type="java.lang.String" />
+<property name="moduleId" column="module_id" type="java.lang.Integer" />
+<property name="parentId" column="parent_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

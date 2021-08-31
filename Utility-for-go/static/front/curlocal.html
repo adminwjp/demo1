@@ -1,0 +1,9 @@
+<div class="location w-shop mt10 mb10">
+    {{range $lnk := ._curlocal }}
+    {{if $lnk.url}}
+    <a href="{{$lnk.url}}">{{$lnk.text}}</a> <span>></span>
+    {{else}}
+    {if eq .id  'goods'}{{$goods.goods_name}}{{else}}{{$lnk.text}}{{end}}
+    {{end}}
+    {{end}}
+</div>

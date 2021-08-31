@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>utility</artifactId>
+        <groupId>com.utility</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <description>
+        utility commnon 基础包 不包含 大量包
+        junit lombok guava json objectmapper
+        poi dom asm lucene html oos
+    </description>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <groupId>com.utility</groupId>
+    <artifactId>utility-common</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <properties>
+        <junit.version>4.9</junit.version>
+        <guava.version>30.1-jre</guava.version>
+        <servlet-api.version>3.1.0</servlet-api.version>
+        <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
+
+        <!--  其它包官方 maven 没有  -->
+        <memcached.version>2.4.2</memcached.version>
+
+        <aopalliance.version>1.0</aopalliance.version>
+
+        <ezmorph.version>1.0.6</ezmorph.version>
+        <!-- 3.9.1 down fail -->
+        <!-- <p6spy.version>3.9.0</p6spy.version>-->
+        <p6spy.version>1.3</p6spy.version>
+        <urlrewrite.version>4.0.4</urlrewrite.version>
+        <javamail.version>1.4.7</javamail.version>
+        <pinyin4j.version>2.5.1</pinyin4j.version>
+
+        <!--2.3.2 down fail -->
+        <quartz.version>2.3.0</quartz.version>
+
+
+        <thumbnailator.version>0.4.9</thumbnailator.version>
+        <zxing.version>3.4.1</zxing.version>
+        <!--<okhttp.version>20120626</okhttp.version>-->
+        <aspectjweaver.version>1.9.6</aspectjweaver.version>
+
+        <!-- oos  -->
+        <!-- oos minio -->
+        <minio.version>8.0.3</minio.version>
+        <!-- oos aliyun -->
+        <!-- 3.9.1 down fail -->
+        <aliyun-sdk-oss.version>3.8.1</aliyun-sdk-oss.version>
+        <!-- oos qiniu -->
+        <!-- 7.4.0 down fail -->
+        <qiniu.version>7.0.11</qiniu.version>
+
+        <modelmapper.version>2.3.9</modelmapper.version>
+
+        <!--poi-->
+        <jxls.version>1.0.6</jxls.version>
+        <opencsv.version>2.4</opencsv.version>
+
+        <!--
+    cnblogs.com/yswyzh/p/9010375.html
+    通过ASM来实现诸如代码生成，代码混淆，代码转换等等以字节码为操作目标的工作
+    -->
+        <!--asm-->
+        <cglib.version>3.3.0</cglib.version>
+        <asm.version>3.3.1</asm.version>
+
+        <!--dom-->
+        <jdom.version>1.1</jdom.version>
+        <dom4j.version>1.6.1</dom4j.version>
+        <!--1.2.0 down fail -->
+        <jaxen.version>1.1.6</jaxen.version>
+
+
+        <!--lucene-->
+        <!-- 8.7.0 down fail -->
+        <lucene.version>8.6.2</lucene.version>
+        <!-- 3.6.2 down fail -->
+        <lucene-analyzers.version>3.3.0</lucene-analyzers.version>
+
+        <!-- parse html  -->
+        <htmlparser.version>2.1</htmlparser.version>
+        <jsoup.version>1.9.2</jsoup.version>
+
+        <!--json-->
+        <jackson-mapper-asl.version>1.9.9</jackson-mapper-asl.version>
+        <jsoup.version>1.9.2</jsoup.version>
+        <fastjson.version>1.2.9</fastjson.version>
+        <jackson-databind.version>2.11.3</jackson-databind.version>
+        <!-- 1.9.9  >1.9.6 down fail -->
+        <jackson.version>1.9.2</jackson.version>
+        <!-- 请不要在JDK7及以上用Json-lib了
+https://www.cnblogs.com/mayswind/p/9222245.html
+-->
+        <json-lib.version>2.4</json-lib.version>
+
+    </properties>
+    <dependencies>
+        <!-- exists c3po datasource jar -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>jsptags</groupId>
+            <artifactId>pager-taglib</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>el-api</artifactId>
+            <version>2.2.1-b04</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!--        https://blog.csdn.net/tgyd2006/article/details/83704984-->
+        <!--   <dependency>
+               <groupId>javax.servlet</groupId>
+               <artifactId>jstl</artifactId>
+               <version>1.1.2</version>
+           </dependency>-->
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+
+
+
+
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>${pinyin4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javamail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tuckey</groupId>
+            <artifactId>urlrewritefilter</artifactId>
+            <version>${urlrewrite.version}</version>
+        </dependency>
+
+        <!-- P6Spy是一个可以用来在应用程序中拦截和修改数据操作语句的开源框架  -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>${p6spy.version}</version>
+        </dependency>
+
+        <!--  ezmorph，是一个简单的java类库用于将一种对象转换成另外一种对象。EZMorph原先是Json-lib项目中的转换器 -->
+        <dependency>
+            <groupId>net.sf.ezmorph</groupId>
+            <artifactId>ezmorph</artifactId>
+            <version>${ezmorph.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>${aopalliance.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.maven-play-plugin.spy</groupId>
+            <artifactId>memcached</artifactId>
+            <version>${memcached.version}</version>
+        </dependency>
+       <!-- <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${javax.annotation-api.version}</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectjweaver.version}</version>
+        </dependency>
+
+        <!--二维码生成和解析-->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${zxing.version}</version>
+        </dependency>
+
+        <!-- 图片压缩  -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>${thumbnailator.version}</version>
+        </dependency>
+
+        <!-- oos  -->
+        <!--  oss minio  -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                </exclusion>
+              <exclusion>
+                  <groupId>com.fasterxml.jackson.core</groupId>
+                  <artifactId>jackson-core</artifactId>
+              </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+                <!-- spring boot -->
+                <!-- <exclusion>
+                     <groupId>org.checkerframework</groupId>
+                     <artifactId>checker-qual</artifactId>
+                 </exclusion>-->
+
+                <!-- HikariCP -->
+                <exclusion>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-stdlib-common</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-stdlib</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+                <!--     <exclusion>
+                         <groupId>com.fasterxml.jackson.core</groupId>
+                         <artifactId>jackson-databind</artifactId>
+                     </exclusion>
+                     <exclusion>
+                         <groupId>com.fasterxml.jackson.core</groupId>
+                         <artifactId>jackson-annotations</artifactId>
+                     </exclusion>
+                     <exclusion>
+                         <groupId>com.fasterxml.jackson.core</groupId>
+                         <artifactId>jackson-core</artifactId>
+                     </exclusion>
+                     <exclusion>
+                         <groupId>com.google.guava</groupId>
+                         <artifactId>guava</artifactId>
+                     </exclusion>-->
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>1.3.72</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- 七牛云 OSS对象存储服务 已存在 okhttp jar -->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>${qiniu.version}</version>
+            <exclusions>
+                <!-- minio 存在 -->
+                <exclusion>
+                    <groupId>com.squareup.okhttp</groupId>
+                    <artifactId>okhttp</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Aliyun OSS 对象存储服务 -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>${aliyun-sdk-oss.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--实体 映射-->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
+        </dependency>
+
+        <!-- unit  测试 包 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
+        <!--  json -->
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jackson-mapper-asl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
+            <exclusions>
+                <!-- <exclusion>
+                     <groupId>com.fasterxml.jackson.core</groupId>
+                     <artifactId>jackson-core</artifactId>
+                 </exclusion>-->
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>${json-lib.version}</version>
+            <classifier>jdk15</classifier>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-collections</groupId>
+                    <artifactId>commons-collections</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--http-->
+        <!-- elasticseach http -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.10</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.12</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
+            <version>4.1.4</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore-nio</artifactId>
+            <version>4.4.12</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--lucene-->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers</artifactId>
+            <version>${lucene-analyzers.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.lucene</groupId>
+                    <artifactId>lucene-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+
+        <!-- parse html  -->
+        <dependency>
+            <groupId>org.htmlparser</groupId>
+            <artifactId>htmllexer</artifactId>
+            <version>${htmlparser.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.htmlparser</groupId>
+            <artifactId>htmlparser</artifactId>
+            <version>${htmlparser.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <!--dom-->
+        <!--
+Jaxen是一个Java编写的开源的XPath库。这是适应多种不同的对象模型，包括DOM，XOM，dom4j和JDOM。
+也可以作为适配器，转换Java字节代码或XML的Java bean为xml，从而使您可以使用XPath查询这些树了
+-->
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <version>${jaxen.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>jdom</groupId>
+                    <artifactId>jdom</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>${jdom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>${dom4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!--asm-->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>${asm.version}</version>
+        </dependency>
+
+
+        <!--poi-->
+        <!-- excel操作  存在 poi poi-ooxml  -->
+        <dependency>
+            <groupId>net.sf.jxls</groupId>
+            <artifactId>jxls-core</artifactId>
+            <version>${jxls.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- csv文件操作-->
+        <dependency>
+            <groupId>net.sf.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${opencsv.version}</version>
+        </dependency>
+    </dependencies>
+
+    <!-- 参考：https://blog.csdn.net/isea533/article/details/48575983  -->
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <!-- 以下设置 或 setting.xml profiles 设置  -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.version}</version>
+
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <!--    <executable>F:\software\java\jdk\bin/javac</executable>
+                        <fork>true</fork>-->
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>

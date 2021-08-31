@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="SignRecord" table="t_sign_record">
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity"></generator>
+        </id>
+        <many-to-one name="sign" foreign-key="fk_sign_id" column="sign_id" cascade="all" fetch="join"  />
+        <many-to-one name="buyer" foreign-key="fk_buyer_id" column="buyer_id" cascade="all" fetch="join"  />
+        <property name="signDate" column="sign_date" type="java.util.Date" ></property>
+        <property name="signMonth" column="sign_month" type="java.lang.Integer" ></property>
+    </class>
+</hibernate-mapping>

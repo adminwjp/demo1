@@ -1,0 +1,13 @@
+{{ define "user.curlocal.html"}}
+{{if ._curlocal}}
+<div class="location">
+	{{range $lnk := ._curlocal}}
+	{{if $lnk.url}}
+	<a href="{{$lnk.url}}">{{$lnk.text}}</a>
+	{{else}}
+	{{$lnk.text}}
+	{{end}}
+	{{end}}
+</div>
+{{end}}
+{{end}}

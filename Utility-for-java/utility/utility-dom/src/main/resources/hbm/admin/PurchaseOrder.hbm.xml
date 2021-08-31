@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="PurchaseOrder" table="t_purchase_order" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="buyer" foreign-key="fk_buyer_id" column="buyer_id" cascade="all" fetch="join"  />
+ <many-to-one name="purchase" foreign-key="fk_purchase_id" column="purchase_id" cascade="all" fetch="join"  />
+<property name="tradeNo" column="trade_no" type="java.lang.String" />
+<property name="alipayTradeNo" column="alipay_trade_no" type="java.lang.String" />
+<property name="payFee" column="pay_fee" type="double" />
+<property name="payType" column="pay_type" type="java.lang.String" />
+<property name="status" column="status" type="int" />
+<property name="userId" column="user_id" type="java.lang.Integer" />
+<property name="purchaseId" column="purchase_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

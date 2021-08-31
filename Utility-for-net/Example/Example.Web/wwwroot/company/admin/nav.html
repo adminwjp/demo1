@@ -1,0 +1,142 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/html5shiv.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/lib/h-ui.admin/css/style.css" />
+
+    <!--<link href="http://192.168.1.3:5000/lib/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" />-->
+    <!--<link rel="stylesheet" href="http://192.168.1.3:5000/lib/jqgrid/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="http://192.168.1.3:5000/lib/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+    <link rel="stylesheet" href="http://192.168.1.3:5000/lib/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="http://192.168.1.3:5000/lib/jqgrid/css/css/redmond/jquery-ui-1.8.16.custom.css" />-->
+
+    <link rel="stylesheet" href="http://192.168.1.3:5000/lib/jqgrid1/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="http://192.168.1.3:5000/lib/jqgrid1/css/css/redmond/jquery-ui-1.8.16.custom.css" />
+    <link rel="stylesheet" href="http://192.168.1.3:5000/lib/jqgrid1/datepicker/jquery.ui.datepicker.css" />
+
+    <!--[if IE 6]>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>导航管理</title>
+    <style>
+        td.highlight {
+            font-weight: bold;
+            color: blue;
+        }
+
+        .table td {
+            text-align: center;
+        }
+
+        .ui-jqgrid tr.jqgrow td {
+            white-space: normal !important;
+            height: auto;
+            /*   vertical-align: text-top;
+        padding-top: 10px; */
+        }
+    </style>
+</head>
+<body>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 官网中心 <span class="c-gray en">&gt;</span> 导航管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div class="text-c">
+            创建日期范围：
+            <input type="text" onfocus="WdatePicker({ createMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="createdatemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ createMinDate:'#F{$dp.$D(\'datemin\')}',createMaxDate:'%y-%M-%d' })" id="createdatemax" class="input-text Wdate" style="width:120px;">
+            修改日期范围：
+            <input type="text" onfocus="WdatePicker({ modifyMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="modifydatemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ modifyMinDate:'#F{$dp.$D(\'datemin\')}',modifyMaxDate:'%y-%M-%d' })" id="modifydatemax" class="input-text Wdate" style="width:120px;">
+            <input type="text" class="input-text" style="width:250px" placeholder="输入名称 英文 名称" id="name" name="">
+            <span class="select-box" style="width:150px;">
+                <select id="enable" class="select">
+                    <option value="">请选择</option>
+                    <option value="true">启用</option>
+                    <option value="false">禁用</option>
+                </select>
+            </span>
+
+            <button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+            <button type="reset" class="btn btn-success radius" id="clear" name="">清空</button>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="l">
+                <a href="javascript:;" onclick="operatorJqGrid('', 'delete', urls.nav.delete)" class="btn btn-danger radius">
+                    <i class="Hui-iconfont">&#xe6e2;</i>
+                    批量删除
+                </a> <a href="javascript:;" onclick="operatorJqGrid('添加导航信息', 'add', urls.nav.add)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加导航信息</a>
+                <a href="javascript:;" onclick="operatorJqGrid('编辑导航信息', 'edit', urls.nav.edit)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑导航信息</a>
+                <a href="javascript:;" onclick="setEditEnable(urls.nav.editstatus, '', true, true)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6e1;</i>启用</a>
+                <a href="javascript:;" onclick="setEditEnable(urls.nav.editstatus, '', false, true)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe631;</i> 暂停</a>
+            </span> <span class="r">共有数据：<strong>0</strong> 条</span>
+        </div>
+        <div class="mt-20">
+            <table id="table" class="table table-border table-bordered table-hover table-bg table-sort">
+            </table>
+            <div id="page"></div>
+
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <!--<script type="text/javascript" src="http://192.168.1.3:5000/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>-->
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/laypage/1.2/laypage.js"></script>
+
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/jqgrid1/js/jquery.jqGrid.src.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/jqgrid1/js/i18n/grid.locale-cn.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/jqgrid1/datepicker/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/jqgrid1/datepicker/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/lib/jqgrid1/datepicker/jquery.ui.datepicker.js"></script>
+    <script src="/company/admin/js/index.js"></script>
+    <script type="text/javascript">
+        var admin = new AdminJqGrid();
+        admin.url = urls.nav;
+        var options = admin.options;
+        options.url = urls.nav.query;
+        options.caption = "导航信息列表";
+
+        admin.search();
+        let categorys = [":请选择"];
+        jQuery(function () {
+            jQuery.getJSON(urls.nav.category, data => {
+                if (data.success) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        categorys.push(data.data[i].id + ":" + data.data[i].name);
+                    }
+                    //console.log(categorys);
+                    admin.initColModel();
+                    jQuery("#table").jqGrid(options).jqGrid('setFrozenColumns');;
+                    $("#table").jqGrid('navGrid', '#page',
+                        { add: true, edit: true, del: false, search: false, refresh: false },
+                        {
+                            beforeShowForm: beforeShowForm
+                        }, {
+                        beforeShowForm: beforeShowForm
+                    });
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>

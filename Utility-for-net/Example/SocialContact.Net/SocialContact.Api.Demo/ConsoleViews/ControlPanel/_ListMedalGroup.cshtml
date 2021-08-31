@@ -1,0 +1,36 @@
+﻿@model IEnumerable<MedalGroup>
+
+@if (Model.Any())
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>组名</th>
+                <th>勋章数</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medalGroup in Model)
+            {
+                <tr>
+                    <td title="@medalGroup.GroupName">@StringUtility.Trim(medalGroup.GroupName, 10)</td>
+                    <td>@medalGroup.MeadlCount</td>
+                    <td>
+                        <a class="editmedalgroup" data-groupname="@medalGroup.GroupName" data-groupid="@medalGroup.GroupId" role="button" title="编辑互斥组"><i class="fa fa-pencil  fa-lg"></i></a>&nbsp;
+                        <a class="deletemedalgroup" data-groupid="@medalGroup.GroupId" role="button" title="删除互斥组"><i class="fa fa-trash fa-lg"></i></a>&nbsp;
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center text-warning">
+        还没有任何勋章互斥组
+    </div>
+}
+
+
+

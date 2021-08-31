@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="Area" table="t_area" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity"></generator>
+        </id>
+        <many-to-one name="parent" column="parent_id" foreign-key="fk_parent_id" cascade="all" fetch="join" />
+        <set name="children"    inverse="false" lazy="false" cascade="save-update,delete">
+            <key column="parent_id" foreign-key="fk_parent_id" />
+            <one-to-many class="com.shop.model.Agent" not-found="ignore"/>
+        </set>
+        <property name="fullName" column="full_name" type="java.lang.String" length="20"></property>
+        <property name="name" column="name" type="java.lang.String" length="10"></property>
+        <property name="treePath" column="tree_path" type="java.lang.String" length="20"></property>
+        <property name="orders" column="orders" type="java.lang.Integer" ></property>
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

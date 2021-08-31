@@ -1,0 +1,772 @@
+﻿[
+  //账套分类信息
+  {
+    "Flag": 0,
+    "Title": "账套分类管理",
+    "Width": 500,
+    "Height": 450,
+    "Columns": [
+      {
+
+        "Name": "Name",
+        "Header": "名称",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Type", //1 考勤 // 2 账套
+        "Header": "账单类型",
+        "ColumnType": 2,
+        "Required": true,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "SingleItems": true,
+        //"Items": [
+        //  "考勤",
+        //  "账套"
+        //]
+        "Items": [
+          {
+            "Label": "考勤",
+            "Value": "1"
+          },
+          {
+            "Label": "账套",
+            "Value": "2"
+          }
+        ]
+      },
+      {
+        "Name": "Utit",
+        "Header": "单位",
+        "MaxLength": 50,
+        "Required": true,
+        "ColumnType": 1
+      }
+    ]
+  },
+
+  //权限信息
+  {
+    "Flag": 1,
+    "Title": "权限管理",
+    "Width": 500,
+    "Height": 620,
+    "Columns": [
+      {
+
+        "Name": "Table",
+        "Header": "表",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Type",
+        "Header": "实体类型",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "AddFalg",
+        "Header": "添加",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "EditFalg",
+        "Header": "编辑",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "DeleteFalg",
+        "Header": "删除",
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "SelectFalg",
+        "Header": "查询",
+        "ColumnType": 1
+      },
+      {
+        "Header": "角色",
+        "Name": "Role.Id",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.Role"
+      }
+    ]
+  },
+
+  //培训内容信息
+  {
+    "Flag": 2,
+    "Title": "培训内容管理",
+    "Width": 500,
+    "Height": 650,
+    "Columns": [
+      {
+
+        "Name": "Name",
+        "Header": "名称",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Content",
+        "Header": "内容",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "StartDate",
+        "Header": "开始时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "EndDate",
+        "Header": "结束时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "Unit",
+        "Header": "单位",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Lecturer",
+        "Header": "讲课者",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Place",
+        "Header": "地点",
+        "MaxLength": 50,
+        "ColumnType": 1
+      }
+    ]
+  },
+
+  //培训人员信息
+  {
+    "Flag": 3,
+    "Title": "培训人员管理",
+    "Width": 500,
+    "Height": 550,
+    "Columns": [
+      {
+        "Name": "BringUpContent.Id",
+        "Header": "培训内容信息",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.Content"
+      },
+      {
+
+        "Name": "Record.Id",
+        "Header": "档案信息",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.Record"
+      },
+      {
+
+        "Name": "Score",
+        "Header": "成绩",
+        "ColumnType": 3
+      },
+      {
+
+        "Name": "UpToGrate",
+        "Header": "培训等级",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Remark",
+        "Header": "备注",
+        "MaxLength": 50,
+        "ColumnType": 1
+      }
+    ]
+  },
+
+  //职位信息
+  {
+    "Flag": 4,
+    "Title": "职位管理",
+    "Width": 600,
+    "Height": 1000,
+    "Columns": [
+      {
+
+        "Name": "AccessionDate",
+        "Header": "加入时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "DimissionDate",
+        "Header": "离开时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "DimissionReason",
+        "Header": "离职原因",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "FirstPactDate",
+        "Header": "第一次工作(签条约)时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "PactStartDate",
+        "Header": "第一次工作(签条约)开始时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "PactEndDate",
+        "Header": "第一次工作(签条约)结束时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "BankName",
+        "Header": "银行名称",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "BandId",
+        "Header": "银行卡号",
+        "MaxLength": 20,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "SocietySafefyNo",
+        "Header": "社会安全编号",
+        "MaxLength": 20,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "AnnuitySafefyNo",
+        "Header": "年保险金(养老金)编号",
+        "MaxLength": 20,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "DoleSafefyNo",
+        "Header": "失业救助金编号",
+        "MaxLength": 20,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "MedicareSafefyNo",
+        "Header": "医疗保险金编号",
+        "MaxLength": 20,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "CompoSafefyNo",
+        "Header": "工伤赔偿费编号",
+        "MaxLength": 20,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "AcoumulationFundNo",
+        "Header": "公积金编号",
+        "MaxLength": 20,
+        "ColumnType": 1
+      }
+    ]
+  },
+
+  // 名族 信息
+  {
+    "Flag": 5,
+    "Title": "名族管理",
+    "Width": 500,
+    "Height": 350,
+    "Columns": [
+      {
+
+        "Name": "Name",
+        "Header": "名称",
+        "MaxLength": 50,
+        "ColumnType": 1
+      }
+    ]
+  },
+    //模块信息
+  {
+    "Flag": 6,
+    "Title": "模块管理",
+    "Width": 500,
+    "Height": 500,
+    "Columns": [
+      {
+
+        "Name": "Name",
+        "Header": "名称",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Href",
+        "Header": "地址",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+        "Name": "Parent.Id",
+        "Header": "父模块",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.ParentModule"
+      },
+      {
+
+        "Name": "User.Id",
+        "Header": "用户",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.User"
+      }
+    ]
+  },
+
+    //个人信息
+  {
+    "Flag": 7,
+    "Title": "个人管理",
+    "Width": 500,
+    "Height": 1050,
+    "Columns": [
+      {
+
+        "Name": "QQ",
+        "Header": "QQ",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Email",
+        "Header": "邮箱",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Handset",
+        "Header": "电话",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Telphone",
+        "Header": "手机号",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Address",
+        "Header": "地址",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Postlacode",
+        "Header": "邮政编码",
+        "MaxLength": 5,
+        "ColumnType": 3
+      },
+      {
+
+        "Name": "SecondSchoolAge",
+        "Header": "第一次学龄",
+        "MaxLength": 2,
+        "ColumnType": 3
+      },
+      {
+
+        "Name": "SecondSpeciaity",
+        "Header": "二次专业",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "GraduateSchool",
+        "Header": "大学学校",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "GraduateDate",
+        "Header": "大学就读时间",
+        "MaxLength": 50,
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "PartyMemberDate",
+        "Header": "入党时间",
+        "MaxLength": 50,
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "ComputerGrate",
+        "Header": "计算机等级",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Likes",
+        "Header": "爱好",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "OnesStrongSuit",
+        "Header": "强项特长",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "User.Id",
+        "Header": "用户",
+        "MaxLength": 50,
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.User"
+      }
+    ]
+  },
+
+    //奖惩信息
+  {
+    "Flag": 8,
+    "Title": "奖惩管理",
+    "Width": 500,
+    "Height": 700,
+    "Columns": [
+      {
+
+        "Name": "Record.Id",
+        "Header": "档案信息",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.Record"
+      },
+      {
+
+        "Name": "Type",
+        "Header": "单位",
+        "MaxLength": 1,
+        "ColumnType": 3
+      },
+      {
+
+        "Name": "Type",
+        "Header": "奖/惩",
+        "MaxLength": 1,
+        "ColumnType": 3
+      },
+      {
+
+        "Name": "Reason",
+        "Header": "奖/惩原因",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Content",
+        "Header": "奖/惩内容",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Money",
+        "Header": "奖/惩金额",
+        "MaxLength": 5,
+        "ColumnType": 3
+      },
+      {
+
+        "Name": "StartDate",
+        "Header": "开始时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+
+        "Name": "EndDate",
+        "Header": "结束时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      }
+    ]
+  },
+
+    //账套 人员设置
+  {
+    "Flag": 9,
+    "Title": "账套人员设置管理",
+    "Width": 500,
+    "Height": 400,
+    "Columns": [
+      {
+        "Name": "Record.Id",
+        "Header": "档案信息",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.Record"
+      },
+      {
+
+        "Name": "ReckoningName.Id",
+        "Header": "账套名称信息",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.ReckoningName"
+      }
+    ]
+  },
+
+    //账套名称信息
+  {
+    "Flag": 10,
+    "Title": "账套名称管理",
+    "Width": 500,
+    "Height": 400,
+    "Columns": [
+      {
+        "Name": "Name",
+        "Header": "名称",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Explain",
+        "Header": "说明",
+        "MaxLength": 50,
+        "ColumnType": 1
+      }
+    ]
+  },
+
+    //账套信息
+  {
+    "Flag": 11,
+    "Title": "账套管理",
+    "Width": 500,
+    "Height": 450,
+    "Columns": [
+      {
+        "Name": "Record.Id",
+        "Header": "档案信息",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.Record"
+      },
+      {
+
+        "Name": "AccountItem.Id",
+        "Header": "账套分类信息",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.AccountItem"
+      },
+      {
+        "Name": "Money",
+        "Header": "名称",
+        "MaxLength": 5,
+        "ColumnType": 3
+      }
+    ]
+  },
+
+    //角色信息
+  {
+    "Flag": 12,
+    "Title": "角色管理",
+    "Width": 500,
+    "Height": 450,
+    "Columns": [
+      {
+        "Name": "Name",
+        "Header": "名称",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+        "Name": "Parent.Id",
+        "Header": "父角色",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.ParentRole"
+      },
+      {
+
+        "Name": "User.Id",
+        "Header": "用户",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.User"
+      }
+    ]
+  },
+
+    //考勤信息
+  {
+    "Flag": 13,
+    "Title": "考勤管理",
+    "Width": 500,
+    "Height": 650,
+    "Columns": [
+      {
+        "Name": "Record.Id",
+        "Header": "档案信息",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.Record"
+      },
+      {
+
+        "Name": "User.Id",
+        "Header": "用户信息",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.User"
+      },
+      {
+        "Name": "Explain",
+        "Header": "迟到原因",
+        "MaxLength": 50,
+        "ColumnType": 1
+      },
+      {
+        "Name": "StartDate",
+        "Header": "上班时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+        "Name": "EndDate",
+        "Header": "下班时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      },
+      {
+        "Name": "RatifierRecord.Id",
+        "Header": "批准人",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.Record"
+      },
+      {
+        "Name": "RatifierDate",
+        "Header": "批准时间",
+        "ColumnType": 1,
+        "StringFormat": "yyyy-MM-dd HH:mm:ss"
+      }
+    ]
+  },
+
+    //用户信息
+  {
+    "Flag": 14,
+    "Title": "用户管理",
+    "Width": 500,
+    "Height": 450,
+    "Columns": [
+      {
+        "Name": "Account",
+        "Header": "账户",
+        "MaxLength": 10,
+        "ColumnType": 1
+      },
+      {
+
+        "Name": "Password",
+        "Header": "密码",
+        "MaxLength": 20,
+        "ColumnType": 1
+      },
+      {
+
+        //"Name": "RoleId",
+        "Header": "角色信息",
+        "Name": "Role.Id",
+        "ColumnType": 2,
+        "SelectedValuePath": "Value",
+        "DisplayMemberPath": "Label",
+        "Key": "OA.Role"
+      }
+    ]
+  }
+  ]

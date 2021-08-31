@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="Purchase" table="t_purchase" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+<property name="name" column="name" type="java.lang.String" />
+<property name="desc" column="desc" type="java.lang.String" />
+<property name="expiresIn" column="expires_in" type="int" />
+<property name="payFee" column="pay_fee" type="java.math.BigDecimal" />
+ <many-to-one name="isDefault" foreign-key="fk_isDefault_id" column="isDefault_id" cascade="all" fetch="join"  />
+<property name="status" column="status" type="int" />
+    </class>
+</hibernate-mapping>

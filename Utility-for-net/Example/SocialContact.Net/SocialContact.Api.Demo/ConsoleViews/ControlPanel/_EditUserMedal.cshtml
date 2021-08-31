@@ -1,0 +1,103 @@
+﻿@model UserMedalEditModel
+@{
+    AttachmentService attachmentService = new AttachmentService(TenantTypeIds.Instance().Medal());
+    var groups = ViewData.Get<List<SelectListItem>>("groups", null);
+    var conditions = ViewData.Get<IEnumerable<MedalCondition>>("conditions", null);
+
+}
+<div class="panel">
+    <div class="panel-body">
+        @using (Html.BeginForm("EditUserMedalDeal", "ControlPanel", FormMethod.Post, new { @class = "form-horizontal tn-form-validation tn-survey-form", @id = "editmedalform" }))
+        {
+        @Html.AntiForgeryToken()
+            @Html.HiddenFor(n => n.MedalId)
+            @Html.ValidationMessageFor(n => n.MedalId)
+            @Html.HiddenFor(n => n.Conditions)
+            @Html.ValidationMessageFor(n => n.Conditions)
+            @Html.HiddenFor(n => n.ConditionValues)
+            @Html.ValidationMessageFor(n => n.ConditionValues)
+            @Html.HiddenFor(n => n.AttachmentIds)
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.LabelFor(n => n.MedalName)
+                    @Html.TextBoxFor(n => n.MedalName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(n => n.MedalName)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.LabelFor(n => n.Description)
+                    @Html.TextBoxFor(n => n.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(n => n.Description)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12 row">
+                    <div class="col-xs-4">@Html.LabelFor(n => n.ImageAttachmentId, new { @class = "form-control-static text-center" })</div>
+                    <div class="col-xs-8"><span class="help-block">36px*36px最佳</span></div>
+                </div>
+                @AttachmentHelper._UploadFeaturedImage(Model.ImageAttachmentId,TenantTypeIds.Instance().Medal(),null,"ImageAttachmentId")
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12 row">
+                    <div class="col-xs-3">@Html.LabelFor(n => n.GroupId, new { @class = "form-control-static text-center" })</div>
+                    <div class="col-xs-7 tn-no-padding">@Html.DropDownListFor(n => n.GroupId, groups, new { @class = "form-control" })</div>
+                    <div class="col-xs-2"><a class="a tn-cursor-pointer text-center" id="editgroup">管理</a></div>
+                </div>
+                <div class="col-xs-12">
+                    @Html.ValidationMessageFor(n => n.GroupId)
+                    <span class="help-block">如不允许多个勋章同时授予一个用户时，可为这些勋章设置为同一个互斥组</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.LabelFor(n => n.AwardType)&nbsp;&nbsp;&nbsp;
+                    @Html.RadioButtonFor(n => n.AwardType, AwardType.AwardByOther)@AwardType.AwardByOther.GetDisplayName()&nbsp;&nbsp;&nbsp;
+                    @Html.RadioButtonFor(n => n.AwardType, AwardType.AwardBySelf, new { @id = "AwardBySelf" })@AwardType.AwardBySelf.GetDisplayName()
+                    @Html.ValidationMessageFor(n => n.AwardType)
+                </div>
+            </div>
+            <div class="form-group @(Model.AwardType==AwardType.AwardByOther?"tn-display-none":"")" id="conditionDiv">
+                <div class="col-xs-12">
+                    @Html.LabelFor(n => n.Conditions)
+                </div>
+                <div class="col-xs-12 row">
+                    @if (conditions.Any())
+                    {
+                        var conditionIndex = 0;
+                        foreach (var condition in conditions)
+                        {
+                        <div class="col-xs-6">
+                            <div class="col-xs-7 tn-no-padding"><label class="form-control-static text-center">@condition.ConditionName>=</label></div>
+                            <div class="col-xs-5 tn-no-padding">
+                                @Html.TextBox("ConditionId_" + condition.ConditionId, condition.MinCondition > 0 ? condition.MinCondition.ToString() : "", new { @class = "form-control medalcondition", @placeholder = "0" })
+                            </div>
+                        </div>
+                            if (conditionIndex > 0 && (conditionIndex + 1) % 2 == 0)
+                            {
+                            <div class="col-xs-12 tn-mt-10"></div>
+                            }
+                            conditionIndex++;
+                        }
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.LabelFor(n => n.AwardStatus)&nbsp;&nbsp;&nbsp;
+                    @Html.RadioButtonFor(n => n.AwardStatus, AwardStatus.AllowAward)@AwardStatus.AllowAward.GetDisplayName()&nbsp;&nbsp;&nbsp;
+                    @Html.RadioButtonFor(n => n.AwardStatus, AwardStatus.StopAward)@AwardStatus.StopAward.GetDisplayName()
+                    @Html.ValidationMessageFor(n => n.AwardStatus)
+                </div>
+            </div>
+            <div class="form-group">
+                &nbsp;&nbsp;&nbsp;<button type="button" id="editmedalsubmit" class="btn btn-primary tn-btn-wp">保存</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-default tn-btn-wp" onclick="layer.closeAll();">取消</button>
+            </div>
+        }
+    </div>
+@Styles.Render("~/js/lib/plupload/upload")
+</div>
+
+
+

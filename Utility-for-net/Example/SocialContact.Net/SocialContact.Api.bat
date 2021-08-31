@@ -1,0 +1,1 @@
+docker build -f "E:\work\program\SocialContact\src\SocialContact.Api\Dockerfile" --force-rm -t socialcontactapi:dev --target base  --label "com.microsoft.created-by=visual-studio" --label "com.microsoft.visual-studio.project-name=SocialContact.Api" "E:\work\program\SocialContact\src"

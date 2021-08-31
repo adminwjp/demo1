@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="SellerImages" table="t_seller_images" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="sellerUser" foreign-key="fk_sellerUser_id" column="sellerUser_id" cascade="all" fetch="join"  />
+ <many-to-one name="imageGroup" foreign-key="fk_imageGroup_id" column="imageGroup_id" cascade="all" fetch="join"  />
+<property name="imgPath" column="img_path" type="java.lang.String" />
+<property name="sellerId" column="seller_id" type="java.lang.Integer" />
+<property name="imgGroupId" column="img_group_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

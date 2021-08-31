@@ -1,0 +1,174 @@
+<html>
+
+<head>
+	<!-- https://www.taobao.com/?spm=a2107.1.0.0.72c511d9Kwsr1I
+    https://www.pinduoduo.com/
+    https://www.jd.com/?cu=true&utm_source=baidu-pinzhuan&utm_medium=cpc&utm_campaign=t_288551095_baidupinzhuan&utm_term=0f3d30c8dba7459bb52f2eb5eba8ac7d_0_c05b3b596d41418eb309b3d0cc50a18d -->
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>
+	<div class="nav">
+		<div class="nav_inner">
+			<ul class="left">
+				<li class="nav-show-area">
+					<div class="address">
+						<span>中国大陆</span>
+						<span><i class="fa fa-angle-down" aria-hidden="true"></i></span>
+					</div>
+					<div class="addressu-list nav-panel hide">
+						<ul>
+						</ul>
+					</div>
+				</li>
+				<li>
+					<a href="login.html" target="_top" class="login">亲，请登录</a>&nbsp;&nbsp;
+					<a href="register.html" target="_top">免费注册</a>
+				</li>
+				<li>
+					<a href="index.html" target="_top">
+						<span>手机逛商城</span>
+					</a>
+				</li>
+			</ul>
+
+			<ul class="right">
+			</ul>
+		</div>
+	</div>
+
+	<div class="banner">
+		<div class="banner-inner">
+			<a href="https://taoxiaopu.taobao.com?spm=a21bo.2017.201855.1.4c0a11d9O783uo" target="_blank">
+				<!-- bug 位置 乱跑   -->
+				<!-- <img src="https://gw.alicdn.com/tfs/TB1DP0yAoY1gK0jSZFMXXaWcVXa-1190-70.png" alt="淘小铺""> -->
+			</a>
+		</div>
+	</div>
+
+	<div class="products">
+		<div class="products-inner"></div>
+	</div>
+
+
+	<script src=" utility.js"></script>
+	<script src="jquery.min.js"></script>
+	<script src="index.js"></script>
+	<script>
+		var categories = [{
+			img: "https://img.alicdn.com/tfs/TB1tqpnegMPMeJjy1XcXXXpppXa-148-48.png",
+			icon: "fa fa-qrcode",
+			title: "与品质生活不期而遇",
+			qr_img: "https://img.alicdn.com/tfs/TB17e_6e3MPMeJjy1XcXXXpppXa-380-382.png",
+			qr_code: true,
+			products: [{
+					img: "https://img.alicdn.com/imgextra/i1/2869961377/O1CN011M2hr0zicuS08Hz_!!2869961377-0-beehive-scenes.jpg_180x180xzq90.jpg_.webp",
+					name: "圣罗兰 口红礼盒",
+					desc: "多款色号多种选择，轻松打造出美丽的唇妆。",
+					icon: "fa fa-smile-o",
+					comment: "8 人说好"
+				}, {
+					img: "https://img.alicdn.com/tfscom/i1/1581756766/TB2TF0ch0zJ8KJjSspkXXbF7VXa_!!1581756766.jpg_180x180xzq90.jpg_.webp",
+					name: "大豆家 方头奶奶鞋",
+					desc: "一脚蹬设计，方便日常的穿脱。",
+					icon: "fa fa-smile-o",
+					comment: "3758 人说好"
+				}, {
+					img: "https://img.alicdn.com/imgextra/i1/32234056/TB2Ta9MfBmWBuNkSndVXXcsApXa_!!32234056-2-beehive-scenes.png_180x180xzq90.jpg_.webp",
+					name: "孩子早教中，这款早教产品不可少",
+					desc: "不同纹理的小球，适合宝宝小手抓握，同时，可以刺激宝宝手部丰富的神经，对宝宝的感统系统、触感等发育都有着很好的功能。",
+					icon: "fa fa-smile-o",
+					comment: "47 人说好"
+				}, {
+					img: "https://img.alicdn.com/tfscom/i3/2459354798/TB2IyE5eUhnpuFjSZFpXXcpuXXa_!!2459354798.jpg_180x180xzq90.jpg_.webp",
+					name: "佳宝路转角水槽",
+					desc: "304不锈钢，表面光洁坚固耐用。",
+					icon: "fa fa-smile-o",
+					comment: "121 人说好"
+				},
+				{
+					img: "https://img.alicdn.com/imgextra/i1/2645215035/TB2y.PZcGQoBKNjSZJnXXaw9VXa_!!2645215035-0-beehive-scenes.jpg_180x180xzq90.jpg_.webp",
+					name: "Coca-Cola可乐瓶T恤",
+					desc: "简约的纯色基调，宣扬自由轻松的休闲氛围。",
+					icon: "fa fa-smile-o",
+					comment: "35 人说好"
+				},
+				{
+					img: "https://img.alicdn.com/imgextra/i1/2959008325/TB2zh2RoRjTBKNjSZFNXXasFXXa_!!2959008325-0-beehive-scenes.jpg_180x180xzq90.jpg_.webp",
+					name: "Bite唇釉",
+					desc: "简洁的深灰色包装，低调但不凡。",
+					icon: "fa fa-smile-o",
+					comment: "13 人说好"
+				}
+			]
+		}, {
+			img: "https://img.alicdn.com/tfs/TB1UNX2bSFRMKJjy0FhXXX.xpXa-112-46.png",
+			icon: null,
+			title: "献给聪明可爱的你",
+			many: true,
+			products: [{
+				img: "https://img.alicdn.com/bao/uploaded/TB28TQ1nrBmpuFjSZFAXXaQ0pXa_!!2996832334.png_180x180xzq90.jpg_.webp",
+				name: "时髦挖掘机",
+				desc: "2017新款潮女士双肩包韩版时尚休闲百搭pu软皮背包个性简约包包",
+				icon: "https://img.alicdn.com/bao/uploaded/i4/112250193294110066/TB2xIwlmpXXXXX1XpXXXXXXXXXX_!!0-mytaobao.jpg_30x30.jpg"
+			}, {
+				img: "https://img.alicdn.com/bao/uploaded/TB2jH_uoFXXXXXfXpXXXXXXXXXX_!!0-dgshop.jpg_180x180xzq90.jpg_.webp",
+				name: "爱逛***01",
+				desc: "美国艾蒂宝趴趴枕午睡枕趴睡枕学生小午睡神器办公室抱枕午休枕头",
+				icon: "https://img.alicdn.com/bao/uploaded/i1/TB1KFP1JFXXXXalXXXX7WcCNVXX-400-400.png_30x30.jpg"
+			}, {
+				img: "https://img.alicdn.com/bao/uploaded/TB2i9iuoFXXXXbPXpXXXXXXXXXX_!!0-juitemmedia.jpg_180x180xzq90.jpg_.webp",
+				name: "放飞自我的兔小姐",
+				desc: "香港进口特产美心原味鸡蛋卷32大条礼盒装儿童休闲零食糕点饼干",
+				icon: "https://img.alicdn.com/bao/uploaded/i4/1471405007375707770/TB2cLMFeYlmpuFjSZFlXXbdQXXa_!!0-mytaobao.jpg_30x30.jpg"
+			}, {
+				img: "https://img.alicdn.com/bao/uploaded/i0/TB1s.15NFXXXXbMaXXXXXXXXXXX_!!0-item_pic.jpg_180x180xzq90.jpg_.webp",
+				name: "不喜***扰哈",
+				desc: "秋冬季棉拖鞋包跟厚底情侣家居防滑保暖居家男女月子拖鞋冬天加厚",
+				icon: "https://img.alicdn.com/bao/uploaded/i2/2538617277/TB2dC3zlpXXXXaGXpXXXXXXXXXX_!!0-mytaobao.jpg_30x30.jpg"
+			}, {
+				img: "https://img.alicdn.com/bao/uploaded/TB2BnymXX95V1Bjy0FdXXc5BVXa_!!664782798-0-goldwindow.jpg_180x180xzq90.jpg_.webp",
+				name: "时髦挖掘机",
+				desc: "原创品牌日系学生单肩女包百搭休闲文艺小清新简约帆布包布袋大包",
+				icon: "https://img.alicdn.com/bao/uploaded/i4/112250193294110066/TB2xIwlmpXXXXX1XpXXXXXXXXXX_!!0-mytaobao.jpg_30x30.jpg"
+			}, {
+				img: "https://img.alicdn.com/bao/uploaded/TB2jQl2ml0kpuFjy1zdXXXuUVXa_!!0-juitemmedia.jpg_180x180xzq90.jpg_.webp",
+				name: "潮流女孩girl",
+				desc: "格莱达大容量保温杯男士保温壶户外不锈钢车载旅游保温水壶2L定制",
+				icon: "https://img.alicdn.com/bao/uploaded/i3/165210263464182707/TB2lSwItVXXXXbLXpXXXXXXXXXX_!!0-mytaobao.jpg_30x30.jpg"
+			}]
+		}];
+		var str = "";
+		for (var i = 0; i < categories.length; i++) {
+			var ca = categories[i];
+			if (ca.many) {
+				str += "<h3><img src='" + ca.img +
+					"' style='height:24px;margin-right:5px;float:left;display:inline;' /> <p> <span>" + ca.title +
+						 "</span></p><p>更多<span><i class=\"" + 
+							ca.icon + "\" style='padding-right:5px;color:gainsboro !important;'aria-hidden=\"true\"></i></span></p>";
+			} else if (ca.qr_code) {
+				str += "<h3><img src='" + ca.img +
+					"' style='height:24px;margin-right:5px;float:left;display:inline;' /><p><span><i class=\"" +
+					ca.icon +
+					"\" style='padding-right:5px;color:gainsboro !important;' aria-hidden=\"true\"></i></span><span><img src='" +
+					ca.img +
+					"' style='height:24px;margin-right:5px;float:left;display:inline;' /><img src='" + ca.qr_img +
+					"' style='height:64px;width:64px;margin-right:5px;' /></span><span>" + ca.title + "</span></p>";
+			}
+			for(var j=0;j<ca.products.length;j++){
+				var pro=ca.products[j];
+				str+="<dl><dt><img src='" + pro.img +"'/></dt></dl>";
+				if (ca.many){
+
+				}else if (ca.qr_code){
+					
+				}
+			}
+		}
+
+	</script>
+</body>
+
+</html>

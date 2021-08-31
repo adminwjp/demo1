@@ -1,0 +1,78 @@
+﻿@model AdvertisingPositionEditModel
+
+<div class="panel tn-survey-form">
+    <div class="panel-body">
+        @using (Html.BeginAjaxForm("_EditPosition", "ControlPanel", "", FormMethod.Post, new AjaxFormOptions { OnSuccessCallBack = "EditCallBack" }, new { @id = "positionForm", @class = "tn-form-validation" }))
+        {
+            @Html.HiddenFor(m => m.IsNew)
+            @Html.HiddenFor(m => m.IsLocked)
+            if (!Model.IsNew)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PositionId)
+                    @Html.TextBoxFor(m => m.PositionId, htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.PositionId)
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PositionId)
+                    @Html.TextBoxFor(m => m.PositionId, htmlAttributes: new { @class = "form-control", @maxlength = "8" })
+                    @Html.ValidationMessageFor(m => m.PositionId)
+                </div>
+            }
+            <div class="form-group">
+                @Html.LabelFor(m => m.Description)
+                @Html.TextBoxFor(m => m.Description, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Description)
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(m => m.ImageAttachmentId, new { @class = "col-xs-12" })
+                @AttachmentHelper._UploadFeaturedImage(Model.ImageAttachmentId, TenantTypeIds.Instance().AdvertisingPosition(), null, "ImageAttachmentId" ,"","col-xs-6")
+                @Html.ValidationMessageFor(m => m.ImageAttachmentId)
+            </div>
+            <div class="form-group row">
+                <div class="form-group col-xs-6 row">
+                    @Html.LabelFor(m => m.Width, new { @class = "col-xs-12" })
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m.Width, new { @class = "form-control" })
+                    </div>
+                    <p class="help-block col-xs-4 text-left">px</p>
+                    <label class="help-block col-xs-12">0表示不限</label>
+                    @Html.ValidationMessageFor(m => m.Width)
+                </div>
+                <div class="form-group col-xs-offset-1 col-xs-6 row">
+                    @Html.LabelFor(m => m.Height, new { @class = "col-xs-12" })
+                    <div class="col-xs-8">
+                        @Html.TextBoxFor(m => m.Height, new { @class = "form-control" })
+                    </div>
+                    <p class="help-block col-xs-4 text-left">px</p>
+                    <label class="help-block col-xs-12">0表示不限</label>
+                    @Html.ValidationMessageFor(m => m.Height)
+                </div>
+                @*<div class="help-block col-xs-6">不填表示不限</div>
+                    <div class="help-block col-xs-offset-1 col-xs-5">不填表示不限</div>*@
+            </div>
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.IsEnable)
+                @Html.LabelFor(m => m.IsEnable)
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submit" class="btn btn-primary tn-mr-10 tn-btn-wp">确定</button>
+                <button type="button" class="btn btn-default tn-btn-wp" data-dismiss="modal" id="cancel">关闭</button>
+            </div>
+
+        }
+    </div>
+</div>
+
+@Styles.Render("~/js/lib/plupload/upload")
+<script>
+    require(['jquery', 'uploader'], function () {
+        //取消
+        $("#cancel").click(function () {
+            layer.closeAll();
+        });
+    })
+</script>

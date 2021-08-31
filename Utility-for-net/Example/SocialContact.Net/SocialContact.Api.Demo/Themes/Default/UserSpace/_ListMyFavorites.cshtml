@@ -1,0 +1,150 @@
+﻿@model PagingDataSet<FavoriteEntity>
+@{
+    var isContentItem = ViewData.Get<bool>("isContentItem", true);
+    var contentItems = ViewData.Get<IEnumerable<ContentItem>>("contentItems", null);
+    var threads = ViewData.Get<IEnumerable<Thread>>("threads", null);
+}
+
+@if (isContentItem == true)
+{
+    if (contentItems != null && contentItems.Any())
+    {
+        <ul class="list-unstyled">
+            @foreach (var item in contentItems)
+            {
+                <li class="jh-news-list">
+                    <ul class="list-inline" @if (UserContext.CurrentUser != null) { <text> onmouseover="$.fn.showoperation(this);" onmouseout="$.fn.hideoperation(this);" </text> }>
+                        @if (item.FeaturedImageAttachmentId > 0)
+                        {
+                            <li class="jh-list-img">
+                                <a href="@SiteUrls.Instance().CMSDetail(item.ContentItemId)" title="@item.Subject" target="_blank" class="jh-vedio-img">
+                                    <img onerror="this.onerror = null; this.src='@Tunynet.Utilities.WebUtility.ResolveUrl("~/img/default_List.png")'" src="@item.FristFeaturedImage("List")" width="260" height="146" />
+                                </a>
+                            </li>
+                        }
+                        <li class="jh-list-title @if (!(item.FeaturedImageAttachmentId > 0)){ <text>jh-no-img</text>}">
+                            <h5 class="tn-text"><a href="@SiteUrls.Instance().CMSDetail(item.ContentItemId)" title="@item.Subject" target="_blank">@HtmlUtility.TrimHtml(item.Subject, 60)</a></h5>
+                            <p>@(string.IsNullOrEmpty(item.Summary) ? HtmlUtility.TrimHtml(item.Body, 300) : item.Summary)</p>
+                            <ul class="list-inline text-muted">
+                                @if (item.ContentCategory != null)
+                                {
+                                    <li><a href="@SiteUrls.Instance().CategoryCMS(item.ContentCategoryId)" target="_blank">@HtmlUtility.TrimHtml(item.ContentCategory.CategoryName, 20)</a></li>
+                                }
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> @item.DatePublished.ToFriendlyDate()</li>
+                                <li><i class="fa fa-commenting" aria-hidden="true"></i> @item.CommentCount()</li>
+                                @if (UserContext.CurrentUser != null)
+                                {
+                                    <li class="pull-right a" style="display:none;"><a role="button" href="javascript:;"></a></li>
+                                    <li class="cancelFavorite pull-right a" style="display:none;" data-id="@item.ContentItemId"><a role="button" href="javascript:;">取消收藏</a></li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div class="clearfix text-warning text-center">
+            您还没有收藏任何文章,快去收藏吧!
+        </div>
+    }
+}
+else
+{
+    if (threads != null && threads.Any())
+    {
+        foreach (var item in threads)
+        {
+            var attachments = item.Attachments?.Where(n => n.Position == AttachmentPosition.Body);
+            <div class="media">
+                <div class="media-left">
+                    @Html.ShowUserAvatar(userId: item.UserId, htmlAttributes: new RouteValueDictionary { { "width", "50" }, { "height", "50" } })
+                </div>
+                <div class="media-body">
+                    <h5 class="media-heading"><a href="@SiteUrls.Instance().ThreadDetail(item.ThreadId)" title="@item.Subject" target="_blank">@HtmlUtility.TrimHtml(item.Subject, 30)</a></h5>
+                    <ul class="list-inline text-muted">
+                        <li><a href="@SiteUrls.Instance().MyHome(item.UserId)?type=home" target="_blank"> @item.Author</a></li>
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i> @item.LastModified.ToFriendlyDate()</li>
+                        <li>
+                            <a href="@CachedUrlHelper.Action("BarSectionDetail","Post",null,new RouteValueDictionary { {"sectionId",item.BarSection.SectionId }})" target="_blank" title="@item.BarSection.Name">
+                                <i class="fa fa-tags" aria-hidden="true"></i>
+                                @HtmlUtility.TrimHtml(item.BarSection.Name, 10)
+                            </a>
+                        </li>
+                        <li><i class="fa fa-commenting" aria-hidden="true"></i> @item.CommentCount</li>
+                        <li><i class="fa fa-eye" aria-hidden="true"></i> @item.HitTimes</li>
+                        @if (item.LastModifiedUserId != 0)
+                        {
+                            <li>@UserIdToUserNameDictionary.GetDisplayName(item.LastModifiedUserId) 最后回复于 @item.LastModified.ToFriendlyDate()</li>
+                        }
+                        <li class="cancelFavorite pull-right a hidden" data-id="@item.ThreadId"><a role="button" href="javascript:;">取消收藏</a></li>
+                    </ul>
+                    <div class="tn-chat-photo">
+                        <ul class="tn-nine-squares list-unstyled clearfix">
+                            @if (attachments != null && attachments.Any())
+                            {
+                                foreach (var img in attachments.Where(n => n.MediaType == MediaType.Image).Take(3))
+                                {
+                                    <li class="tn-photo-item">
+                                        <a class="tn-block" target="_blank" href="@SiteUrls.Instance().ThreadDetail(item.ThreadId)">
+                                            <img onerror="this.onerror = null; this.src='@Tunynet.Utilities.WebUtility.ResolveUrl("~/img/default_Square.png")'" class="tn-block" src="@img.GetDirectlyUrl("Small")" alt="">
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="clearfix text-warning text-center">
+            您还没有收藏任何贴子,快去收藏吧!
+        </div>
+    }
+}
+
+<div class="text-center">
+    @Html.AjaxPagingButton(Model, "_ListMyFavorites", CachedUrlHelper.Action("_ListMyFavorites", "UserSpace", null, new RouteValueDictionary { { "isContentItem", isContentItem } }))
+</div>
+
+<script>
+    require(['jquery', 'tnlayer', 'page'], function ($) {
+        //鼠标移入显示取消收藏
+        $('.media-body').mouseover(function () {
+            $(this).children('ul').children('.cancelFavorite').removeClass('hidden');
+        });
+        $('.media-body').mouseout(function () {
+            $(this).children('ul').children('.cancelFavorite').addClass('hidden');
+        });
+
+        //取消收藏
+        $('.cancelFavorite').on('click', function () {
+            var objectId = $(this).data('id');
+            var isContentItem = '@isContentItem';
+            $.post('@CachedUrlHelper.Action("CancelFavorite","UserSpace")', { isContentItem: isContentItem, objectId: objectId, t: (new Date()).valueOf() }, function (data) {
+                if (data.MessageType) {
+                    layer.msg(data.MessageContent, { icon: 1 });
+                    if (isContentItem == 'True') {
+                        $.get('@CachedUrlHelper.Action("_ListMyFavorites", "UserSpace")', { t: new Date().getTime() }, function (data) {
+                            $('#mycmslist').html(data);
+                        });
+                    }
+                    else {
+                        $.get('@CachedUrlHelper.Action("_ListMyFavorites", "UserSpace")', { isContentItem: false, t: new Date().getTime() }, function (data) {
+                            $('#_ListMyPost').html(data);
+                        });
+                    }
+                }
+                else {
+                    layer.msg(data.MessageContent, { icon: 2 });
+                }
+            })
+        })
+
+    })
+</script>

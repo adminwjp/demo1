@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+      <Folder Include="Demo1\TakeOutFoot\Application\Infrastructure\" />
+      <Folder Include="Demo1\TakeOutFoot\Application\Signs\" />
+      <Folder Include="Migrations\" />
+      <PackageReference Include="Akka" Version="1.4.16" />
+    <PackageReference Include="Akka.DependencyInjection" Version="1.4.16" />
+        <PackageReference Include="Akka" Version="1.4.16" />
+    <PackageReference Include="Akka.DependencyInjection" Version="1.4.16" />
+    <!--<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />-->
+
+    <Folder Include="Company\Application\" />
+    
+    
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--<PackageReference Include="Utility.Ef" Version="1.0.0.0" />-->
+    <ProjectReference Include="..\..\Utility.Ef\Utility.Ef.csproj" />
+    <ProjectReference Include="..\Utility.Core.Demo\Utility.Core.Demo.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
+    <ProjectReference Include="..\..\Utility.EnterpriseLibrary\Utility.EnterpriseLibrary.csproj" />
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="Demo\Config\Ef\app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

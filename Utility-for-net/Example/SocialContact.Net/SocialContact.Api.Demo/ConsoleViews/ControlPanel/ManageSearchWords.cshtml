@@ -1,0 +1,71 @@
+﻿@{
+    TempData["subMenu-check"] = new string[] { "Public", "ManageSearchWords" };
+    ViewData["Title"] = new string[] { "搜索热词" };
+    var _listSearchWord = ViewData.Get<List<SelectListItem>>("_listSearchWord", new List<SelectListItem>());
+}
+
+<div class="row tn-page-heading tn-mb-10">
+    <div class="col-lg-12">
+        <h3>搜索热词</h3>
+    </div>
+</div>
+
+
+<div class="panel-body panel panel-default">
+    <div class="panel-body">
+        <div class="form-inline tn-tool-column">
+                <div class="form-group">
+
+                    <a class="btn btn-default handle" href="####" id="insertWord"><i class="fa fa-check"></i> 添加搜索词</a>
+                </div>
+
+            <div class="form-group pull-right">
+                <button class="btn btn-primary smssubmit" type="button">搜索</button>
+            </div>
+            <div class="form-group pull-right" style="width:308px;">
+                <label for="keyword">搜索词：</label>
+                @Html.TextBox("word", null, new RouteValueDictionary { { "class", "color form-control" }, { "style", "width:200px" }, { "placeholder", "搜索词" } })
+            </div>
+                    <div class="form-group pull-right" style="width:308px;">
+                        <label> 搜索类型：</label>
+                        @Html.DropDownList("searchWordCode", _listSearchWord, "不限", new { @id = "selectTenantType", @class = "form-control", @style = "width:200px" })
+                    </div>
+
+                   
+                   
+            </div>
+    </div>
+</div>
+
+<div class="panel-body panel" id="_listSearchWord">
+    @Html.Action("_ListSearchWord", "ControlPanel")
+</div>
+
+
+<script>
+    require(['jquery', 'tnlayer', 'page', 'datepicker'], function ($, tnlayer) {
+
+        //搜索
+       
+        $.fn.search = function (pageIndex) {
+            var searchWordCode = $("#selectTenantType").val();
+            var word = $("#word").val();
+            var SearchWordPageIndex = $("#SearchWordPageIndex").val();
+            if (pageIndex == 1) {
+                SearchWordPageIndex = pageIndex;
+            }
+            $.get('@CachedUrlHelper.Action("_ListSearchWord", "ControlPanel")?t=' + new Date().getTime(),
+                { word: word, searchWordCode: searchWordCode, pageSize: 20, pageIndex: SearchWordPageIndex }
+                , function (data) {
+                    $("#_listSearchWord").html(data)
+                })
+        }
+        $(".smssubmit").click(function myfunction() {
+            $.fn.search(1)
+        });
+        $("#insertWord").click(function () {
+            tnlayer.layermodal("添加搜索词", '@CachedUrlHelper.Action("_EditSearchWord", "ControlPanel")', '380px', '430px');
+        });
+    });
+
+</script>

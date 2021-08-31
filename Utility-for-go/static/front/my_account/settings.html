@@ -1,0 +1,70 @@
+{{ define "buyer_settings.html"}}
+<!-- 买家 或卖家 设置 -->
+<div class="public setting">
+    <h3 class="ml10 mb10">账号安全</h3>
+    <dl class="clearfix">
+        <dt>用户头像</dt>
+        <dd>
+            {{if .visitor.headimgurl_id}}
+            <span class="ok"><i></i></span>
+            {{else}}
+            <span class="error f60"><a href="user/profile">去上传</a></span>
+            {{end}}
+        </dd>
+    </dl>
+    <dl class="clearfix">
+        <dt>手机号码</dt>
+        <dd>
+            {{if .visitor.phone}}
+            <span class="ok"><i></i></span>
+            {{else}}
+            <span class="error f60"><a href="user/phone">去绑定</a></span>
+            {{end}}
+        </dd>
+    </dl>
+    <dl class="clearfix">
+        <dt>电子邮箱</dt>
+        <dd>
+            {{if .visitor.email}}
+            <span class="ok"><i></i></span>
+            {{else}}
+            <span class="error f60"><a href="user/email">去绑定</a></span>
+            {{end}}
+        </dd>
+    </dl>
+    <dl class="clearfix">
+        <dt>资金账户</dt>
+        <dd>
+            {{if .deposit_account.account}}
+            <span class="ok"><i></i></span>
+            {{else}}
+            <span class="error f60"><a href="deposit/config">去设置</a></span>
+            {{end}}
+        </dd>
+    </dl>
+    <dl class="clearfix">
+        <dt>支付密码</dt>
+        <dd>
+            {{if .deposit_account.password}}
+            <span class="ok"><i></i></span>
+            {{else}}
+            <span class="error f60"><a href="deposit/config">去设置</a></span>
+            {{end}}
+        </dd>
+    </dl>
+    <div class="line"></div>
+    <h3 class="ml10 mt10 mb10">社交账号登录</h3>
+    {{range $item := .binds}}
+    <dl class="clearfix">
+        <dt>{{$item.name}}</dt>
+        <dd>
+            {{if $item.enabled}}
+            <span class="ok"><i></i></span>
+            {{else}}
+            <span class="error f60"><a href="connect/index">未绑定</a></span>
+            {{end}}
+        </dd>
+    </dl>
+    {{end}}
+</div>
+{{end}}

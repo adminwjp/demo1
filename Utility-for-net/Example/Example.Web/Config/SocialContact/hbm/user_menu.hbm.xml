@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
+  <!-- start usermenu-->
+  <class name="SocialContact.Domain.Entities.UserMenuEntity,Utility.Demo" table="t_user_menu" discriminator-value="0">
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <property column="create_date" name="CreateDate" type="System.Int64"/>
+    <property column="update_date" name="UpdateDate" type="System.Int64"/>
+    <!--<many-to-one name="Admin"  column="admin_id" foreign-key="fk_admin_id" class="SocialContact.Domain.Entities.AdminEntity,Utility.Demo"/>
+    <many-to-one name="Menu"  column="menu_id" foreign-key="fk_menu_id" class="SocialContact.Domain.Entities.MenuEntity,Utility.Demo"/>
+    <many-to-one name="Role"  column="role_id" foreign-key="fk_role_id" class="SocialContact.Domain.Entities.CatagoryEntity,Utility.Demo"/>-->
+    <property  name="Enable" column="enable"  type="System.Boolean" />
+    <property  name="Add" column="add1"  type="System.Boolean" />
+    <property  name="Modify" column="modify1"  type="System.Boolean" />
+    <property  name="Delete" column="delete1"  type="System.Boolean" />
+    <property  name="Query" column="query"  type="System.Boolean" />
+    <property  name="Type" column="type"  type="System.String" />
+    <property  name="Val" column="val"  type="System.Boolean" />
+    
+  </class>
+  <!-- end usermenu-->
+</hibernate-mapping>

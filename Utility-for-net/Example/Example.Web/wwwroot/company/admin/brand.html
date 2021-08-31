@@ -1,0 +1,276 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>品牌管理</title>
+    <style>
+        body{
+       
+        }
+        td.img,#brand_show img{
+            background-color:#808080;
+        }
+    </style>
+</head>
+<body>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品管理 <span class="c-gray en">&gt;</span> 品牌管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div class="text-c">
+            <form class="form" id="form" method="post">
+                <input type="text" placeholder="Id" name="id" id="id" value="" readonly class="input-text" style="width:120px;display:none;">
+                <input type="text" placeholder="品牌名称" name="name" id="name1" value="" class="input-text" style="width:120px">
+                <input type="text" placeholder="品牌英文名称" name="english_name" id="english_name" value="" class="input-text" style="width:120px">
+                <input type="text" placeholder="特征" name="feature" id="feature" value="" class="input-text" style="width:120px">
+                <span id="brand_show" style="display:none">品牌展示：<img width="100" /></span>
+                <span class="btn-upload form-group">
+                    <input class="input-text upload-url" type="text" name="logo" id="logo" readonly style="width:200px">
+                    <a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 上传logo</a>
+                    <input type="file" multiple name="logo" onchange="upload(this)" class="input-file">
+                </span> <span class="select-box" style="width:150px">
+                    <select class="select" name="category.id" size="1">
+                        <option value="" selected>请选择</option>
+                    </select>
+                </span>
+                <input type="text" placeholder="地址" name="href" id="href" value="#" class="input-text" style="width:120px">
+                <input type="text" placeholder="品牌描述" name="description" id="description" value="" class="input-text" style="width:120px">
+                <input type="text" placeholder="品牌英文描述" value="" id="english_description" name="english_description" class="input-text" style="width:120px">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;添加&nbsp;&nbsp;">
+                <input class="btn btn-primary radius" type="reset" value="&nbsp;&nbsp;清空&nbsp;&nbsp;" onclick="$('#form').resetForm(); $('#brand_show').hide(); $('#id').hide();">
+            </form>
+        </div>
+        <div class="text-c" style="margin-top:30px;">
+            创建日期范围：
+            <input type="text" onfocus="WdatePicker({ createMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="createdatemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ createMinDate:'#F{$dp.$D(\'datemin\')}',createMaxDate:'%y-%M-%d' })" id="createdatemax" class="input-text Wdate" style="width:120px;">
+            修改日期范围：
+            <input type="text" onfocus="WdatePicker({ modifyMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="modifydatemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ modifyMinDate:'#F{$dp.$D(\'datemin\')}',modifyMaxDate:'%y-%M-%d' })" id="modifydatemax" class="input-text Wdate" style="width:120px;">
+            <input type="text" class="input-text" style="width:250px" placeholder="输入名称 英文 名称" id="name" name="">
+            <span class="select-box" style="width:150px;">
+                <select id="enable" class="select">
+                    <option value="">请选择</option>
+                    <option value="true">已发布</option>
+                    <option value="false">已下架</option>
+                </select>
+            </span>
+
+            <button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+            <button type="reset" class="btn btn-success radius" id="clear" name="">清空</button>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+            <a href="javascript:;" onclick="operator('delete')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+            <a href="javascript:;" onclick="operator('edit')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑品牌信息</a>
+            <a href="javascript:;" onclick="modifyEnable(urls.brand.editstatus, true)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe603;</i>发布</a>
+            <a href="javascript:;" onclick="modifyEnable(urls.brand.editstatus, false)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6de;</i> 下架</a>
+        </span>
+        <span class="r">共有数据：<strong>0</strong> 条</span> </div>
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-bg table-sort">
+                <thead>
+                    <tr class="text-c">
+                        <th rowspan="2" width="25"><input type="checkbox" name="" value=""></th>
+                        <th rowspan="2" width="80">ID</th>
+                        <th rowspan="2" width="150">启用</th>
+                        <th rowspan="2" width="100">名称</th>
+                        <th rowspan="2" width="100">英文名称</th>
+                        <th rowspan="2" width="100">特征</th>
+                        <th rowspan="2" width="200">描述</th>
+                        <th rowspan="2" width="200">英文描述</th>
+                        <th rowspan="2" width="100">Logo</th>
+                        <th colspan="3" width="100">分类信息</th>
+                        <th rowspan="2" width="130">加入时间</th>
+                        <th rowspan="2" width="130">修改时间</th>
+                        <th rowspan="2" width="100">操作</th>
+                    </tr>
+                    <tr class="text-c">
+                        <th width="100">分类Id</th>
+                        <th width="150">分类名称</th>
+                        <th width="150">分类英文名称</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script src="/js/index.js"></script>
+    <script type="text/javascript">
+        let operator1 = new AdminOperator();
+        operator1.url = urls.brand;
+        operator1.rules = {
+            name: {
+                required: false,
+                minlength: 2,
+                maxlength: 10
+            },
+            english_name: {
+                required: false,
+                minlength: 4,
+                maxlength: 30
+            },
+            href: {
+                required: false,
+                minlength: 1,
+                maxlength: 50
+            },
+            description: {
+                required: false,
+                minlength: 4,
+                maxlength: 500
+            },
+            english_description: {
+                required: false,
+                minlength: 4,
+                maxlength: 500
+            },
+            enable: {
+                required: true,
+            }
+        };
+        operator1.close = false;
+        operator1.success = function () {
+            operator.edit = false;
+            $("#form").resetForm();
+            $("#id").hide();
+            $("#form > input[type='submit']").val("添加");
+            $('.table-sort').DataTable().ajax.reload();
+        };
+        let admin = new Admin({flag:2});
+        admin.url = urls.brand;
+        let createdRow = admin.createdRow;
+        admin.createdRow = function (row, data, index) {
+            createdRow(row, data, index);
+           
+            $('td', row).eq(8).addClass("img");//.css({"background-color":"#808080;"});
+            $('td', row).eq(14).addClass('td-manage');
+        };
+        function upload(file) {
+            let f = imgUrl(file.files[0]);
+            if (f) {
+                $("span#brand_show > img ").attr("src", f);
+                $("span#brand_show").show();
+            }
+            else {
+                $("span#brand_show").hide();
+            }
+        }
+       // console.log(admin.columns.length);
+        admin.columns.splice(2, 1, {
+            data: function (item) {
+                return item.enable ? "<span class=\"label label-success radius\">已发布</span>" : "<span class=\"label radius\">已下架</span>";
+            }
+        });
+        admin.columns.splice(5, 0, {
+            data:"feature"
+        });
+        admin.columns.splice(admin.columns.length-6, 0, {
+            data: function (item) {
+                if (item.src) {
+                    let src = urls.img.get + "/" + item.src;
+                    return "<img width='100' src='" + src + "' />";
+                }
+                else {
+                    return "无";
+                }
+            }
+        });
+        $(function () {
+            $.getJSON(urls.category.brand_category, data => {
+                if (data.success) {
+                    let da = data.data;
+                    for (var i = 0; i < da.length; i++) {
+                        let it = da[i];
+                        $("select[name='category.id']").append("<option value='" + it.id + "'>" + getName(it, getLanguage()) + "</option>");
+                    }
+                }
+            });
+            admin.tableInit(admin);
+            operator1.form();
+        });
+        /**
+         * 编辑
+         * @param self
+         */
+        function operator(flag, self) {
+            if (flag == "delete") {
+               datadel( admin.url.delete);
+                return;
+            }
+            if (flag == "edit") {
+                if (!self && !hasChecked()) {
+                    return;
+                }
+            }
+            else {
+                return;
+            }
+            let tr = getTrItem(self);
+            let obj = {
+                id: tr.find("td:eq(1)").text(),
+                enable: tr.find("td:eq(2)").text() == "已发布",
+                name: tr.find("td:eq(3)").text(),
+                english_name: tr.find("td:eq(4)").text(),
+                feature: tr.find("td:eq(5)").text(),
+                description: tr.find("td:eq(6)").text(),
+                english_description: tr.find("td:eq(7)").text(),
+                src: tr.find("td:eq(8) > img ").attr("src"),
+                category: { id: tr.find("td:eq(9)").text() },
+            };
+            $("#id").val(obj.id);
+            $("#id").show();
+            $("#feature").val(obj.feature);
+            $("#name1").val(obj.name);
+            $("#english_name").val(obj.english_name);
+            $("#description").val(obj.description);
+            $("#english_description").val(obj.english_description);
+            if (obj.src) {
+                $("#brand_show > img ").attr("src", obj.src);
+                $("input[type='text'][name='logo'] ").val(obj.src);
+                $("#brand_show").show();
+            } else {
+                $("#brand_show").hide();
+            }
+            $("select[name='category.id']").val(obj.category.id);
+            $("#form > input[type='submit']").val("编辑");
+            operator.edit = true;
+            // $("#form").form("load",obj);
+        }
+         /*启用-停用*/ 
+        //function enable(self, id, enable) {
+        //    console.log(111111);
+        //    publish(self, id, enable);
+        //}
+
+      
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
+  <!-- nhibernate   服务信息 实体类配置映射 -->
+  <class name="Config.Model.ServiceModel,Shop.Web" table="Service" discriminator-value="0">
+    <!-- 服务Id -->
+    <id column="Id" name="Id" type="string" length="36"/>
+    <!-- 服务名称 -->
+    <property column="Name" name="Name" type="string" length="10"/>
+    <!-- ip地址 -->
+    <property column="Ip" name="Ip" type="string" length="15"/>
+    <!-- 端口 -->
+    <property column="Port" name="Port" type="int" />
+    <!-- 状态 -->
+    <property column="Status" name="Status" type="Config.Model.ServiceStatus,Config.Example" />
+    <!-- 描述 -->
+    <property column="Description" name="Description" type="string" length="5000"/>
+    <!-- 创建时间 -->
+    <property column="CreateDate" name="CreateDate" type="System.DateTime" />
+    <!-- 修改时间 -->
+    <property column="LastDate" name="LastDate" type="System.DateTime" />
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>c# database example</title>
+</head>
+<body>
+<header></header>
+<main>
+    <div class="left">
+        <ul>
+            <li>AbstractReflectDatabaseDriver</li>
+            <li>AccessDatabaseDriver</li>
+            <li>MySqlDatabaseDriver</li>
+            <li>OracleDatabaseProvider</li>
+            <li>SQLiteDatabaseProvider</li>
+            <li>SqlClientDatabaseProvider</li>
+        </ul>
+    </div>
+    <div class="right">
+        <h1>c# database example</h1>
+        <p>AbstractReflectDatabaseDriver</p>
+        <code>
+            #if !( NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP1_2 ||  NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NETSTANDARD1_5 || NETSTANDARD1_6)
+            using System;
+            using System.Data;
+            using System.Data.Common;
+            using Utility.Database.Entries;
+
+            namespace Utility.Database.Driver
+            {
+            /// <summary>数据库对象反射抽象基类</summary>
+            public abstract class AbstractReflectDatabaseDriver
+            {
+            /// <summary> 数据库对象反射 信息</summary>
+            /// <param name="assemblyName">程序集名称</param>
+            /// <param name="connectionTypeName">IDbConnection 对象名称</param>
+            /// <param name="commandTypeName">IDbCommand 对象名称</param>
+            /// <param name="dataAdapterTypeName">IDbDataAdapter 对象名称</param>
+            /// <param name="dataReaderTypeName">IDataReader 对象名称</param>
+            protected AbstractReflectDatabaseDriver(string assemblyName, string connectionTypeName, string commandTypeName, string dataAdapterTypeName, string dataReaderTypeName)
+            {
+            this.AssemblyName = assemblyName;
+            this.ConnectionTypeName = connectionTypeName;
+            this.CommandTypeName = commandTypeName;
+            this.DataAdapterTypeName = dataAdapterTypeName;
+            this.DataReaderTypeName = dataReaderTypeName;
+            }
+
+            /// <summary>创建数据库对象反射抽象基</summary>
+            /// <param name="dialect"></param>
+            /// <returns></returns>
+            public static AbstractReflectDatabaseDriver CreateDatabaseTypeFactory(SqlType dialect)
+            {
+            switch (dialect)
+            {
+            case SqlType.Oracle:
+            return OracleDatabaseDriver.Empty;
+            case SqlType.SqlServer:
+            {
+            AbstractReflectDatabaseDriver databaseProvider = SqlClientDatabaseDriver.Empty;
+            if (databaseProvider.Check()) return databaseProvider;
+            databaseProvider = SqlServerDatabaseDriver.Empty;
+            if (databaseProvider.Check()) return databaseProvider;
+            return SqlServerV1DatabaseDriver.Empty;
+            }
+            case SqlType.Postgre:
+            return NpgsqlDatabaseDriver.Empty;
+            case SqlType.Sqlite:
+            return SQLiteDatabaseDriver.Empty;
+            case SqlType.Access:
+            return AccessV1DatabaseDriver.Empty;
+            case SqlType.MySql:
+            default:
+            {
+            AbstractReflectDatabaseDriver databaseProvider = MySqlDatabaseDriver.Empty;
+            if (databaseProvider.Check()) return databaseProvider;
+            return MySqlConnectorDatabaseDriver.Empty;
+            }
+
+            }
+            }
+
+            /// <summary> 程序集名称 </summary>
+            public string AssemblyName { get; private set; }
+            /// <summary> IDbConnection 对象名称 </summary>
+            public string ConnectionTypeName { get; private set; }
+            /// <summary> IDbCommand 对象名称 </summary>
+            public string CommandTypeName { get; private set; }
+            /// <summary> IDbDataAdapter 对象名称 </summary>
+            public string DataAdapterTypeName { get; private set; }
+            /// <summary> IDataReader 对象名称 </summary>
+            public string DataReaderTypeName { get; private set; }
+            /// <summary>
+            /// MySqlConnector 驱动 参数 格式化 只能通过反射实现 不然参数 格式化 无法 实现 要么显示实现
+            /// </summary>
+
+            public string DataParamterTypeName { get; set; }
+
+            #region 反射创建对象
+            /// <summary> 创建 IDbCommand 对象 </summary>
+            /// <param name="typeName">IDbCommand 对象全名名称</param>
+            /// <exception cref="DllNotFoundException"></exception>
+            /// <returns></returns>
+            public virtual DbCommand CreateCommand()
+            {
+            Type type = Type.GetType(this.CommandTypeName);
+            if (type == null)
+            throw new DllNotFoundException(this.CommandTypeName);
+            return (DbCommand)Activator.CreateInstance(type);
+            }
+
+            /// <summary> 创建 IDbConnection 对象 </summary>
+            /// <param name="connectionString">数据库连接地址</param>
+            /// <exception cref="DllNotFoundException"></exception>
+            /// <returns></returns>
+            public virtual DbConnection CreateConnection(string connectionString)
+            {
+            Type type = Type.GetType(this.ConnectionTypeName);
+            if (type == null)
+            throw new DllNotFoundException(this.ConnectionTypeName);
+            return (DbConnection)Activator.CreateInstance(type, new object[] { connectionString });
+            }
+
+            /// <summary> 创建 IDbConnection 对象 </summary>
+            /// <exception cref="DllNotFoundException"></exception>
+            /// <returns></returns>
+            public virtual DbConnection CreateConnection()
+            {
+            Type type = Type.GetType(this.ConnectionTypeName);
+            if (type == null)
+            throw new DllNotFoundException(this.ConnectionTypeName);
+            return (DbConnection)Activator.CreateInstance(type);
+            }
+
+            /// <summary>
+            /// 检测不通过话  用 其他 包
+            /// </summary>
+            /// <returns></returns>
+            protected virtual bool Check()
+            {
+            Type type = Type.GetType(this.ConnectionTypeName);
+            return type != null;
+            }
+            /// <summary> 创建 IDbDataAdapter 对象 </summary>
+            /// <param name="command" cref="IDbCommand"></param>
+            /// <exception cref="DllNotFoundException"></exception>
+            /// <returns></returns>
+            public virtual DbDataAdapter CreateDataAdapter(IDbCommand command)
+            {
+            Type type = Type.GetType(this.DataAdapterTypeName);
+            if (type == null)
+            throw new DllNotFoundException(this.DataAdapterTypeName);
+            return (DbDataAdapter)Activator.CreateInstance(type, new object[] { command });
+            }
+
+            /// <summary> 创建 IDbDataAdapter 对象 </summary>
+            /// <param name="command" cref="IDbCommand"></param>
+            /// <exception cref="DllNotFoundException"></exception>
+            /// <returns></returns>
+            public virtual DbParameter CreateDataParamter(string name,object val)
+            {
+            Type type = Type.GetType(this.DataParamterTypeName);
+            if (type == null)
+            throw new DllNotFoundException(this.DataAdapterTypeName);
+            return (DbParameter)Activator.CreateInstance(type, new object[] { name,val });
+            }
+            #endregion 反射创建对象
+            }
+
+
+
+
+            }
+            #endif
+        </code>
+
+        <p>AccessDatabaseDriver</p>
+        <pre>
+        #if !( NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP1_2 ||  NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NETSTANDARD1_5 || NETSTANDARD1_6)
+using System;
+using System.Data;
+using System.Data.Common;
+
+namespace Utility.Database.Driver
+{
+
+    /// <summary>Access数据库对象反射抽象基类实现 无法 使用,提示 没 安装 驱动 像 ef(mysql net 环境下 一样的提示)</summary>
+    public class AccessDatabaseDriver : AbstractReflectDatabaseDriver
+    {
+        public static readonly AbstractReflectDatabaseDriver Empty = new AccessV1DatabaseDriver();
+
+        protected AccessV1DatabaseDriver() : base("System.Data",
+            "System.Data.OleDb.OleDbConnection, System.Data",
+            "System.Data.OleDb.OleDbCommand, System.Data",
+            "System.Data.OleDb.OleDbDataAdapter, System.Data",
+            "System.Data.OleDb.OleDbDataReader, System.Data")
+        {
+        }
+    }
+
+    /// <summary>Access数据库对象反射抽象基类实现 无法 使用,提示 没 安装 驱动 像 ef(mysql net 环境下 一样的提示)</summary>
+    public class AccessV1DatabaseDriver : AbstractReflectDatabaseDriver
+    {
+        public static readonly AbstractReflectDatabaseDriver Empty = new AccessV1DatabaseDriver();
+
+        protected AccessV1DatabaseDriver() : base("System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+            "System.Data.OleDb.OleDbConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+            "System.Data.OleDb.OleDbCommand, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+            "System.Data.OleDb.OleDbDataAdapter, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+            "System.Data.OleDb.OleDbDataReader, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")
+        {
+        }
+    }
+}
+#endif
+    </pre>
+
+        <p>MySqlDatabaseDriver</p>
+        <pre>
+        #if !( NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP1_2 ||  NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NETSTANDARD1_5 || NETSTANDARD1_6)
+using System;
+using System.Data;
+using System.Data.Common;
+
+namespace Utility.Database.Driver
+{
+
+    #region MySqlDatabaseProvider
+
+    /// <summary>MySql数据库对象反射抽象基类实现 MySql.Data</summary>
+    public class MySqlDatabaseDriver : AbstractReflectDatabaseDriver
+    {
+        public static readonly AbstractReflectDatabaseDriver Empty = new MySqlDatabaseDriver();
+
+        protected MySqlDatabaseDriver() : base("MySql.Data", "MySql.Data.MySqlClient.MySqlConnection,MySql.Data",
+            "MySql.Data.MySqlClient.MySqlCommand, MySql.Data", "MySql.Data.MySqlClient.MySqlDataAdapter, MySql.Data", "MySql.Data.MySqlClient.MySqlDataReader, MySql.Data")
+        {
+        }
+    }
+
+
+    /// <summary>MySql数据库对象反射抽象基类实现参数化无效 即NAME=@NAME 只能这样写NAME=`AA` 具体原因未查 MySqlConnector </summary>
+    public class MySqlConnectorDatabaseDriver : AbstractReflectDatabaseDriver
+    {
+        public static readonly AbstractReflectDatabaseDriver Empty = new MySqlConnectorDatabaseDriver();
+
+        protected MySqlConnectorDatabaseDriver() : base("MySqlConnector", "MySql.Data.MySqlClient.MySqlConnection, MySqlConnector",
+            "MySql.Data.MySqlClient.MySqlCommand,MySqlConnector", "MySql.Data.MySqlClient.MySqlDataAdapter, MySqlConnector", "MySql.Data.MySqlClient.MySqlDataReader, MySqlConnector")
+        {
+            this.DataParamterTypeName = "MySql.Data.MySqlClient.MySqlParameter,MySqlConnector";
+        }
+
+    #endregion MySqlDatabaseProvider
+
+
+
+
+}
+#endif
+    </pre>
+
+
+        <p>NpgsqlDatabaseProvider</p>
+        <code>#if !( NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP1_2 ||  NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NETSTANDARD1_5 || NETSTANDARD1_6)
+            using System;
+            using System.Data;
+            using System.Data.Common;
+
+            namespace Utility.Database.Driver
+            {
+            #region NpgsqlDatabaseProvider
+
+            /// <summary>Npgsql数据库对象反射抽象基类实现</summary>
+            public class NpgsqlDatabaseDriver : AbstractReflectDatabaseDriver
+            {
+            public static readonly AbstractReflectDatabaseDriver Empty = new NpgsqlDatabaseDriver();
+
+            protected NpgsqlDatabaseDriver() : base("Npgsql", "Npgsql.NpgsqlConnection, Npgsql",
+            "Npgsql.NpgsqlCommand, Npgsql", "Npgsql.NpgsqlDataAdapter, Npgsql",
+            "Npgsql.NpgsqlDataReader, Npgsql")
+            {
+            }
+            }
+
+            #endregion NpgsqlDatabaseProvider
+
+
+
+
+            }
+            #endif</code>
+
+        <p>OracleDatabaseProvider</p>
+        <code>#if !( NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP1_2 ||  NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NETSTANDARD1_5 || NETSTANDARD1_6)
+            using System;
+            using System.Data;
+            using System.Data.Common;
+
+            namespace Utility.Database.Driver
+            {
+
+            #region OracleDatabaseProvider
+
+            /// <summary>Oracle数据库对象反射抽象基类实现</summary>
+            public class OracleDatabaseDriver : AbstractReflectDatabaseDriver
+            {
+            public static readonly AbstractReflectDatabaseDriver Empty = new OracleDatabaseDriver();
+
+            protected OracleDatabaseDriver() : base("Oracle.ManagedDataAccess", "Oracle.ManagedDataAccess.Client.OracleConnection, Oracle.ManagedDataAccess",
+            "Oracle.ManagedDataAccess.Client.OracleCommand, Oracle.ManagedDataAccess", "Oracle.ManagedDataAccess.Client.OracleDataAdapter, Oracle.ManagedDataAccess",
+            "Oracle.ManagedDataAccess.Client.OracleDataReader, Oracle.ManagedDataAccess")
+            {
+            }
+            }
+
+            #endregion OracleDatabaseProvider
+
+
+
+
+            }
+            #endif</code>
+
+
+
+        <p>SQLiteDatabaseProvider</p>
+        <code>#if !( NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP1_2 ||  NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NETSTANDARD1_5 || NETSTANDARD1_6)
+            using System;
+            using System.Data;
+            using System.Data.Common;
+
+            namespace Utility.Database.Driver
+            {
+
+            #region SQLiteDatabaseProvider
+
+            /// <summary>SQLite数据库对象反射抽象基类实现</summary>
+            public class SQLiteDatabaseDriver : AbstractReflectDatabaseDriver
+            {
+            public static readonly AbstractReflectDatabaseDriver Empty = new SQLiteDatabaseDriver();
+
+            protected SQLiteDatabaseDriver() : base("System.Data.SQLite", "System.Data.SQLite.SQLiteConnection, System.Data.SQLite",
+            "System.Data.SQLite.SQLiteCommand, System.Data.SQLite", "System.Data.SQLite.SQLiteDataAdapter, System.Data.SQLite",
+            "System.Data.SQLite.SQLiteDataReader, System.Data.SQLite")
+            {
+            }
+            }
+
+            #endregion SQLiteDatabaseProvider
+
+
+            }
+            #endif</code>
+
+        <p>SqlClientDatabaseProvider</p>
+        <code>#if !( NETCOREAPP1_0 || NETCOREAPP1_1 || NETCOREAPP1_2 ||  NETSTANDARD1_0 || NETSTANDARD1_1 || NETSTANDARD1_2 || NETSTANDARD1_3 || NETSTANDARD1_4 || NETSTANDARD1_5 || NETSTANDARD1_6)
+            using System;
+            using System.Data;
+            using System.Data.Common;
+
+            namespace Utility.Database.Driver
+            {
+
+
+            #region SqlClientDatabaseProvider
+
+            /// <summary>SqlServer数据库对象反射抽象基类实现 System.Data.SqlClient</summary>
+            public class SqlClientDatabaseDriver : AbstractReflectDatabaseDriver
+            {
+            public static readonly AbstractReflectDatabaseDriver Empty = new SqlClientDatabaseDriver();
+
+            protected SqlClientDatabaseDriver() : base("System.Data.SqlClient", "System.Data.SqlClient.SqlConnection, System.Data.SqlClient",
+            "System.Data.SqlClient.SqlCommand, System.Data.SqlClient", "System.Data.SqlClient.SqlDataAdapter, System.Data.SqlClient", "System.Data.SqlClient.SqlDataReader, System.Data.SqlClient")
+            {
+            }
+            }
+
+
+
+            #endregion SqlClientDatabaseProvider
+
+            #region SqlClientDatabaseProvider
+
+
+            /// <summary>SqlServer数据库对象反射抽象基类实现</summary>
+            public class SqlServerDatabaseDriver : AbstractReflectDatabaseDriver
+            {
+            public static readonly AbstractReflectDatabaseDriver Empty = new SqlServerDatabaseDriver();
+
+            protected SqlServerDatabaseDriver() : base("System.Data", "System.Data.SqlClient.SqlConnection, System.Data",
+            "System.Data.SqlClient.SqlCommand, System.Data", "System.Data.SqlClient.SqlDataAdapter, System.Data", "System.Data.SqlClient.SqlDataReader, System.Data")
+            {
+            }
+            }
+
+            /// <summary>SqlServer数据库对象反射抽象基类实现</summary>
+            public class SqlServerV1DatabaseDriver : AbstractReflectDatabaseDriver
+            {
+            public static readonly AbstractReflectDatabaseDriver Empty = new SqlServerV1DatabaseDriver();
+
+            protected SqlServerV1DatabaseDriver() : base("System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+            "System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+            "System.Data.SqlClient.SqlCommand, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+            "System.Data.SqlClient.SqlDataAdapter, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+            "System.Data.SqlClient.SqlDataReader, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")
+            {
+            }
+            }
+
+            #endregion SqlClientDatabaseProvider
+
+
+
+            }
+            #endif</code>
+    </div>
+</main>
+<footer></footer>
+
+</body>
+</html>

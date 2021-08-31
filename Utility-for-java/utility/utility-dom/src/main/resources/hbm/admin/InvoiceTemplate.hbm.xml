@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="InvoiceTemplate" table="t_invoice_template" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+<property name="invTplcontent" column="inv_tplcontent" type="java.lang.String" />
+<property name="invDesignhtml" column="inv_designhtml" type="java.lang.String" />
+<property name="invTabelhtml" column="inv_tabelhtml" type="java.lang.String" />
+<property name="invImgDesignhtml" column="inv_img_designhtml" type="java.lang.String" />
+<property name="pagewidth" column="pagewidth" type="java.lang.Integer" />
+<property name="pageheight" column="pageheight" type="java.lang.Integer" />
+<property name="offsetx" column="offsetx" type="java.lang.Integer" />
+<property name="offsety" column="offsety" type="java.lang.Integer" />
+<property name="sellerId" column="seller_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

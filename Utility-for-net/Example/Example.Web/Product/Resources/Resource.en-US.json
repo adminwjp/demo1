@@ -1,0 +1,4 @@
+{
+  "catalog.code": "please input catalog code,length 2 to 50",
+  "catalog.name": "please input catalog name,length 2 to 20"
+}

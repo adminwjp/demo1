@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="UserRecharge" table="t_user_recharge" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+        <many-to-one name="buyer" foreign-key="fk_buyer_id" column="buyer_id" cascade="all" fetch="join"  />
+        <property name="recharge" column="recharge" type="java.math.BigDecimal" />
+        <property name="outTradeId" column="out_trade_id" type="java.lang.String" />
+        <property name="transactionId" column="transaction_id" type="java.lang.String" />
+        <property name="status" column="status" type="java.lang.Integer" />
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

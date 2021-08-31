@@ -1,0 +1,55 @@
+#http://nodeca.github.io/js-yaml/ 语法检测
+version: "3"
+services:
+  #指定服务名称
+  mysql:
+    #指定服务使用的镜像
+    image: "mysql:5.6"
+    #指定容器名称
+    container_name: saasmysql
+    restart: always
+    #指定服务运行的端口
+    ports :
+      - "3306:3306"
+    #指定容器的环境变量
+    environment:
+      #数据库密码
+      - MYSQL_ROOT_PASSWORD=123456
+      #创建的库
+      - MYSQL_DATABASE=saas
+      #允许多IP连接数据库
+      - MYSQL_ROOT_HOST=%
+  redis:
+    image: "redis"
+    #指定容器名称
+    container_name: saasredis
+    ports:
+      - "6379:6379"
+  saastest:    
+    #镜像名:版本
+    image: "eureka-server:v1"
+    container_name: saastest
+    #restart: always
+    #指定服务运行的端口
+    ports:
+      - "4003:4003"
+    #启动时，要覆盖的环境变量配置
+    environment:
+      #数据库IP
+      - url="jdbc:mysql://192.168.1.9:3306/saas?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"
+      #数据库用户名
+      - username=root
+      #数据库密码
+      - password=123456
+      #redis的IP
+      - REDIS_HOST=redis
+      #redis的端口
+      - REDIS_PORT=6379
+      - name=eureka-server
+      - port=4003
+      - hostname=192.168.1.9
+      - defaultZone=http://192.168.1.9:4001/eureka/,http://192.168.1.9:4002/eureka/,http://192.168.1.9:4003/eureka/
+    #依赖的服务
+    depends_on:
+      - mysql
+      - redis

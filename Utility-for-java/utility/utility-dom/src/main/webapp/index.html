@@ -1,0 +1,665 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>乐宝宝微商平台</title>
+    <script src="/resources/assets/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/resources/assets/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/resources/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/resources/assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/resources/assets/js/plugins/layer/layer.min.js"></script><link rel="stylesheet" href="http://127.0.0.1:8082/resources/assets/js/plugins/layer/skin/layer.css" id="layui_layer_skinlayercss" style="">
+    <script src="/resources/assets/js/plugins/toastr/toastr.min.js"></script>
+    <script src="/resources/assets/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- custom -->
+    <script src="/resources/assets/js/hplus.js?v=4.1.0"></script>
+    <!-- third plugins -->
+    <!-- <script src="/resources/assets/js/plugins/pace/pace.min.js"></script> -->
+    <script src="/resources/assets/js/bootstrap-dialog.js"></script>
+
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript" src="/resources/js/datePicker/WdatePicker.js"></script><link href="http://127.0.0.1:8082/resources/js/datePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/resources/js/obz.js"></script>
+    <script type="text/javascript" src="/resources/js/dateUtils.js"></script>
+    <script type="text/javascript" src="/resources/js/json2.js"></script>
+    <script type="text/javascript" src="/resources/js/jquery/jquery.loadmask.js"></script>
+    <script type="text/javascript" src="/resources/js/jquery/page/jquery.pager.js"></script>
+    <script type="text/javascript" src="/resources/js/dbumama.table.js"></script>
+    <!-- end: JavaScript--><script type="text/javascript">
+    $(document).ready(function(){
+        $("#header-bg").css({opacity:4});
+        /* if (jQuery.browser.msie) {
+            if (parseFloat(jQuery.browser.version) < 8) {
+                jQuery(document).ready(function() {
+                    jQuery(document.body).addClass("ie-compat");
+                });
+            }
+        } */
+        $(".NumDecText").keyup(function(){
+            $(this).val($(this).val().replace(/[^0-9.]/g,''));
+        }).bind("paste",function(){
+            $(this).val($(this).val().replace(/[^0-9.]/g,''));
+        }).css("ime-mode", "disabled");
+
+        $(".NumText").keyup(function(){
+            $(this).val($(this).val().replace(/D|^0/g,''));
+        }).bind("paste",function(){
+            $(this).val($(this).val().replace(/D|^0/g,''));
+        }).css("ime-mode", "disabled");
+
+        //help click
+        $("#menu_help").click(function(){
+            BootstrapDialog.show({
+                size: BootstrapDialog.SIZE_WIDE,
+                title: "在线帮助",
+                message: $('<div></div>').load("/help")
+            });
+        });
+
+        $("#auth_user_select").change(function(){
+            var me = $(this);
+            obz.showMessage("确认切换公众号吗？", function(){
+                obz.ajaxJson(obz.ctx +"/setting/setUsed", {authId : me.val()}, function(){
+                    location.reload();
+                });
+            }, function(){
+                location.reload();
+            });
+            return false;
+        });
+
+    });
+    obz.ctx = '';
+    obz.imgDomain = 'http://182.61.50.85/admin/upload/';
+    var Template = {
+        debug: function() {
+            $("div").prepend(function(index, html) {
+                $(this).attr("style", "border: dotted 1px #dedede");
+                return "<span class='debug'>" + $(this).attr("id") + "</span>";
+            });
+        },
+        selectMenu: function(menu) {
+            if (menu) {
+                $("#menu-items").children("li").removeClass("active").removeClass("opened");
+                if(!$(menu).hasClass(".nav-header")){
+                    $(menu).addClass("active opened");
+                    $(menu).parent().show();
+                }
+            }
+        },
+        init: function(menu) {
+            Template.selectMenu(menu);
+        }
+    }
+    //toast 配置
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-center",
+        "showDuration": "400",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    /* var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?3b0bc58fce4289e4526391baf8a50774";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })(); */
+</script>
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="/resources/images/favicon.ico" type="image/x-icon">
+    <!-- Css files -->
+    <link href="/resources/assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/resources/assets/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/resources/assets/css/animate.css" rel="stylesheet">
+    <link href="/resources/assets/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="/resources/assets/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="/resources/assets/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/css/jquery.loadmask.css">
+    <link rel="stylesheet" type="text/css" href="/resources/css/dbumama.table.css">
+    <link rel="stylesheet" type="text/css" href="/resources/js/jquery/page/jquery.pager.css">
+    <link rel="stylesheet" type="text/css" href="/resources/css/console_custom.css">
+    <style>
+        .modal-body{
+            padding: 0px;
+        }
+        .bootstrap-dialog-message{
+            padding-left: 12px;
+            padding-top: 5px;
+        }
+        .nav-tabs li{min-width:100px;}
+        .nav-tabs li a{text-align: center;}
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 2px !important;
+        }
+        .center{
+            text-align: center;
+        }
+    </style>
+    <title>点步微助手 - 做生意，用微助手</title>
+    <!-- Flot -->
+    <script src="/resources/assets/js/plugins/flot/jquery.flot.js"></script>
+    <script src="/resources/assets/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="/resources/assets/js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="/resources/assets/js/plugins/flot/jquery.flot.pie.js"></script>
+    <script src="/resources/assets/js/plugins/flot/jquery.flot.symbol.js"></script>
+    <!-- Jvectormap -->
+    <script src="/resources/assets/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="/resources/assets/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- Peity -->
+    <!-- <script src="/resources/assets/js/plugins/peity/jquery.peity.min.js"></script> -->
+    <script type="text/javascript" src="/resources/assets/js/plugins/easypiechart/jquery.easypiechart.js"></script>
+    <!-- <script src="/resources/assets/js/plugins/sparkline/jquery.sparkline.min.js"></script> -->
+    <link rel="stylesheet" href="http://127.0.0.1:8082/resources/assets/js/plugins/layer/skin/layer.ext.css" id="layui_layer_skinlayerextcss" style=""></head>
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+<!-- start: Header -->
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close"><i class="fa fa-times-circle"></i></div>
+        <div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;"><div class="sidebar-collapse" style="width: auto; height: 100%;">
+            <ul class="nav" id="menu-items">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <span><img alt="image" class="img-circle" style="width: 60px;height: 60px;" src="/resources/images/dianbuLogo.png"></span>
+                        <!-- <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
+                            </li>
+                            <li><a class="J_menuItem" href="profile.html">个人资料</a>
+                            </li>
+                            <li><a class="J_menuItem" href="contacts.html">联系我们</a>
+                            </li>
+                            <li><a class="J_menuItem" href="mailbox.html">信箱</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="login.html">安全退出</a>
+                            </li>
+                        </ul> -->
+                    </div>
+                    <div class="logo-element">XXX+</div>
+                </li>
+                <li id="menu-home" class="active opened"><a class="J_menuItem" href="/index"><i class="fa fa-home"></i><span class="nav-label">首页</span></a></li>
+                <li>
+                    <a href="javascript:void(0)"><i class="fa fa-cart-arrow-down"></i><span class="nav-label">微商城</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li id="menu-shop"><a class="J_menuItem" href="/shop">店铺</a></li>
+                        <li id="menu-goods"><a class="J_menuItem" href="/product" data-index="0">商品</a></li>
+                        <li id="menu-order"><a class="J_menuItem" href="/order">订单</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="glyphicon glyphicon-retweet"></i><span class="nav-label">微分销</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li id="menu-commission"><a class="J_menuItem" href="/commission">佣金</a></li>
+                        <li id="menu-agent"><a class="J_menuItem" href="/agent/aduit" data-index="0">分销商</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><i class="glyphicon glyphicon-tags"></i> <span class="nav-label">营销</span><span class="fa arrow"></span><!-- <span class="label label-warning pull-right">16</span> --></a>
+                    <ul class="nav nav-second-level">
+                        <li id="menu-discount"><a class="J_menuItem" href="/promotion">促销</a></li>
+                        <li id="menu-qiandao"><a class="J_menuItem" href="/qiandao">互动</a></li>
+                    </ul>
+                </li>
+                <li id="menu-fans">
+                    <a class="J_menuItem" href="/fans"><i class="fa fa-columns"></i><span class="nav-label">客户</span></a>
+                </li>
+                <li id="menu-setting">
+                    <a class="J_menuItem" href="/setting"><i class="fa fa-edit"></i><span class="nav-label">设置</span></a>
+                </li>
+                <!-- <li>
+                    <a href="javascript:void(0)"><i class="fa fa-edit"></i> <span class="nav-label">设置</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li id="menu-setting"><a class="J_menuItem" href="/setting">公众号</a></li>
+                        <li id="menu-menu"><a class="J_menuItem" href="/menu">微信菜单</a></li>
+                    </ul>
+                </li> -->
+            </ul>
+        </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 315.375px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.9; z-index: 90; right: 1px;"></div></div>
+    </nav>
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="javascript:void(0)"><i class="fa fa-bars"></i> </a>
+                    <!-- <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                        <div class="form-group">
+                            <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </form> -->
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <!-- <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <li class="m-t-xs">
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="/resources/assets/img/a7.jpg">
+                                    </a>
+                                    <div class="media-body">
+                                        <small class="pull-right">46小时前</small>
+                                        <strong>小四</strong> 这个在日本投降书上签字的军官，建国后一定是个不小的干部吧？
+                                        <br>
+                                        <small class="text-muted">3天前 2014.11.8</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a class="J_menuItem" href="mailbox.html">
+                                        <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li> -->
+                    <li class="hidden-xs">
+                        <a href="javascript:void(0)">
+                            admin						,
+                        </a>
+                    </li>
+                    <li class="dropdown hidden-xs">
+                        <!-- <select id="auth_user_select" name="auth_user_select" class="form-control m-b"> -->
+                        <a class="dropdown-toggle" href="javascript:void(0)">测试公众号</a>
+                        <!-- </select> -->
+                    </li>
+                    <!-- <li class="dropdown hidden-xs">
+                      <a id="purchase_end_date" href="javascript:void(0)">
+  2017-09-01	        		 到期</a>
+                    </li> -->
+                    <!-- <li class="hidden-xs">
+                        <a href="/pay" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i>续费</a>
+                    </li> -->
+                    <!-- <li class="dropdown hidden-xs">
+                        <a class="right-sidebar-toggle" aria-expanded="false">
+                            <i class="fa fa-tasks"></i> 主题
+                        </a>
+                    </li> -->
+                    <li class="hidden-xs"><a href="/logout"><i class="fa fa-power-off"></i>退出</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!--右侧边栏开始-->
+        <div id="right-sidebar">
+            <div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;"><div class="sidebar-container" style="width: auto; height: 100%;">
+                <ul class="nav nav-tabs navs-3">
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab-1"><i class="fa fa-gear"></i> 主题</a>
+                    </li>
+                    <li class=""><a data-toggle="tab" href="#tab-2">通知</a></li>
+                    <li><a data-toggle="tab" href="#tab-3">项目进度</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="sidebar-title">
+                            <h3> <i class="fa fa-comments-o"></i> 主题设置</h3>
+                            <small><i class="fa fa-tim"></i> 你可以从这里选择和预览主题的布局和样式，这些设置会被保存在本地，下次打开的时候会直接应用这些设置。</small>
+                        </div>
+                        <div class="skin-setttings">
+                            <div class="title">主题设置</div>
+                            <div class="setings-item">
+                                <span>收起左侧菜单</span>
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="collapsemenu">
+                                        <label class="onoffswitch-label" for="collapsemenu">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="setings-item">
+                                <span>固定顶部</span>
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="fixednavbar" class="onoffswitch-checkbox" id="fixednavbar">
+                                        <label class="onoffswitch-label" for="fixednavbar">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="setings-item">
+                                <span>固定宽度</span>
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="boxedlayout" class="onoffswitch-checkbox" id="boxedlayout">
+                                        <label class="onoffswitch-label" for="boxedlayout">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="title">皮肤选择</div>
+                            <div class="setings-item default-skin nb">
+                            <span class="skin-name ">
+                       <a href="#" class="s-skin-0">默认皮肤</a>
+                   </span>
+                            </div>
+                            <div class="setings-item blue-skin nb">
+                            <span class="skin-name ">
+                    			<a href="#" class="s-skin-1">蓝色主题</a>
+                			</span>
+                            </div>
+                            <div class="setings-item yellow-skin nb">
+                            <span class="skin-name ">
+                    			<a href="#" class="s-skin-3">黄色/紫色主题</a>
+                			</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-pane">
+                        <div class="sidebar-title">
+                            <h3> <i class="fa fa-comments-o"></i> 最新通知</h3>
+                            <small><i class="fa fa-tim"></i> 您当前有10条未读信息</small>
+                        </div>
+                        <!-- <div>
+                            <div class="sidebar-message">
+                                <a href="#">
+                                    <div class="pull-left text-center">
+                                        <img alt="image" class="img-circle message-avatar" src="/resources/assets/img/a2.jpg">
+                                    </div>
+                                    <div class="media-body">
+                                        HCY48之音乐大魔王会员专属皮肤已上线，快来一键换装拥有他，宣告你对华晨宇的爱吧！
+                                        <br>
+                                        <small class="text-muted">昨天 2:45</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div id="tab-3" class="tab-pane">
+                        <div class="sidebar-title">
+                            <h3> <i class="fa fa-cube"></i> 最新任务</h3>
+                            <small><i class="fa fa-tim"></i> 您当前有14个任务，10个已完成</small>
+                        </div>
+                        <ul class="sidebar-list">
+                            <li>
+                                <a href="#">
+                                    <span class="label label-primary pull-right">NEW</span>
+                                    <h4>设计阶段</h4>
+                                    <!--<div class="small pull-right m-t-xs">9小时以后</div>-->
+                                    项目进度报告(Project Progress Report)
+                                    <div class="small">已完成： 22%</div>
+                                    <div class="small text-muted m-t-xs">项目截止： 4:00 - 2015.10.01</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 827px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.4; z-index: 90; right: 1px;"></div></div>
+        </div>
+        <!--右侧边栏结束 结合footer.html 文件，故此处div不结束-->
+        <div class="row J_mainContent" id="content-main">
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-success pull-right">当月</span>
+                                <h5>收入</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">0</h1>
+                                <!-- <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i>
+                                </div> -->
+                                <small>总收入</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-info pull-right">全年</span>
+                                <h5>订单</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">25</h1>
+                                <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i>
+                                </div>
+                                <small>总订单数</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-primary pull-right">全部</span>
+                                <h5>总会员数</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">4</h1>
+                                <div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i>
+                                </div>
+                                <small>会员</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label label-danger pull-right">已上架商品数</span>
+                                <h5>商品</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">1</h1>
+                                <!-- <div class="stat-percent font-bold text-danger">38% <i class="fa fa-level-down"></i></div> -->
+                                <small>商品数</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>订单</h5>
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <!-- <button type="button" class="btn btn-xs btn-white active">天</button> -->
+                                        <button type="button" class="btn btn-xs btn-white">月报</button>
+                                        <!-- <button type="button" class="btn btn-xs btn-white">年</button> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="flot-chart">
+                                            <div class="flot-chart-content" id="flot-dashboard-chart" style="padding: 0px; position: relative;"><canvas class="base" width="1268" height="200"></canvas><canvas class="overlay" width="1268" height="200" style="position: absolute; left: 0px; top: 0px;"></canvas><div class="tickLabels" style="font-size:smaller"><div class="xAxis x1Axis" style="color:#838383"></div><div class="yAxis y1Axis" style="color:#838383"><div class="tickLabel" style="position:absolute;text-align:right;top:170px;right:1247px;width:21px">-1.0</div><div class="tickLabel" style="position:absolute;text-align:right;top:126px;right:1247px;width:21px">-0.5</div><div class="tickLabel" style="position:absolute;text-align:right;top:83px;right:1247px;width:21px">0.0</div><div class="tickLabel" style="position:absolute;text-align:right;top:39px;right:1247px;width:21px">0.5</div><div class="tickLabel" style="position:absolute;text-align:right;top:-4px;right:1247px;width:21px">1.0</div></div><div class="yAxis y2Axis" style="color:#838383"><div class="tickLabel" style="position:absolute;text-align:left;top:170px;left:1247px;width:21px">-1.0</div><div class="tickLabel" style="position:absolute;text-align:left;top:126px;left:1247px;width:21px">-0.5</div><div class="tickLabel" style="position:absolute;text-align:left;top:83px;left:1247px;width:21px">0.0</div><div class="tickLabel" style="position:absolute;text-align:left;top:39px;left:1247px;width:21px">0.5</div><div class="tickLabel" style="position:absolute;text-align:left;top:-4px;left:1247px;width:21px">1.0</div></div></div><div class="legend"><div style="position: absolute; width: 67px; height: 34px; top: 9px; left: 31px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div><table style="position:absolute;top:9px;left:31px;;font-size:smaller;color:#838383"><tbody><tr><td class="legendColorBox"><div style="border:1px solid #000000;padding:1px"><div style="width:4px;height:0;border:5px solid #1ab394;overflow:hidden"></div></div></td><td class="legendLabel">总订单数</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #000000;padding:1px"><div style="width:4px;height:0;border:5px solid #464f88;overflow:hidden"></div></div></td><td class="legendLabel">以付款数</td></tr></tbody></table></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <ul class="stat-list">
+                                            <li>
+                                                <h2 class="no-margins">25</h2>
+                                                <small>订单总数</small>
+                                                <!-- <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div> -->
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 48%;" class="progress-bar"></div>
+                                                </div>
+                                            </li>
+                                            <!-- <li>
+                                                <h2 class="no-margins ">4,422</h2>
+                                                <small>最近一个月订单</small>
+                                                <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i>
+                                                </div>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 60%;" class="progress-bar"></div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <h2 class="no-margins ">9,180</h2>
+                                                <small>最近一个月销售额</small>
+                                                <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i>
+                                                </div>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 22%;" class="progress-bar"></div>
+                                                </div>
+                                            </li> -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--右侧部分结束-->
+        <!-- <div id="footer" class="footer ibox-content">
+            <div class="pull-right">&copy; 2015-2016 <a href="http://www.dbumama.com/" target="_blank">点步科技</a></div>
+        </div> -->
+    </div>
+</div>
+<script type="text/javascript">
+    $("#header, #footer").show();
+</script><script type="text/javascript">
+    function gd(year, month, day) {
+        return new Date(year, month - 1, day).getTime();
+    }
+    var searchdata = function(){
+        $.post(obz.ctx+"/chartData", {}, function(json) {
+            var dataMap =json.data;
+            var dataList1 = dataMap.data1;//已支付订单数
+            var dataList2 = dataMap.data2;//总订单数
+            //if(dataList1.length>0 && dataList2.length>0){
+            $("#flot-dashboard-chart").empty();
+            var data1 = new Array();
+            var data2 = new Array();
+            for(var i=0;i<dataList1.length;i++){
+                var obj=[];
+                obj.push(gd(dataList1[i].year,dataList1[i].month,dataList1[i].day));
+                obj.push(dataList1[i].incomeNum);
+                data1.push(obj);
+            }
+            for(var i=0;i<dataList2.length;i++){
+                var obj=[];
+                obj.push(gd(dataList2[i].year,dataList2[i].month,dataList2[i].day));
+                obj.push(dataList2[i].incomeNum);
+                data2.push(obj);
+            }
+            $('.chart').easyPieChart({
+                barColor: '#f8ac59',
+                //                scaleColor: false,
+                scaleLength: 5,
+                lineWidth: 4,
+                size: 80
+            });
+
+            $('.chart2').easyPieChart({
+                barColor: '#1c84c6',
+                //                scaleColor: false,
+                scaleLength: 5,
+                lineWidth: 4,
+                size: 80
+            });
+            var dataset = [
+                {
+                    label: "总订单数",
+                    data: data1,
+                    color: "#1ab394",
+                    bars: {
+                        show: true,
+                        align: "center",
+                        barWidth: 24 * 60 * 60 * 600,
+                        lineWidth: 0
+                    }
+
+                }, {
+                    label: "以付款数",
+                    data: data2,
+                    yaxis: 2,
+                    color: "#464f88",
+                    lines: {
+                        lineWidth: 1,
+                        show: true,
+                        fill: true,
+                        fillColor: {
+                            colors: [{
+                                opacity: 0.2
+                            }, {
+                                opacity: 0.2
+                            }]
+                        }
+                    },
+                    splines: {
+                        show: false,
+                        tension: 0.6,
+                        lineWidth: 1,
+                        fill: 0.1
+                    },
+                }
+            ];
+
+
+            var options = {
+                xaxis: {
+                    mode: "time",
+                    tickSize: [3, "day"],
+                    tickLength: 0,
+                    axisLabel: "Date",
+                    axisLabelUseCanvas: true,
+                    axisLabelFontSizePixels: 12,
+                    axisLabelFontFamily: 'Arial',
+                    axisLabelPadding: 10,
+                    color: "#838383"
+                },
+                yaxes: [{
+                    position: "left",
+                    // max: ,
+                    color: "#838383",
+                    axisLabelUseCanvas: true,
+                    axisLabelFontSizePixels: 12,
+                    axisLabelFontFamily: 'Arial',
+                    axisLabelPadding: 3
+                }, {
+                    position: "right",
+                    clolor: "#838383",
+                    axisLabelUseCanvas: true,
+                    axisLabelFontSizePixels: 12,
+                    axisLabelFontFamily: ' Arial',
+                    axisLabelPadding: 67
+                }
+                ],
+                legend: {
+                    noColumns: 1,
+                    labelBoxBorderColor: "#000000",
+                    position: "nw"
+                },
+                grid: {
+                    hoverable: false,
+                    borderWidth: 0,
+                    color: '#838383'
+                }
+            };
+            $.plot($("#flot-dashboard-chart"), dataset, options);
+            //}
+        });
+    }
+
+    $(document).ready(function () {
+        searchdata();
+    });
+
+    Template.init("#menu-home");
+</script>
+
+<div id="_my97DP" style="position: absolute; top: -1970px; left: -1970px;"><iframe style="width: 202px; height: 217px;" src="http://127.0.0.1:8082/resources/js/datePicker/My97DatePicker.html" frameborder="0" border="0" scrolling="no"></iframe></div>
+</body></html>

@@ -1,0 +1,251 @@
+﻿@model ContentItem
+@model IEnumerable<ContentItem>
+@{
+    var contentModelService = DIContainer.Resolve<ContentModelService>();
+}
+@{
+    ViewData["Title"] = new string[] { "资讯" };
+    var contentModelService = DIContainer.Resolve<ContentModelService>();
+    var currentuser = UserContext.CurrentUser;
+    var specialContentiItem = ViewData.Get<SpecialContentItem>("specialContentiItem", new SpecialContentItem());
+}
+<script src="~/js/tn_IsPC.js"></script>
+<script>
+    ///支持手机访问页面跳转手机客户端
+    (function () {
+        var url = "@Utility.GetTouchScreenUrl()";
+        if (!IsPC() && url != "") {
+            window.location.href = url + "/index.html?categories=news";
+        }
+    })();
+</script>
+<div class="row jh-my-news">
+    <div class="col-xs-9">
+        <div class="jh-padding-white">
+            <ul class="list-unstyled slider-home">
+                @if (Model != null && Model.ContentItemId > 0)
+                {
+                    <li class="jh-news-list jh-news-first">
+                        <ul class="list-inline">
+                            <li class="jh-list-img">
+                                @*@if (currentuser != null && currentuser.IsSuperAdministrator())
+                                    {
+                                        <button class="btn btn-default" style="position:absolute;right:0;display:none;z-index:100" id="recommend-manage" ><i class="fa fa-cog"></i></button>
+                                    }*@
+
+                                <a href="@(SiteUrls.Instance().CMSDetail(Model.ContentItemId))" class="jh-vedio-img" target="_blank">
+                                    @if (specialContentiItem != null)
+                                    {
+                                        <img class="lazy" data-default="@Tunynet.Utilities.WebUtility.ResolveUrl("~/img/default_List.png")" data-original="@specialContentiItem.specialFristFeaturedImage("Frist")" width="515" height="280" />
+                                    }
+                                    @if (Model.ContentModelId == contentModelService.GetContentModelsByContentModeKey(ContentModelKeys.Instance().Video()).ModelId)
+                                    {
+                                        <div class="jh-vedio-mask"><i class="fa fa-play-circle-o" aria-hidden="true"></i></div>
+                                    }
+                                </a>
+
+                            </li>
+                            <li class="jh-list-title">
+                                <h4><a href="@SiteUrls.Instance().CMSDetail(Model.ContentItemId)" title="@Model.Subject" target="_blank">@HtmlUtility.TrimHtml(Model.Subject, 34)</a></h4>
+                                <p>
+                                    @if (string.IsNullOrEmpty(Model.Summary))
+                                    {@HtmlUtility.TrimHtml(Model.Body, 132)}
+                                else
+                                {@HtmlUtility.TrimHtml(Model.Summary, 132)}
+                                </p>
+                                <ul class="list-inline text-muted">
+                                    <li>
+                                        @Html.ShowUserAvatar(userId: Model.UserId, avatarSizeType: AvatarSizeType.Micro)
+                                        <span>
+                                            <a href="@SiteUrls.Instance().MyHome(Model.UserId)" target="_blank">@Model.Author</a>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                        @Model.DatePublished.ToFriendlyDate()
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-commenting" aria-hidden="true"></i>
+                                        @Model.CommentCount()
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+            <div id="advertisingDiv">
+            </div>
+            <div class="tn-mb-20"></div>
+            <div id="listCMS">
+                @if (Model.Any())
+                {
+                    <ul class="list-unstyled">
+                        @foreach (var item in Model)
+                        {
+                            <li class="jh-news-list">
+                                <ul class="list-inline">
+                                    @if (item.FeaturedImageAttachmentId > 0 || item.ContentModel.ModelKey == ContentModelKeys.Instance().Image())
+                                    {
+                                        <li class="jh-list-img">
+                                            <a href="@SiteUrls.Instance().CMSDetail(item.ContentItemId)" class="jh-vedio-img" target="_blank">
+                                                <img class="lazy" data-default="@Tunynet.Utilities.WebUtility.ResolveUrl("~/img/default_List.png")" data-original="@item.FristFeaturedImage("List")" width="260" height="146" />
+                                                @if (item.ContentModelId == contentModelService.GetContentModelsByContentModeKey(ContentModelKeys.Instance().Video()).ModelId)
+                                                {
+                                                    <div class="jh-vedio-mask">
+                                                        <i class="fa fa-play-circle-o" aria-hidden="true"></i>
+                                                    </div>
+                                                }
+                                            </a>
+                                        </li>
+                                    }
+                                    <li class="jh-list-title @if (!(item.FeaturedImageAttachmentId > 0|| item.ContentModel.ModelKey == ContentModelKeys.Instance().Image())) { <text>jh-no-img</text>} ">
+                                        <h5 class="tn-text">
+                                            <a href="@SiteUrls.Instance().CMSDetail(item.ContentItemId)" title="@item.Subject" target="_blank">
+                                                @HtmlUtility.TrimHtml(item.Subject, 60)
+                                            </a>
+                                        </h5>
+                                        @{
+                                            var displayBody = "";
+                                            if (!string.IsNullOrEmpty(item.Summary))
+                                            {
+                                                displayBody = item.Summary;
+                                            }
+                                            if (string.IsNullOrEmpty(displayBody) && !string.IsNullOrEmpty(item.Body))
+                                            {
+                                                displayBody = HtmlUtility.TrimHtml(item.Body, 180);
+                                            }
+                                        }
+                                        @if (!string.IsNullOrEmpty(displayBody))
+                                        {
+                                            <p>
+                                                @HtmlUtility.TrimHtml(Html.Raw(displayBody).ToString(), 180)
+                                            </p>
+                                        }
+                                        <ul class="list-inline text-muted">
+                                            <li>
+                                                @Html.ShowUserAvatar(userId: item.UserId, avatarSizeType: AvatarSizeType.Micro)
+                                                <span>
+                                                    <a href="@SiteUrls.Instance().MyHome(item.UserId)" target="_blank">
+                                                        @item.Author
+                                                    </a>
+                                                </span>
+                                            </li>
+                                            @if (item.ContentCategory != null)
+                                            {
+                                                <li>
+                                                    <a href="@SiteUrls.Instance().CategoryCMS(item.ContentCategoryId)">
+                                                        @HtmlUtility.TrimHtml(item.ContentCategory.CategoryName, 20)
+                                                    </a>
+                                                </li>
+                                            }
+                                            <li>
+                                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                                @item.DatePublished.ToFriendlyDate()
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-commenting" aria-hidden="true"></i>
+                                                @item.CommentCount()
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
+                    </ul>
+                    <div class="text-center">
+                        @Html.AjaxPagingButton(Model, "listCMS", CachedUrlHelper.Action("_ListContentItem", "CMS"), PaginationMode.NextLoadMore)
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-warning">
+                        暂无任何资讯
+                    </div>
+                }
+
+            </div>
+            <div class="tn-mb-10"></div>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        @if (Model.Any())
+        {
+            <div class="tn-gray-bg">
+                <div class="tn-title">
+                    <h5>一周热文</h5>
+                </div>
+                @foreach (var item in Model)
+                {
+                    <div class="jh-thumbnail">
+                        <a href="@SiteUrls.Instance().CMSDetail(item.ContentItemId)" title="@item.Subject" target="_blank">
+                            @if (item.FeaturedImageAttachmentId > 0)
+                            {
+                                <div class="jh-vedio-img">
+                                    <img class="lazy" data-default="@Tunynet.Utilities.WebUtility.ResolveUrl("~/img/default_List.png")" data-original="@item.FristFeaturedImage("List")" width="225" height="127" />
+                                    @if (item.ContentModelId == contentModelService.GetContentModelsByContentModeKey(ContentModelKeys.Instance().Video()).ModelId)
+                                    {
+                                        <div class="jh-vedio-mask"><i class="fa fa-play-circle-o" aria-hidden="true"></i></div>
+                                    }
+                                </div>
+                            }
+                            <p>@HtmlUtility.TrimHtml(item.Subject, 10)</p>
+                        </a>
+                    </div>
+                }
+
+            </div>
+        }
+    </div>
+</div>
+
+@Html.Hidden("hiddenlabindexs", 1)
+@Styles.Render("~/js/lib/slider-pro/css/slider")
+@*
+    @Scripts.Render("~/Bundle/Scripts/slider")
+    @Scripts.Render("~/Bundle/Scripts/page")
+*@
+@if (currentuser != null && currentuser.IsSuperAdministrator())
+{
+    <script>
+        require(['jquery'], function () {
+            $(".slider-home").hover(function myfunction() {
+                $("#recommend-manage").show();
+            }, function myfunction() {
+                var xoda2 = $("#recommend-manage");
+                $("#recommend-manage").hide();
+            }
+               )
+        })
+    </script>
+}
+<script>
+    require(['jquery', 'tnlayer', 'sliderpro', 'page','onscroll'], function ($, tnlayer) {
+
+        $(function () {
+            //加载广告
+            $.get("@CachedUrlHelper.Action("_Advertising","Common")", { positionId: "1000003", requesttime: new Date().getTime() }, function (data) {
+                $("#advertisingDiv").html(data);
+            })
+        })
+        @*$("#recommend-manage").click(function(){
+             tnlayer.layermodal('资讯推荐', '@SiteUrls.Instance()._ManageSpecialContentItems(SpecialContentTypeIds.Instance().SpecialCMS())'.replace(/&amp;/g, "&"), '450px', 'auto')
+         })*@
+
+        window.onscroll = function () {
+            if (getScrollTop() + getClientHeight() == getScrollHeight()) {
+                var count = Math.ceil($(".hiddenlabindex").val());
+                if (count == Math.ceil($("#hiddenlabindexs").val())) {
+                    if (count < 3) {
+                        var _that = $(".pagenext");
+                        $("#hiddenlabindexs").val(count + 1);
+                        _that.click();
+                    }
+                }
+            }
+        }
+    })
+</script>
+
+

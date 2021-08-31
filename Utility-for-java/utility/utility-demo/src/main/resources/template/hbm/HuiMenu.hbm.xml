@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.template.model.huiadmin">
+    <class name="com.template.dao.model.huiadmin.HuiMenu" table="t_hui_menu" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+        <many-to-one name="icon" foreign-key="fk_icon_id" column="icon_id" cascade="all" fetch="join"  />
+        <property name="href" column="href" type="java.lang.String" ></property>
+        <property name="name" column="name" type="java.lang.String" ></property>
+        <many-to-one name="parent" foreign-key="fk_parent_id" column="parent_id" cascade="all" fetch="join"  />
+        <set name="children"    inverse="false" lazy="false" cascade="all">
+            <key column="parent_id" foreign-key="fk_parent_id" />
+            <one-to-many class="com.template.dao.model.huiadmin.HuiMenu" not-found="ignore"/>
+        </set>
+    </class>
+</hibernate-mapping>

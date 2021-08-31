@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="favicon.ico">
+    <title>分类列表</title>
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <link rel="stylesheet" href="http://192.168.1.3:5000/lib/element-ui/2.14.1/theme-chalk/index.css">
+    <style>
+        .demo-form-inline {
+            margin: 0px 70px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="work_list">
+
+        <!-- 开始查询信息 -->
+        <el-form :inline="true" :model="formQuery" ref="formQuery" class="demo-form-inline ">
+
+            <el-form-item label="分类标识" prop="flag">
+                <el-select v-model="formQuery.flag" placeholder="请选择" @change="handleWorkQueryChangeEvent" clearable @visible-change="handleWorkQueryVisableChangeEvent">
+                    <el-option v-for="it in job_options" :key="it.id" :label="it.category" :value="it.id">
+                    </el-option>
+                </el-select>
+                <!--<el-cascader v-model="formQuery.category_id"
+        :options="job_options"
+        :props="{ expandTrigger: 'hover' }"
+         @change="handleWorkQueryChangeEvent"  @visable-change="handleWorkQueryVisableChangeEvent"></el-cascader>-->
+            </el-form-item>
+            <el-form-item label="父分类" prop="parent_id">
+                <el-select v-model="formQuery.parent_id" placeholder="请选择" @change="handleWorkQueryChangeEvent" clearable @visible-change="handleWorkQueryVisableChangeEvent">
+                    <el-option v-for="it in job_options" :key="it.id" :label="it.category" :value="it.id">
+                    </el-option>
+                </el-select>
+                <!--<el-cascader v-model="formQuery.category_id"
+        :options="job_options"
+        :props="{ expandTrigger: 'hover' }"
+         @change="handleWorkQueryChangeEvent"  @visable-change="handleWorkQueryVisableChangeEvent"></el-cascader>-->
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="loadTableDataOrQueryDataEvent">查询</el-button>
+                <el-button @click="resetFormEvent('formQuery')">重置</el-button>
+            </el-form-item>
+        </el-form>
+        <!-- 结束查询信息 -->
+        <!-- 开始 操作按钮 -->
+        <div style="margin-top: 20px;text-align:left;margin-bottom:10px">
+            <el-button @click="toggleSelectionTableCheckBoxButtonEvent(checkboxAllSelect?tableData:null)">{{checkboxAllSelectText}}</el-button>
+            <el-button @click="insertButtonClickEvent" v-if="operator&&operator.add" icon="el-icon-plus">添加</el-button>
+            <el-button @click="modifyButtonClickEvent" v-if="operator&&operator.modify" icon="el-icon-edit">编辑</el-button>
+            <el-button @click="deleteButtonClickEvent" v-if="operator&&operator.delete" icon="el-icon-delete">删除</el-button>
+            <el-button @click="queryButtonClickEvent" icon="el-icon-view">查看</el-button>
+            <el-button @click="loadTableDataOrQueryDataEvent" icon="el-icon-refresh">刷新</el-button>
+        </div>
+        <!-- 结束 操作按钮 -->
+        <!-- 开始 列表信息 -->
+        <el-table v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" ref="multipleTable" :data="tableData" tooltip-effect="dark"
+                  highlight-current-row border @selection-change="handleSelectionChange" :default-sort="{prop: 'create_date', order: 'descending'}">
+                    <el-table-column type="selection" width="55"> </el-table-column>
+                    <el-table-column type="index" width="50" sortable label="序号"> </el-table-column>
+                    <el-table-column prop="id" label="编号" sortable width="70">  </el-table-column>
+                    <el-table-column prop="accept" label="文件接受协议" width="200"> </el-table-column>
+                    <el-table-column prop="flag" label="分类标识" width="50"> </el-table-column>
+                    <el-table-column prop="parent" label="父分类" width="300"> </el-table-column>
+                    <el-table-column prop="admin_id" label="管理员id" sortable width="200">  </el-table-column>
+                    <el-table-column prop="parent_id" label="父分类" sortable width="200"> </el-table-column>
+                    <el-table-column prop="create_date" label="创建日期" sortable width="200"> </el-table-column>
+                    <el-table-column prop="update_date" label="修改日期" sortable width="200"> </el-table-column>
+                    <el-table-column label="操作" width="200">
+                        <template slot-scope="scope">
+                            <el-button @click="handleSelectClickEvent(scope.row)" type="text" icon="el-icon-view" size="small">查看</el-button>
+                        </template>
+                    </el-table-column>
+        </el-table>
+        <!-- 结束 列表信息 -->
+        <!-- 开始 分页 -->
+        <div class="block" style="text-align:center;">
+            <el-pagination background @size-change="handleSizeChangeEvent" @current-change="handleCurrentPageChangeEvent" :current-page="page.current_page"
+                           :page-sizes="page.sizes" :page-size="page.size" :page-count="page.page" layout="total, sizes, prev, pager, next, jumper" :total="page.total">
+            </el-pagination>
+        </div>
+        <!-- 结束 分页 -->
+        <!-- 开始 添加 修改 -->
+        <el-dialog :title="dialog.title" :visible.sync="dialog.visible" width="30%" :before-close="handleDialogClose">
+            <el-radio-group v-model="labelPosition" size="small">
+                <el-radio-button label="left">左对齐</el-radio-button>
+                <el-radio-button label="right">右对齐</el-radio-button>
+                <el-radio-button label="top">顶部对齐</el-radio-button>
+            </el-radio-group>
+            <div style="margin: 20px;"></div>
+            <el-form :model="formSubmit" status-icon :rules="formRoleValidator" ref="formSubmit" :disabled="disabled" class="demo-ruleForm" :label-position="labelPosition" label-width="80px">
+                <el-input type="hidden" v-model="formSubmit.id"></el-input>
+                <el-form-item label="工作公司" prop="company_name">
+                    <el-input v-model="formSubmit.company_name"></el-input>
+                </el-form-item>
+                <el-form-item label="工作名称" prop="job">
+                    <el-input v-model="formSubmit.job"></el-input>
+                </el-form-item>
+                <el-form-item label="分类名称" prop="category.id">
+                    <el-select v-model="formSubmit.category.id" placeholder="请选择" @change="handleWorkFormChangeEvent" clearable @visible-change="handleWorkFormVisableChangeEvent">
+                        <el-option v-for="it in job_options" :key="it.id" :label="it.category" :value="it.id">
+                        </el-option>
+                    </el-select>
+
+                   <!-- <el-cascader v-model="formSubmit.category_id"
+                                   :options="job_options"
+                                   :props="{ expandTrigger: 'hover' }"
+                                   @change="handleWorkFormChangeEvent" @visible-change="handleWorkFormVisableChangeEvent"></el-cascader>
+                    -->
+                </el-form-item>
+                <el-form-item label="工作时间" prop="work_date">
+                    <el-date-picker v-model="formSubmit.work_date" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="createDatePickerOptions"
+                                    range-separator="至" start-placeholder="开始日期" align="right">
+                    </el-date-picker>
+                </el-form-item>
+                <!--<el-form-item v-if="test" label="用户" prop="user.id">
+                    <el-select v-model="formSubmit.user.id" filterable placeholder="请选择" @change="handleUserChangeEvent" @visible-change="handleUserVisableChangeEvent">
+                        <el-option v-for="item in user_options" :key="item.id"
+                                   :label="item.category" :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+                <el-form-item label="描述" prop="description">
+                    <el-input type="textarea" v-model="formSubmit.description" value="这个人很懒,什么也没留下!"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submitFormEvent('formSubmit')">{{dialog.submitText}}</el-button>
+                    <el-button @click="resetFormEvent('formSubmit')">{{dialog.resetText}}</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+        <!-- 结束 添加 修改 -->
+
+    </div>
+    <!-- import Vue before Element -->
+    <!--<script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+    <script src="/vue/2.6.12/vue.js"></script>
+    <!-- import JavaScript -->
+    <!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+    <script src="http://192.168.1.3:5000/lib/element-ui/2.14.1/lib/index.js"></script>
+    <script src="http://192.168.1.3:5000/lib/axios/0.21.0/axios.min.js"></script>
+    <script src="http://192.168.1.3:5000/utility/js.cookie.js"></script>
+    <script src="http://192.168.1.3:5000/utility/utility.js"></script>
+    <script src="http://192.168.1.3:5000/utility/utility.index.js"></script>
+    <script>
+        var obj = new Gibson();
+        obj.el = ".work_list";
+        obj.data.operator1 = {
+            add: false,
+            modify: false,
+            delete: false,
+            query: true,
+        };
+        obj.data.operatorUrl = { add: urls.catagory.add, modify: urls.catagory.edit, delete: urls.catagory.delete,
+            query: urls.catagory.query };
+        obj.data.formQuery = { id: '', company_name: '', job: '', category_id: '', options: [], create_date: [], update_date: [], work_date: [] };
+        obj.data.formSubmit = { id: '', company_name: '', job: '', category: { id: '' }, work_date: [], start_date: '', end_date: '', options: [], description: '这个人很懒,什么也没留下!' };
+        obj.data.controller = "category";
+        obj.data.work_date = [];
+        obj.data.formRoleValidator = {
+            company_name: [
+                { required: true, message: '请输入公司名称', trigger: 'blur' },
+                { min: 5, max: 50, message: '长度在 5 到 50 个字符公司名称', trigger: 'blur' }
+            ],
+            job: [
+                { required: true, message: '请输入公司职位', trigger: 'blur' },
+                { min: 2, max: 50, message: '长度在 2 到 50 个字符公司职位', trigger: 'blur' }
+            ],
+            category: {
+                id: [
+                    { required: true, message: '请选择公司分类', trigger: 'change' }
+                ]
+            },
+            work_date: {
+                required: true,
+                type: 'array',
+                message: '请选择工作时间',
+                trigger: 'change',
+                fields: {
+                    0: { /*type: "date",*/ required: true, message: "请选择工作时间" },
+                    1: { /*type: "date",*/ required: true, message: "请选择工作时间" }
+                }
+            },
+            description: [
+                { required: true, message: '请输入描述', trigger: 'blur' },
+                { min: 10, max: 500, message: '长度在 10 到 500 个字公司符描述', trigger: 'blur' }
+            ]
+        };
+        obj.methods.quitOtherOperatorEvent = function () {
+            this.formSubmit.start_date = this.formSubmit.work_date[0];
+            this.formSubmit.end_date = this.formSubmit.work_date[1];
+        };
+        //覆盖此方法 重写
+        obj.methods.loadMounted = function () {
+            //this.queryCategoryEvent();
+           // this.userCategoryQueryEvent();
+          //  this.categoryCategoryQueryEvent();
+        };
+        obj.methods.reload = function () {
+            this.queryCategoryEvent();
+        };
+        //测试用的
+        //setUser(obj);
+        obj.data.job_options = [];
+        obj.methods.categoryCategoryQueryEvent = function () {
+            var $this = this;
+           /* get(urls.jobcategory.category, function (response) {
+                if (response.data.success) {
+                    $this.job_options = response.data.data;
+                }
+            });*/
+        };
+        obj.methods.handleWorkFormChangeEvent = function (val) {
+            this.formSubmit.category.id = val;
+        };
+        obj.methods.handleWorkFormVisableChangeEvent = function (val) {
+            if (val) {
+                this.categoryCategoryQueryEvent();
+            }
+        };
+        obj.methods.handleWorkQueryChangeEvent = function (val) {
+            this.formQuery.category_id = val;
+        };
+        obj.methods.handleWorkQueryVisableChangeEvent = function (val) {
+            if (val) {
+                this.categoryCategoryQueryEvent();
+            }
+        };
+        //覆盖此方法 重写
+        obj.methods.submitTextSelectChanngeEevent = function () {
+            this.dialog.title = "查看分类信息";
+            this.disabled = true;
+            this.dialog.submitText = "预览分类信息";
+        };
+        //覆盖此方法 重写
+        obj.methods.submitTextModifyChanngeEevent = function () {
+            this.dialog.title = "编辑分类信息";
+            this.disabled = false;
+            this.dialog.submitText = "立即编辑";
+        };
+        //覆盖此方法 重写
+        obj.methods.submitTextInsertChanngeEevent = function () {
+            this.dialog.title = "添加分类信息";
+            this.disabled = false;
+            this.dialog.submitText = "立即创建";
+        };
+        //覆盖此方法 重写
+        obj.methods.setValue = function (row) {
+            for (var obj in this.formSubmit) {
+                let str = obj.toString();
+                if (str == 'category' || str == "user") {
+                    continue;
+                }
+                if (row[obj]) this.formSubmit[obj] = row[obj];
+            }
+            if (this.test && row.user) this.formSubmit.user.id = row.user.id;
+            if (row.category) this.formSubmit.category.id = row.category.id;
+            this.formSubmit.work_date[0] = row.start_date;
+            this.formSubmit.work_date[1] = row.end_date;
+        };
+        new Vue(obj);
+    </script>
+
+</body>
+</html>

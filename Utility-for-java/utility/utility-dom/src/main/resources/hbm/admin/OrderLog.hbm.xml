@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="OrderLog" table="t_order_log" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+<property name="type" column="type" type="java.lang.Integer" />
+ <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+<property name="content" column="content" type="java.lang.String" />
+ <many-to-one name="order" foreign-key="fk_order_id" column="order_id" cascade="all" fetch="join"  />
+<property name="sellerId" column="seller_id" type="java.lang.Integer" />
+<property name="orderId" column="order_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

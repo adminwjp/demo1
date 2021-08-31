@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="Agent" table="t_agent" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+        <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+        <many-to-one name="buyer" column="buyer_id" foreign-key="fk_buyer_id" cascade="all" fetch="join"  />
+        <many-to-one name="parent" column="parent_id" foreign-key="fk_parent_id" cascade="all" fetch="join" />
+        <set name="children"    inverse="false" lazy="false" cascade="save-update,delete">
+            <key column="parent_id" foreign-key="fk_parent_id" />
+            <one-to-many class="com.shop.model.Agent" not-found="ignore"/>
+        </set>
+        <property name="agentName" column="agent_name" type="java.lang.String" length="20"></property>
+        <property name="agentPhone" column="agent_phone" type="java.lang.String" length="11"></property>
+        <many-to-one name="area" column="area_id" foreign-key="fk_area_id" cascade="all" fetch="join"  />
+        <property name="areaTreePath" column="area_tree_path" type="java.lang.String" length="20"></property>
+        <property name="agentAddr" column="agent_addr" type="java.lang.String" length="100"></property>
+        <property name="expireDate" column="expire_date" type="java.util.Date" ></property>
+        <property name="auditDate" column="audit_date" type="java.util.Date"></property>
+        <property name="status" column="status" type="com.shop.model.enums.AgentAuditFlag">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.shop.model.enums.AgentAuditFlag</param>
+            </type>
+        </property>
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,242 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/gift/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8017
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/gift/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ],
+      //"ReRouteIsCaseSensitive": false,
+      //"RateLimitOptions": {
+      //  "ClientWhitelist": [ "admin" ],
+      //  "EnableRateLimiting": true,
+      //  "Period": "1m",
+      //  "PeriodTimespan": 15,
+      //  "Limit": 5,
+      //  "QuotaExceededMessage": "too more request",
+      //  "DisableRateLimitHeaders": false,
+      //  "HttpStatusCode": 999,
+      //  "ClientIdHeader": "client_id"
+      //},
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 5,
+        "TimeoutValue": 5000
+      },
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+        //"Region": "somename"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/catalog/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8011
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/catalog/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/v1/admin/product/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8014
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/product/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/v1/admin/spec/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8014
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/spec/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+
+
+    {
+      "DownstreamPathTemplate": "/api/v1/admin/order/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8015
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/order/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/v1/admin/orderlog/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8015
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/orderlog/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/v1/admin/orderdetail/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8015
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/orderdetail/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/v1/admin/orderpay/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8015
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/orderpay/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/v1/admin/ordership/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8015
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/ordership/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/v1/admin/email/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8016
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/email/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/admin/emailnotifyproduct/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8016
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/emailnotifyproduct/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Config/Ashx/ConfigHandler.ashx?m=findlist",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8012
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/config/findlist",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/Config/Ashx/ConfigHandler.ashx?m=insert",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8012
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/config/insert",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/Config/Aspx/Config.aspx?m=update",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8012
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/config/update",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/Config/Aspx/Config.aspx?m=delete",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8012
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/config/delete",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/Config/Aspx/Config.aspx?m=deleteList",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8012
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/config/deleteList",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/Config/Aspx/Config.aspx?m=count",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 8012
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/config/count",
+      "UpstreamHttpMethod": [ "Post" ]
+    }
+  ],
+  "GlobalConfiguration": {
+  }
+}
+    

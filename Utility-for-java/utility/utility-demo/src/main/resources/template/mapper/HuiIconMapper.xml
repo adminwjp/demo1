@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="huiIcon">
+    <resultMap id="huiIconResultMap" type="com.template.dao.model.huiadmin.HuiIcon">
+        <result property="id" column="id" javaType="long"></result>
+        <result property="icon" column="icon" javaType="java.lang.String"></result>
+    </resultMap>
+
+
+    <insert id="huiIcon.add" parameterType="com.template.dao.model.huiadmin.HuiIcon" useGeneratedKeys="true" keyProperty="id">
+        insert into t_hui_icon
+        <trim suffixOverrides=",">
+            (
+            <if test="icon!=null and icon!=''">
+                icon,
+            </if>
+        </trim>
+        )
+        values
+        (
+        <trim suffixOverrides=",">
+            <if test="icon!=null and icon!=''">
+                #{icon},
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <update id="huiIcon.modify" parameterType="com.template.dao.model.huiadmin.HuiIcon" >
+        update  t_hui_icon set
+        <set>
+            <if test="icon!=null and icon!=''">
+                icon=#{icon},
+            </if>
+        </set>
+        where id =#{id}
+    </update>
+
+    <sql id="deleteSql">delete from  t_hui_icon where id </sql>
+
+    <delete id="huiIcon.delete" parameterType="long" >
+        <include refid="deleteSql"  /> =#{id}
+    </delete>
+
+    <delete id="huiIcon.deleteMany" >
+        <include refid="deleteSql"  />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="id!=0">
+                or  id=#{id}
+            </if>
+            <if test="icon!=null and icon!=''">
+                or  icon=#{icon}
+            </if>
+        </where>
+    </sql>
+
+    <select id="huiIcon.select" parameterType="com.template.dao.model.huiadmin.HuiIcon" resultMap="huiIconResultMap">
+        select * from  t_hui_icon
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="huiIcon.count" parameterType="com.template.dao.model.huiadmin.HuiIcon" resultType="java.lang.Integer">
+        select count(id) from  t_hui_icon
+        <include refid="whereIf"/>
+    </select>
+
+</mapper>

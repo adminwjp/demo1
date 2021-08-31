@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>菜单列表</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="favicon.ico">
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <link rel="stylesheet" href="/element-ui/2.14.1/theme-chalk/index.css">
+    <style>
+        .demo-form-inline {
+            margin: 0px 70px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu_list">
+
+        <!-- 开始 操作按钮 -->
+        <div style="margin-top: 20px;text-align:left;margin-bottom:10px">
+            <el-button @click="toggleSelectionTableCheckBoxButtonEvent(checkboxAllSelect?tableData:null)">{{checkboxAllSelectText}}</el-button>
+            <el-button v-if="operator.add" @click="insertButtonClickEvent" icon="el-icon-plus">添加</el-button>
+            <el-button v-if="operator.modify" @click="modifyButtonClickEvent" icon="el-icon-edit">编辑</el-button>
+            <el-button v-if="operator.delete" @click="deleteButtonClickEvent" icon="el-icon-delete">删除</el-button>
+            <el-button @click="queryButtonClickEvent" icon="el-icon-view">查看</el-button>
+            <el-button @click="loadTableDataOrQueryDataEvent" icon="el-icon-refresh">刷新</el-button>
+        </div>
+        <!-- 结束 操作按钮 -->
+        <!-- 开始 列表信息 -->
+        <!-- 开始 列表信息 -->
+        <el-table v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"
+                  highlight-current-row row-key="id" current-row-key="id" border @selection-change="handleSelectionChange" :default-sort="{prop: 'create_date', order: 'descending'}" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+            <el-table-column type="selection" align="center" width="55"> </el-table-column>
+            <el-table-column type="index" width="50" align="center" sortable label="序号"> </el-table-column>
+            <el-table-column prop="id" label="编号" align="center" sortable width="70">  </el-table-column>
+			<el-table-column prop="menu_name" label="菜单名称" align="center" width="200"> </el-table-column>
+            <el-table-column prop="menu_group" label="菜单分组" align="center" width="200">
+                <template slot-scope="scope">
+                    <span v-html="!scope.row.menu_group?'无':scope.row.menu_group"></span>
+                </template>
+            </el-table-column>
+			
+            <el-table-column prop="description" label="菜单描述" align="center" width="300"> </el-table-column>
+            <el-table-column prop="href" label="菜单链接" align="center" width="200">
+                <template slot-scope="scope">
+                    <span v-html="!scope.row.href?'无':scope.row.href"></span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="icon" label="图标编号" align="center" width="200">
+                <template slot-scope="scope" v-if="scope.row.icon">
+                    <el-popover trigger="hover" placement="top">
+                        <p>图标编号: {{ scope.row.icon.id }}</p>
+                        <p>图标名称: {{ scope.row.icon.label }}</p>
+                        <p>图标样式: {{ scope.row.icon.value }}</p>
+                        <p>图标样式展示: <i :class="scope.row.icon.value"></i></p>
+                        <div slot="reference" class="name-wrapper">
+                            <el-tag size="medium">{{ scope.row.icon.id }}</el-tag>
+                        </div>
+                    </el-popover>
+                </template>
+            </el-table-column>
+            <el-table-column label="父菜单编号" prop="parent.id" align="center" width="200">
+                <template slot-scope="scope" v-if="scope.row.parent">
+                    <el-popover trigger="hover" placement="top">
+                        <p>父菜单编号: {{ scope.row.parent.id }}</p>
+                        <p>父菜单名称: {{ scope.row.parent.menu_name }}</p>
+                        <p>父菜单分组:<span v-html="!scope.row.parent.menu_group?'无':scope.row.parent.menu_group"></span></p>
+                        <p>父菜单描述: {{scope.row.parent.description}}</p>
+                        <div slot="reference" class="name-wrapper">
+                            <el-tag size="medium">{{ scope.row.parent.id }}</el-tag>
+                        </div>
+                    </el-popover>
+                </template>
+            </el-table-column>
+            </el-table-column>
+            <el-table-column prop="create_date" label="创建日期" align="center" sortable width="200"> </el-table-column>
+            <el-table-column prop="update_date" label="修改日期" align="center" sortable width="200"> </el-table-column>
+            <el-table-column label="操作" width="200">
+                <template slot-scope="scope">
+                    <el-button @click="handleSelectClickEvent(scope.row)" type="text" icon="el-icon-view" size="small">查看</el-button>
+                    <el-button type="text" @click="handleModifyClickEvent(scope.row)" icon="el-icon-edit" v-if="operator.modify" size="small">编辑</el-button>
+                    <el-button type="text" @click="handleDeleteClickEvent(scope.row)" icon="el-icon-delete" v-if="operator.delete" size="small">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!-- 结束 列表信息 -->
+        <!-- 开始 分页 -->
+        <div class="block" style="text-align:center;">
+            <el-pagination background @size-change="handleSizeChangeEvent" @current-change="handleCurrentPageChangeEvent" :current-page="page.current_page"
+                           :page-sizes="page.sizes" :page-size="page.size" :page-count="page.page" layout="total, sizes, prev, pager, next, jumper" :total="page.total">
+            </el-pagination>
+        </div>
+        <!-- 结束 分页 -->
+        <!-- 开始 添加 修改 -->
+        <el-dialog :title="dialog.title" :visible.sync="dialog.visible" width="30%" :before-close="handleDialogClose">
+            <el-radio-group v-model="labelPosition" size="small">
+                <el-radio-button label="left">左对齐</el-radio-button>
+                <el-radio-button label="right">右对齐</el-radio-button>
+                <el-radio-button label="top">顶部对齐</el-radio-button>
+            </el-radio-group>
+            <div style="margin: 20px;"></div>
+            <el-form :model="formSubmit" status-icon :rules="formRoleValidator" ref="formSubmit" :disabled="disabled" class="demo-ruleForm" :label-position="labelPosition" label-width="80px">
+                <el-input type="hidden" v-model="formSubmit.id"></el-input>
+                <el-form-item label="菜单名称" prop="menu_name">
+                    <el-input v-model="formSubmit.menu_name"></el-input>
+                </el-form-item>
+                <el-form-item label="菜单分组" prop="menu_group">
+                    <el-input v-model="formSubmit.menu_group"></el-input>
+                </el-form-item>
+                <el-form-item label="菜单链接" prop="href">
+                    <el-input v-model="formSubmit.href"></el-input>
+                </el-form-item>
+              <!--  <el-form-item label="菜单图标" prop="icon.id">
+                    <el-select v-model="formSubmit.icon.id" filterable placeholder="请选择" @change="handleIconChangeEvent" @visible-change="handleIconVisableChangeEvent">
+                        <el-option v-for="item in icon_options"
+                                   :key="item.label"
+                                   :label="item.label"
+                                   :value="item.id">
+                            <span style="float: left">{{ item.label }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px"><i v-bind:class="item.value"></i></span>
+                        </el-option>
+                    </el-select>
+                </el-form-item>-->
+                <el-form-item label="菜单分类" prop="parent.id">
+                    <el-cascader v-model="formSubmit.parent.id" ref="refHandleForm"
+                                 :options="options" filterable :props="{ checkStrictly: true,expandTrigger: 'hover' }"
+                                 @change="handleCategoryFormChangeEvent" @visible-change="handleCategoryQueryVisableChangeEvent" clearable>
+                        <template slot-scope="{ node, data }">
+                            <span style="float: left" @click="handleCategotyFormClickEvent(data.value)">{{ data.label }}</span>
+                            <span style="float: right;color: #8492a6;font-size: 13px" @click="handleCategotyFormClickEvent(data.value)"><i v-bind:class="data.style"></i></span>
+                            <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+                        </template>
+                    </el-cascader>
+                </el-form-item>
+                <el-form-item label="菜单描述" prop="description">
+                    <el-input type="textarea" v-model="formSubmit.description" value="这个人很懒,什么也没留下!"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submitFormEvent('formSubmit')">{{dialog.submitText}}</el-button>
+                    <el-button @click="resetFormEvent('formSubmit')">{{dialog.resetText}}</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+        <!-- 结束 添加 修改 -->
+
+    </div>
+    <!-- import Vue before Element -->
+    <!--<script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+    <script src="/vue/2.6.12/vue.js"></script>
+    <!-- import JavaScript -->
+    <!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+    <script src="/element-ui/2.14.1/lib/index.js"></script>
+    <script src="/axios/0.21.0/axios.min.js"></script>
+    <script src="/js/js.cookie.js"></script>
+    <script src="/utility/utility.js"></script>
+    <script src="/utility/utility.index.js"></script>
+    <script>
+        var obj = new Gibson();
+        obj.el = ".menu_list";
+        obj.data.operatorUrl = { add: urls.menu.add, modify: urls.menu.edit, delete: urls.menu.delete, query: urls.menu.query };
+        obj.data.formQuery = { id: '', admin_id: '', menu_name: '', menu_group: '', parent_id: '', create_date: [], update_date: [] };
+        obj.data.formSubmit = { id: '', menu_name: '', menu_group: '', href: '', parent: { id: '' }, icon: { id: '' }, description: '这个人很懒,什么也没留下!' };
+        obj.data.controller = "menu";
+        obj.data.parent_options = [];
+        obj.data.icon_options = [];
+        obj.data.isOperatorRequest = true;
+        obj.data.formRoleValidator = {
+            category: [
+                { required: true, message: '请输入分类名称', trigger: 'blur' },
+                { min: 2, max: 10, message: '长度在 2 到 10 个字符分类名称', trigger: 'blur' }
+            ],
+            description: [
+                { required: true, message: '请输入描述', trigger: 'blur' },
+                { min: 10, max: 500, message: '长度在 10 到 500 个字符描述', trigger: 'blur' }
+            ]
+        };
+        //覆盖此方法 重写
+        obj.methods.loadMounted = function () {
+            //this.queryIconCategoryEvent();
+           // this.queryCategoryEvent();
+            //this.queryParentCategoryEvent();
+            //if (this.test) this.adminCategoryQueryEvent();
+        };
+        //图标信息
+        obj.methods.queryIconCategoryEvent = function () {
+            var $this = this;
+            get(urls.icon.category, response => { $this.icon_options = response.data.data; });
+        };
+
+        //父菜单分类信息
+        obj.methods.queryParentCategoryEvent = function () {
+            var $this = this; get(urls.menu.parent_category, response => { $this.parent_options = response.data.data; });
+        };
+        //图标分类改变值时触发事件
+        obj.methods.handleIconChangeEvent = function (val) {
+            this.formSubmit.icon.id = val;
+        };
+        //图标分类打开时触发事件
+        obj.methods.handleIconVisableChangeEvent = function (val) {
+            if (val) {
+                this.queryIconCategoryEvent();
+            }
+        };
+        //父菜单分类改变值时触发事件
+        obj.methods.handleParentCategoryQueryChangeEvent = function (val) {
+            this.formQuery.parent_id = val;
+        };
+        //父菜单分类打开时触发事件
+        obj.methods.handleParentCategoryQueryVisableChangeEvent = function (val) {
+            if (val) {
+                this.queryParentCategoryEvent();
+            }
+        };
+        //菜单分类改变值时触发事件
+        obj.methods.handleCategoryFormChangeEvent = function (val) {
+            if (val instanceof Array) {
+                this.formSubmit.parent.id = val[val.length - 1];
+            }
+            else {
+                this.formSubmit.parent.id = val;
+            }
+        };
+        //菜单分类点击触发事件
+        obj.methods.handleCategotyFormClickEvent = function (val) {
+            this.handleCategoryFormChangeEvent(val);
+            if (val) {
+                if (this.$refs.refHandleForm) {
+                    this.$refs.refHandleForm.dropDownVisible = false; //监听值发生变化就关闭它
+                }
+            }
+        };
+        //菜单分类点击触发事件
+        obj.methods.handleCategotyQueryClickEvent = function (val) {
+            this.handleCategoryQueryChangeEvent(val);
+            if (val) {
+                if (this.$refs.refHandleQuery) {
+                    this.$refs.refHandleQuery.dropDownVisible = false; //监听值发生变化就关闭它
+                }
+            }
+        };
+        //覆盖此方法 重写
+        obj.methods.submitTextSelectChanngeEevent = function () {
+            this.dialog.title = "查看菜单信息";
+            this.dialog.submitText = "预览菜单信息";
+            this.disabled = true;
+        };
+        //覆盖此方法 重写
+        obj.methods.submitTextModifyChanngeEevent = function () {
+            this.dialog.title = "编辑菜单信息";
+            this.dialog.submitText = "立即编辑";
+            this.disabled = false;
+        };
+        //覆盖此方法 重写
+        obj.methods.submitTextInsertChanngeEevent = function () {
+            this.dialog.title = "添加菜单信息";
+            this.dialog.submitText = "立即创建";
+            this.disabled = false;
+        };
+        //覆盖此方法 重写
+        obj.methods.setValue = function (row) {
+            for (var obj in this.formSubmit) {
+                if (obj.toString() == 'admin' || obj.toString() == 'icon' || obj.toString() == 'parent' || obj.toString() == 'children') {
+                    continue;
+                }
+                this.formSubmit[obj] = row[obj];
+            }
+            if (row.icon) this.formSubmit["icon"].id = row.icon.id;
+            if (row.parent) this.formSubmit["parent"].id = row.parent.id;
+        };
+        new Vue(obj);
+    </script>
+
+</body>
+</html>

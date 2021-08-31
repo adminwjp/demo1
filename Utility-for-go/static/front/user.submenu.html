@@ -1,0 +1,19 @@
+{{ define "user.submenus.html"}}
+{{if ._usermenu.submenus}}
+<div class="submenu">
+  <ul class="tab">
+    {{range $submenu := ._usermenu.submenus}}
+    {{if eq ._usermenu.curmenu  $submenu.name}}
+    <li class="active {{if eq  $submenu.index 0}}first{{end}}">
+      <h2><a href="javascript:;">{{$submenu.text}}</a></h2>
+    </li>
+    {{else}}
+    <li class="normal {{if eq  $submenu.index 0}}first{{end}}">
+      <h2><a href="{{$submenu.url}}">{{$submenu.text}}</a></h2>
+    </li>
+    {{end}}
+    {{end}}
+  </ul>
+</div>
+{{end}}
+{{end}}

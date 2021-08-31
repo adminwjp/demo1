@@ -1,0 +1,102 @@
+{{ define "buyer_address.html"}}
+<div class="wrap">
+    <div class="eject_btn" title="{{lang.add_address}}"><b class="ico1" ectype="dialog" dialog_title="{{lang.add_address}}" 
+        dialog_id="my_address_add" dialog_width="600" uri="my_address/add?redirect={{redirect}}">{{lang.add_address}}</b></div>
+    <div class="public table">
+        <table>
+
+            <tr class="gray line tr_color">
+                <th>{{lang.consignee}}</th>
+                <th>{{lang.region}}</th>
+                <th class="width3">{{lang.address}}</th>
+                <th>{{lang.zipcode}}</th>
+                <th class="width5">{{lang.phone}}</th>
+                <th>{{lang.handle}}</th>
+            </tr>
+
+           
+            {{if .addressList}}
+            <tr>
+                <td colspan="6"><div class="mt20 clearfix">{{ template "page.bottom.html" }}</div></td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="6"><div class="notice-word">
+                    <p>{$lang.{$app->controller->action->id}}{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            {{end}}
+        </table>
+    </div>
+</div>
+<script>
+    $(function(){
+        function TableHeper(options){
+            var self={options:options,data:[]};
+            function initHeader(){
+                var str="<tr class=\"gray line tr_color\">";
+                for (var i=0;i<options.cols.length;i++){
+                    var col=options.cols[i];
+                    if(col.header){
+                        str=col.header(col);
+                    }else{
+                        str+="<th>"+col.text+"</th>";
+                    }
+                }
+                return str;    
+            }
+            function initData(data){
+                var str="";
+                for (var i=0;i<data.length;i++){
+                    var da=data[i];
+                    str+=" <tr class=\""+(i==data.length-1?"line_bold":"line")+" tr_align\">";
+                    if(typeof(da.data)=="function"){
+                        str+=da.data(col);
+                    }else{
+                        str+="<td>"+da.data+"</td>";
+                    }
+                    str+="</tr>";
+                }
+                return str;    
+            }
+            function initFooter(){
+                var str=""; 
+                return str;     
+            }
+            return {
+                header:initHeader,
+                data:initData,
+                footer:initFooter
+            };
+        }
+        $.getJSON("",function(data){
+            if(data.status){
+                var str="";
+                for (var i=0;i<data.data.length;i++){
+                    var address=data.data[i];
+                    str+=" <tr class=\""+(i==data.data.length-1?"line_bold":"line")+" tr_align\">";
+                    str+="<td>"+address.consignee+(address.defaddr?"<font color=\"#3366CC\">（默认）</font>":"")+"</td>";
+                    str+="<td>"+address.region_name+"</td>";
+                    str+="<td>"+address.address+"</td>";
+                    str+="<td>"+address.region_name+"</td>";
+                    str+="<td>"+address.phone_tel+"</td>";
+                    str+="<td>"+address.phone_tel+" / "+address.phone_mob+"</td>";
+                    str+="<td><a href=\"javascript:void(0);\" ectype=\"dialog\" dialog_id=\"my_address_edit\" dialog_title=\"{{lang.edit_address}}\" dialog_width=\"700\" uri=\"my_address/edit?addr_id="
+                        +address.addr_id+"\" class=\"edit1 float_none\">{{lang.edit}}</a> <a uri=\"my_address/delete?addr_id="+
+                        address.addr_id+"\" confirm=\"{{lang.drop_confirm}}\" class=\"J_AjaxRequest delete float_none\">{{lang.drop}}</a></td>";
+                    str+="</tr>";
+                }
+                if(data.data.length>0){
+
+                }else{
+
+                }
+                $("table").html(str);
+            }
+        },
+        function(error){
+
+        });
+    });
+</script>
+{{end}}

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<MedalGroup>
+<option value="">选择互斥组</option>
+@if (Model.Any())
+{
+    foreach (var medalGroup in Model)
+    {
+        <option value="@medalGroup.GroupId">@medalGroup.GroupName</option>
+
+    }
+}
+
+
+
+

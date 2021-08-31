@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Adverts.Advert, Shop.Spring.Advert.Api" table="Advert">
+    <id name="Id" column="Id" type="string" length="36">
+    </id>
+    <property name="StartDate" column="StartDate" type="System.DateTime" />
+    <property name="Remark" column="Remark" type="string" />
+    <property name="Status" column="Status" type="string" />
+    <property name="Html" column="Html" type="string" />
+    <property name="Title" column="Title" type="string" />
+    <property name="EndDate" column="EndDate" type="System.DateTime" />
+    <property name="UseImagesRandom" column="UseImagesRandom" type="string" />
+    <property name="Code" column="Code" type="string" />
+    <property name="CreationTime" column="CreationTime" type="System.DateTime" />
+    <property name="LastModificationTime" column="LastModificationTime" type="System.DateTime" />
+    <property name="DeletionTime" column="DeletionTime" type="System.DateTime" />
+    <property name="IsDeleted" column="IsDeleted" type="bool" />
+  </class>
+
+</hibernate-mapping>

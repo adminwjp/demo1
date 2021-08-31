@@ -1,0 +1,35 @@
+﻿<!--<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <!--<TargetFrameworks>net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netcoreapp3.0;netcoreapp3.1;</TargetFrameworks>-->
+    <TargetFrameworks>net48;net50-windows</TargetFrameworks>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RepositoryUrl>E:\work\Package\Utility.WinForm</RepositoryUrl>
+    <Version>1.0.0.0</Version>
+    <OutputPath>E:\work\Package\Utility.WinForm</OutputPath>
+    <DocumentationFile>e:\work\Package\Utility.WinForm\Utility.WinForm.xml</DocumentationFile>
+    <Authors>wjp</Authors>
+    <AssemblyName>Utility.WinForm</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Utility\Ctrls\DataGridViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Utility\Ctrls\PageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--<PackageReference Include="DevExpress.Data" Version="20.2.4" />-->
+    <ProjectReference Include="..\Utility.Simple\Utility.Simple.csproj" />
+     
+    
+    <None Update="Config\Menu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

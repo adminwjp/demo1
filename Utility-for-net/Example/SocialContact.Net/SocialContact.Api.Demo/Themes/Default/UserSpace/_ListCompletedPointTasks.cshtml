@@ -1,0 +1,45 @@
+﻿@{
+    var taskCompleted = ViewData.Get<PagingDataSet<PointTaskRecord>>("taskCompleted", null);
+    var pointName = ViewData["pointName"];
+    var goldName = ViewData["goldName"];
+}
+
+@if (taskCompleted != null && taskCompleted.Any())
+{
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>任务名称</th>
+                <th>说明</th>
+                <th>奖励</th>
+                <th>完成时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var record in taskCompleted)
+            {
+                var task = record.GetTaskInfo();
+                <tr>
+                    <td title="@task.TaskName">
+                        <img src="@Tunynet.Utilities.WebUtility.ResolveUrl(task.TaskType.ImageUrl)" width="20" height="20" alt="@task.TaskName" />&nbsp;
+                        @StringUtility.Trim(task.TaskName, 12)
+                    </td>
+                    <td title="@task.Description">@StringUtility.Trim(task.Description, 25)</td>
+                    <td>@task.AwardPoints @pointName+@task.AwardGolds @goldName</td>
+                    <td>@record.DateCreated.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        @Html.AjaxPagingButton(taskCompleted, "performTast", CachedUrlHelper.Action("_ListCompletedPointTasks", "UserSpace"))
+    </div>
+}
+else
+{
+    <div class="text-center text-warning">
+        还没有已完成的任务！
+    </div>
+}
+

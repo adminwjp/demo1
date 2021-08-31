@@ -1,0 +1,554 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="lib/html5shiv.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/lib/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/lib/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:5000/lib/h-ui.admin/css/style.css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="http://127.0.0.1:5000/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>我的桌面</title>
+</head>
+<body>
+    <div class="page-container">
+        <p class="f-20 text-success">欢迎使用H-ui.admin <span class="f-14">v3.1</span>后台模版！</p>
+        <p>登录次数：18 </p>
+        <p>上次登录IP：222.35.131.79.1  上次登录时间：2014-6-14 11:19:55</p>
+        <table id="total" class="table table-border table-bordered table-bg">
+        </table>
+        <div id="chart_total" style="margin-top:50px;min-width:700px;height:400px"></div>
+        <div id="chart_total1" style="margin-top:50px;min-width:700px;height:400px"></div>
+        <div id="chart_total2" style="margin-top:50px;min-width:700px;height:400px"></div>
+        <div id="chart_total3" style="margin-top:50px;min-width:700px;height:400px"></div>
+        <div id="chart_total4" style="margin-top:50px;min-width:700px;height:400px"></div>
+        <div id="chart_total5" style="margin-top:50px;min-width:700px;height:400px"></div>
+        <div id="chart_total6" style="margin-top:50px;min-width:700px;height:400px"></div>
+        <table class="table table-border table-bordered table-bg mt-20">
+            <thead>
+                <tr>
+                    <th colspan="2" scope="col">服务器信息</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th width="30%">服务器计算机名</th>
+                    <td><span id="lbServerName">http://127.0.0.1/</span></td>
+                </tr>
+                <tr>
+                    <td>服务器IP地址</td>
+                    <td>192.168.1.1</td>
+                </tr>
+                <tr>
+                    <td>服务器域名</td>
+                    <td>www.h-ui.net</td>
+                </tr>
+                <tr>
+                    <td>服务器端口 </td>
+                    <td>80</td>
+                </tr>
+                <tr>
+                    <td>服务器IIS版本 </td>
+                    <td>Microsoft-IIS/6.0</td>
+                </tr>
+                <tr>
+                    <td>本文件所在文件夹 </td>
+                    <td>D:\WebSite\HanXiPuTai.com\XinYiCMS.Web\</td>
+                </tr>
+                <tr>
+                    <td>服务器操作系统 </td>
+                    <td>Microsoft Windows NT 5.2.3790 Service Pack 2</td>
+                </tr>
+                <tr>
+                    <td>系统所在文件夹 </td>
+                    <td>C:\WINDOWS\system32</td>
+                </tr>
+                <tr>
+                    <td>服务器脚本超时时间 </td>
+                    <td>30000秒</td>
+                </tr>
+                <tr>
+                    <td>服务器的语言种类 </td>
+                    <td>Chinese (People's Republic of China)</td>
+                </tr>
+                <tr>
+                    <td>.NET Framework 版本 </td>
+                    <td>2.050727.3655</td>
+                </tr>
+                <tr>
+                    <td>服务器当前时间 </td>
+                    <td>2014-6-14 12:06:23</td>
+                </tr>
+                <tr>
+                    <td>服务器IE版本 </td>
+                    <td>6.0000</td>
+                </tr>
+                <tr>
+                    <td>服务器上次启动到现在已运行 </td>
+                    <td>7210分钟</td>
+                </tr>
+                <tr>
+                    <td>逻辑驱动器 </td>
+                    <td>C:\D:\</td>
+                </tr>
+                <tr>
+                    <td>CPU 总数 </td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>CPU 类型 </td>
+                    <td>x86 Family 6 Model 42 Stepping 1, GenuineIntel</td>
+                </tr>
+                <tr>
+                    <td>虚拟内存 </td>
+                    <td>52480M</td>
+                </tr>
+                <tr>
+                    <td>当前程序占用内存 </td>
+                    <td>3.29M</td>
+                </tr>
+                <tr>
+                    <td>Asp.net所占内存 </td>
+                    <td>51.46M</td>
+                </tr>
+                <tr>
+                    <td>当前Session数量 </td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td>当前SessionID </td>
+                    <td>gznhpwmp34004345jz2q3l45</td>
+                </tr>
+                <tr>
+                    <td>当前系统用户名 </td>
+                    <td>NETWORK SERVICE</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer class="footer mt-20">
+        <div class="container">
+            <p>
+                感谢jQuery、layer、laypage、Validform、UEditor、My97DatePicker、iconfont、Datatables、WebUploaded、icheck、highcharts、bootstrap-Switch<br>
+                Copyright &copy;2015-2017 H-ui.admin v3.1 All Rights Reserved.<br>
+                本后台系统由<a href="http://www.h-ui.net/" target="_blank" title="H-ui前端框架">H-ui前端框架</a>提供前端技术支持
+            </p>
+        </div>
+    </footer>
+    <script type="text/javascript" src="http://127.0.0.1:5000/lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:5000/lib/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:5000/lib/hcharts/Highcharts/5.0.6/js/highcharts.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:5000/lib/hcharts/Highcharts/5.0.6/js/modules/exporting.js"></script>
+
+    <script type="text/javascript" src="http://127.0.0.1:5000/lib/hcharts/Highcharts/5.0.6/js/highcharts-3d.js"></script>
+    <script src="/company/admin/js/index.js"></script>
+    <!--此乃百度统计代码，请自行删除-->
+    <script>
+        jQuery(function () {
+            $.getJSON(urls.admin.total, function (data) {
+                if (data.success) {
+                    updateTotalTable(data);
+                    updateChart_total(data);
+                    updateChart_total1(data);
+                    updateChart_total2(data);
+                    updateChart_total3(data);
+                    updateChart_total4(data);
+                    updateChart_total5(data);
+                    updateChart_total6(data);
+                }
+            });
+        });
+        function updateTotalTable(data) {
+            var result = data.data;
+            let total = 0;
+            let headStr = " <tr> <th colspan=\"" + (result.data.length + 1) + "\" scope=\"col\">信息统计</th> </tr><tr class=\"text-c\"> <th>统计</th>";
+            let totalStr = "<tr class=\"text-c\"> <td>总数</td>";
+            let todayStr = "<tr class=\"text-c\"> <td>今日</td>";
+            let pretodayStr = "<tr class=\"text-c\"> <td>昨日</td>";
+            let weekStr = "<tr class=\"text-c\"> <td>本周</td>";
+            let monthStr = "<tr class=\"text-c\"> <td>本月</td>";
+            let yearStr = "<tr class=\"text-c\"> <td>本年</td>";
+            for (var i = 0; i < result.data.length; i++) {
+                let it = result.data[i];
+                headStr += "<th>" + result.name[i] + "</th>";
+                totalStr += "<td>" + it.total_count + "</td>";
+                total += it.total_count;
+                todayStr += "<td>" + it.today_count + "</td>";
+                pretodayStr += "<td>" + it.preday_count + "</td>";
+                weekStr += "<td>" + it.week_count + "</td>";
+                monthStr += "<td>" + it.month_count + "</td>";
+                yearStr += "<td>" + it.year_count + "</td>";
+            }
+            headStr += " </tr> </thead>";
+            totalStr += "</tr> ";
+            todayStr += "</tr> ";
+            pretodayStr += "</tr> ";
+            weekStr += "</tr> ";
+            monthStr += "</tr> ";
+            yearStr += "</tr> ";
+            let str = "<thead>" + headStr + "</thead>";
+            str += "<tbody>" +
+                totalStr + todayStr + pretodayStr + weekStr + monthStr + yearStr
+                + "<tr class=\"text-c\"> <td>总计</td><td colspan=\"" + (result.data.length) + "\" scope=\"col\">" + total + "</td></tr>"
+                + "</tbody>";
+            $("#total").html(str);
+        }
+        function getChartData(data) {
+            var result = [];
+            for (let i = 0; i < data.data.data.length; i++) {
+                var temp = [];
+                for (let pro in data.data.data[i]) {
+                    temp.push(data.data.data[i][pro]);
+                }
+                result.push({ name: data.data.name[i], data: temp });
+            }
+            return result;
+        }
+        function getChartBFB(data) {
+             var result = [];
+            let total = 0;
+            for (let i = 0; i < data.data.data.length; i++) {
+                result.push([data.data.name[i], data.data.data[i].total_count]);
+                total += data.data.data[i].total_count;
+            }
+            for (var i = 0; i < result.length; i++) {
+                result[i][1] = result[i][1] / total;
+            }
+            return result;
+        }
+        //折线图
+        function updateChart_total(data) {
+            var result = getChartData(data);
+            console.log(result);
+            Highcharts.chart('chart_total', {
+                title: {
+                    text: '数据统计折线图',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: 'Source: company.com',
+                    x: -20
+                },
+                xAxis: {
+                    categories: ["总数", "今日", "昨日", "本周", "本月", "本年"]
+                },
+                yAxis: {
+                    title: {
+                        text: '数量'
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#808080'
+                    }]
+                },
+                tooltip: {
+                    valueSuffix: '个'
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    borderWidth: 0
+                },
+                series: result
+            });
+        }
+        //时间轴折线图
+        function updateChart_total1(data) {
+            var result = [];
+            for (let i = 0; i < data.data.data.length; i++) {
+                var temp = [];
+                for (let pro in data.data.data[i]) {
+                    result.push(data.data.data[i][pro]);
+                }
+            }
+            console.log(result);
+            $('#chart_total1').highcharts({
+                chart: {
+                    zoomType: 'x',
+                    spacingRight: 20
+                },
+                title: {
+                    text: '数据统计时间轴折线图'
+                },
+                subtitle: {
+                    text: document.ontouchstart === undefined ?
+                        'Click and drag in the plot area to zoom in' :
+                        'Pinch the chart to zoom in'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    maxZoom: 14 * 24 * 3600000, // fourteen days
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '数量'
+                    }
+                },
+                tooltip: {
+                    shared: true
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                            stops: [
+                                [0, Highcharts.getOptions().colors[0]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            ]
+                        },
+                        lineWidth: 1,
+                        marker: {
+                            enabled: false
+                        },
+                        shadow: false,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+
+                series: [{
+                    type: 'area',
+                    name: '数据量',
+                    pointInterval: 24 * 3600 * 1000,
+                    pointStart: Date.UTC(2006, 0, 01),
+                    data: result
+                }]
+            });
+        }
+        //区域图
+        function updateChart_total2(data) {
+            var result = getChartData(data);
+            $('#chart_total2').highcharts({
+                chart: {
+                    type: 'area'
+                },
+                title: {
+                    text: '数据统计区域图'
+                },
+                subtitle: {
+                    text: '来源: thebulletin.metapress.com'
+                },
+                xAxis: {
+                    labels: {
+                        formatter: function () {
+                            return this.value; // clean, unformatted number for year
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: '数量'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value / 1000 + 'k';
+                        }
+                    }
+                },
+                tooltip: {
+                    pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+                },
+                plotOptions: {
+                    area: {
+                        pointStart: 1940,
+                        marker: {
+                            enabled: false,
+                            symbol: 'circle',
+                            radius: 2,
+                            states: {
+                                hover: {
+                                    enabled: true
+                                }
+                            }
+                        }
+                    }
+                },
+                series: result
+            });
+        }
+        //柱状图统计
+        function updateChart_total3(data) {
+            var result = getChartData(data);
+            $('#chart_total3').highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: '数据统计柱状图统计'
+                },
+                subtitle: {
+                    text: 'Source: WorldClimate.com'
+                },
+                xAxis: {
+                    categories: ["总数", "今日", "昨日", "本周", "本月", "本年"]
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '数量'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} 个</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: result
+            });
+        }
+        //饼状图
+        function updateChart_total4(data) {
+            var result = getChartBFB(data);
+            $('#chart_total4').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: '数据统计饼状图'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            color: '#000000',
+                            connectorColor: '#000000',
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: '所占百分比',
+                    data: result
+                }]
+            });
+        }
+        //3D柱状图
+        function updateChart_total5(data) {
+            var result = getChartData(data);
+            // Set up the chart
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'chart_total5',
+                    type: 'column',
+                    margin: 75,
+                    options3d: {
+                        enabled: true,
+                        alpha: 15,
+                        beta: 15,
+                        depth: 50,
+                        viewDistance: 25
+                    }
+                },
+                xAxis: {
+                    categories: ["总数", "今日", "昨日", "本周", "本月", "本年"]
+                },
+                title: {
+                    text: '数据统计3D柱状图'
+                },
+                subtitle: {
+                    text: 'Test options by dragging the sliders below'
+                },
+                plotOptions: {
+                    column: {
+                        depth: 25
+                    }
+                },
+                series: result
+            });
+            // Activate the sliders
+            $('#R0').on('change', function () {
+                chart.options.chart.options3d.alpha = this.value;
+                showValues();
+                chart.redraw(false);
+            });
+            $('#R1').on('change', function () {
+                chart.options.chart.options3d.beta = this.value;
+                showValues();
+                chart.redraw(false);
+            });
+
+            function showValues() {
+                $('#R0-value').html(chart.options.chart.options3d.alpha);
+                $('#R1-value').html(chart.options.chart.options3d.beta);
+            }
+            showValues();
+        }
+        //3D饼状图
+        function updateChart_total6(data) {
+            var result = getChartBFB(data);
+            $('#chart_total6').highcharts({
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45,
+                        beta: 0
+                    }
+                },
+                title: {
+                    text: '数据统计3D饼状图'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Browser share',
+                    data: result
+                }]
+            });
+        }
+    </script>
+    <!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

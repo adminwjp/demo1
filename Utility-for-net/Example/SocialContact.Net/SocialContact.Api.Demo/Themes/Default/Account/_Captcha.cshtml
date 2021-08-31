@@ -1,0 +1,17 @@
+﻿@model LoginEditModel
+@Utility.Web.Extensions
+@model IEnumerable<ContentItem>
+@{
+    var contentModelService = DIContainer.Resolve<ContentModelService>();
+}
+
+@{
+    var errorMessage = TempData.Get<string>("errorMessage", string.Empty);
+    var mathBuildInfoModel = new ViewDataDictionary();
+    mathBuildInfoModel.Add("InputText", "换一换");
+    mathBuildInfoModel.Add("ErrorMessage", Model.ErrorMessage);
+    mathBuildInfoModel.Add("RequiredMessage", "请输入正确验证码");
+    mathBuildInfoModel.Add("IsRequired", true);
+}
+
+@Html.Captcha(4, "_DefaultCaptchaView", mathBuildInfoModel).AsIntelligent()

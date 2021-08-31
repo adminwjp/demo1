@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
+  <class name="Config.Model.ConfigModel,Config.Model" table="Config" discriminator-value="0">
+    <!-- 编号 -->
+    <!--<id name="Id" column="Id" unsaved-value="0">-->
+    <id name="Id" column="Id" type="string" length="36">
+      <!--<generator class="increment" />-->
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <!-- 地址 -->
+    <property column="Address" name="Address" type="string" length="50"/>
+    <!-- 名称 -->
+    <property column="Name" name="Name" type="string" length="10"/>
+    <!-- 标识 -->
+    <property column="Flag" name="Flag" type="string" length="10"/>
+    <!-- 状态 -->
+    <property column="Status" name="Status" type="Config.Model.ConfigStatus,Config.Example" />
+    <!-- 用户名 -->
+    <property column="User" name="User" type="string" length="10"/>
+    <!-- 密码 -->
+    <property column="Pwd" name="Pwd" type="string" length="20"/>
+    <!-- 描述 -->
+    <property column="Description" name="Description" type="string" length="5000"/>
+    <!-- 创建时间 -->
+    <property column="CreateDate" name="CreateDate" type="System.DateTime" />
+    <!-- 修改时间 -->
+    <property column="LastDate" name="LastDate" type="System.DateTime" />
+  </class>
+</hibernate-mapping>

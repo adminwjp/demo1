@@ -1,0 +1,70 @@
+﻿@{
+    var user = UserContext.CurrentUser;
+    var pointItems = ViewData.Get<IEnumerable<PointItem>>("pointItems", new List<PointItem>());
+    var experience = ViewData.Get<PointCategory>("experience", new PointCategory());
+    var trade = ViewData.Get<PointCategory>("trade", new PointCategory());
+}
+<div role="tabpanel" class="tab-pane active" id="wdjf">
+    <div class="panel panel-default jh-gray-bg">
+        <div class="panel-body">
+            <ul class="list-unstyled">
+                <li class="tn-mb-10">
+                    <ul class="list-inline">
+                        <li>我的@(experience.CategoryName)：@user.ExperiencePoints 点</li>
+                        <li>我的@(trade.CategoryName)：@user.TradePoints <i class="fa fa-database tn-yellow-color"></i></li>
+                    </ul>
+                </li>
+                <li class="tn-mb-20">
+                    <ul class="list-inline" style="padding-left:5px">
+                        <li>我的等级：</li>
+                        <li>@Html.UserRankIcon(user.Rank)</li>
+                        <li><a data-href="@CachedUrlHelper.Action("_MyRank","UserSpace")" data-type="rank" role="button" class="a toggleTab">了解晋级规则</a></li>
+                    </ul>
+                </li>
+                <li class="tn-mb-10">可以通过以下方式赚取积分：</li>
+                <li class="tn-mb-10"><a href="@SiteUrls.Instance().PointTask()" class="a">领任务赚积分</a></li>
+                <li class="tn-mb-10"><a href="#PointItems" class="a">按积分规则赚积分</a></li>
+                <li class="tn-mb-10"><a data-href="@CachedUrlHelper.Action("_MyPointRechargeOrder","UserSpace")" data-type="rechargeorder" role="button" class="a toggleTab">充值增加金币</a></li>
+            </ul>
+        </div>
+    </div>
+    <h5 id="PointItems">积分规则</h5>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>操作</th>
+                <th>@experience.CategoryName</th>
+                <th>@trade.CategoryName</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in pointItems)
+            {
+                <tr>
+                    <td>@item.ItemName</td>
+                    <td>@item.ExperiencePoints</td>
+                    <td>@item.TradePoints</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="alert alert-warning" role="alert">
+        • 每人每日积分上限：  @(experience.QuotaPerDay)@(experience.Unit)@(experience.CategoryName)/@(trade.QuotaPerDay)@(trade.Unit)@(trade.CategoryName)
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+        $('.toggleTab').on('click', function () {
+            var $this = $(this);
+            var url = $this.data("href");
+            replaceUrl($this.data("type"));
+            $.get(url, { t: new Date().valueOf() }, function (data) {
+                $("#showinfo").html(data);
+                $('#myTab').find('[data-type="' + $this.data("type") + '"]').parent().addClass('active').siblings().removeClass('active');
+            })
+        })
+    })
+</script>

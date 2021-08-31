@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <!--<TargetFrameworks>net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netcoreapp3.1;net50-windows;net50-mac;</TargetFrameworks>-->
+    <TargetFrameworks>net50-windows</TargetFrameworks>
+      <UseWPF>true</UseWPF>
+     <RepositoryUrl>E:\work\Package\Utility.Wpf</RepositoryUrl>
+    <Version>1.0.0.0</Version>
+    <OutputPath>E:\work\Package\Utility.Wpf</OutputPath>
+        <DocumentationFile>e:\work\Package\Utility.Wpf\Utility.Wpf.xml</DocumentationFile>
+      <OutputType>Library</OutputType>
+      <SignAssembly>true</SignAssembly>
+      <DelaySign>false</DelaySign>
+      <Authors>wjp</Authors>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)'=='netcoreapp3.0' OR '$(TargetFramework)'=='netcoreapp3.1' OR '$(TargetFramework)'=='netcoreapp5.0'">
+    <Compile Link="$(MSBuildThisFileDirectory)Utils\ConfigUtils.cs" Include="..\Shared\Utility.Simple.Shared\Utils\ConfigUtils.cs" />
+  </ItemGroup>
+  
+    <!-- wpf netframework  -->
+  <ItemGroup Condition=" '$(TargetFramework)'=='net45' OR '$(TargetFramework)'=='net46' OR '$(TargetFramework)'=='net461' OR '$(TargetFramework)'=='net462' OR '$(TargetFramework)'=='net47' OR '$(TargetFramework)'=='net471' OR '$(TargetFramework)'=='net472' OR '$(TargetFramework)'=='net48'">
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Management" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+    <!--<PackageReference Include="Utility.Simple" Version="1.0.0.0" />-->
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Utility.Simple\Utility.Simple.csproj" />
+    <ProjectReference Include="..\Utility.Wpf.Simple\Utility.Wpf.Simple.csproj" />
+  </ItemGroup>
+</Project>

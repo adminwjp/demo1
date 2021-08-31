@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Utility.Wpf.Demo.Bank" 
+             xmlns:Ctrls="clr-namespace:Utility.Wpf.Ctrls" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Utility.Wpf.Demo"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <DockPanel>
+            <Expander Header="查询" DockPanel.Dock="Top"></Expander>
+            <Ctrls:Page DockPanel.Dock="Bottom" />
+            <DataGrid x:Name="gd_bank" AutoGenerateColumns="False" Grid.Column="0" Margin="-10,40,10,10" 
+                  CanUserAddRows="False" Grid.RowSpan="2" >
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="编号" Width="80" Binding="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="银行卡卡号" Width="80" Binding="{Binding BankId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="银行卡名称" Width="80" Binding="{Binding BankName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="银行卡正面图片" Width="100" Binding="{Binding BankPhoto1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="银行卡背面图片" Width="120" Binding="{Binding BankPhoto2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="银行卡开户地址" Width="80" Binding="{Binding BankAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="持有人姓名" Width="80" Binding="{Binding BankUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="联系人手机号" Width="80" Binding="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="默认银行卡" Width="80" Binding="{Binding IsDefault, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="持有人地址" Width="80" Binding="{Binding BankUserAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="用户id" Width="80" Binding="{Binding UserId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                    <DataGridTemplateColumn Header="操作" Width="40">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <Button Content="设置默认银行卡"  Tag=""/>
+                                    <Button Content="编辑银行卡" Tag="" />
+                                    <Button Content="删除银行卡" Tag="" />
+                                </WrapPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
+</UserControl>

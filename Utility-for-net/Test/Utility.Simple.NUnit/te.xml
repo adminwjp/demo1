@@ -1,0 +1,191 @@
+<Mapping>
+  <Table>
+    <Sqlite>
+  DROP TABLE  IF EXISTS "DbEntity";
+  CREATE TABLE  IF NOT EXISTS   "DbEntity" (
+    "Id" TEXT  NOT NULL ,
+    "Database" TEXT  NULL ,
+    "ProgramName" TEXT  NULL ,
+    PRIMARY KEY("Id")
+  );
+  DROP TABLE  IF EXISTS "TableEntity";
+  CREATE TABLE  IF NOT EXISTS   "TableEntity" (
+    "Id" TEXT  NOT NULL ,
+    "Table" TEXT  NULL ,
+    "ClassName" TEXT  NULL ,
+    "DbId" TEXT  NULL ,
+    PRIMARY KEY("Id")
+  );
+  DROP TABLE  IF EXISTS "ColumnEntity";
+  CREATE TABLE  IF NOT EXISTS   "ColumnEntity" (
+    "Id" TEXT  NOT NULL ,
+    "ColumnName" TEXT  NULL ,
+    "PropertName" TEXT  NULL ,
+    "MySqlValue" TEXT  NULL ,
+    "SqlServerValue" TEXT  NULL ,
+    "OracleValue" TEXT  NULL ,
+    "SqliteValue" TEXT  NULL ,
+    "PostgreValue" TEXT  NULL ,
+    "Remark" TEXT  NULL ,
+    "DefaultValue" TEXT  NULL ,
+    "CheckValue" TEXT  NULL ,
+    "TableId" TEXT  NULL ,
+    "ReferenceId" TEXT  NULL ,
+    "TableName" TEXT  NULL ,
+    "ConstraintName" TEXT  NULL ,
+    PRIMARY KEY("Id")
+  );
+</Sqlite>
+    <MySql>
+  DROP TABLE  IF EXISTS `DbEntity`;
+  CREATE TABLE  IF NOT EXISTS   `DbEntity` (
+    `Id` VARCHAR(50)  NOT NULL ,
+    `Database` VARCHAR(50)  NULL ,
+    `ProgramName` VARCHAR(50)  NULL ,
+    PRIMARY KEY(`Id`)
+  );
+  DROP TABLE  IF EXISTS `TableEntity`;
+  CREATE TABLE  IF NOT EXISTS   `TableEntity` (
+    `Id` VARCHAR(50)  NOT NULL ,
+    `Table` VARCHAR(50)  NULL ,
+    `ClassName` VARCHAR(50)  NULL ,
+    `DbId` VARCHAR(50)  NULL ,
+    PRIMARY KEY(`Id`)
+  );
+  DROP TABLE  IF EXISTS `ColumnEntity`;
+  CREATE TABLE  IF NOT EXISTS   `ColumnEntity` (
+    `Id` VARCHAR(50)  NOT NULL ,
+    `ColumnName` VARCHAR(50)  NULL ,
+    `PropertName` VARCHAR(50)  NULL ,
+    `MySqlValue` VARCHAR(50)  NULL ,
+    `SqlServerValue` VARCHAR(50)  NULL ,
+    `OracleValue` VARCHAR(50)  NULL ,
+    `SqliteValue` VARCHAR(50)  NULL ,
+    `PostgreValue` VARCHAR(50)  NULL ,
+    `Remark` VARCHAR(50)  NULL ,
+    `DefaultValue` VARCHAR(50)  NULL ,
+    `CheckValue` VARCHAR(50)  NULL ,
+    `TableId` VARCHAR(50)  NULL ,
+    `ReferenceId` VARCHAR(50)  NULL ,
+    `TableName` VARCHAR(50)  NULL ,
+    `ConstraintName` VARCHAR(50)  NULL ,
+    PRIMARY KEY(`Id`)
+  );
+</MySql>
+    <SqlServer>
+  if OBJECT_ID('DbEntity') is not  null drop table  "DbEntity";
+  if OBJECT_ID('DbEntity') is  null create table "DbEntity" (
+    "Id" VARCHAR(50)  NOT NULL ,
+    "Database" VARCHAR(50)  NULL ,
+    "ProgramName" VARCHAR(50)  NULL ,
+    PRIMARY KEY("Id")
+  );
+  if OBJECT_ID('TableEntity') is not  null drop table  "TableEntity";
+  if OBJECT_ID('TableEntity') is  null create table "TableEntity" (
+    "Id" VARCHAR(50)  NOT NULL ,
+    "Table" VARCHAR(50)  NULL ,
+    "ClassName" VARCHAR(50)  NULL ,
+    "DbId" VARCHAR(50)  NULL ,
+    PRIMARY KEY("Id")
+  );
+  if OBJECT_ID('ColumnEntity') is not  null drop table  "ColumnEntity";
+  if OBJECT_ID('ColumnEntity') is  null create table "ColumnEntity" (
+    "Id" VARCHAR(50)  NOT NULL ,
+    "ColumnName" VARCHAR(50)  NULL ,
+    "PropertName" VARCHAR(50)  NULL ,
+    "MySqlValue" VARCHAR(50)  NULL ,
+    "SqlServerValue" VARCHAR(50)  NULL ,
+    "OracleValue" VARCHAR(50)  NULL ,
+    "SqliteValue" VARCHAR(50)  NULL ,
+    "PostgreValue" VARCHAR(50)  NULL ,
+    "Remark" VARCHAR(50)  NULL ,
+    "DefaultValue" VARCHAR(50)  NULL ,
+    "CheckValue" VARCHAR(50)  NULL ,
+    "TableId" VARCHAR(50)  NULL ,
+    "ReferenceId" VARCHAR(50)  NULL ,
+    "TableName" VARCHAR(50)  NULL ,
+    "ConstraintName" VARCHAR(50)  NULL ,
+    PRIMARY KEY("Id")
+  );
+</SqlServer>
+    <Oracle>
+  DROP TABLE   "DbEntity";
+  CREATE OR REPLACE TABLE "DbEntity" (
+    "Id" VARCHAR2(50)  NOT NULL ,
+    "Database" VARCHAR2(50)  NULL ,
+    "ProgramName" VARCHAR2(50)  NULL ,
+    PRIMARY KEY("Id")
+  );
+  DROP TABLE   "TableEntity";
+  CREATE OR REPLACE TABLE "TableEntity" (
+    "Id" VARCHAR2(50)  NOT NULL ,
+    "Table" VARCHAR2(50)  NULL ,
+    "ClassName" VARCHAR2(50)  NULL ,
+    "DbId" VARCHAR2(50)  NULL ,
+    PRIMARY KEY("Id")
+  );
+  DROP TABLE   "ColumnEntity";
+  CREATE OR REPLACE TABLE "ColumnEntity" (
+    "Id" VARCHAR2(50)  NOT NULL ,
+    "ColumnName" VARCHAR2(50)  NULL ,
+    "PropertName" VARCHAR2(50)  NULL ,
+    "MySqlValue" VARCHAR2(50)  NULL ,
+    "SqlServerValue" VARCHAR2(50)  NULL ,
+    "OracleValue" VARCHAR2(50)  NULL ,
+    "SqliteValue" VARCHAR2(50)  NULL ,
+    "PostgreValue" VARCHAR2(50)  NULL ,
+    "Remark" VARCHAR2(50)  NULL ,
+    "DefaultValue" VARCHAR2(50)  NULL ,
+    "CheckValue" VARCHAR2(50)  NULL ,
+    "TableId" VARCHAR2(50)  NULL ,
+    "ReferenceId" VARCHAR2(50)  NULL ,
+    "TableName" VARCHAR2(50)  NULL ,
+    "ConstraintName" VARCHAR2(50)  NULL ,
+    PRIMARY KEY("Id")
+  );
+</Oracle>
+  </Table>
+  <!--DbEntity-->
+  <Class Namespace="Utility.Database" Type="Utility.Database.DbEntity" Table="DbEntity">
+    <Id Column="Id" IsNull="False" Length="50" PropertyName="Id" />
+    <Column Column="Database" IsNull="True" Length="50" PropertyName="Database" />
+    <Column Column="ProgramName" IsNull="True" Length="50" PropertyName="ProgramName" />
+    <ForeignKey Column="Tables" ReferenceTable="TableEntity" ReferenceId="Id" ReferenceType="Utility.Database.TableEntity,Utility.Database" Constraint="FK_DbEntity_TableEntity_Id">
+      <OneToMany PropertyName="Tables" />
+    </ForeignKey>
+  </Class>
+  <!--TableEntity-->
+  <Class Namespace="Utility.Database" Type="Utility.Database.TableEntity" Table="TableEntity">
+    <Id Column="Id" IsNull="False" Length="50" PropertyName="Id" />
+    <Column Column="Table" IsNull="True" Length="50" PropertyName="Table" />
+    <Column Column="ClassName" IsNull="True" Length="50" PropertyName="ClassName" />
+    <ForeignKey Column="DbId" ReferenceTable="DbEntity" ReferenceId="Id" ReferenceType="Utility.Database.DbEntity,Utility.Database" Constraint="FK_TableEntity_DbEntity_Id">
+      <OneToOne PropertyName="Db" />
+      <Basic PropertyName="DbId" />
+    </ForeignKey>
+    <ForeignKey Column="Columns" ReferenceTable="ColumnEntity" ReferenceId="Id" ReferenceType="Utility.Database.ColumnEntity,Utility.Database" Constraint="FK_TableEntity_ColumnEntity_Id">
+      <OneToMany PropertyName="Columns" />
+    </ForeignKey>
+  </Class>
+  <!--ColumnEntity-->
+  <Class Namespace="Utility.Database" Type="Utility.Database.ColumnEntity" Table="ColumnEntity">
+    <Id Column="Id" IsNull="False" Length="50" PropertyName="Id" />
+    <Column Column="ColumnName" IsNull="True" Length="50" PropertyName="ColumnName" />
+    <Column Column="PropertName" IsNull="True" Length="50" PropertyName="PropertName" />
+    <Column Column="MySqlValue" IsNull="True" Length="50" PropertyName="MySqlValue" />
+    <Column Column="SqlServerValue" IsNull="True" Length="50" PropertyName="SqlServerValue" />
+    <Column Column="OracleValue" IsNull="True" Length="50" PropertyName="OracleValue" />
+    <Column Column="SqliteValue" IsNull="True" Length="50" PropertyName="SqliteValue" />
+    <Column Column="PostgreValue" IsNull="True" Length="50" PropertyName="PostgreValue" />
+    <Column Column="Remark" IsNull="True" Length="50" PropertyName="Remark" />
+    <Column Column="DefaultValue" IsNull="True" Length="50" PropertyName="DefaultValue" />
+    <Column Column="CheckValue" IsNull="True" Length="50" PropertyName="CheckValue" />
+    <ForeignKey Column="TableId" ReferenceTable="TableEntity" ReferenceId="Id" ReferenceType="Utility.Database.TableEntity,Utility.Database" Constraint="FK_ColumnEntity_TableEntity_Id">
+      <OneToOne PropertyName="Table" />
+      <Basic PropertyName="TableId" />
+    </ForeignKey>
+    <Column Column="ReferenceId" IsNull="True" Length="50" PropertyName="ReferenceId" />
+    <Column Column="TableName" IsNull="True" Length="50" PropertyName="TableName" />
+    <Column Column="ConstraintName" IsNull="True" Length="50" PropertyName="ConstraintName" />
+  </Class>
+</Mapping>

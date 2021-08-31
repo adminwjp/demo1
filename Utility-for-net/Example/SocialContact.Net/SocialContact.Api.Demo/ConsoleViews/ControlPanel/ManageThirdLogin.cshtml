@@ -1,0 +1,138 @@
+﻿@model IEnumerable<AccountType>
+@{
+    TempData["subMenu-check"] = new string[] { "Setting", "ManageThirdLogin" };
+    ViewData["Title"] = new string[] { "第三方登录设置" };
+    var weChats = Model.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().WeChat());
+    var qqs = Model.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().QQ());
+    var sinas = Model.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().SinaWeibo());
+    var aliPays = Model.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().AliPay());
+}
+
+<div class="tn-page-heading tn-mb-20">
+    <h3>第三方登录设置</h3>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table>
+            <tr>
+                <td rowspan="2" style="width:100px;text-align:center;"><h1><i class="fa fa-weixin"></i></h1></td>
+                <td colspan="2">微信帐号 <a role="button" href="https://open.weixin.qq.com/" target="_blank">如何申请?</a></td>
+                <td rowspan="2" style="width:100px;">
+                    @if (weChats.Any() && !weChats.FirstOrDefault().IsEnabled)
+                    {
+                        <h1><i class="fa fa-remove" title="已被禁用"></i></h1>
+                    }
+                </td>
+                <td rowspan="2">
+                    <a role="button" title="修改" class="editButton" data-name="微信帐号设置" data-url="@CachedUrlHelper.Action("_EditThirdAccount","ControlPanel",null,new RouteValueDictionary { { "accountTypeKey", AccountTypeKeys.Instance().WeChat() } })">修改</a>
+                </td>
+            </tr>
+            <tr>
+                @if (weChats.Any())
+                {
+                    <td style="width:300px;">AppId：@weChats.FirstOrDefault().AppKey</td>
+                    <td style="width:500px;">AppSecret：@weChats.FirstOrDefault().AppSecret</td>
+                }
+                else
+                {
+                    <td style="width:300px;">AppId：</td>
+                    <td style="width:500px;">AppSecret：</td>
+                }
+            </tr>
+        </table>
+        <hr />
+        <table>
+            <tr>
+                <td rowspan="2" style="width:100px;text-align:center;"><h1><i class="fa fa-qq"></i></h1></td>
+                <td colspan="2">QQ帐号 <a role="button" href="http://connect.qq.com/intro/login" target="_blank">如何申请?</a></td>
+                <td rowspan="2" style="width:100px;">
+                    @if (qqs.Any() && !qqs.FirstOrDefault().IsEnabled)
+                    {
+                        <h1><i class="fa fa-remove" title="已被禁用"></i></h1>
+                    }
+                </td>
+                <td rowspan="2">
+                    <a role="button" title="修改" class="editButton" data-name="QQ帐号设置" data-url="@CachedUrlHelper.Action("_EditThirdAccount","ControlPanel",null,new RouteValueDictionary { { "accountTypeKey", AccountTypeKeys.Instance().QQ() } })">修改</a>
+                </td>
+            </tr>
+            <tr class="jh-space-bd">
+                @if (qqs.Any())
+                {
+                    <td style="width:300px;">AppId：@qqs.FirstOrDefault().AppKey</td>
+                    <td style="width:500px;">AppSecret：@qqs.FirstOrDefault().AppSecret</td>
+                }
+                else
+                {
+                    <td style="width:300px;">AppId：</td>
+                    <td style="width:500px;">AppSecret：</td>
+                }
+            </tr>
+        </table>
+        <hr />
+        <table>
+            <tr>
+                <td rowspan="2" style="width:100px;text-align:center;"><h1><i class="fa fa-weibo"></i></h1></td>
+                <td colspan="2">新浪微博 <a role="button" href="http://open.weibo.com/" target="_blank">如何申请?</a></td>
+                <td rowspan="2" style="width:100px;">
+                    @if (sinas.Any() && !sinas.FirstOrDefault().IsEnabled)
+                    {
+                        <h1><i class="fa fa-remove" title="已被禁用"></i></h1>
+                    }
+                </td>
+                <td rowspan="2">
+                    <a role="button" title="修改" class="editButton" data-name="新浪微博帐号设置" data-url="@CachedUrlHelper.Action("_EditThirdAccount","ControlPanel",null,new RouteValueDictionary { { "accountTypeKey", AccountTypeKeys.Instance().SinaWeibo() } })">修改</a>
+                </td>
+            </tr>
+            <tr>
+                @if (sinas.Any())
+                {
+                    <td style="width:300px;">AppId：@sinas.FirstOrDefault().AppKey</td>
+                    <td style="width:500px;">AppSecret：@sinas.FirstOrDefault().AppSecret</td>
+                }
+                else
+                {
+                    <td style="width:300px;">AppId：</td>
+                    <td style="width:500px;">AppSecret：</td>
+                }
+            </tr>
+        </table>
+        <hr />
+        <table>
+            <tr>
+                <td rowspan="2" style="width:100px;text-align:center;"><h1><img src="../img/alipay-icon.png" width="50" height="50" /></h1></td>
+                <td colspan="2">支付宝 <a role="button" href="https://open.alipay.com/platform/home.htm" target="_blank">如何申请?</a></td>
+                <td rowspan="2" style="width:100px;">
+                    @if (aliPays.Any() && !aliPays.FirstOrDefault().IsEnabled)
+                    {
+                        <h1><i class="fa fa-remove" title="已被禁用"></i></h1>
+                    }
+                </td>
+                <td rowspan="2">
+                    <a role="button" title="修改" class="editButton" data-name="支付宝帐号设置" data-url="@CachedUrlHelper.Action("_EditThirdAccount","ControlPanel",null,new RouteValueDictionary { { "accountTypeKey", AccountTypeKeys.Instance().AliPay() } })">修改</a>
+                </td>
+            </tr>
+            <tr>
+                @if (aliPays.Any())
+                {
+                    <td style="width:300px;">AppId：@aliPays.FirstOrDefault().AppKey</td>
+                    <td style="width:500px;"></td>
+                }
+                else
+                {
+                    <td style="width:300px;">AppId：</td>
+                    <td style="width:500px;"></td>
+                }
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    require(['jquery','tnlayer'], function ($,tnlayer) {
+          //编辑，针对Ie8不得已加个时间戳
+            $('.editButton').on('click', function () {
+                var url = $(this).data('url') + "&t" + (new Date()).valueOf();
+                var name = $(this).data('name');
+                tnlayer.layermodal(name, url, '450px', "400px")
+            });
+     })
+</script>

@@ -1,0 +1,152 @@
+﻿@model Tag
+@model PagingDataSet<ContentItem>
+@{
+    var contentModelService = DIContainer.Resolve<ContentModelService>();
+}
+@{
+    ViewData["Title"] = new string[] { Model.TagName };
+    var hotTags = ViewData.Get<IEnumerable<Tag>>("hotTags", new List<Tag>());
+}
+
+<div class="container">
+    <div class="row jh-my-news">
+        <div class="col-xs-9">
+
+
+            <div class="jh-padding-white ">
+                @if (Model.IsFeatured)
+                {
+                    var attachment = new AttachmentService(Model.TenantTypeId).Get(Model.ImageAttachmentId);
+                    <div class="jh-ask-top">
+                        @if (attachment != null)
+                        {
+                            <div class="pull-left">
+                                <img src="@(attachment.GetDirectlyUrl("Small"))" width="100" height="100" />
+                            </div>
+                        }
+                        <div class="@if (attachment != null){<text>pull-right</text> } ">
+                            <strong>@Model.TagName</strong>
+                            <div class="tn-gray-color tn-mt-15" title="@Model.Description">
+                                @HtmlUtility.TrimHtml(Model.Description, 120)
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="jh-ask-top">
+                        <strong>@Model.TagName</strong>
+                    </div>
+                }
+
+            </div>
+            <div id="labellist" class="jh-padding-white">
+                @if (Model.Any())
+                {
+                    <ul class="list-unstyled">
+                        @foreach (var item in Model)
+                        {
+                            <li class="jh-news-list">
+                                <ul class="list-inline">
+                                    @if (item.FeaturedImageAttachmentId > 0)
+                                    {
+                                        <li class="jh-list-img">
+                                            <a href="@SiteUrls.Instance().CMSDetail(item.ContentItemId)" target="_blank" title="@item.Subject" class="jh-vedio-img">
+                                                <img class="lazy" data-original="@item.FristFeaturedImage("List")" width="260" height="146" />
+                                                @if (item.ContentModelId == contentModelService.GetContentModelsByContentModeKey(ContentModelKeys.Instance().Video()).ModelId)
+                                                {
+                                                    <div class="jh-vedio-mask"><i class="fa fa-play-circle-o" aria-hidden="true"></i></div>
+                                                }
+                                            </a>
+                                        </li>
+                                    }
+                                    <li class="jh-list-title @if (!(item.FeaturedImageAttachmentId > 0)) { <text>jh-no-img</text>}">
+                                        <h5 class="tn-text">
+                                            <a href="@SiteUrls.Instance().CMSDetail(item.ContentItemId)" target="_blank" title="@item.Subject">
+                                                @HtmlUtility.TrimHtml(item.Subject, 60)
+                                            </a>
+                                        </h5>
+                                        @{
+                                            var displayBody = "";
+                                            if (!string.IsNullOrEmpty(item.Summary))
+                                            {
+                                                displayBody = item.Summary;
+                                            }
+                                            if (string.IsNullOrEmpty(displayBody) && !string.IsNullOrEmpty(item.Body))
+                                            {
+                                                displayBody = HtmlUtility.TrimHtml(item.Body, 180);
+                                            }
+                                        }
+                                        @if (!string.IsNullOrEmpty(displayBody))
+                                        {
+                                            <p>
+                                                @displayBody
+                                            </p>
+                                        }
+                                        <ul class="list-inline text-muted">
+                                            <li>
+                                                @Html.ShowUserAvatar(userId: item.UserId, avatarSizeType: AvatarSizeType.Micro)
+                                                <a href="@SiteUrls.Instance().MyHome(item.UserId)" target="_blank">
+                                                    @item.Author
+                                                </a>
+                                            </li>
+                                            @if (item.ContentCategory != null)
+                                            {
+                                                <li>
+                                                    <a href="@SiteUrls.Instance().CategoryCMS(item.ContentCategoryId)" target="_blank">
+                                                        @HtmlUtility.TrimHtml(item.ContentCategory.CategoryName, 20)
+                                                    </a>
+                                                </li>
+                                            }
+                                            <li>
+                                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                                @item.DatePublished.ToFriendlyDate()
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-commenting" aria-hidden="true"></i>
+                                                @item.CommentCount()
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                    <div class="text-center">
+                        @Html.AjaxPagingButton(Model, "labellist", CachedUrlHelper.Action("_ListTagCMS", "CMS", null, new RouteValueDictionary { { "tagid", Request.QueryString.Get("tagid", 0) } }))
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-warning">
+                        暂无文章
+                    </div>
+                }
+
+            </div>
+        </div>
+        @if (hotTags.Any())
+        {
+            <div class="col-xs-3">
+                <div class="tn-gray-bg">
+                    <div class="tn-title">
+                        <h5>热门标签</h5>
+                    </div>
+                    @foreach (var item in hotTags)
+                    {
+                        <div class="tn-hot-tag">
+                            <a class="btn btn-default" type="button" href="@CachedUrlHelper.Action("TagCMS","CMS","",new RouteValueDictionary { { "tagid" ,item.TagId}})" title="@item.TagName">@(HtmlUtility.TrimHtml(item.TagName, 12))</a>
+                            <span class="tn-gray-color tn-ml-15">@item.ItemCountToShow</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<!--<@Scripts.Render("~/Bundle/Scripts/page")-->
+<script>
+    require(['jquery','page'],function(){
+
+    })
+</script>
+

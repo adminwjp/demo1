@@ -1,0 +1,120 @@
+﻿@inherits Tunynet.Common.HelperPage
+@using Tunynet.Common;
+@using Tunynet.Spacebuilder;
+@{
+    void HelperName(string name)
+    {
+        // 你的帮助程序可以包含代码和/或标记，例如
+        // var msg = "你好 " + name;
+        // <p>@msg</p>
+        // 有关详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=204658
+    }
+
+
+
+
+
+    void _AttachmentList(string editorId = "", IEnumerable<Attachment>
+        attachments = null)
+    {
+        <div id="attachmentList-@(editorId)" class="tn-mt-10">
+            @if (attachments != null && attachments.Any())
+            {
+                foreach (var item in attachments.Where(n => n.Position == AttachmentPosition.AttachmentList))
+                {
+                    <div class="tn-file-attachment tn-mb-10 text-left attachmentItem" data-id="@item.AttachmentId">
+                        @Html.FileTypeIcon(item.ContentType, "")
+                        @item.FriendlyFileName
+                        <a href="javascript:;" data-id="@item.AttachmentId" id="delete-attachment-@item.AttachmentId" class="pull-right remove-file">删除</a>
+                        <a href="javascript:;" data-id="@item.AttachmentId" data-tenanttypeid="@item.TenantTypeId" id="download-attachment-@item.AttachmentId" class="pull-right remove-file tn-mr-5">下载</a>
+                    </div>
+                }
+            }
+        </div>
+
+        <script>
+        require(['jquery'], function () {
+            $('#attachmentList-@(editorId) a[id^=delete-attachment-]').off('click').on('click', function () {
+                $(this).parent().remove();
+            });
+            $('#attachmentList-@(editorId) a[id^=download-attachment-]').off('click').on('click', function () {
+                var $this = $(this);
+                var id = $this.data('id');
+                var tenantTypeId = $this.data('tenanttypeid');
+                window.location.href = '@CachedUrlHelper.Action("AttachmentDownload","Common")?attachmentId=' + id + '&tenantTypeId=' + tenantTypeId;
+            });
+
+        })
+        </script>
+
+    }
+
+
+void _UploadFeaturedImage(long id, string tenantTypeId, string uploadSuccess = null, string name = "FeaturedImageAttachmentId", string key = "Small", string className = "", int index = 0)
+{
+<div class="@(!string.IsNullOrEmpty(className)?className:"col-xs-2")" id="UploadFeaturedImageAttachment-@index">
+    <input type="hidden" name="@name" value="@id" />
+    @if (id > 0)
+    {
+        <div class="tn-pic-attachment">
+            <img class="img-thumbnail img-responsive" src="@(new AttachmentService(tenantTypeId).Get(id)?.GetDirectlyUrl(key))">
+            <button class="btn btn-default btn-xs btn-removeImage-UploadFeaturedImage-@index" type="button"><i class="fa fa-remove"></i></button>
+        </div>
+    }
+    else
+    {
+        @Html.FileUploader(setting =>
+           {
+               setting.Name = "UploadFeaturedImage-" + index;
+               setting.TenantTypeId = tenantTypeId;
+               setting.InnerContent = "+";
+               setting.Extensions = "jpg,jpeg,png,bmp";
+               setting.Position = AttachmentPosition.Featured;
+               setting.Key = key;
+               setting.Callbacks.Add("uploadSuccess", !string.IsNullOrEmpty(uploadSuccess) ? uploadSuccess : "succeedFeaturedImageSyntony_" + index);
+           })
+    }
+</div>
+if (string.IsNullOrEmpty(uploadSuccess))
+{
+    <script>
+            require(['jquery'], function () {
+
+                $.fn.succeedFeaturedImageSyntony_@index = function (file, data, uploader) {
+                    var $this = $("#UploadFeaturedImageAttachment-@index");
+                    var itemTmpl = '<div class="tn-pic-attachment">\
+                                <img class="img-thumbnail img-responsive" src="' + data.url + '" alt="...">\
+                                <button class="btn btn-default btn-xs btn-removeImage-UploadFeaturedImage-@index" type="button"><i class="fa fa-remove"></i></button>\
+                                </div>';
+                    $this.append(itemTmpl);
+                    var uploadFileInput = $("[name='@name']");
+                    uploadFileInput.val(data.attachmentId);
+                    $this.find("div[id^='uploader-UploadFeaturedImage-@index']").remove();
+                }
+
+            });
+    </script>
+}
+<script>
+        require(['jquery'], function () {
+            $(document).off('click', '.btn-removeImage-UploadFeaturedImage-@index').on('click', '.btn-removeImage-UploadFeaturedImage-@index', function () {
+                var temp = '@(Html.FileUploader(setting =>
+               {
+                   setting.Name = "UploadFeaturedImage-"+index;
+                   setting.TenantTypeId = tenantTypeId;
+                   setting.InnerContent = "+";
+                   setting.Extensions = "jpg,jpeg,png,bmp";
+                   setting.Position = AttachmentPosition.Featured;
+                   setting.Key = key;
+                   setting.Callbacks.Add("uploadSuccess", !string.IsNullOrEmpty(uploadSuccess) ? uploadSuccess : "succeedFeaturedImageSyntony_"+index);
+               }))';
+                var $this = $(this);
+                var uploadFileInput = $("[name='@name']");
+                uploadFileInput.val("0")
+                $this.parent().parent().append(temp);
+                $this.parent().remove();
+            });
+        });
+</script>
+}
+}

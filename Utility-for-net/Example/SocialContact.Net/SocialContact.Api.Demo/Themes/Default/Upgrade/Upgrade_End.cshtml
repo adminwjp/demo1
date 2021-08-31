@@ -1,0 +1,106 @@
+﻿@{
+    Layout = null;
+    var errorUpgradeModule =  TempData.Get<List<string>>("errorUpgradeModule",new List<string>() );
+    var upgradeModule = TempData.Get<List<string>>("upgradeModule", new List<string>() );
+}
+@model Spacebuilder.Setup.UpgradeInfoModel
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>升级完成</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <!--框架样式-->
+    <link rel="stylesheet" href="../css/tnui.css">
+    <link rel="stylesheet" href="../css/jh-install.css">
+    <script type="text/javascript" src="../js/modernizr-2.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="../js/main.js"></script>
+    <script type="text/javascript" src="../js/lib/ajaxForm/jquery.form.js"></script>
+    <script type="text/javascript" src="../js/lib/layer/layer.js"></script>
+    <link rel="stylesheet" href="../js/lib/layer/skin/tnui/style.css">
+    <script src="~/js/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/html5shiv.min.js"></script>
+    <script type="text/javascript" src="../js/respond.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        input:-webkit-autofill, select:-webkit-autofill, textarea:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="tn-doc">
+        <div class="tn-content">
+            <div class="container">
+                <div class="jh-install-logo">
+                    <img alt="..." src="../img/logo-big.png" width="124">
+                    <span class="jh-install-wizard"> v5.2 升级向导</span>
+                </div>
+                <div class="jh-install-block">
+                    <div class="jh-install-content">
+                        <div class="jh-install-complete">
+                            <h3><i class="fa  fa-check-circle fa-2x tn-green-color tn-mr-15"></i>近乎升级完成！</h3>
+                            <div class="row">
+                                @foreach (var item in upgradeModule)
+                                {
+                                    string upgradeModuleName = string.Empty;
+                                    var isError = errorUpgradeModule.Contains(item);
+                                    switch (item)
+                                    {
+                                        case "Ask":
+                                            upgradeModuleName = "问答";
+                                            break;
+                                        case "Bar":
+                                            upgradeModuleName = "贴吧";
+                                            break;
+                                        case "CMS":
+                                            upgradeModuleName = "资讯";
+                                            break;
+                                        case "Blog":
+                                            upgradeModuleName = "博客";
+                                            break;
+
+                                    }
+
+
+                                    if (isError)
+                                    {
+                                        <div class=" col-xs-3" style="color:red">@(upgradeModuleName)升级异常</div>
+                                        <div class="col-xs-9"><a target="_blank" href="@($"/Uploads/{item}-upgrade.txt")">查看升级异常日志</a></div>
+                                    }
+                                    else
+                                    {
+                                        /**/ <div class=" col-xs-12">@(upgradeModuleName)升级成功</div>
+                                      
+
+                                    }
+
+                                }
+
+                            </div>
+
+
+                            <p >接下来，可以：<button type="button"  class="btn btn-default home">访问站点</button></p>
+                          
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).on("click", ".home", function () {
+            window.location.href = "@SiteUrls.Instance().Home()";
+        });
+
+    </script>
+</body>
+</html>

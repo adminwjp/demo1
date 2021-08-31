@@ -1,0 +1,103 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table">
+          <table>
+            <script>
+              $(function (){
+
+                $.getJson("message/list",function (data) {
+                  var list=$("table");
+                  if(data.status==0){
+                    listMsg(data);
+                    tableBottom(data);
+                  }
+                },function (error) {
+                  var list=$("table");
+                  emptyMsg(list);
+                });
+
+                function tableBottom(data){
+                  if(data.data&&data.data.length>0) {
+                    var str = "<tr class=\"btion\">";
+                    str += "<th><input type=\"checkbox\" id=\"all2\" class=\"checkall\"/></th>";
+                    str += "<th colspan=\"4\"> ";
+                    if (!announcepm) {
+                      str += "<p class=\"position1 clearfix\"> <span class=\"all\">";
+                      str += "<label for=\"all2\">{{.lang.checkall}}</label>";
+                      str += "</span> <a href=\"javascript:void(0);\" class=\"delete\" uri=\"my_message/delete\" name=\"msg_id\" presubmit=\"confirm('{{.lang.drop_confirm}}')\" ectype=\"batchbutton\">{{.lang.drop}}</a> </p>";
+                    }
+                    str+="<div class=\"position2 block clearfix\">{{template \"page.bottom.html\"}}</div>";
+                    str+="</th>";
+                    str+="</tr>";
+                    $("table").append(str);
+
+                  }
+                }
+                function  listMsg(data){
+                  if(data.data&&data.data.length>0){
+                    var str="";
+
+                    if($(list).find("tr")){
+                      $(list).find("tr").each(function (index,item) {
+                        if(index>0)
+                        {
+                          $(item).remove();
+                        }
+                      });
+                    }else{
+                      $(list).append(tableTitleStr);
+                      //str+=tableTitleStr;
+                    }
+
+                    for (var i=0;i<data.data.length;i++){
+                      var message=data.data[i];
+                      str+="<tr class=\""+(i==data.data.length-1?"line_bold":"line")+"\">";
+                      str+="<td class=\"align2\">";
+                      if(!announcepm){
+                        str+="<input type=\"checkbox\" class=\"checkitem\" value=\""+message.msg_id+"\"/>";
+                      }
+                      str+="</td>";
+                      str+="<td class=\"width13\"><img class=\"makesmall\" width=\"48\" height=\"48\" src=\""+message.user.portrait+"\" style=\"vertical-align:middle; margin-right:5px;\" /><span class=\"username\">{"+message.user.username+"}</span></td>"
+                      str+="<td class=\"link2 {if $message.new eq 1}font_bold{/if}\">"+message.content.sub(100)+"</td>";
+                      str+="<td class=\"align2 color1 width8\">"+message.last_update+"</td>";
+                      str+="<td class=\"width8\"><a href=\"my_message/view?msg_id="+message.msg_id+"\" class=\"desc\">{{.lang.view_detail}}</a> ";
+                      if(!announcepm){
+                        str+="<a confirm=\"{{.lang.drop_confirm}}\" uri=\"my_message/delete?msg_id="+message.msg_id+"\" class=\"J_AjaxRequest delete pointer\">{{.lang.drop}}</a>";
+                      }
+                      str+="</td>";
+                      str+="</tr>";
+                    }
+                    $(list).find("tr[0]").append(str);
+                  }else{
+                    emptyMsg(list);
+                  }
+                }
+
+                function emptyMsg(list){
+                  var str="   <td colspan=\"5\"><div class=\"notice-word\">\n                  <p>{$lang.no_records}</p>\n                </div></td>\n            </tr>";
+                  list.html(str);
+                }
+                var tableTitleStr=intTableTitle();
+                function intTableTitle(){
+                  var str="<tr class=\"gray\"> ";
+                  str+="  <th width=\"50\"><input type=\"checkbox\" id=\"all\" class=\"checkall\"/></th>";
+                  str+="  <th class=\"align1\">{{.lang.username}}</th>";
+                  str+="  <th class=\"align1\">{{.lang.content}}</th>";
+                  str+="  <th>{{.lang.last_update}}</th>";
+                  str+="  <th class=\"width4\">{{.lang.handle}}</th>";
+                  str+="</tr>";
+                  return str;
+                }
+              });
+            </script>
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

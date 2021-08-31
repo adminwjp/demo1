@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>配置列表</title>
+    <link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/jquery-easyui/1.7.0/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/jquery-easyui/1.7.0/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="http://192.168.1.3:5000/jquery-easyui/1.7.0/demo/demo.css">
+    <script type="text/javascript" src="http://192.168.1.3:5000/jquery-easyui/1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/jquery-easyui/1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="http://192.168.1.3:5000/jquery-easyui/js/index.js"></script>
+</head>
+<body>
+    <div style="width:100%;max-width:800px;margin:0 auto;">
+        <div style="margin: 20px 0;"></div>
+        <table id="dg_carousel" title="轮播图列表" style="width:800px;height:250px">
+            <thead>
+                <tr>
+                    <th data-options="field:'id',checkbox:true,width:80,align:'center'">id</th>
+                    <th data-options="field:'src',width:200,align:'center'">src</th>
+                    <th data-options="field:'images',width:70,align:'center',formatter:imgFormatter">图片预览</th>
+                    <th data-options="field:'background',width:150,align:'center'">background</th>
+                    <th data-options="field:'src_id',width:200,align:'center'">src_id</th>
+
+                </tr>
+            </thead>
+        </table>
+        <div id="dialog_carousel" class="easyui-panel easyui-dialog" title="轮播图 Dialog" style="width:80%;padding:30px 60px;">
+            <form id="ff" class="easyui-form" method="post" data-options="novalidate:true">
+                <div style="margin-bottom:20px">
+                    <select  class="easyui-combobox" name="filebox" label="filebox:"  onchange="changeAlign(this.value)" style="width:100%">
+                        <option value="left">Left</option>
+                        <option value="right" selected>Right</option>
+                    </select>
+                </div>
+                <div style="margin-bottom:20px">
+                    <input class="easyui-filebox" id="fb" label="src:" labelPosition="left" data-options="prompt:'Choose a file...'" style="width:100%">
+                </div>
+                <div style="margin-bottom:20px">
+                    <input class="easyui-textbox" style="width:100%" data-options="label:'background:',required:true">
+                </div>
+            </form>
+            <div style="text-align:center;padding:5px 0">
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+            </div>
+        </div>
+        <!--<div id="dialog_button" style="text-align:center;padding:5px 0">
+            <a href="javascript:void(0)" class="easyui-linkbutton " onclick="submitForm()" style="width:80px">确定</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">清空</a>
+        </div>-->
+
+    </div>
+
+    <script>
+        //图片添加路径
+	    function imgFormatter(value,row,index){
+		    return "<img  style='width:60px; height:60px;' src='http://192.168.1.3:5000/" + row.src.replace('static/','') + "' title='点击查看图片'/>";
+		}
+
+        function changeAlign(align){
+			$('#fb').filebox({buttonAlign:align});
+		}
+         //表单 验证失效 不能放在一起 需要单独 创建个页面 跳转
+        function submitForm() {
+            ////得到表单窗口中的form对象
+            var fm = $('#ff');
+            //提交的啥玩意 checkbox 数据提交不上去了
+            fm.form('submit', {
+                url: edit ? urls.menu.update : urls.menu.create,
+                onSubmit: function (param) {
+                    console.log(param);
+                    //if ($(this).form('validate')) {
+                    if ($(this).form('enableValidation').form('validate')) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                },
+                success: function (data) {
+                    // console.log(data);
+                    var res = JSON.parse(data);
+                    if (res.success) {
+                        $.messager.alert("提示：", edit ? "编辑成功" : "添加成功", "info", function () {
+                            
+                            //怎么 重新加载
+                           // parent.$('#dialog_menu').dialog({ closed: true, inParam: { success: true } });//不会执行关闭方法 传输 数据
+                            parent.$('#dialog_menu').dialog({ inParam: { success: true } });
+                            parent.$('#dialog_menu').dialog('close');//关闭父页面 中dialog 执行 OnClose 方法
+                        });
+                    
+                        
+                    }
+                    else {
+                        $.messager.alert('提示：', edit ? "编辑失败" : '添加失败!', 'warn');
+                    }
+                }
+            });
+        }
+        var edit = false;
+       // console.log(parent);
+        //dialog 高度不够,布局会变形
+        //url  获取 不到 地址 不知道 获取 跳转的地址 location
+        if (sessionStorage.getItem("operator") == "edit") {
+            edit = true;
+            // document.title = "编辑菜单";
+            sessionStorage.removeItem("operator");
+            var data = localStorage.getItem("menu");
+           // console.log(data);
+            if (data) {
+                var res = JSON.parse(data);
+                $('#ff').form('load', res);
+                // $("select[name='id']").combobox('loadData', [res.id]);
+                //$("select[name='id']").combobox('setValue', '001');
+                // $("#id1").combobox('setValue', res.id);
+                if (res.state == "open"){
+                   // $("input[name='state']").prop("checked",true);//没啥用 
+                    $("input[name='state']").attr("checked", "checked");
+                    $("input[name='state']").parent().show();//这一步 关键  页面显示出来 
+                }
+                if (res.checked) {
+                    $("input[name='checked']").attr("checked", "checked");
+                    $("input[name='checked']").parent().show();//这一步 关键  页面显示出来 
+                }
+            }
+            $("#id").show();
+        } else {
+            //document.title = "添加菜单";
+            $("#id").hide();
+        }
+        function clearForm() {
+            $('#ff').form('clear');
+        }
+        // 按规则 来 不然 不好改动
+       var apiUrl="http://127.0.0.1:8000/";
+       var urls={"carousel":"http://127.0.0.1:8000/carousel/list"};
+        $("#dg_carousel").datagrid({
+            url: urls.carousel,
+            method:"get",
+            queryParams: {
+            },
+            //toolbar	array, selector	顶部工具栏的DataGrid面板。可能的值：
+            //1) 一个数组，每个工具属性都和linkbutton一样。
+            //2) 选择器指定的工具栏。
+            toolbar: [
+                {
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        let dialog = $('#dialog_carousel');
+                        dialog.dialog('open');
+                        //dialog.dialog('refresh', '/admin/carousel_operator').dialog('open');
+                        //dialog.dialog({ title: '添加轮播图' ,href: '/admin/carousel_operator', closed: false });
+                    }
+                },
+                {
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        let dialog = $('#dialog_carousel');
+                        //dialog.dialog('refresh', '/admin/carousel_operator?edit');
+                        dialog.dialog('open');
+                       //dialog.dialog({ title: '编辑轮播图',href: '/admin/carousel_operator?edit', closed: false });
+                    }
+                },
+                {
+                    iconCls: 'icon-remove',
+                    handler: function () {
+
+                    }
+                }, '-', {
+                    iconCls: 'icon-help',
+                    handler: function () {
+
+                    }
+                }
+            ],
+            loadMsg:"正在加载数据中.....",//	string	在从远程站点加载数据的时候显示提示消息.
+            emptyMsg:"加载数据完成,没有数据!",//	string	当表格内容为空时显示的消息.
+            pageNumber: 1,//	number	在设置分页属性的时候初始化页码.	1
+            pageSize: 10,//	number	在设置分页属性的时候初始化页面大小.	10
+            pageList: [10, 20, 30, 40, 50, 60],//	array	在设置分页属性的时候 初始化页面大小选择列表.
+            pagePosition: "bottom",//	string	定义分页工具栏的位置。可用的值有：'top','bottom','both'。（该属性自1.3版开始可用）
+            pagination: true,//	boolean	如果为true，则在DataGrid控件底部显示分页工具栏.
+            loadFilter: function (data) {
+                if (data.success) {
+                    return data.data||[];
+                } else {
+                    return [];
+                }
+            },
+           // columns: [{field:'code',title:'Code',width:100}]
+        });
+        $('#dialog_carousel').dialog({
+            title: '添加轮播图',
+            width: 500,
+            height: 680,
+            closed: true,
+            cache: false,
+            resizable: true,
+             //href: '/admin/carousel_operator',
+            modal: true,
+            onClose: function () {
+                 // $('#carousel').form('clear');
+                //$('.validatebox-tip').remove();
+               // $(this).dialog('destroy');//销毁
+            },
+           // buttons:"#dialog_button"
+            //buttons: [{
+            //    text: '保存',
+            //    iconCls: 'icon-save',
+            //    handler: function () {
+            //        submitForm();
+            //    }
+            //},
+            //{
+            //    text: '关闭',
+            //    iconCls: 'icon-cancel',
+            //    handler: function () {
+            //         $('#carousel').form('clear');
+            //         $('.validatebox-tip').remove();
+            //        $('#dialog_plan').dialog("close");
+            //        // $(this).dialog('destroy');//销毁
+            //    }
+            //}]
+        });
+    </script>
+</body>
+</html>

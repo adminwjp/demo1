@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="Product" table="t_product" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+        <many-to-one name="seller" foreign-key="fk_seller_id" column="seller_id" cascade="all" fetch="join"  />
+        <property name="sn" column="sn" type="java.lang.String" length="20"></property>
+        <property name="name" column="name" type="java.lang.String" length="20"></property>
+        <property name="price" column="price" type="java.math.BigDecimal" ></property>
+        <property name="marketPrice" column="market_price" type="java.math.BigDecimal" ></property>
+        <property name="image" column="image" type="java.lang.String" length="50"></property>
+        <property name="deliveryWeight" column="delivery_weight" type="java.math.BigDecimal" ></property>
+        <property name="isMarketable" column="is_marketable" type="java.lang.Boolean" ></property>
+        <property name="isUnifiedSpec" column="is_unified_spec" type="java.lang.Boolean" ></property>
+        <property name="isList" column="is_list" type="java.lang.Boolean" ></property>
+        <property name="introduction" column="introduction" type="java.lang.String" length="500"></property>
+        <property name="sales" column="sales" type="java.lang.Integer"></property>
+        <many-to-one name="category" foreign-key="fk_category_id" column="category_id" cascade="all" fetch="join"  />
+        <property name="deliveryType" column="delivery_type" type="java.lang.Integer"></property>
+        <property name="deliveryFees" column="delivery_fees" type="java.math.BigDecimal" ></property>
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

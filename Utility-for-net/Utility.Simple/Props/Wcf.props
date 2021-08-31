@@ -1,0 +1,49 @@
+<Project>
+  <!-- >=net40(cs(winform,wpf):>=netcoreapp3.0) -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' OR '$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'net451' ">
+    <Reference Include="System.ServiceModel" />
+    <!-- wcf web -->
+    <Reference Include="System.ServiceModel.Web" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452'  ">
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'  OR '$(TargetFramework)' == 'net461' OR '$(TargetFramework)' == 'net462'  ">
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' OR '$(TargetFramework)' == 'net471' OR '$(TargetFramework)' == 'net472' ">
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net48'  ">
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+  </ItemGroup>
+  
+  
+   <!-- >=net45 - net48(cs(winform,wpf):>=netcoreapp3.0) -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' OR '$(TargetFramework)' == 'net451' OR '$(TargetFramework)' == 'net452'   ">
+     <!-- wcf  -->
+    <Reference Include="System.ServiceModel.Activation" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'  OR '$(TargetFramework)' == 'net461' OR '$(TargetFramework)' == 'net462'  ">
+    <Reference Include="System.ServiceModel.Activation" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net47' OR '$(TargetFramework)' == 'net471' OR '$(TargetFramework)' == 'net472' ">
+    <Reference Include="System.ServiceModel.Activation" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net48'  ">
+    <Reference Include="System.ServiceModel.Activation" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="Cart" table="t_cart" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+         <many-to-one name="buyer" foreign-key="fk_buyer_id" column="buyer_id" cascade="all" fetch="join"  />
+         <many-to-one name="product" foreign-key="fk_product_id" column="product_id" cascade="all" fetch="join"  />
+        <property name="quantity" column="quantity" type="java.lang.Integer" />
+        <property name="specification" column="specification" type="java.lang.String" />
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

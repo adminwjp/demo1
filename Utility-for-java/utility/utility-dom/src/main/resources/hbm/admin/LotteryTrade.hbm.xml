@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="LotteryTrade" table="t_lottery_trade" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="lottery" foreign-key="fk_lottery_id" column="lottery_id" cascade="all" fetch="join"  />
+<property name="tradeType" column="trade_type" type="java.lang.Integer" />
+<property name="conditionDay" column="condition_day" type="java.lang.Integer" />
+ <many-to-one name="conditionTradeStartdate" foreign-key="fk_conditionTradeStartdate_id" column="conditionTradeStartdate_id" cascade="all" fetch="join"  />
+ <many-to-one name="conditionTradeEnddate" foreign-key="fk_conditionTradeEnddate_id" column="conditionTradeEnddate_id" cascade="all" fetch="join"  />
+<property name="tradeStatus" column="trade_status" type="java.lang.Integer" />
+<property name="tradeMoney" column="trade_money" type="java.lang.Integer" />
+<property name="lotteryId" column="lottery_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

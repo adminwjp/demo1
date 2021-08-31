@@ -1,0 +1,90 @@
+<html>
+
+<head>
+  <title></title>
+  <style>
+    table {
+      margin: 0 auto;
+    }
+  </style>
+  <link type="text/css" rel="stylesheet" href="index.css">
+  </link>
+</head>
+
+<body>
+  <script src="init.js"></script>
+  <script src="index.js"></script>
+  <script src="table.js"></script>
+  <script>
+    var datas = [];
+    for (let index = 0; index < 10; index++) {
+      datas.push({
+        id: index,
+        name: "不知道" + index,
+        sex: index % 2 == 0 ? "男" : "女",
+        bir: new Date(),
+        desc: "这个人很懒,啥也没留下",
+        create: new Date()
+      });
+    }
+    let table = new Table({
+      caption: {
+        name: "标题",
+        attrs: {
+          "data-id": "1"
+        }
+      },
+      id: "id",
+      columns: [{
+          checkbox: true
+        },
+        {
+          name: "编号",
+          column: "id",
+          sort: true,
+          attrs: {}
+        },
+        {
+          name: "名称",
+          input: true,
+          column: "name",
+          attrs: {}
+        },
+        {
+          name: "性别",
+          input: {
+            type: "radio",
+            values: ["男", "女"]
+          },
+          column: "sex",
+          attrs: {}
+        },
+        {
+          name: "生日",
+          column: "bir",
+          input: true,
+          attrs: {}
+        },
+        {
+          name: "描述",
+          input: true,
+          column: "desc",
+          attrs: {}
+        },
+        {
+          name: "创建日期",
+          input: true,
+          column: "create",
+          attrs: {}
+        },
+        {
+          name: "操作",
+          attrs: {}
+        }
+      ],
+      data: datas
+    });
+  </script>
+</body>
+
+</html>

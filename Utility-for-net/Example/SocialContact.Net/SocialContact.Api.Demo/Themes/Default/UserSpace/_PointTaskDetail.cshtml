@@ -1,0 +1,93 @@
+﻿@model PointTask
+@{
+    var tasktoUser = Model.GetTaskToUser(UserContext.CurrentUser.UserId);
+    var TaskToUserNum = Model.GetTaskToUserNum();
+    var progress = Model.CheckUserTask(UserContext.CurrentUser);
+    var taskUrl = Model.TaskType.TaskUrl?.Replace("{username}", UserContext.CurrentUser.UserName).Replace("{taskId}", Model.TaskId.ToString());
+    var pointName = ViewData["pointName"];
+    var goldName = ViewData["goldName"];
+}
+<div class="panel-body ">
+    <form>
+        <div class="form-group">
+            <label>任务说明：</label>
+            <p title="@Model.Description">@StringUtility.Trim(Model.Description, 35)</p>
+        </div>
+        <div class="form-group">
+            <label>任务奖励：</label>
+            <p>
+                @(Model.AwardPoints > 0 ? Model.AwardPoints + pointName.ToString() : "")
+                @((Model.AwardPoints > 0 && Model.AwardGolds > 0) ? "+" : "")
+                @(Model.AwardGolds > 0 ? Model.AwardGolds + goldName.ToString() : "")
+            </p>
+        </div>
+        <div class="form-group">
+            <label>申请条件：@(Model.MinUserRank > 0 ? "用户等级>=" + Model.MinUserRank + "级" : "不限")</label>
+        </div>
+        @if (Model.TaskType.IsShowProgressBar && tasktoUser != null && tasktoUser.Status == TaskRecordStatus.Doing)
+        {
+
+            <div class="form-group">
+                <ul class="list-inline">
+                    <li>任务进度：</li>
+                    <li>
+                        <div class="progress tn-width-200 tn-mb-0" title="任务完成进度：@progress%">
+                            <div class="progress-bar progress-bar-info" role="progressbar" style="width: @progress%">
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        }
+        <div class="form-group">
+            <input type="hidden" id="taskinfo" data-recordid="@(tasktoUser == null ? 0 : tasktoUser.RecordId)" data-taskname="@Model.TaskName" data-taskid="@Model.TaskId" data-method="@Model.TaskType.CheckMethodName" data-taskurl="@taskUrl" />
+            @if (tasktoUser == null)
+            {
+                <button type="button" class="btn btn-danger" id="newtask">领取任务</button>
+
+            }
+            else if (tasktoUser.Status == TaskRecordStatus.Doing)
+            {
+
+                <a class="btn btn-danger" target="_blank" href="@taskUrl">去做任务</a>
+                    <button type="button" class="btn btn-default" id="abandonedtask">放弃任务</button>
+            }
+            else if (tasktoUser.Status == TaskRecordStatus.Applying || tasktoUser.Status == TaskRecordStatus.Refused)
+            {
+                if (string.IsNullOrEmpty(tasktoUser.ResultContent) || tasktoUser.Status == TaskRecordStatus.Refused)
+                {
+                    <button type="button" class="btn btn-danger" id="taskgo">提交任务</button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-default" id="taskgo">已提交任务，等待审核</button>
+                }
+                <button type="button" class="btn btn-default" id="abandonedtask">放弃任务</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-danger" id="newtask">领取任务</button>
+            }
+
+        </div>
+        @if (TaskToUserNum > 0)
+            {<div class="form-group">
+            <label>已有 @TaskToUserNum 名用户领取此任务</label>
+            <ul class="list-inline tn-mt-10">
+                @foreach (var user in Model.GetNewUserOfTask(6))
+                {
+                    <li>
+                        <ul class="list-unstyled text-center">
+                            <li>
+                                @Html.ShowUserAvatar(userId: user.UserId, avatarSizeType: AvatarSizeType.Small, enableNavigate: false, isShowUserCard: false)
+                                @*<img class="img-circle" width="50" height="50" src="img/user-img.jpg">*@
+                            </li>
+                            <li class="tn-mt-5 tn-mb-5">@user.UserName</li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </div>
+        }
+    </form>
+</div>

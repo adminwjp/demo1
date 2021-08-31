@@ -1,0 +1,248 @@
+﻿@model  PagingDataSet<ContentItem>
+@{
+    var query = ViewData.Get<ContentItemQuery>("query", new ContentItemQuery());
+    var contentCategoryId = Request.QueryString.Get("contentCategoryId", 0);
+    var auditStatus = ViewData.Get<List<SelectListItem>>("auditStatus", new List<SelectListItem>());
+    var contentTypes = ViewData.Get<IEnumerable<ContentModel>>("contentTypes", new List<ContentModel>());
+    var contentModelKeys = contentTypes != null ? string.Join("、", contentTypes.Select(n => n.ModelKey)) : "";
+    var user = UserContext.CurrentUser;
+    var isCategoryManager = new Authorizer().IsCategoryManager(TenantTypeIds.Instance().ContentItem(), user, contentCategoryId);
+}
+<style>
+    .daterangepicker.ltr .ranges, .daterangepicker.ltr .calendar {
+    float: left;
+}
+</style>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-inline tn-tool-column">
+            @using (Html.BeginForm("ManageCMS", "ControlPanel", FormMethod.Get, new { @class = "form-inline", @id = "CMSSelset" }))
+            {
+                @Html.Hidden("ContentCategoryId", contentCategoryId)
+                <div class="form-group" style="width:265px;">
+                    <label>关键字：</label>
+                    @Html.TextBox("keyword", string.Empty, new RouteValueDictionary { { "id", "keyword" }, { "class", "color form-control" }, { "style", "width:200px" }, { "placeholder", "可搜索标题 、作者" } })
+                </div>
+                <div class="form-group" style="width:170px;">
+                    <label>状态：</label>
+                    @Html.DropDownList("auditStatus", auditStatus, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label style="display:inline">发布时间：</label>
+                    <div class="input-group tn-width-300" style="display:inline-table">
+                        @Html.DateRangePicker("Daterangepicker", query.MinDate, query.MaxDate, lazyload: !query.MinDate.HasValue)
+                    </div>
+                </div>
+                @*<input class="form-control date_range" data-date-autoclose="True" data-date-enddate="2018-04-25" data-date-format="YYYY-MM-DD" data-date-startdate="2018-04-18" data-date-weekstart="0" data-max-view="decade" data-min-view="hour" data-minute-step="1" data-picker-position="bottom-right" data-plugin="daterangepicker" data-start-view="month" id="Daterangepickers" name="Daterangepickers" placeholder="0000-00-00" type="text">*@
+                <div class="form-group">
+                    <button class="btn btn-primary" type="button" id="search">搜索</button>
+                </div>
+            }
+        </div>
+        <hr>
+        <div class="form-inline tn-tool-column">
+            <div class="form-group">
+                <!--单按钮下拉菜单-->
+                <div class="btn-group">
+                    @if ((contentTypes.Count() <= 1 && !(string.IsNullOrEmpty(contentModelKeys))) && isCategoryManager)
+                    {
+                        if ((contentModelKeys.Contains(ContentModelKeys.Instance().Article()) || string.IsNullOrEmpty(contentModelKeys)) && isCategoryManager)
+                        {
+                            <a class="btn btn-default btn-block" href="@CachedUrlHelper.Action("EditCMS","ControlPanel")?contentCategoryId=@contentCategoryId"><i class="fa fa-edit"></i> 发布文章</a>
+                        }
+                        if ((contentModelKeys.Contains(ContentModelKeys.Instance().Video()) || string.IsNullOrEmpty(contentModelKeys)) && isCategoryManager)
+                        {
+                            <a class="btn btn-default btn-block" href="@CachedUrlHelper.Action("EditCMSVideo","ControlPanel")?contentCategoryId=@contentCategoryId"><i class="fa fa-edit"></i> 发布视频</a>
+                        }
+                        if ((contentModelKeys.Contains(ContentModelKeys.Instance().Image()) || string.IsNullOrEmpty(contentModelKeys)) && isCategoryManager)
+                        {
+                            <a class="btn btn-default btn-block" href="@CachedUrlHelper.Action("EditCMSImg","ControlPanel")?contentCategoryId=@contentCategoryId"><i class="fa fa-edit"></i> 发布组图</a>
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(contentModelKeys) && isCategoryManager)
+                        {
+
+                            <button type="button" class="btn btn-default btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-edit"></i> 发布资讯&nbsp;&nbsp;<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                @if (contentModelKeys.Contains(ContentModelKeys.Instance().Article()) && isCategoryManager)
+                                {
+                                    <li><a href="@CachedUrlHelper.Action("EditCMS","ControlPanel")?contentCategoryId=@contentCategoryId">发布文章</a></li>
+                                }
+                                @if (contentModelKeys.Contains(ContentModelKeys.Instance().Video()) && isCategoryManager)
+                                {
+                                    <li><a href="@CachedUrlHelper.Action("EditCMSVideo","ControlPanel")?contentCategoryId=@contentCategoryId">发布视频</a></li>
+                                }
+                                @if (contentModelKeys.Contains(ContentModelKeys.Instance().Image()) && isCategoryManager)
+                                {
+                                    <li><a href="@CachedUrlHelper.Action("EditCMSImg","ControlPanel")?contentCategoryId=@contentCategoryId">发布组图</a></li>
+                                }
+                            </ul>
+                        }
+                    }
+                </div>
+                <a class="btn btn-default" id="passauditt" href="javascript:;"><i class="fa fa-check"></i> 通过审核</a>
+                <a class="btn btn-default" id="passauditf" href="javascript:;"><i class="fa fa-times-circle"></i> 不通过审核</a>
+                <a class="btn btn-default" id="Stickyt" href="javascript:;"><i class="fa fa-chevron-up"></i> 置顶</a>
+                <a class="btn btn-default" id="Stickyf" href="javascript:;"> 取消置顶</a>
+                <a class="btn btn-default" id="delall" href="javascript:;"><i class="fa fa-trash"></i> 删除</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="panel panel-default">
+    @if (Model.Any())
+    {
+        @Html.Hidden("pageIndex", Model.PageIndex)
+        using (Html.BeginForm("_DeleteCMSList", "ControlPanel", FormMethod.Post, new { @class = "form-horizontal tn-form-validation", @id = "Form-CMS" }))
+        {
+            <div class="panel-body">
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="tn-selection-column">
+                                <input id="select-all" type="checkbox" value="0">
+                            </th>
+                            <th>标题</th>
+                            <th class="text-nowrap">状态</th>
+                            <th class="text-nowrap">所属栏目</th>
+                            <th class="text-nowrap">发布人</th>
+                            <th class="text-nowrap">发布时间</th>
+                            <th class="text-nowrap">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="tn-selection-column">
+                                    <input name="cmsIds" id="box" class="tn-checkbox" type="checkbox" value="@item.ContentItemId">
+                                    <input type="hidden" value="@item.ContentItemId" />
+                                </td>
+                                <td>
+                                    <a target="_blank" title="@item.Subject" href="@SiteUrls.Instance().CMSDetail(item.ContentItemId)">@HtmlUtility.TrimHtml(item.Subject, 30)</a>
+                                    @if (item.IsSticky)
+                                    {
+                                        <label class="label label-danger"> 置顶</label>
+                                    }
+                                    @if (item.isEssential())
+                                    {
+                                        <label class="label label-danger"> 推荐</label>
+                                    }
+                                <td class="text-nowrap">
+                                    @if (item.ApprovalStatus == AuditStatus.Success)
+                                    {
+                                        <i class="fa fa-check-circle tn-green-color fa-2x" title="@AuditStatus.Success.GetDisplayName()"></i>
+                                    }
+                                    else if (item.ApprovalStatus == AuditStatus.Pending)
+                                    {
+                                        <i class="fa fa-circle-o tn-orange-color fa-2x" title="@AuditStatus.Pending.GetDisplayName()"></i>
+                                    }
+                                    else if (item.ApprovalStatus == AuditStatus.Fail)
+                                    {
+                                        <i class="fa fa-ban tn-red-color fa-2x" title="@AuditStatus.Fail.GetDisplayName()"></i>
+                                    }
+                                    else if (item.ApprovalStatus == AuditStatus.Again)
+                                    {
+                                        <i class="fa fa-circle tn-orange-color fa-2x" title="@AuditStatus.Again.GetDisplayName()"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-ban tn-red-color fa-2x" title="@AuditStatus.Fail.GetDisplayName()"></i>
+                                    }
+
+                                </td>
+
+                                @if (item.ContentCategory == null)
+                                {
+                                    <td class="text-nowrap"></td>
+                                }
+                                else
+                                {
+                                    <td class="text-nowrap" title="@item.ContentCategory.CategoryName">@HtmlUtility.TrimHtml(item.ContentCategory.CategoryName, 10)</td>
+                                }
+                                <td class="text-nowrap">@item.Author</td>
+                                <td class="text-nowrap">@item.DatePublished.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td class="text-nowrap">
+                                    <a @if (!item.IsAuthorizer()) { <text> class="maintenance" href="javascript:;" </text>  } else { <text> href="@CachedUrlHelper.Action("EditCMS","ControlPanel")?contentItemId=@item.ContentItemId&contentCategoryId=@item.ContentCategoryId" </text> } role="button" title="编辑"><i class="fa fa-pencil fa-lg"></i></a>&nbsp;
+                                    <a @if (!item.IsAuthorizer()) { <text> class="maintenance" </text>  } else { <text> id="delete-@item.ContentItemId" </text> } href="javascript:;" role="button" title="删除"><i class="fa fa-trash fa-lg"></i></a>&nbsp;
+                                    @{var fastar = "fa-flag-o";
+                                        var fastars = "推荐";}
+
+                                    @if (item.isEssential())
+                                    {
+                                        fastar = "fa-flag";
+                                        fastars = "取消推荐";
+                                    }
+                                    <a href="javascript:;" class="layerrecommend" data-href="@SiteUrls.Instance()._RecommendContent(item.ContentItemId,item.CMSTenantTypeId(),item.Subject,0)"><i role="button" title="@fastars" class="fa @fastar"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="text-center text-warning tn-mb-20 tn-mt-20">
+            暂无任何资讯
+        </div>
+    }
+    <div class="text-center">
+        @Html.AjaxPagingButton(Model, "listCMS", SiteUrls.Instance()._ListCMS(query.SubjectKeyword, query.AuditStatus, query.CategoryId, query.MinDate, query.MaxDate, Model.PageIndex))
+    </div>
+</div>
+
+
+<script>
+    require(['jquery', 'tnlayer', 'page'], function ($, tnlayer) {
+
+        $(".layerrecommend").click(function () {
+            var href = $(this).data("href");
+            tnlayer.layermodal('资讯推荐', href, '450px', '450px')
+        })
+
+        //推荐回调
+        $.fn.recommendCallBack = function (data) {
+
+            if (data.state == 1) {
+                layer.closeAll();
+                $("#CloseCurrent").click();
+                layer.msg("操作成功", { icon: 1 });
+                $.get("@SiteUrls.Instance()._ListCMS(query.SubjectKeyword, query.AuditStatus, query.CategoryId, query.MinDate,query.MaxDate, Model.PageIndex)", function (data) {
+                    $("#cmslist").html(data);
+                })
+            }
+            else {
+                layer.msg("操作失败", { icon: 2 });
+            }
+        }
+
+        //全选
+        $("#select-all").click(function () {
+            if ($("#select-all").val() == "0") {
+                $(".tn-checkbox").each(function () {
+                    this.checked = true;
+                    $.fn.checkedActive($(this))
+                    $("#select-all").val("1");
+                });
+            } else {
+                $(".tn-checkbox").each(function () {
+                    this.checked = false;
+                    $.fn.checkedActive($(this))
+                    $("#select-all").val("0");
+                });
+            }
+        });
+
+
+    })
+
+</script>

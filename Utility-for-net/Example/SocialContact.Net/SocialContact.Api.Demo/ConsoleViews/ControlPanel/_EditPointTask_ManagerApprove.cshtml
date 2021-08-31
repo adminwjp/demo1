@@ -1,0 +1,155 @@
+﻿@model UserPointTaskEditModel
+@{
+    var pointName = ViewData.Get("pointName", "");
+    var goldName = ViewData.Get("goldName", "");
+}
+<div class="panel">
+    <div class="panel-body">
+        @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-horizontal tn-form-validation tn-survey-form", @id = "edittaskform" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(n => n.TaskId)
+            @Html.ValidationMessageFor(n => n.TaskId)
+            @Html.HiddenFor(n => n.TypeId)
+            @Html.ValidationMessageFor(n => n.TypeId)
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.LabelFor(n => n.TaskName)
+                    @Html.TextBoxFor(n => n.TaskName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(n => n.TaskName)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.LabelFor(n => n.Description)
+                    @Html.TextAreaFor(n => n.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(n => n.Description)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12 row">
+                    <div class="col-xs-12">
+                        <label class="form-control-static text-center">奖励</label>
+                    </div>
+                    <div class="col-xs-3">
+                        @Html.TextBoxFor(n => n.AwardPoints, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(n => n.AwardPoints)
+                    </div>
+                    <div class="col-xs-2">
+                       @Html.Label(pointName, new { @class = "form-control-static text-center" })
+                    </div>
+                    <div class="col-xs-3">
+                        @Html.TextBoxFor(n => n.AwardGolds, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(n => n.AwardGolds)
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.Label(goldName, new { @class = "form-control-static text-center" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12 row">
+                    <div class="col-xs-12">
+                        <label class="form-control-static text-center">申请条件</label>
+                    </div>
+                    <div class="col-xs-4">
+                        @Html.LabelFor(n => n.MinUserRank, new { @class = "form-control-static text-center" })
+                    </div>
+                    <div class="col-xs-2 tn-no-padding">
+                        @Html.TextBoxFor(n => n.MinUserRank, new { @class = "form-control" })
+                    </div>
+                    <div class="col-xs-1">
+                        <label class="form-control-static text-center">级</label>
+                    </div>
+                    @Html.ValidationMessageFor(n => n.MinUserRank)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <label>完成任务需要提交的内容项</label>
+                </div>
+                <div id="TasksSettingsDiv">
+                    @if (Model.Options != null && Model.Options.Count > 0)
+                    {
+                        foreach (var option in Model.Options)
+                        {
+                            <div class="col-xs-12 row TasksSettingsDiv tn-mb-15">
+                                <div class="col-xs-10">
+                                    <input type="text" class="TasksSettings form-control" value="@option" />
+                                </div>
+                                <div class="col-xs-2 tn-no-padding">
+                                    <label class="form-control-static text-center"><a class="a  tn-cursor-pointer deleteTasksSetting">删除</a></label>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-xs-12 row TasksSettingsDiv tn-mb-15">
+                            <div class="col-xs-10">
+                                <input type="text" class="TasksSettings form-control" />
+                            </div>
+                            <div class="col-xs-2 tn-no-padding">
+                                <label class="form-control-static text-center"><a class="a  tn-cursor-pointer deleteTasksSetting">删除</a></label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 row TasksSettingsDiv tn-mb-15">
+                            <div class="col-xs-10">
+                                <input type="text" class="TasksSettings form-control" />
+                            </div>
+                            <div class="col-xs-2 tn-no-padding">
+                                <label class="form-control-static text-center"><a class="a  tn-cursor-pointer deleteTasksSetting">删除</a></label>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-xs-12">
+                    <button type="button" class="btn btn-default" id="addTasksSetting">
+                        <i class="fa fa-plus"></i>添加内容项
+                    </button>
+                </div>
+
+
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    @Html.LabelFor(n => n.Deadline)
+                    <div class="input-group tn-width-300">
+                    @Html.DateTimePickerFor(n => n.Deadline)
+                    </div>
+                    @Html.ValidationMessageFor(n => n.Deadline)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    @Html.CheckBoxFor(n => n.IsUsing)
+                    @Html.LabelFor(n => n.IsUsing)
+                </div>
+            </div>
+            <div class="form-group">
+                &nbsp;&nbsp;&nbsp;<button type="button" id="edittasksubmit" class="btn btn-primary tn-btn-wp">确定</button>&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-default tn-btn-wp" onclick="layer.closeAll();">取消</button>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+        $(document).find("#edittaskform").on("click", ".deleteTasksSetting", function () {
+            $(this).parents(".TasksSettingsDiv").remove();
+            if ($(".TasksSettingsDiv").length == 1)
+                $(".deleteTasksSetting").hide();
+        }).on("click", "#addTasksSetting", function () {
+            var html = '<div class="col-xs-12 row TasksSettingsDiv tn-mb-15">';
+            html += '<div class="col-xs-10">';
+            html += '<input type="text" class="TasksSettings form-control" />';
+            html += '</div>';
+            html += '<div class="col-xs-2 tn-no-padding">';
+            html += '<label class="form-control-static text-center"><a class="a  tn-cursor-pointer deleteTasksSetting">删除</a></label>';
+            html += '</div>';
+            html += '</div>';
+            $("#TasksSettingsDiv").append(html);
+            $(".deleteTasksSetting").show();
+        });
+    });
+</script>

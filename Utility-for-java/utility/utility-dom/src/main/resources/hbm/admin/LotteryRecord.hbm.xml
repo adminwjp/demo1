@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="LotteryRecord" table="t_lottery_record" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="buyer" foreign-key="fk_buyer_id" column="buyer_id" cascade="all" fetch="join"  />
+ <many-to-one name="lottery" foreign-key="fk_lottery_id" column="lottery_id" cascade="all" fetch="join"  />
+ <many-to-one name="lotteryTime" foreign-key="fk_lotteryTime_id" column="lotteryTime_id" cascade="all" fetch="join"  />
+<property name="lotteryMonth" column="lottery_month" type="java.lang.String" />
+<property name="buyerId" column="buyer_id" type="java.lang.Integer" />
+<property name="lotteryId" column="lottery_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

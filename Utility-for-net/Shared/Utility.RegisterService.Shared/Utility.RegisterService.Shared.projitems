@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>6943c6b1-3ea8-4582-8cd2-ec76d900d373</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Utility.RegisterService.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ConfigManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Consul\ConsulHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Consul\ConsulServiceProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Zipkin\ZipkinHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Zk\ZooKeeperHelper.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net" xmlns:v="http://www.springframework.net/validation">
+  <object name="AdvertController" type="Shop.Controllers.AdvertController,Shop.Spring.Advert.Api" singleton="false">
+    <constructor-arg  type="Shop.Adverts.AdvertAppService, Shop.Spring.Advert.Api" ref="advertAppService"/>
+    <!--这里引用Service层的对象-->
+  </object>
+  <object id="advertAppService"  parent="BaseTransactionManager">
+    <property name ="Target">
+      <object type="Shop.Adverts.AdvertAppService, Shop.Spring.Advert.Api">
+        <constructor-arg name="repository" ref="advertRepository"/>
+      </object>
+    </property>
+  </object>
+  <object id="advertRepository" type="Shop.Adverts.AdvertRepository, Shop.Spring.Advert.Api">
+      <property name="HibernateTemplate" ref="HibernateTemplate"/>
+   </object>
+  <!--如果需要添加新的数据库表，参照上面的内容添加配置-->
+</objects>

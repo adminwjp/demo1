@@ -1,0 +1,120 @@
+﻿@model PointRechargeOrder
+@{
+
+    int index = 0;
+}
+<div class="panel" style="width:450px">
+
+    <div class="panel-body ">
+        <ul class="list-unstyled text-muted tn-mb-30">
+            <li class="tn-mb-10">订单号码：@Model.Id</li>
+            <li class="tn-mb-10">订单金额：@(Model.TotalPrice)元</li>
+            <li class="tn-mb-10">订单描述：@Model.Description</li>
+        </ul>
+        <div id="wxzhifu">
+
+            <p>支付方式</p>
+            <form class="tn-mb-30">
+                @foreach (Buyway item in Enum.GetValues(typeof(Buyway)))
+            {
+                index++;
+                <label class="radio-inline">
+                    @Html.RadioButton("payRadio", item, index == 1 ? true : false)
+                    @item.GetDisplayName()
+                </label>
+
+                }
+
+            </form>
+            <button type="button" id="buy" class="btn btn-primary tn-btn-wp">付款</button>
+
+
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+        $("#tjorder").click(function myfunction() {
+            var TotalPrice = $("#radioPrice").val();
+
+            $.post("@CachedUrlHelper.Action("_CreateOrder", "UserSpace")", { "totalPrice": TotalPrice }, function myfunction(data) {
+                if (data.state) {
+                    layer.close();
+                    tnlayer.layermodal('订单详情', '@CachedUrlHelper.Action("_CreateOrder", "UserSpace")?t=' + new Date().getTime(), '500px', 'auto')
+                } else {
+                    layer.msg(data.msg, { icon: 2 });
+                }
+            })
+
+        });
+        //关闭窗口
+        $(document).on("click", ".cancel", function myfunction() {
+            layer.closeAll();
+            if ($(this).text() == "支付完成") {
+                layer.msg("支付成功", { icon: 1 });
+                window.setTimeout(function myfunction() {
+                    location.reload();
+                }, 2000);
+            } else {
+                layer.msg("订单未支付成功，请重新支付！", { icon: 2 });
+                window.setTimeout(function myfunction() {
+                    location.reload();
+                }, 2000);
+            }
+
+
+        })
+        $("#buy").click(function myfunction() {
+            var buyway = $("[name='payRadio']:checked").val();
+            if (buyway == "AliPay") {
+                $("#wxzhifu").html(' <p>支付完成前,请不要关闭此支付验证窗口。</p> <p>支付完成后,请根据您的实际情况点击下面按钮。</p> <button type="button" class="btn btn-default cancel">支付遇到问题</button><button type="button"  class="btn btn-primary tn-btn-wp cancel">支付完成</button>');
+
+                window.open("@CachedUrlHelper.Action("PaymentOrder", "UserSpace")?orderId=" + "@Model.Id" + "&buyway=" + buyway);
+            } else {
+                $.get("@CachedUrlHelper.Action("PaymentOrder", "UserSpace")?t=" + new Date().getTime() + "&orderId=" + "@Model.Id" + "&buyway=" + buyway, function myfunction(datapay) {
+                    if (datapay.MessageType == 1) {
+                        $("#wxzhifu").html('<p>请在10分钟内完成支付</p> <img  src="' + datapay.MessageContent + '" alt="" /></br><img src="@Tunynet.Utilities.WebUtility.ResolveUrl("~/img/pay-logo.png")" />');
+                        window.clearInterval($("#indexid").val());
+                        //定时查询是否支付成功
+                        var index = window.setInterval(function myfunction() {
+                            $.get("@CachedUrlHelper.Action("WxGetOrderStatus", "UserSpace")?t=" + new Date().getTime(), { "orderId": "@Model.Id" }, function myfunction(data) {
+                                if (data.state) {
+                                    layer.closeAll();
+                                    layer.msg("支付成功", { icon: 1 });
+                                    window.setTimeout(function myfunction() {
+                                        location.reload();
+                                    }, 2000);
+                                    window.clearInterval(index);
+                                } else {
+                                    //layer.closeAll();
+                                    //layer.msg("支付失败,请重新发起付款", { icon: 2 });
+                                    //window.setTimeout(function myfunction() {
+                                    //    location.reload();
+                                    //}, 2000);
+                                    //window.clearInterval(index);
+                                }
+                            });
+
+                        }, 3000);
+                        $("#indexid").val(index);
+                    }
+                    else {
+                        layer.closeAll();
+                        layer.msg(datapay.MessageContent, { icon: 2 });
+                    }
+                })
+            }
+
+
+
+        });
+
+
+
+        @*$('#Recharge').click(function () {
+            tnlayer.layermodal('我要充值', '@CachedUrlHelper.Action("_CreateOrder", "UserSpace")?t=' + new Date().getTime(), '500px', 'auto')
+        });*@
+    })
+</script>

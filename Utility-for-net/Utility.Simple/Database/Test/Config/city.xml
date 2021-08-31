@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mapp >
+  <table name="t_city">
+     <id name="id" type="System.Int32" increment="auto"></id>
+     <column name="code" type="System.String" length="6"></column>
+     <column name="name" type="System.String" length="10"></column>
+     <one-to-many name="parent_id" type="System.Int32"  foreign-key="fk_parent_id" reference="t_city" />
+  </table>
+  <insert id="city.add" paramType="System.Dynamic">
+    insert into t_city(code,name,parent_id) values(@code,@name,@parent_id)
+  </insert>
+</mapp>

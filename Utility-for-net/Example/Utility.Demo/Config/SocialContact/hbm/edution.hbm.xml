@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
+  <!-- start edution  -->
+  <class name="SocialContact.Domain.Entities.EdutionEntity,Utility.Demo"  table="t_edution" discriminator-value="0">
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+      <!-- unsaved-value used to be null and generator was increment in h2.0.3 -->
+    </id>
+    <property column="create_date" name="CreateDate" type="System.Int64"/>
+    <property column="update_date" name="UpdateDate" type="System.Int64"/>
+    
+        <property column="user_id" name="UserId" type="System.Int64"/>
+    <property column="catagory_id" name="CatagoryId" type="System.Int64"/>
+    <!--<many-to-one name="User"  column="user_id" foreign-key="fk_user_id"  class="SocialContact.Domain.Entities.UserEntity,Utility.Demo"/>
+    <many-to-one name="Catagory"  column="catagory_id" foreign-key="fk_catagory_id"  class="SocialContact.Domain.Entities.CatagoryEntity,Utility.Demo"/>-->
+    
+    <property column="first_edution" name="FirstEdution" type="System.String"/>
+    <property column="first_school" name="FirstSchool" type="System.String"/>
+    <property column="first_start_date" name="FirstStartDate" type="System.Int64"/>
+    <property column="first_end_date" name="FirstEndDate" type="System.Int64"/>
+
+    <property column="second_edution" name="SecondEdution" type="System.String"/>
+    <property column="second_school" name="SecondSchool" type="System.String"/>
+    <property column="second_start_date" name="SecondStartDate" type="System.Int64"/>
+    <property column="second_end_date" name="SecondEndDate" type="System.Int64"/>
+
+    <property column="three_edution" name="ThreeEdution" type="System.String"/>
+    <property column="three_school" name="ThreeSchool" type="System.String"/>
+    <property column="three_start_date" name="ThreeStartDate" type="System.Int64"/>
+    <property column="three_end_date" name="ThreeEndDate" type="System.Int64"/>
+
+    <property column="four_edution" name="FourEdution" type="System.String"/>
+    <property column="four_school" name="FourSchool" type="System.String"/>
+    <property column="four_start_date" name="FourStartDate" type="System.Int64"/>
+    <property column="four_end_date" name="FourEndDate" type="System.Int64"/>
+
+    <property column="five_edution" name="FiveEdution" type="System.String"/>
+    <property column="five_school" name="FiveSchool" type="System.String"/>
+    <property column="five_start_date" name="FiveStartDate" type="System.Int64"/>
+    <property column="five_end_date" name="FiveEndDate" type="System.Int64"/>
+  </class>
+  <!-- end edution   -->
+</hibernate-mapping>

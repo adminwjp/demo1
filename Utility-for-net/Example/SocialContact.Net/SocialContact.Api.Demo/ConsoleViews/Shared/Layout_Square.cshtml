@@ -1,0 +1,55 @@
+﻿@{
+    var users = UserContext.CurrentUser;
+    ISettingsManager<SiteSettings> siteSettingsManager = DIContainer.Resolve<ISettingsManager<SiteSettings>>();
+    var siteSettings = siteSettingsManager.Get();
+    //获取Cookie
+    HttpCookie strcookie = Request.Cookies["sideSwitch"];
+    var strcookieval = "";
+    if (strcookie != null && strcookie.Value == "1")
+    {
+        strcookieval = "tn-narrow-side";
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Formatter.GenerateTitle(true, ViewData.Get<string[]>("Title", null))</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    @Styles.Render("~/css/Site")
+    @Styles.Render("~/ConsoleViews/css/SiteConsole")
+    @Styles.Render("~/js/lib/layer/skin/layer")
+
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="@Tunynet.Utilities.WebUtility.ResolveUrl("~/js/html5shiv.min.js")"></script>
+         <script type="text/javascript" src="@Tunynet.Utilities.WebUtility.ResolveUrl("~/js/respond.js")"></script>
+      <![endif]-->
+    <script src="~/js/require.js"></script>
+    <script src="~/js/config.js" id="configjs"></script>
+    <script src="~/js/frameConsole.js"></script>
+
+    <link rel="icon" type="image/x-icon" href="@Tunynet.Utilities.WebUtility.ResolveUrl("~/favicon.ico")" />
+    <link rel="shortcut icon" type="image/x-icon" href="@Tunynet.Utilities.WebUtility.ResolveUrl("~/favicon.ico")" />
+</head>
+<body style="word-wrap:break-word" class="tn-fluid-page tn-has-side @strcookieval">
+    <div class="tn-wrapper">
+        @Html.Partial("_Menus")
+        <div class="tn-side-lower"></div>
+        <div class="tn-page-wrapper">
+            @Html.Partial("_Header")
+            <div class="container-fluid">
+                @RenderSection("SubMenu", false)
+                @Html.AntiForgeryToken()
+                @RenderBody()
+            </div>
+            <div class="tn-fluid-footer text-center">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+@if (Utility.IsMiniProfilerEnabled())
+{
+    @StackExchange.Profiling.MiniProfiler.RenderIncludes(position: StackExchange.Profiling.RenderPosition.Left, showTrivial: false, showTimeWithChildren: false, startHidden: false);
+}

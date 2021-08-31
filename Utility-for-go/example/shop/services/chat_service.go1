@@ -1,0 +1,241 @@
+package services
+
+import (
+	"shop/dto"
+)
+
+var accounts map[string]interface{} = make(map[string]interface{}, 100)
+
+func CheckPhoneAvailable(account string) dto.CheckUserResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func SendCode(account string) dto.CheckUserResponse {
+	db := Db
+
+}
+
+func VerifyCode(account string) dto.VerifyCodeResponse {
+	db := Db
+
+}
+
+func Register(account string) dto.RegisterResponse {
+	db := Db
+
+}
+
+func Login(account string) dto.LoginResponse {
+	db := Db
+
+}
+func GetToken() dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func SetName(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func SetPortrait(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func ChangePassword(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func RestPassword(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func GetUserInfoById(userid string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func GetUserInfoFromPhone(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func SendFriendInvitation(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getAllUserRelationship() dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getFriendInfoByID(userid string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func agreeFriends(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func agreeFriends(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func deleteFriend(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func setFriendDisplayName(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getBlackList() dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func addToBlackList(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func addToBlackList(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func removeFromBlackList(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func createGroup(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func setGroupPortrait(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getGroups(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getGroupInfo(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getGroupMember(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func addGroupMember(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func deleGroupMember(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func setGroupName(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func quitGroup(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func setGroupDisplayName(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func JoinGroup(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getDefaultConversation(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getUserInfos(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getQiNiuToken(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func getClientVersion(account string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func SyncTotalData(version string) dto.GetTokenResponse {
+	db := Db
+
+}
+
+//{"code":200}
+func DownloadPic(url string) dto.GetTokenResponse {
+	db := Db
+
+}

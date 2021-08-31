@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "utility", "utility.pyproj", "{C2B4BF9C-9415-488F-87E3-BDBA093301D8}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "shop-for-flask", "..\..\shop\Shop-for-flask\shop-for-flask.pyproj", "{F596CF90-6FD5-405E-802E-E38DEC50431A}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "DjangoWeb", "..\..\shop\Shop-for-django\DjangoWeb.pyproj", "{876A99A7-7A44-48C9-9AE9-9E2159CF5C98}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2B4BF9C-9415-488F-87E3-BDBA093301D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2B4BF9C-9415-488F-87E3-BDBA093301D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F596CF90-6FD5-405E-802E-E38DEC50431A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F596CF90-6FD5-405E-802E-E38DEC50431A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F596CF90-6FD5-405E-802E-E38DEC50431A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F596CF90-6FD5-405E-802E-E38DEC50431A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{876A99A7-7A44-48C9-9AE9-9E2159CF5C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{876A99A7-7A44-48C9-9AE9-9E2159CF5C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{876A99A7-7A44-48C9-9AE9-9E2159CF5C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{876A99A7-7A44-48C9-9AE9-9E2159CF5C98}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED301A34-DA39-46C5-97CC-CC77CD32F68F}
+	EndGlobalSection
+EndGlobal

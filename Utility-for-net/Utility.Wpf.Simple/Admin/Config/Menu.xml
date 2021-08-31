@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Menu Header="工具">
+    <Children>
+      <Menu Header="Tab测试" TypeName="Tool.Ctrls.TabTestControl,Utility.Wpf.Simple" />
+      <Menu Header="Net平台" TypeName="Tool.Ctrls.PlatCtrl,Utility.Wpf.Simple" />
+      <Menu Header="字符串转义工具" TypeName="Tool.Ctrls.StrCtrl,Utility.Wpf.Simple" />
+      <Menu Header="代码生成" TypeName="Tool.Ctrls.CodeControl,Utility.Wpf.Simple" />
+      <Menu Header="Docker工具" TypeName="Tool.Ctrls.DockerToolControl,Utility.Wpf.Simple" />
+      <Menu Header="RabbitMQ工具" TypeName="" />
+      <Menu Header="Kafka工具" TypeName="" />
+      <Menu Header="Elasticsearch工具" TypeName="" />
+      <Menu Header="Zookeeper工具" TypeName="" />
+    </Children>
+  </Menu>
+  <Menu Header="样例">
+    <Children>
+      <!--<Menu Header="配置样例" TypeName="Wpf.Config.ConfigCtrl,Wpf.Admin" />-->
+      <Menu Header="配置样例" TypeName="Utility.Wpf.Ctrls.ListTemplateCtrl" Flag="Config.Config"  />
+    </Children>
+  </Menu>
+</Root>

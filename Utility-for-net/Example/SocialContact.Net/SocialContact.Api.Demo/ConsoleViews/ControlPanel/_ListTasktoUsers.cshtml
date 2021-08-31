@@ -1,0 +1,64 @@
+﻿@model PagingDataSet<PointTaskRecord>
+@{
+    var pointName = ViewData["pointName"];
+    var goldName = ViewData["goldName"];
+}
+@if (Model.Any())
+{
+    @Html.Hidden("pageIndex", Model.PageIndex)
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>任务名称</th>
+                <th>说明</th>
+                <th>奖励</th>
+                <th>领取人</th>
+                <th>领取时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pointTaskRecord in Model)
+            {
+                var task = pointTaskRecord.GetTaskInfo();
+                <tr>
+                    <td title="@task.TaskName"><img src="@task.TaskType.ImageUrl" width="20" height="20" alt="@task.TaskName" />&nbsp;
+                    @StringUtility.Trim(task.TaskName, 18)</td>
+                    <td title="@task.Description">@StringUtility.Trim(task.Description, 30)</td>
+                    <td>
+                        @(task.AwardPoints > 0 ? task.AwardPoints + pointName.ToString() : "")
+                        @((task.AwardPoints > 0 && task.AwardGolds > 0) ? "+" : "")
+                        @(task.AwardGolds > 0 ? task.AwardGolds + goldName.ToString() : "")
+                    </td>
+                    <td title="@pointTaskRecord.UserDisplayName">
+                        @StringUtility.Trim(pointTaskRecord.UserDisplayName,8)
+                    </td>
+                    <td>@pointTaskRecord.DateCreated.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @pointTaskRecord.Status.GetDisplayName()
+                    </td>
+                    <td>
+                        @if (pointTaskRecord.Status == TaskRecordStatus.Applying)
+                        {
+                            <a class="approvedtask" data-tasktouserid="@pointTaskRecord.RecordId" role="button" title="审核任务">审核</a>
+                        }
+                        else if (pointTaskRecord.Status == TaskRecordStatus.Abandoned)
+                        {
+                            <a class="deleterecord" data-tasktouserid="@pointTaskRecord.RecordId" role="button" title="删除任务">删除</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        @Html.AjaxPagingButton(Model, "_ListTasktoUsers", CachedUrlHelper.Action("_ListTasktoUsers", "ControlPanel"))
+    </div>
+}
+else
+{
+    <div class="text-center text-warning">
+        还没有任何任务记录
+    </div>
+}

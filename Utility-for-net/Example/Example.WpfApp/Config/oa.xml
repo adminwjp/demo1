@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Menu Header="OA管理">
+    <Children>
+      <Menu Header="账套分类管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.AccountItem"></Menu>
+      <Menu Header="权限管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.AuthorityOperator"></Menu>
+      <Menu Header="培训内容管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.BringUpContent"></Menu>
+      <Menu Header="培训人员管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.BringUpPerson"></Menu>
+      <Menu Header="职位管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.Duty"></Menu>
+      <Menu Header="名族管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.FamousRace"></Menu>
+      <Menu Header="模块管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.Module"></Menu>
+      <Menu Header="个人管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.Person"></Menu>
+      <Menu Header="奖惩管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.ReawrdsAndPunishment"></Menu>
+      <Menu Header="账套人员设置管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.ReckoningList"></Menu>
+      <Menu Header="账套名称管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.ReckoningName"></Menu>
+      <Menu Header="账套管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.Reckoning"></Menu>
+      <Menu Header="角色管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.Role"></Menu>
+      <Menu Header="考勤管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.TimeCard"></Menu>
+      <Menu Header="用户管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.OA.OAFlag.User"></Menu>
+    </Children>
+  </Menu>
+  
+  <Menu Header="人事管理">
+    <Children>
+      <Menu Header="人事管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" ></Menu>
+      <Menu Header="档案管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+      <Menu Header="考勤管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+      <Menu Header="奖惩管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+      <Menu Header="培训管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+    </Children>
+  </Menu>
+
+  <Menu Header="待遇管理">
+    <Children>
+      <Menu Header="账套管理" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+      <Menu Header="人员设置" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+      <Menu Header="统计报表" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+    </Children>
+  </Menu>
+
+  <Menu Header="系统维护">
+    <Children>
+      <Menu Header="企业架构" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+      <Menu Header="基本资料" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+      <Menu Header="初始化系统" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf"></Menu>
+    </Children>
+  </Menu>
+  
+</Root>

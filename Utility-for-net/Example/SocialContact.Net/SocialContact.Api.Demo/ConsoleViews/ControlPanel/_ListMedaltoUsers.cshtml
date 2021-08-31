@@ -1,0 +1,58 @@
+﻿@model PagingDataSet<MedalToUser>
+@if (Model.Any())
+{
+    int index = 1;
+    @Html.Hidden("pageIndex", Model.PageIndex)
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>勋章名称</th>
+                <th>说明</th>
+                <th>被授予人</th>
+                <th>授予时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medaltoUser in Model)
+            {
+                var medal = medaltoUser.GetMedalInfo();
+                <tr>
+                    <td title="@medal.MedalName"><img src="@medal.GetImageUrl()" width="20" alt="@medal.MedalName" />&nbsp;@StringUtility.Trim(medal.MedalName, 18)</td>
+                    <td title="@medal.Description">@StringUtility.Trim(medal.Description, 30)</td>
+                    <td title="@medaltoUser.UserDisplayName">@StringUtility.Trim(medaltoUser.UserDisplayName, 10)</td>
+                    <td>
+                        @medaltoUser.DateCreated.ToString("yyyy-MM-dd")
+                    </td>
+                    <td>@medaltoUser.UserAwardStatus.GetDisplayName()</td>
+                    <td>
+                        @if (medaltoUser.UserAwardStatus == UserAwardStatus.AlreadyAward)
+                        {
+                            <a class="medaltouserdeal tn-cursor-pointer a" data-method="Recovered" data-medaltouserid="@medaltoUser.Id" role="button" title="收回">收回</a><text> &nbsp;</text>
+                        }
+                        else if (medaltoUser.UserAwardStatus == UserAwardStatus.Applying)
+                        {
+                            <a class="medaltouserdeal tn-cursor-pointer a" data-method="Approved" data-medaltouserid="@medaltoUser.Id" role="button" title="批准">批准</a><text> &nbsp;</text>
+                            <a class="medaltouserdeal tn-cursor-pointer a" data-method="Refused" data-medaltouserid="@medaltoUser.Id" role="button" title="拒绝">拒绝</a><text> &nbsp;</text>
+                        }
+                        else
+                        {
+                            <a class="deletemedaltouser tn-cursor-pointer a" data-medaltouserid="@medaltoUser.Id" role="button" title="删除"><i class="fa fa-trash fa-lg"></i></a><text> &nbsp;</text>
+}
+                    </td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        @Html.AjaxPagingButton(Model, "_ListMedaltoUsers", CachedUrlHelper.Action("_ListMedaltoUsers", "ControlPanel"))
+    </div>
+}
+else
+{
+    <div class="text-center text-warning">
+        还没有任何用户勋章
+    </div>
+}

@@ -1,0 +1,23 @@
+﻿@{
+    var attachment = ViewData.Get<Attachment>("attachment", null);
+    var index = ViewData.Get<int>("index", 0);
+}
+@if (attachment != null)
+{
+    <div class="col-xs-3 imageAttachment" id="imageAttachment-@index" data-index="@index" data-id="@attachment.AttachmentId">
+        <div class="thumbnail">
+            <div class="tn-img-area">
+                <img data-id="@attachment.AttachmentId" class="attachmentItem" src="@attachment.GetDirectlyUrl()" alt="...">
+                <input type="hidden" name="AttachmentId" value="@attachment.AttachmentId" />
+            </div>
+            <div class="caption">
+                <textarea class="form-control" name="Discription" placeholder="描述">@attachment.Discription</textarea>
+            </div>
+            <div class="tn-p-xs">
+                <a id="delete-@attachment.AttachmentId" href="javascript:;">删除</a>
+                <a class="up hidden" data-index="@index" href="javascript:;">上移</a>
+                <a class="down hidden" data-index="@index" href="javascript:;">下移</a>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,117 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>升级开始</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <!--框架样式-->
+    <link rel="stylesheet" href="../css/tnui.css">
+    <link rel="stylesheet" href="../css/jh-install.css">
+    <script type="text/javascript" src="../js/modernizr-2.8.3.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="../js/main.js"></script>
+    <script type="text/javascript" src="../js/lib/ajaxForm/jquery.form.js"></script>
+    <script type="text/javascript" src="../js/lib/layer/layer.js"></script>
+    <link rel="stylesheet" href="../js/lib/layer/skin/tnui/style.css">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/html5shiv.min.js"></script>
+    <script type="text/javascript" src="../js/respond.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        input:-webkit-autofill, select:-webkit-autofill, textarea:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="tn-doc">
+        <div class="tn-content">
+            <div class="container">
+                <div class="jh-install-logo">
+                    <img alt="..." src="../img/logo-big.png" width="124">
+                    <span class="jh-install-wizard"> v5.2 升级向导</span>
+                </div>
+                <div class="jh-install-block">
+
+                    <div class="jh-install-content"  style="height:500px">
+                       
+                            @*<fieldset>
+                                <legend>选择版本</legend>
+                                从  <select id="Select1">
+                                    <option value="">选择当前版本</option>
+                                    <option value="4">V4.0</option>
+                                    <option value="4.1">V4.1</option>
+                                    <option value="4.2">V4.2</option>
+                                    <option value="4.3">V4.3</option>
+                                </select> 升级到V5.0
+                            </fieldset>*@
+                            <fieldset>
+                                <legend>选择升级模块</legend>
+                                <div class="col-xs-2">
+                                    <input id="Checkbox1" name="module" type="checkbox"  value="CMS"/> 资讯
+                                </div>                    
+                                <div class="col-xs-2">     
+                                    <input id="Checkbox1" name="module" type="checkbox"  value="Bar" /> 贴吧
+                                </div>                                                     
+                                <div class="col-xs-2">                                     
+                                    <input id="Checkbox1" name="module" type="checkbox"  value="Blog" /> 博客
+                                </div>                                                   
+                                <div class="col-xs-2">                                    
+                                    <input id="Checkbox1" name="module" type="checkbox"  value="Ask" /> 问答
+                                </div>
+                            </fieldset>
+                           
+                    </div>
+                    <div class="form-inline tn-tool-column  pull-right  " >
+                        <div class="form-group ">
+                            <input id="Next" type="button" class="btn btn-primary  disabled " value="下一步">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        //$("#Select1").change(function myfunction() {
+        //    if ($('[name="module"]:checked').length > 0 && $(this).val()!="") {
+        //        $("#Next").removeClass("disabled");
+        //    } else {
+        //        $("#Next").addClass("disabled");
+        //    }
+          
+        //})
+
+
+        $('[name="module"]').change(function myfunction() {
+
+            if ($('[name="module"]:checked').length > 0 && $("#Select1").val() != "") {
+                $("#Next").removeClass("disabled");
+            } else {
+                $("#Next").addClass("disabled");
+            }
+
+        })
+        $("#Next").click(function myfunction() {
+            if ($(this).hasClass("disabled"))
+                return false;
+            var currentVersion = "";
+            var upgradeModule = [];
+            $('[name="module"]:checked').each(function myfunction() {
+                upgradeModule.push($(this).val());
+            })
+            window.location.href = "@CachedUrlHelper.Action("Upgrade_Start2", "Upgrade")?currentVersion=" + currentVersion + "&upgradeModule=" + upgradeModule + "&t=" + new Date().getTime();
+
+        })
+
+
+    </script>
+</body>
+</html>

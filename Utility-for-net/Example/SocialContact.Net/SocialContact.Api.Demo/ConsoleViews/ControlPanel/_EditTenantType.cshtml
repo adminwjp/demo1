@@ -1,0 +1,126 @@
+﻿@model TenantTypeEditModel
+@{
+    var servicesMultiSelect = ViewData.Get<MultiSelectList>("servicesMultiSelect", null);
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="tab-content ">
+            <div role="tabpanel" class="tab-pane active">
+                @using (Html.BeginAjaxForm("_EditTenantType", "ControlPanel", null, FormMethod.Post, new AjaxFormOptions { OnSuccessCallBack = "_editSuccess" }, new { @class = "form-horizontal tn-form-validation", @id = "_EditTenantType" }))
+                {
+                    @Html.HiddenFor(n => n.IsInDatabase)
+                    @Html.HiddenFor(n => n.IsInCode)
+                    <div class="form-group">
+                        <label class="col-xs-12 text-left">@Html.LabelFor(n => n.TenantTypeId)</label>
+                        <div class="col-xs-7">
+                            @Html.TextBoxFor(n => n.TenantTypeId, new { @class = "form-control col-xs-10", @readonly = "" })
+                            @Html.ValidationMessageFor(n => n.TenantTypeId)
+                        </div>
+                        <div class="col-xs-5 tn-p-xxs">
+                            @if (Model.IsInCode)
+                            {
+                                <i class="fa fa-circle tn-green-color fa-lg"> 代码</i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-circle-o tn-red-color fa-lg"> 代码</i>
+                            }
+                            @if (Model.IsInDatabase)
+                            {
+                                <i class="fa fa-circle tn-green-color fa-lg"> 数据库</i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-circle-o tn-red-color fa-lg"> 数据库</i>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 text-left">@Html.LabelFor(n => n.Name)</label>
+                        <div class="col-xs-12">
+                            @Html.TextBoxFor(n => n.Name, new { @class = "form-control col-xs-10" })
+                            @Html.ValidationMessageFor(n => n.Name)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 text-left">生成ClassType</label>
+                        <div class="col-xs-9">
+                            <input id="className" class="form-control" placeholder="实体名" value="" />
+                        </div>
+                        <div class="col-xs-3">
+                            <button type="button" class="btn btn-default btn-block" id="getClassType">生成</button>
+                        </div>
+                        <div class="col-xs-12 tn-mt-10">
+                            @Html.TextBoxFor(n => n.ClassType, new { @class = "form-control col-xs-10", @id = "ClassType", @placeholder = "ClassType" })
+                            @Html.ValidationMessageFor(n => n.ClassType)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 text-left">
+                            @Html.LabelFor(n => n.ServiceKeys)
+                            <label class="text-muted pull-right">按住Ctrl可多选, Shift可连续选择</label>
+                        </label>
+                        <div class="col-xs-12">
+                            @Html.ListBoxFor(n => n.ServiceKeys, servicesMultiSelect, new { @class = "form-control col-xs-10", @size = "8" })
+                            @Html.ValidationMessageFor(n => n.ClassType)
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary tn-btn-wp" id="submit">保存</button>
+                    <button type="button" class="btn btn-default tn-btn-wp" id="cancel">取消</button>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    require(['jquery'], function ($) {
+
+        $('#getClassType').on('click', function () {
+            var className = $('#className').val();
+            if (className.length <= 0) {
+                layer.msg('请填写ClassName', { icon: 2 });
+                return false;
+            }
+            $.get('@CachedUrlHelper.Action("GetClassType","ControlPanel")', { className: className, t: (new Date()).valueOf() }, function (data) {
+                if (data.length > 0) {
+                    var array = data.split(',');
+                    array=  array.slice(0,2);
+                    $('#ClassType').val(array.join(','));
+                }
+            })
+        })
+
+        //beiginajaxform成功回调函数
+        $.fn._editSuccess = function (data) {
+            if (data.MessageType) {
+                var tenantTypeId = $('#TenantTypes').val();
+                var serviceKey = $('#Services').val();
+                //异步刷新列表
+                $.get('@CachedUrlHelper.Action("_ListTenantTypes","ControlPanel")', { tenantTypeId: tenantTypeId, serviceKey: serviceKey, t: (new Date()).valueOf() }, function (html) {
+                    $('#_ListTenantTypes').html(html);
+                    layer.closeAll();
+                    layer.msg(data.MessageContent, { icon: 1 });
+                });
+            }
+            else {
+                layer.msg(data.MessageContent, { icon: 2 });
+            }
+
+        };
+
+        //取消
+        $("#cancel").click(function () {
+            layer.closeAll();
+        });
+
+    })
+
+</script>

@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputPath>e:\work\Package\Utility.EnterpriseLibrary\</OutputPath>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <RepositoryUrl>e:\work\Package\Utility.EnterpriseLibrary\</RepositoryUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>e:\work\Package\Utility.EnterpriseLibrary\</PackageProjectUrl>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>e:\work\Package\Utility.EnterpriseLibrary\Utility.EnterpriseLibrary.xml</DocumentationFile>
+    <Version>1.0.0.0</Version>
+     <Authors>wjp</Authors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Practices.EnterpriseLibrary.Data.dll" Version="3.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utility.Simple\Utility.Simple.csproj" />
+  </ItemGroup>
+</Project>

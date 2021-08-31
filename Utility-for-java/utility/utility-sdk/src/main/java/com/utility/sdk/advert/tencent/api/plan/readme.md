@@ -1,0 +1,1 @@
+https://developers.e.qq.com/docs/apilist/ads/campaign

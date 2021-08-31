@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- create by autoCode,v1.0.0 -->
+<mapper namespace="user">
+    <resultMap id="userResultMap" type="com.shop.model.User">
+        <result property="id" column="id" javaType="java.lang.Integer"></result>
+        <result property="nick" column="nick" javaType="java.lang.String"></result>
+        <result property="flag" column="flag"  javaType="com.shop.model.enums.UserFlag"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"></result>
+        <result property="phone" column="phone" javaType="java.lang.String"></result>
+        <result property="password" column="password" javaType="java.lang.String"></result>
+        <result property="headImgUrl" column="head_img_url" javaType="java.lang.String"></result>
+        <result property="userLevel" column="user_level" javaType="java.lang.Integer"></result>
+        <result property="loginDate" column="login_date" javaType="java.util.Date"></result>
+        <result property="email" column="email" javaType="java.lang.String"></result>
+        <result property="startDate" column="start_date" javaType="java.util.Date"></result>
+        <result property="endDate" column="end_date" javaType="java.util.Date"></result>
+        <result property="versionNo" column="version_no" javaType="java.lang.Integer"></result>
+        <result property="loginIp" column="login_ip" javaType="java.lang.String"></result>
+        <result property="loginFailureCount" column="login_failure_count" javaType="java.lang.Integer"></result>
+        <result property="parentId" column="parent_id" javaType="java.lang.Integer"></result>
+        <result property="registerDate" column="register_date" javaType="java.util.Date"></result>
+        <result property="modifyDate" column="modify_date" javaType="java.util.Date"></result>
+    </resultMap>
+
+  <select id="user.login" parameterType="java.lang.String" resultMap="userResultMap">
+        select * from t_user
+          <where>
+              <if test="#{0} !=null and #{0} !=''">
+                phone=#{0}
+              </if>
+              <if test="#{1} !=null and #{1} !=''">
+                  email=#{1}
+              </if>
+              <if test="#{2} !=null and #{2} !=''">
+                 and  phone=#{2}
+              </if>
+          </where>
+    </select>
+
+    <select id="user.checkEmail" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from t_user  where email=#{email}
+    </select>
+
+    <select id="user.checkPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from t_user  where phone=#{phone}
+    </select>
+
+    <insert id="user.register" parameterType="com.shop.model.User" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user
+        (
+        regeisterDate,
+        <if test="nick!=null and nick!=''">
+            ,nick
+        </if>
+        <if test="phone!=null and phone!=''">
+            ,phone
+        </if>
+        <if test="email!=null and email!=''">
+            ,email
+        </if>
+        <if test="password!=null and password!=''">
+            ,password
+        </if>
+        <if test="flag!=null">
+            ,flag
+        </if>
+
+        )
+        values
+        (
+        now()
+        <if test="nick!=null and nick!=''">
+            ,#{nick}
+        </if>
+        <if test="phone!=null and phone!=''">
+            ,#{phone}
+        </if>
+        <if test="email!=null and email!=''">
+            ,#{email}
+        </if>
+        <if test="password!=null and password!=''">
+            ,#{password}
+        </if>
+        <if test="flag!=null">
+            ,#{flag,org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        )</insert>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="ProductReview" table="t_product_review" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="buyer" foreign-key="fk_buyer_id" column="buyer_id" cascade="all" fetch="join"  />
+ <many-to-one name="order" foreign-key="fk_order_id" column="order_id" cascade="all" fetch="join"  />
+ <many-to-one name="product" foreign-key="fk_product_id" column="product_id" cascade="all" fetch="join"  />
+<property name="score" column="score" type="int" />
+<property name="content" column="content" type="java.lang.String" />
+ <many-to-one name="isShow" foreign-key="fk_isShow_id" column="isShow_id" cascade="all" fetch="join"  />
+<property name="ip" column="ip" type="java.lang.String" />
+<property name="buyerId" column="buyer_id" type="java.lang.Integer" />
+<property name="orderId" column="order_id" type="java.lang.Integer" />
+<property name="productId" column="product_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

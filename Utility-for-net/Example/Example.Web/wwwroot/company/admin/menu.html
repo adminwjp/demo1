@@ -1,0 +1,164 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="lib/html5shiv.js"></script>
+	<script type="text/javascript" src="lib/respond.min.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+	<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+	<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+	<!--[if IE 6]>
+	<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+	<script>DD_belatedPNG.fix('*');</script>
+	<![endif]-->
+	<title>菜单管理</title>
+	<style>
+		td.highlight {
+        font-weight: bold;
+        color: blue;
+    }
+		.table  td{
+			text-align:center;
+		}
+	</style>
+</head>
+<body>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 菜单中心 <span class="c-gray en">&gt;</span> 菜单管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<div class="text-c">
+			创建日期范围：
+			<input type="text" onfocus="WdatePicker({ createMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="createdatemin" class="input-text Wdate" style="width:120px;">
+			-
+			<input type="text" onfocus="WdatePicker({ createMinDate:'#F{$dp.$D(\'datemin\')}',createMaxDate:'%y-%M-%d' })" id="createdatemax" class="input-text Wdate" style="width:120px;">
+			修改日期范围：
+			<input type="text" onfocus="WdatePicker({ modifyMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="modifydatemin" class="input-text Wdate" style="width:120px;">
+			-
+			<input type="text" onfocus="WdatePicker({ modifyMinDate:'#F{$dp.$D(\'datemin\')}',modifyMaxDate:'%y-%M-%d' })" id="modifydatemax" class="input-text Wdate" style="width:120px;">
+			<input type="text" class="input-text" style="width:250px" placeholder="输入名称 英文 名称" id="name" name="">
+			<span class="select-box" style="width:150px;">
+				<select id="enable" class="select">
+					<option value="">请选择</option>
+					<option value="true">启用</option>
+					<option value="false">禁用</option>
+				</select>
+			</span>
+
+			<button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+			<button type="reset" class="btn btn-success radius" id="clear" name="">清空</button>
+		</div>
+		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+			<a href="javascript:;" onclick="operator('delete')" class="btn btn-danger radius">
+				<i class="Hui-iconfont">&#xe6e2;</i>
+				批量删除
+			</a>
+			<a href="javascript:;" onclick="operator('add')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加菜单</a>
+			<a href="javascript:;" onclick="operator('edit')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑菜单</a>
+			<a href="javascript:;" onclick="modifyEnable(urls.menu.editstatus, true)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6e1;</i>启用</a>
+			<a href="javascript:;" onclick="modifyEnable(urls.menu.editstatus, false)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe631;</i> 暂停</a>
+		</span>
+		<span class="r">共有数据：<strong>88</strong> 条</span> </div>
+		<div class="mt-20">
+			<table class="table table-border table-bordered table-hover table-bg table-sort">
+				<thead>
+					<tr class="text-c">
+						<th rowspan="2" width="25"><input type="checkbox" name="" value=""></th>
+						<th rowspan="2" width="80">ID</th>
+						<th rowspan="2" width="150">启用</th>
+						<th rowspan="2" width="100">名称</th>
+						<th rowspan="2" width="100">英文名称</th>
+						<th rowspan="2" width="100">图标</th>
+						<th rowspan="2" width="100">地址</th>
+						<th colspan="3" width="100">菜单分类信息</th>
+						<th rowspan="2" width="130">父菜单ID</th>
+						<th rowspan="2" width="130">加入时间</th>
+						<th rowspan="2" width="130">修改时间</th>
+						<th rowspan="2" width="100">操作</th>
+					</tr>
+					<tr class="text-c">
+						<th width="100">菜单分类Id</th>
+						<th width="150">菜单分类名称</th>
+						<th width="150">菜单分类英文名称</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+	<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+	<script src="/js/index.js"></script>
+	<script type="text/javascript">
+        let admin = new Admin();
+        admin.url = urls.menu;
+        let createdRow = admin.createdRow;
+        admin.createdRow= function (row, data, index) {
+            createdRow(row, data, index);
+            $('td', row).eq(13).addClass('td-manage');
+			 // var salesDetailTable = new $.fn.dataTable.Api('.table-sort');
+            //var length = salesDetailTable.rows().data().length;
+            //var list = [];
+            //for (var i = 0; i < length; i++) {
+            //    list.push(salesDetailTable.rows().data()[i]);
+            //}
+            //console.log(list);
+        };
+        admin.columns.splice(5, 2, {
+            data: function (item) {
+                if (item.icon)
+                    return "<i class=\"Hui-iconfont\">" + item.icon + "</i> ";
+                else return "";
+            }
+        },{ data: "href" });
+        admin.columns.splice(admin.columns.length-3, 0, { data: "parent_id" });
+        $(function () {
+            admin.tableInit(admin);
+          
+        });
+		/*菜单-添加 编辑*/
+        function operator(flag, self) {
+            if (flag == "delete") {
+                datadel(admin.url.delete);
+                return;
+            }
+            let title = "添加菜单信息";
+            let url = "menu_operator.html";
+            if (flag == "edit") {
+                if (!self && !hasChecked()) {
+                    return;
+                }
+                title = "编辑菜单信息";
+                url += "?edit";
+                let tr = getTrItem(self);
+                let obj = {
+                    id: tr.find("td:eq(1)").text(),
+                    enable: tr.find("td:eq(2)").text() == "已启用",
+                    name: tr.find("td:eq(3)").text(),
+                    english_name: tr.find("td:eq(4)").text(),
+                    icon: tr.find("td:eq(5)").text(),
+                    href: tr.find("td:eq(6)").text(),
+                    category: { id: tr.find("td:eq(7)").text() },
+                    parent_id: tr.find("td:eq(10)").text()
+                };
+                localStorage.setItem("menu", JSON.stringify(obj));
+            }
+            layer_show(title, url, '', 510);
+        }
+	</script>
+</body>
+</html>

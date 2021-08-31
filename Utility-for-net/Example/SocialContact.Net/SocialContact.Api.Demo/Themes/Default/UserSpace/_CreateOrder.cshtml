@@ -1,0 +1,48 @@
+﻿@model IEnumerable<dynamic>
+@{ 
+    var trade = ViewData["trade"];
+    int index = 0;
+}
+
+<div class="panel" style="width:450px">
+    <div class="panel-body ">
+        <p>充值金额</p>
+        <form class="tn-mb-30">
+            @foreach (var item in Model)
+            {
+                index++;
+                <label class="radio-inline tn-width-200">
+                    @Html.RadioButton("radioPrice",(string)item.TotalPrice, index==1?true:false)
+                  
+                    @item.TotalPrice元（@item.TradePoints @trade）
+                </label>
+            }
+           
+        </form>
+        <ul class="list-unstyled text-muted tn-mb-20">
+            <li>温馨提示：</li>
+            <li>1、@(trade)是本社区的虚拟货币，可用于提问悬赏、下载文档、兑换礼品等；</li>
+            <li>2、本社区的@(trade)不可提现，不能进行转账交易。</li>
+        </ul>
+        <button type="button" id="tjorder" class="btn btn-primary tn-btn-wp">提交</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+        $("#tjorder").click( function myfunction() {
+            var TotalPrice = $("[name='radioPrice']:checked").val();
+            $.post("@CachedUrlHelper.Action("_CreateOrder", "UserSpace")", { "totalPrice": TotalPrice }, function myfunction(data) {
+                if (data.state) {
+                    layer.closeAll();
+                    tnlayer.layermodal('订单详情', '@CachedUrlHelper.Action("_OrderDetail", "UserSpace")?orderId=' + data.msg + '&t=' + new Date().getTime(), '500px', '450px');
+                } else {
+                    layer.msg(data.msg, { icon: 2 });
+                }
+            })
+        })
+        @*$('#Recharge').click(function () {
+            tnlayer.layermodal('我要充值', '@CachedUrlHelper.Action("_CreateOrder", "UserSpace")?t=' + new Date().getTime(), '500px', 'auto')
+        });*@
+    })
+</script>

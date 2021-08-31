@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+
+">
+    <!-- 无效 异常 先不管 -->
+    <!--error Cannot resolve reference to bean 'conversionService' while setting constructor argument; nested exception is
+    org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'conversionService' available-->
+  <!--  <mvc:annotation-driven conversion-service="conversionService" validator="validator"/>
+
+    &lt;!&ndash; 验证配置，告知srpingmvc，我使用的是Hibernate验证框架来完成的验证 &ndash;&gt;
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
+        &lt;!&ndash;不设置则默认为classpath下的ValidationMessages.properties &ndash;&gt;
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+
+    &lt;!&ndash; 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） &ndash;&gt;
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames" >
+            <list>
+                &lt;!&ndash; 在web环境中一定要定位到classpath 否则默认到当前web应用下找  &ndash;&gt;
+                <value>classpath:message/errormessage</value>
+                &lt;!&ndash;<value>/WEB-INF/resource/message/errormessage</value>&ndash;&gt;
+            </list>
+        </property>
+        <property name="useCodeAsDefaultMessage" value="false"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="cacheSeconds" value="60"/>
+    </bean>-->
+
+    <!-- 自动扫描与装配bean -->
+    <import resource="spring-dao.xml" />
+    <!-- spring -hibernate -->
+    <import resource="spring-orm.xml" />
+
+    <!-- 自动扫描与装配 controller -->
+<!--    <bean class="com.shop.controllers.TestController" />-->
+    <context:component-scan base-package="com.shop.controllers"></context:component-scan>
+
+
+
+    <!-- swagger   -->
+    <bean class="com.utility.swagger.SwaggerConfig" >
+        <property name="controllerPackage" value="com.shop.controllers"></property>
+        <property name="address" value="http:127.0.0.1:8080"></property>
+        <property name="author" value="test author"></property>
+        <property name="version" value="1.0"></property>
+        <property name="title" value="test"></property>
+        <property name="desc" value="test desc"></property>
+    </bean>
+    <!-- Enables swgger ui-->
+    <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
+    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+
+    <!-- 注解 @Controller 映射的支持  rest api response  乱码 这里 配置 才有效 其他 地方 无效  -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean id="messageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" />
+            </bean>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper" ref="objectMapper" />
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                        <value>text/javascript;charset=UTF-8</value>
+                        <value>text/plain;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <property name="dateFormat">
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
+            </bean>
+        </property>
+        <!-- 为null字段时不显示 -->
+        <property name="serializationInclusion">
+            <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+        </property>
+        <property name="propertyNamingStrategy" >
+            <bean class="com.utility.jackson.MyCamemlToUnderlineCaseStrategy"></bean>
+        </property>
+    </bean>
+
+    <!-- 注意： cors 全局 配置 都 无效 只能 控制器上或方法 配置 有效-->
+
+<!--    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>-->
+    <!-- javax.servlet.ServletException: No adapter for handler 解决方案 -->
+<!--    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+    <bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"/>-->
+
+    <!-- 方法1  view  配置 异常 处理  使用Spring MVC提供的简单异常处理器SimpleMappingExceptionResolver-->
+<!--    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        &lt;!&ndash; 定义默认的异常处理页面，当该异常类型的注册时使用 &ndash;&gt;
+        <property name="defaultErrorView" value="error"></property>
+        &lt;!&ndash; 定义异常处理页面用来获取异常信息的变量名，默认名为exception &ndash;&gt;
+        <property name="exceptionAttribute" value="ex"></property>
+        &lt;!&ndash; 定义需要特殊处理的异常，用类名或完全路径名作为key，异常也页名作为值 &ndash;&gt;
+        <property name="exceptionMappings" >
+            <props>
+                <prop key="com.shop.exception.BaseException">系统繁忙</prop>
+                &lt;!&ndash; 这里还可以继续扩展对不同异常类型的处理 &ndash;&gt;
+            </props>
+        </property>
+    </bean>-->
+    <!-- 方法2  view 配置 异常 处理 实现Spring的异常处理接口HandlerExceptionResolver 自定义自己的异常处理器 -->
+<!--    <bean id="exceptionHandler" class="com.shop.interceptor.CustomExceptionHandler"/>-->
+    <!-- 方法3   使用@ExceptionHandler注解实现异常处理  用来定义函数针对的异常类型，最后将Exception对象处理成自己想要的结果 -->
+<!-- 方法4  捕获所有 异常 -->
+    <bean  class="com.utility.interceptor.GlobalExceptionHandler"/>
+    <bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="objectMapper" ref="objectMapper" />
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
+                <value>text/javascript;charset=UTF-8</value>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJackson2HttpMessageConverter" />
+            </list>
+        </property>
+    </bean>
+
+   <!-- <bean name="down" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName" value="down"/>
+    </bean>-->
+    <!-- 配置视图解析器 -->
+<!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="" />
+        <property name="suffix" value="" />&lt;!&ndash;可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 &ndash;&gt;
+        &lt;!&ndash; <property name="viewClass"
+            value="org.springframework.web.servlet.view.JstlView" /> &ndash;&gt;
+    </bean>-->
+
+    <!-- 处理文件上传 -->
+    <!--<bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8" /> &lt;!&ndash; 编码 &ndash;&gt;
+        <property name="maxInMemorySize" value="10240" /> &lt;!&ndash; 上传时占用最大内存大小 (10240) &ndash;&gt;
+        <property name="maxUploadSize" value="-1" /> &lt;!&ndash; 最大文件大小，-1为无限止(-1) &ndash;&gt;
+    </bean>-->
+</beans>

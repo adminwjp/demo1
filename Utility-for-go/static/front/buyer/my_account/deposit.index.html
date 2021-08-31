@@ -1,0 +1,422 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          {{if .deposit_account}}
+          <!-- 资产总览 -->
+          <div class="deposit-account">
+            <div class="account-info">
+              <h1>预存款账户余额</h1>
+              <div class="explain">
+              	<span class="pr10">余额支付</span>[
+                {{if eq .deposit_account.pay_status  'ON'}}
+              	<a href="deposit/paystatus?status=off" onclick="return confirm('点击后关闭余额支付功能，要确定么？')">已开启</a>
+                {{else}}
+                <a href="deposit/paystatus?status=on" onclick="return confirm('点击后开启余额支付功能，要确定么？')">已关闭</a>
+                {{end}}
+              </div>
+              <div class="action">
+                <h2>账户名：{{.deposit_account.account}}</h2>
+                <a href="deposit/recordlist">账户收支明细</a> </div>
+              <div class="balanceNum"> <em>{{.deposit_account.money}}</em>元可用{{if gt .deposit_account.frozen  0}}，<b><a href="deposit/frozenlist">{{.deposit_account.frozen}}</a></b> 元不可用{/if}
+                <div class="balanceBtn"> <a href="deposit/recharge" class="btn-alipay"><span>充值</span></a> <a href="deposit/withdraw" class="btn-alipay btn-alipay-white"><span>提现</span></a> <a href="deposit/transfer" class="btn-alipay btn-alipay-white"><span>转账</span></a> </div>
+              </div>
+            </div>
+            <div class="tradelist">
+              <div class="title clearfix">
+                <h1>最近交易记录</h1>
+              </div>
+              <div class="subtit">
+                <ul class="clearfix">
+                  <li class="time">创建日期</li>
+                  <li class="info">名称 | 备注</li>
+                  <li class="tradeNo">商户订单号 | 交易号</li>
+                  <li class="party">对方</li>
+                  <li class="amount">金额</li>
+                  <li class="status">状态</li>
+                  <li class="detail">操作</li>
+                </ul>
+              </div>
+              <div class="list clearfix"> 
+                {{if .recordlist}}
+                {{range $record :=  .recordlist}}
+                <ul class="clearfix" style="{{if $record.refund}} border-bottom:1px #ddd dotted;{{end}}{{if eq $record.refund.status 'CLOSED'}}color:gray{{end}}">
+                  <li class="time">{{$record.add_time}}</li>
+                  <li class="info break-word">{{$record.title}}}</li>
+                  <li class="tradeNo break-word">{{$record.bizOrderId}} | {{$record.tradeNo}}</li>
+                  <li class="party">{{$record.partyInfo.name}}</li>
+                  <li class="amount"> {{if eq $record.flow  'income'}}<strong class="price green">+{{$record.amount}}</strong> {{else}} <strong class="price f60">-{{$record.amount}}</strong> {{end}} </li>
+                  <li class="status"> <span class="{{if eq $record.status 'CLOSED' or eq $record.refund.status 'CLOSED'}}gray {{else}} {{if not $record.status 'SUCCESS'}}f60{{end}}{{end}}">{{$record.status_label}}</span> </li>
+                  <li class="detail"><a href="deposit/record?tradeNo={{$record.tradeNo}}">{{.lang.detail}}</a></li>
+                </ul>
+                {{if eq $record.status 'SUCCESS' }}
+                <ul class="refund gray clearfix">
+                  <li class="time"></li>
+                  <li class="info"> 
+                    {{if eq $record.buyer_id  .visitor.userid}}
+                    {{.lang.refund}}
+                    {{else}}
+                    {{.lang.refund_to_buyer}}
+                    {{end}}
+                  </li>
+                  <li class="tradeNo break-word"></li>
+                  <li class="party"></li>
+                  <li class="amount"> <strong class="gray">
+                    {{if eq $record.buyer_id  .visitor.userid}}+{{else}}-{{end}}{{$record.refund.amount}} </strong> </li>
+                </ul>
+                {{end}}
+                {{end}}
+                <div class="list-more"><a href="deposit/tradelist">查看所有交易记录</a></div>
+                {{else}}
+                <ul class="no-data clearfix">
+                  <li>{{.lang.no_data}}</li>
+                </ul>
+                {{end}}
+              </div>
+            </div>
+            <div class="bank-info">
+              <h1>银行卡</h1>
+              <div class="explain">已绑定<span>{{.myBank.count}}</span>张</div>
+              <div class="action"> <a href="bank/add">+添加银行卡</a> </div>
+              <ul class="cards clearfix">
+                {{range $bank := .myBank.list }}
+                <li class="card">
+                  <h2>{{$bank.bank_name}}</h2>
+                  <div class="number">{{$bank.num}}</div>
+                  <div class="handle clearfix">
+                    <div class="card-type {{$bank.type}}"></div>
+                    <div class="card-handle"> <a href="bank/edit?bid={{$bank.bid}}">编辑</a> <a href="bank/delete?bid={{$bank.bid}}" onclick="return confirm('删除后不可恢复，您确认吗？')">删除</a> </div>
+                  </div>
+                </li>
+                {{end}}
+                <li class="card add-card"> <a href="bank/add?type=debit" title="添加银行卡（储蓄卡）"></a> </li>
+                <li class="card add-card"> <a href="bank/add?type=credit" title="添加银行卡（信用卡）"></a> </li>
+              </ul>
+            </div>
+          </div>
+          {{else}}
+          <div class="notice-word">
+            <p>请先配置帐户，点击 <a href="{url route='deposit/config'}">立即配置</a></p>
+          </div>
+
+          {{end}}
+
+          {{if .deposit-config}}
+          <!-- 账户配置 -->
+          <div class="deposit-config">
+            <div class="notice-word">
+              <p>{{.lang.acount_desc}}</p>
+            </div>
+            <form method="post" id="deposit-config">
+              <div class="form">
+                <dl class="clearfix">
+                  <dt>{{.lang.deposit_account}}</dt>
+                  <dd>
+                    {{.deposit_account.account}}
+                  </dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>{{.lang.real_name}}</dt>
+                  <dd>
+                    <input type="text" name="real_name" class="text width_normal" value="{{.deposit_account.real_name}}" />
+                  </dd>
+                  <dd class="gray"></dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>{{.lang.pay_password}}</dt>
+                  <dd>
+                    <input type="password" name="password" class="text width_normal" />
+                  </dd>
+                  <dd class="gray">{{.lang.pay_password_desc}}</dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>{{.lang.confirm_password}}</dt>
+                  <dd>
+                    <input type="password" name="confirmPassword" class="text width_normal" />
+                  </dd>
+                  <dd class="gray">{{.lang.confirm_password_desc}}</dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>{{.lang.pay_status_on}}</dt>
+                  <dd>
+                    <label>
+                      <input type="radio" name="pay_status" {{if eq .deposit_account.pay_status  'ON' or not .deposit_account}} checked="checked" {{end}}value="on" />
+                      {{.lang.yes}}</label>
+                    <label>
+                      <input type="radio" name="pay_status" {{if eq .deposit_account.pay_status  'OFF'}} checked="checked"{{end}} value="off" />
+                      {{.lang.no}}</label>
+                  </dd>
+                  <dd class="gray">{{.lang.pay_status_desc}}</dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>&nbsp;</dt>
+                  <dd> <span class="btn-alipay">
+                    <input type="hidden" name="codeType" value="" />
+                    <input type="hidden" name="code" value="" />
+                    <input type="button" value="{{.lang.submit}}"  gs_id="deposit_captcha" gs_name="deposit_captcha" gs_callback="gs_callback" gs_title="{{.lang.captcha}}" gs_width="400" gs_uri="gselector/verifycode"  gs_type="captcha" ectype="gselector"  id="deposit-captcha" />
+                    </span> </dd>
+                </dl>
+              </div>
+            </form>
+          </div>
+
+          <script>
+            function gs_callback(id, codeType, code)
+            {
+              $('input[name="codeType"]').val(codeType);
+              $('input[name="code"]').val(code);
+              DialogManager.close(id);
+              $('#deposit-config').submit();
+            }
+          </script>
+          {{else}}
+
+          {{if .tradelist}}
+          <!-- 交易记录 -->
+          <div class="recordlist">
+            {{if .tradelist}}
+            <div class="notice-word">
+              <p>显示所有交易记录</p>
+            </div>
+            {{end}}
+            <div class="title clearfix">
+              <form method="get" class="float-left" action="deposit/tradelist">
+                <!--{if !$app->urlManager->enablePrettyUrl}-->
+                <input type="hidden" name="r" value="deposit/tradelist" />
+                <!--{/if}-->
+                <input type="text" name="add_time_from" id="add_time_from" value="{$smarty.get.add_time_from}" />
+                <span>-</span>
+                <input type="text" name="add_time_to" id="add_time_to" value="{$smarty.get.add_time_to}" />
+                <input type="submit" class="btn-record" value="{$lang.search}" />
+              </form>
+              <!--{if $filtered}-->
+              <a class="detlink" href="{url route='deposit/tradelist'}">{$lang.cancel_query}</a>
+              <!--{/if}-->
+            </div>
+            <ul class="subtit">
+              <li class="clearfix">
+                <div class="time">创建日期</div>
+                <div class="info">名称 | 备注</div>
+                <div class="tradeNo">商户订单号 | 交易号</div>
+                <div class="party">对方</div>
+                <div class="amount">金额 | 明细</div>
+                <div class="status">状态</div>
+                <div class="detail">操作</div>
+              </li>
+            </ul>
+            <div class="content">
+              <!--{foreach from=$recordlist item=record}-->
+              <ul>
+                <li class="clearfix" style="{if $record.refund} border-bottom:1px #ddd dotted;{/if}{if in_array($record.refund.status, array('CLOSED'))}color:gray{/if}">
+                  <div class="time">{$record.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+                  <div class="info break-word">{$record.title|truncate:50} <p class="gray">{$record.buyer_remark|truncate:30}</p></div>
+                  <div class="tradeNo"><span class="break-word">{$record.bizOrderId} | {$record.tradeNo}</span></div>
+                  <div class="party center">{$record.partyInfo.name}</div>
+                  <div class="amount center"> <strong class="price">
+                    <!--{if $record.flow eq 'income'}-->
+                    <span class="green">+{$record.amount}</span>
+                    <!--{else}-->
+                    <span class="f60">-{$record.amount}</span>
+                    <!--{/if}-->
+                  </strong> </div>
+                  <div class="status"> <span class="{if in_array($record.status, array('CLOSED')) || in_array($record.refund.status, array('CLOSED'))}gray {elseif !in_array($record.status, array('SUCCESS'))}f60{/if}">{$record.status_label}</span> </div>
+                  <div class="detail"> <a target="_blank" href="{url route='deposit/record' tradeNo=$record.tradeNo}">查看</a> </div>
+                </li>
+              </ul>
+              <!--{if in_array($record.refund.status, array('SUCCESS'))}-->
+              <ul class="refund gray clearfix">
+                <li class="clearfix">
+                  <div class="time"></div>
+                  <div class="info break-word">
+                    <!--{if $record.buyer_id eq $visitor.userid}-->
+                    {$lang.refund}
+                    <!--{else}-->
+                    {$lang.refund_to_buyer}
+                    <!--{/if}-->
+                  </div>
+                  <div class="tradeNo break-word"></div>
+                  <div class="party"> &nbsp; </div>
+                  <div class="amount center"> <strong class="gray">
+                    <!--{if $record.buyer_id eq $visitor.userid}-->+<!--{else}-->-<!--{/if}-->{$record.refund.amount}</strong> </div>
+                  <div class="status"></div>
+                  <div class="detail"></div>
+                </li>
+              </ul>
+              <!--{/if}-->
+              <!--{foreachelse}-->
+              <div class="notice-word mt10">
+                <p class="yellow">{$lang.no_record}</p>
+              </div>
+              <!--{/foreach}-->
+            </div>
+            <div class="mt20 clearfix">{include file="page.bottom.html"}</div>
+          </div>
+          <script type="text/javascript">
+            $(function(){
+              $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+              $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+            });
+          </script>
+
+          {{else}}
+          {{if .recordlist}}
+          <!-- 财务明细 -->
+          <div class="recordlist">
+            <!--{if $recordlist}-->
+            <div class="notice-word">
+              <p>您资金账户余额变动的所有财务明细</p>
+            </div>
+            <!--{/if}-->
+            <div class="title clearfix">
+              <form method="get" class="float-left" action="{url route='deposit/rechargelist'}">
+                <!--{if !$app->urlManager->enablePrettyUrl}-->
+                <input type="hidden" name="r" value="deposit/rechargelist" />
+                <!--{/if}-->
+                <input type="text" name="add_time_from" id="add_time_from" value="{$smarty.get.add_time_from}" />
+                <span>-</span>
+                <input type="text" name="add_time_to" id="add_time_to"  value="{$smarty.get.add_time_to}" />
+                <input type="submit" class="btn-record" value="{$lang.search}" />
+              </form>
+              <!--{if $filtered}-->
+              <a class="detlink" href="{url route='deposit/recordlist'}">{$lang.cancel_query}</a>
+              <!--{/if}-->
+              <div class="float-left ml10"> 总收入 <strong>{$total.income}</strong> 元，总支出 <strong>{$total.outlay}</strong> 元 </div>
+              <div class="float-right"> <a href="{url route='deposit/monthbill'}">月账单下载</a> </div>
+            </div>
+            <ul class="subtit">
+              <li class="clearfix">
+                <div class="time">付款日期</div>
+                <div class="info" style="width:100px;" >类型<!--名称 | 备注--></div>
+                <div class="tradeNo" style="width:245px;">商户订单号 | 交易号</div>
+                <div class="income">收入(元)</div>
+                <div class="defray">支出(元)</div>
+                <div class="balanceNum">账户余额(元)</div>
+                <div class="fundchannel">资金渠道</div>
+                <div class="detail">操作</div>
+              </li>
+            </ul>
+            <div class="content">
+              <!--{foreach from=$recordlist item=record}-->
+              <ul>
+                <li class="clearfix">
+                  <div class="time">{$record.pay_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+                  <div class="info break-word" style="width:100px;"> {$record.tradeTypeName} </div>
+                  <div class="tradeNo" style="width:245px;">{$record.bizOrderId} | {$record.tradeNo}</div>
+                  <div class="income"><strong class="price green">{if $record.flow eq 'income'}+{$record.amount}{else}&nbsp;{/if}</strong></div>
+                  <div class="defray"><strong class="price f60">{if $record.flow eq 'outlay'}-{$record.amount}{else}&nbsp;{/if}</strong></div>
+                  <div class="balanceNum"><strong class="price">{$record.balance}</strong></div>
+                  <div class="fundchannel">{$record.fundchannel}</div>
+                  <div class="detail"> <a target="_blank" href="{url route='deposit/record' tradeNo=$record.tradeNo}">查看</a> </div>
+                </li>
+              </ul>
+              <!--{foreachelse}-->
+              <div class="notice-word mt10">
+                <p class="yellow">{$lang.no_record}</p>
+              </div>
+              <!--{/foreach}-->
+            </div>
+            <div class="mt10 clearfix">{include file="page.bottom.html"}</div>
+          </div>
+          <script type="text/javascript">
+            $(function(){
+              $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+              $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+            });
+          </script>
+
+          {else}
+
+          {{if .drawlist}}
+          <!-- 充提记录 -->
+          <div class="drawlist">
+            <div class="tab-ttl">
+              <ul class="withdraw-tab clearfix">
+                <li class="current"><a href="{url route='deposit/drawlist'}"><span>{$lang.withdraw_record}</span></a></li>
+                <li><a href="{url route='deposit/rechargelist'}"><span>{$lang.recharge_record}</span></a></li>
+              </ul>
+            </div>
+            <div class="title clearfix">
+              <form method="get" class="float-left" action="{url route='deposit/drawlist'}">
+                <!--{if !$app->urlManager->enablePrettyUrl}-->
+                <input type="hidden" name="r" value="deposit/drawlist" />
+                <!--{/if}-->
+                <input type="text" name="add_time_from" id="add_time_from" value="{$smarty.get.add_time_from}" />
+                <span>-</span>
+                <input type="text" name="add_time_to" id="add_time_to" value="{$smarty.get.add_time_to}" />
+                <select name="status">
+                  <option value="">{$lang.select_pls}</option>
+                  <option value="success" {if $smarty.get.status eq 'success'} selected="selected" {/if}>{$lang.success}</option>
+                  <option value="verifing" {if $smarty.get.status eq 'verifing'} selected="selected" {/if}>{$lang.verifing}</option>
+                </select>
+                <input type="submit" class="btn-withdraw" value="{$lang.search}" />
+              </form>
+              <!--{if $filtered}-->
+              <a class="detlink" href="{url route='deposit/drawlist'}">{$lang.cancel_query}</a>
+              <!--{/if}-->
+
+            </div>
+            <ul class="subtit">
+              <li class="clearfix">
+                <div class="time">创建时间</div>
+                <div class="info">名称 | 备注</div>
+                <div class="tradeNo">商户订单号 | 交易号</div>
+                <div class="method">收/支</div>
+                <div class="money">金额(元)</div>
+                <div class="fundchannel">资金渠道</div>
+                <div class="status">状态</div>
+                <div class="handle">操作</div>
+              </li>
+            </ul>
+            <div class="content">
+              <ul>
+                <!--{foreach from=$recordlist item=record}-->
+                <li class="clearfix">
+                  <div class="time">{$record.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+                  <div class="info">{$record.title|truncate:30}</div>
+                  <div class="tradeNo">{$record.bizOrderId} | {$record.tradeNo}</div>
+                  <div class="method"><span class="f60">{$lang.outlay}</span></div>
+                  <div class="money">{$record.amount}</div>
+                  <div class="fundchannel">{$record.card_info.bank_name}<br />
+                    <span class="gray">{$record.card_info.num}</span></div>
+                  <div class="status"> <span class="{if in_array($record.status, array('CLOSED'))}gray{elseif !in_array($record.status, array('SUCCESS'))}f60{/if}">{$record.status_label}</span> </div>
+                  <div class="handle"> <a href="{url route='deposit/record' tradeNo=$record.tradeNo}">查看</a> </div>
+                </li>
+                <!--{/foreach}-->
+              </ul>
+              <!--{if !$recordlist}-->
+              <div class="notice-word mt10">
+                <p>{$lang.no_records} <a href="{url route='deposit/withdraw'}">马上提现</a></p>
+              </div>
+              <!--{/if}-->
+            </div>
+            <div class="mt10 clearfix">{include file="page.bottom.html"}</div>
+          </div>
+          <script type="text/javascript">
+            $(function(){
+              $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+              $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+            });
+          </script>
+
+          {{if .drawlist}}
+          <!-- 充值记录 -->
+          {{end}}
+
+          {{end}}
+
+          {{end}}
+
+          {{end}}
+
+          {{end}}
+
+          {{end}}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

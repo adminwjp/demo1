@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.crawl.model">
+    <!--
+        name：即实体类的全名
+        table：映射到数据库里面的那个表的名称
+        catalog：数据库的名称
+     -->
+    <class name="CityModel" table="city" catalog="crawl">
+        <!-- class下必须要有一个id的子元素 -->
+        <!-- id是用于描述主键的 -->
+        <id name="id" column="id" unsaved-value="0">
+            <!-- 主键生成策略 -->
+            <generator class="native"></generator>
+            <!--            <generator class="increment" />-->
+        </id>
+        <!--
+            使用property来描述属性与字段的对应关系
+            如果length忽略不写，且你的表是自动创建这种方案，那么length的默认长度是255
+        -->
+        <property name="name" column="name" length="50"></property>
+        <property name="url" column="url" length="100"></property>
+        <!-- 外键分类 unique="true" error 唯一键 无法关联多次-->
+        <many-to-one name="category" column="category_id" foreign-key="fk_category_id" unique="false" />
+        <property name="create" column="`create`" ></property>
+        <property name="modify" column="`modify`" ></property>
+    </class>
+</hibernate-mapping>

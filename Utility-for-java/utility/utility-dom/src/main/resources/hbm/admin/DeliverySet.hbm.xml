@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.pojo">
+    <class name="DeliverySet" table="t_delivery_set" >
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity" />
+        </id>
+ <many-to-one name="template" foreign-key="fk_template_id" column="template_id" cascade="all" fetch="join"  />
+ <many-to-one name="valuationType" foreign-key="fk_valuationType_id" column="valuationType_id" cascade="all" fetch="join"  />
+<property name="areaId" column="area_id" type="java.lang.String" />
+<property name="startStandards" column="start_standards" type="java.lang.Integer" />
+<property name="startFees" column="start_fees" type="java.math.BigDecimal" />
+<property name="addStandards" column="add_standards" type="java.lang.Integer" />
+<property name="addFees" column="add_fees" type="java.math.BigDecimal" />
+<property name="templateId" column="template_id" type="java.lang.Integer" />
+    </class>
+</hibernate-mapping>

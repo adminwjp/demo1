@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" default-lazy="false">
+  <!-- start catagory info -->
+  <class name="SocialContact.Domain.Entities.CatagoryEntity,Utility.Demo"  table="t_catagory" discriminator-value="0">
+    <id name="Id" column="id" unsaved-value="0">
+      <generator class="increment" />
+    </id>
+    <property  name="Code" column="code" length="20" type="System.String"/>
+    <property  name="Category" column="category" length="500" type="System.String"/>
+    <property  name="Description" column="description" length="500" type="System.String"/>
+    <property  name="Accept" column="accept" length="20" type="System.String"/>
+    <property name="Flag"  column="flag" type="SocialContact.Domain.Entities.CatalogFlag,Utility.Demo"/>
+    <many-to-one name="Parent" column="parent_id" foreign-key="fk_parent_id"  class="SocialContact.Domain.Entities.CatagoryEntity,Utility.Demo"/>
+    <set name="Children"   inverse="true" lazy="false" cascade="all">
+      <key column="parent_id" foreign-key="fk_parent_id" />
+      <one-to-many class="SocialContact.Domain.Entities.CatagoryEntity,Utility.Demo"/>
+    </set>
+    <!--<set name="Admins"   inverse="true" lazy="false" cascade="none">
+      <key column="role_id" foreign-key="fk_role_id" />
+      <one-to-many class="SocialContact.Domain.Entities.AdminEntity,Utility.Demo"/>
+    </set>
+    <set name="Edutions"   inverse="true" lazy="false" cascade="none">
+      <key column="edution_catagory_id" foreign-key="fk_edution_catagory_id" />
+      <one-to-many class="SocialContact.Domain.Entities.EdutionEntity,Utility.Demo"/>
+    </set>
+    <set name="UserMenus"   inverse="true" lazy="false" cascade="none">
+      <key column="role_id" foreign-key="fk_role_id" />
+      <one-to-many class="SocialContact.Domain.Entities.UserMenuEntity,Utility.Demo"/>
+    </set>
+    <set name="Works"   inverse="true" lazy="false" cascade="none">
+      <key column="job_catagory_id" foreign-key="fk_job_catagory_id" />
+      <one-to-many class="SocialContact.Domain.Entities.WorkEntity,Utility.Demo"/>
+    </set>-->
+  </class>
+  <!-- end catagory info -->
+</hibernate-mapping>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <mongo name="connectionString"></mongo>
+  <redis connectionString="127.0.0.1:6379,password=wjp930514.,connectTimeout=1000,connectRetry=1,syncTimeout=10000" />
+  <elasticsearch connectionString="['http://127.0.0.1:9200/']" />
+  <!--<redis>
+    <connectionString>127.0.0.1:6379,password=wjp930514.,connectTimeout=1000,connectRetry=1,syncTimeout=10000</connectionString>
+  </redis>-->
+</configuration>

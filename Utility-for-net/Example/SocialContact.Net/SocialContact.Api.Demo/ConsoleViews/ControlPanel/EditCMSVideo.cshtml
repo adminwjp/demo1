@@ -1,0 +1,302 @@
+﻿@model ContentItemEditModel
+@{
+    TempData["subMenu-check"] = new string[] { "CMS", "ManageCMS" };
+    ViewData["Title"] = new string[] { (Model.ContentItemId > 0 ? "编辑" : "发布") + "视频" };
+    var user = UserContext.CurrentUser;
+    var contentCategory = ViewData.Get<ContentCategory>("contentCategory", new ContentCategory());
+    var selectList = ViewData.Get<SelectList>("selectList", null);
+    var videoAttachment = ViewData.Get<Attachment>("videoAttachment", null);
+    var associateId = Model.ContentItemId > 0 ? Model.ContentItemId : IdGenerator.Next();
+    var contentCategories = ViewData.Get<List<SelectListItem>>("contentCategories", null);
+}
+
+<div class="row tn-page-heading tn-mb-20">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="@SiteUrls.Instance().ManageCMS()">资讯管理</a></li>
+            @if (!string.IsNullOrEmpty(contentCategory.CategoryName))
+            {
+                <li><a href="@CachedUrlHelper.Action("ManageCMS","ControlPanel")?contentCategoryId=@contentCategory.CategoryId">@contentCategory.CategoryName</a></li>
+            }
+            <li class="tn-active">发布视频</li>
+        </ol>
+    </div>
+</div>
+<div class="panel panel-default tn-survey-form">
+    <div class="panel-body">
+        @using (Html.BeginForm("EditCMS", "ControlPanel", FormMethod.Post, new { @class = "form-horizontal tn-form-validation", @id = "EditCMS" }))
+        {
+            @Html.HiddenFor(n => n.ContentItemId)
+            @Html.ValidationMessageFor(n => n.ContentItemId)
+            @Html.HiddenFor(n => n.ContentModelId)
+            @Html.ValidationMessageFor(n => n.ContentModelId)
+            @Html.Hidden("Author", user.DisplayName)
+            @Html.ValidationMessage("Author")
+            @Html.HiddenFor(n => n.AttachmentIds)
+            @Html.ValidationMessageFor(n => n.AttachmentIds)
+            <div class="form-group">
+                <label class="col-xs-1 control-label tn-width-90">标题</label>
+                <div class="col-xs-4">
+                    @Html.TextBoxFor(n => n.Subject, new { @class = "form-control", @placeholder = "标题" })
+                    @Html.ValidationMessageFor(n => n.Subject)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label tn-width-90">视频封面</label>
+                @AttachmentHelper._UploadFeaturedImage(Model.FeaturedImageAttachmentId, TenantTypeIds.Instance().CMS_Video())
+            </div>
+            <div class="form-group">
+                <label class="col-xs-1 control-label tn-width-90">视频文件</label>
+                <div class="col-xs-4">
+                    <div style="float:left;"> @Html.DropDownList("uploadvideo", selectList, new { @class = "form-control jn-select-sm" })</div>
+                    @if (!(Model.ContentItemId > 0))
+                    {
+                        <div style="float:left;display:block;width:300px;height:42px" id="upload">
+                            @Html.FileUploader(setting =>
+                               {
+                                   setting.Name = "UploadFileVideo";
+                                   setting.TenantTypeId = TenantTypeIds.Instance().CMS_Video();
+                                   setting.InnerContent = "上传文件";
+                                   setting.Extensions = "mp4";
+                                   setting.Position = AttachmentPosition.Featured;
+                                   setting.Callbacks.Add("uploadSuccess", "succeedSyntony");
+                                   setting.IsPreview = false;
+                               })
+                        </div>
+                        <div id="showvideo" style="display:none;" class="tn-file-attachment tn-mb-10">
+                            <i class="fa fa-file-o"></i>
+                            <label id="attname"></label>
+                            <input type="hidden" name="attachmentId" />
+                            <button class="btn btn-default btn-xs btn-removeVideo pull-right" type="button"><i class="fa fa-remove"></i></button>
+                        </div>
+                        <div style="float:left;display:none;" id="input">
+                            @Html.TextBoxFor(n => n.VideoUrl, new { @class = "form-control", @style = "width:425px", @placeholder = "视频地址" })
+                            @Html.ValidationMessageFor(n => n.VideoUrl)
+                        </div>
+                    }
+                    else
+                    {
+                        if (Model.VideoUrl != null && Model.VideoUrl != "")
+                        {
+                            <div style="float:left;display:none;" id="upload"></div>
+                            <div id="showvideo" style="display:none;" class="tn-file-attachment tn-mb-10">
+                                <i class="fa fa-file-o"></i>
+                                <label id="attname"></label>
+                                <input type="hidden" name="attachmentId" />
+                                <button class="btn btn-default btn-xs btn-removeVideo pull-right" type="button"><i class="fa fa-remove"></i></button>
+                            </div>
+                            <div style="float:left;display:block;" id="input">
+                                @Html.TextBoxFor(n => n.VideoUrl, new { @class = "form-control", @style = "width:425px", @placeholder = "视频地址" })
+                                @Html.ValidationMessageFor(n => n.VideoUrl)
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="float:left;display:block;" id="upload">
+                                @Html.FileUploader(setting =>
+                           {
+                               setting.Name = "UploadFileVideo";
+                               setting.TenantTypeId = TenantTypeIds.Instance().CMS_Video();
+                               setting.InnerContent = "上传文件";
+                               setting.Extensions = "mp4";
+                               setting.Position = AttachmentPosition.Featured;
+                               setting.Callbacks.Add("uploadSuccess", "succeedSyntony");
+                               setting.IsPreview = false;
+                           })
+                            </div>
+                            if (videoAttachment != null)
+                            {
+
+                                <div id="showvideo" class="tn-file-attachment tn-mb-10">
+                                    <i class="fa fa-file-o"></i>
+                                    <label id="attname">@videoAttachment.FriendlyFileName</label>
+                                    <input type="hidden" name="attachmentId" value="@videoAttachment.AttachmentId" />
+                                    <button class="btn btn-default btn-xs btn-removeVideo pull-right" type="button"><i class="fa fa-remove"></i></button>
+                                </div>
+                            }
+                            <div style="float:left;display:none;" id="input">
+                                @Html.TextBoxFor(n => n.VideoUrl, new { @class = "form-control", @style = "width:425px", @placeholder = "视频地址" })
+                                @Html.ValidationMessageFor(n => n.VideoUrl)
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-1 control-label tn-width-90">视频介绍</label>
+                <div class="col-xs-4">
+                    @Html.TextAreaFor(n => n.Summary, new { @class = "form-control", @placeholder = "视频介绍", @rows = "4", @maxlength = 510 })
+                    @Html.ValidationMessageFor(n => n.Summary)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-1 control-label tn-width-90">所属栏目</label>
+                <div class="col-xs-3">
+                    @Html.DropDownList("CategoryId", contentCategories, new { @class = "form-control jn-select-sm" })
+                    @Html.ValidationMessage("CategoryId")
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label tn-width-90">发布时间</label>
+                <div class="col-xs-3 input-group tn-width-300">
+                    @Html.DateTimePickerFor(n => n.DatePublished)
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-xs-2 control-label tn-width-90">设置</label>
+                <div class="col-xs-8">
+                    <label class="checkbox-inline">
+                        <input value="true" name="IsComment" type="checkbox" @(Model.IsComment ? "checked" : "")>
+                        禁止评论
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-1 col-xs-8">
+                    <button type="button" class="btn btn-primary btn-submit tn-btn-wp">确定</button>
+                    <a type="button" class="btn btn-default tn-btn-wp" href="@CachedUrlHelper.Action("ManageCMS","ControlPanel")?contentCategoryId=@contentCategory.CategoryId">取消</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@Styles.Render("~/js/lib/daterangepicker/daterangepicker")
+@Styles.Render("~/js/lib/datetimepicker/css/datetimepicker")
+@Styles.Render("~/js/lib/plupload/upload")
+
+<script>
+    require(['jquery', 'datepicker', 'uploader', 'tnlayer', 'validate.unobtrusive'], function () {
+
+        function haveContent() {
+            if ($("#Subject").val().length > 0) { return true; }
+            if ($("#attname").text().length > 0) { return true; }
+            if ($("#Summary").val().length > 0) { return true; }
+            if ($("[name='FeaturedImageAttachmentId']").val().length > 0 && parseInt($("[name='FeaturedImageAttachmentId']").val()) > 0) { return true; }
+            return false;
+        }
+        $(window).bind('beforeunload', function () {
+            if (!haveContent()) { beforeunloadn() }
+            else
+            {
+                return "离开后页面上的内容将不会被保存，确定要离开么？";
+            }
+        });
+        function beforeunloadn() {
+            $(window).unbind('beforeunload');//取消提醒
+        }
+
+        //视频上传方式
+        $(document).on("change", "#uploadvideo", function () {
+            if (this.value == "0") {
+                var temp = '@Html.FileUploader(setting =>
+                       {
+                           setting.Name = "UploadFileVideo";
+                           setting.TenantTypeId = TenantTypeIds.Instance().CMS_Video();
+                           setting.InnerContent = "上传文件";
+                           setting.Extensions = "mp4";
+                           setting.Position = AttachmentPosition.Featured;
+                           setting.Key = "Small";
+                           setting.Callbacks.Add("uploadSuccess", "succeedSyntony");
+                           setting.IsPreview = false;
+                       })';
+                $("#upload").append(temp);
+                $("#upload").show();
+                $("#input").hide();
+            }
+            if (this.value == "1") {
+                $("#input").show();
+                $("#upload").text("");
+                $("#showvideo").hide();
+            }
+
+        })
+
+        //提交表单
+        $('.btn-submit').on('click', function () {
+            beforeunloadn()
+            //判断视频是否上传
+            var o = $("#input").css("display");
+            if (o == "none") {
+                $("#VideoUrl").val("");
+                if ($("#attname").text() == "") {
+                    layer.msg("请上传视频", {
+                        icon: 2
+                    });
+                }
+                else {
+                    if ($("[name='FeaturedImageAttachmentId']").val() == "0") {
+                        layer.msg("请上传视频封面", {
+                            icon: 2
+                        });
+                    }
+                    else {
+                        $.fn.getAttachmentIds([$('[name="attachmentId"]').val()]);
+                        $('#EditCMS').submit();
+                    }
+                }
+            }
+            else {
+                if ($("[name='FeaturedImageAttachmentId']").val() == "0") {
+                    layer.msg("请上传视频封面", {
+                        icon: 2
+                    });
+                }
+                else {
+                    $.fn.getAttachmentIds([$('[name="attachmentId"]').val()]);
+                    $('#EditCMS').submit();
+                }
+            }
+
+        });
+
+        //上传成功回调
+        $.fn.succeedSyntony = function (file, data) {
+            $('#attname').text(data.name);
+            $('input[name=attachmentId]').val(data.attachmentId);
+            $('#showvideo').show();
+        }
+
+        //上传成功回调
+        $.fn.succeedImageSyntony = function (file, data) {
+            var $this = $("#UploadFileImgs");
+            var itemTmpl = '<div class="tn-pic-attachment">\
+                                <img class="img-thumbnail img-responsive" src="' + data.path + '" alt="...">\
+                                <button class="btn btn-default btn-xs btn-removeImage" type="button"><i class="fa fa-remove"></i></button>\
+                                </div>';
+
+            $this.append(itemTmpl);
+            var uploadFileInput = $("[name='FeaturedImageAttachmentId']");
+            uploadFileInput.val(data.id);
+            $this.find("div[id^='uploader-UploadFile']").remove();
+        }
+
+
+        //移除标题图
+        $(document).on('click', '.btn-removeImage', function () {
+            var temp = '@Html.FileUploader(setting =>
+                   {
+                       setting.Name = "UploadFileVideo";
+                       setting.TenantTypeId = TenantTypeIds.Instance().CMS_Video();
+                       setting.InnerContent = "上传文件";
+                       setting.Extensions = "mp4";
+                       setting.Position = AttachmentPosition.Featured;
+                       setting.Key = "Small";
+                       setting.Callbacks.Add("uploadSuccess", "succeedSyntony");
+                       setting.IsPreview = false;
+                   })';
+            var $this = $(this);
+            var uploadFileInput = $("[name='FeaturedImageAttachmentId']");
+            uploadFileInput.val("0")
+            $this.parent().parent().append(temp);
+            $this.parent().remove();
+        });
+
+        //移除视频
+        $(document).on('click', '.btn-removeVideo', function () {
+            $('#showvideo').hide();
+        });
+
+    })
+</script>

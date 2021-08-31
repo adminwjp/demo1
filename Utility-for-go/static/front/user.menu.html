@@ -1,0 +1,28 @@
+{{define "user.menu.html"}}
+<div id="left">
+  <h3 class="curmenu">
+    {{if .is_buyer}}
+    {{.lang.im_buyer}}
+    {{else}}
+
+    {{if .is_seller}}
+    {{.lang.im_seller}}
+    {{end}}
+
+    {{end}}
+  </h3>
+  {{if ._usermenu and  ._usermenu.menus}}
+  {{range $item := ._usermenu.menus}}
+  {{if eq $item.submenu nil}}
+  <dl class="menu">
+    <dt {{if eq $item.index 0}} class="first"{{ end}}><b></b><span>{{$item.text}}</span></dt>
+
+    {{range $subitem := $item.submenu}}
+    <dd><a href="{{$subitem.url}}" class="{{if eq $subitem.name  ._usermenu.curitem}}active{{else}}normal{{end}}"><span class="ico {{$subitem.icon}}">{{$subitem.text}}</span></a></dd>
+    {{end}}
+  </dl>
+  {{end}}
+  {{end}}
+  {{end}}
+</div>
+{{end}}

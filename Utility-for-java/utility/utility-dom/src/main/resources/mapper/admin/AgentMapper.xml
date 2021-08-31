@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- create by autoCode,v1.0.0 -->
+<mapper namespace="agent">
+
+    <resultMap id="agentResultMap" type="com.shop.model.Menu">
+        <result property="id" column="id" javaType="java.lang.Integer"></result>
+        <result property="agentName" column="agent_name" javaType="java.lang.String"></result>
+        <result property="agentPhone" column="agent_phone" javaType="java.lang.String"></result>
+        <result property="areaTreePath" column="area_tree_path" javaType="java.lang.String"></result>
+        <result property="agentAddr" column="agent_addr" javaType="java.lang.String"></result>
+        <result property="expireDate" column="expire_date" javaType="java.util.Date"></result>
+        <result property="auditDate" column="audit_date" javaType="java.util.Date"></result>
+        <result property="status" column="status"  javaType="com.shop.model.enums.AgentAuditFlag"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"></result>
+        <result property="sellerId" column="seller_id" javaType="java.lang.Integer"></result>
+        <result property="buyerId" column="buyer_id" javaType="java.lang.Integer"></result>
+        <result property="parentId" column="parent_id" javaType="java.lang.Integer"></result>
+        <result property="areaId" column="area_id" javaType="java.lang.Integer"></result>
+        <result property="createDate" column="create_date" javaType="java.util.Date"></result>
+        <result property="modifyDate" column="modify_date" javaType="java.util.Date"></result>
+    </resultMap>
+
+    <resultMap id="listResultMap" type="com.shop.result.AgentResult">
+        <result property="id" column="id" javaType="java.lang.Integer"></result>
+        <result property="headImgUrl" column="head_img_url" javaType="java.lang.String"></result>
+        <result property="nick" column="nick" javaType="java.lang.String"></result>
+        <result property="agentName" column="agent_name" javaType="java.lang.String"></result>
+        <result property="agentPhone" column="agent_phone" javaType="java.lang.String"></result>
+        <result property="createDate" column="create_date" javaType="java.util.Date"></result>
+        <result property="memberCount" column="member_count" javaType="java.lang.Integer"></result>
+        <result property="totalPrice" column="total_price" javaType="java.lang.Double"></result>
+    </resultMap>
+
+    <insert id="agent.add" parameterType="com.shop.model.Agent" useGeneratedKeys="true" keyProperty="id">
+        insert into t_agent
+        (
+        createDate
+        <if test="agentName!=null and agentName!=''">
+            ,agentName
+        </if>
+        <if test="agentPhone!=null and agentPhone!=''">
+            ,agentPhone
+        </if>
+        <if test="areaTreePath!=null and areaTreePath!=''">
+            ,areaTreePath
+        </if>
+        <if test="agentAddr!=null and agentAddr!=''">
+            ,agentAddr
+        </if>
+        <if test="status!=null">
+            ,status
+        </if>
+        <if test="sellerId!=null">
+            ,sellerId
+        </if>
+        <if test="buyerId!=null">
+            ,buyerId
+        </if>
+        <if test="parentId!=null">
+            ,parentId
+        </if>
+        <if test="areaId!=null">
+            ,areaId
+        </if>
+        )
+        values
+        (
+        now()
+        <if test="agentName!=null and agentName!=''">
+            ,#{agentName}
+        </if>
+        <if test="agentPhone!=null and agentPhone!=''">
+            ,#{agentPhone}
+        </if>
+        <if test="areaTreePath!=null and areaTreePath!=''">
+            ,#{areaTreePath}
+        </if>
+        <if test="agentAddr!=null and agentAddr!=''">
+            ,#{agentAddr}
+        </if>
+        <if test="status!=null">
+            ,#{status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        <if test="sellerId!=null">
+            ,#{sellerId}
+        </if>
+        <if test="buyerId!=null">
+            ,#{buyerId}
+        </if>
+        <if test="parentId!=null">
+            ,#{parentId}
+        </if>
+        <if test="areaId!=null">
+            ,#{areaId}
+        </if>
+        )
+        </insert>
+
+    <update id="agent.modify" parameterType="com.shop.model.Agent" >
+        update  t_agent set modifyDate=now()
+        <if test="agentName!=null and agentName!=''">
+            ,agentName=#{agentName}
+        </if>
+        <if test="agentPhone!=null and agentPhone!=''">
+            ,agentPhone=#{agentPhone}
+        </if>
+        <if test="areaTreePath!=null and areaTreePath!=''">
+            ,areaTreePath=#{areaTreePath}
+        </if>
+        <if test="agentAddr!=null and agentAddr!=''">
+            ,agentAddr=#{agentAddr}
+        </if>
+        <if test="expireDate!=null ">
+            ,expireDate=#{expireDate}
+        </if>
+        <if test="auditDate!=null ">
+            ,auditDate=#{auditDate}
+        </if>
+        <if test="status!=null">
+            ,status=#{status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        <if test="sellerId!=null">
+            ,sellerId=#{sellerId}
+        </if>
+        <if test="buyerId!=null">
+            ,buyerId=#{buyerId}
+        </if>
+        <if test="parentId!=null">
+            ,parentId=#{parentId}
+        </if>
+        <if test="areaId!=null">
+            ,areaId=#{areaId}
+        </if> where id =#{id}
+    </update>
+
+    <sql id="deleteSql"> delete from  t_agent where id</sql>
+
+    <delete id="agent.delete" parameterType="java.lang.Integer" >
+       <include refid="deleteSql" /> =#{id}
+     </delete>
+
+    <delete id="agent.deleteMany" >
+        <include refid="deleteSql" />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+     </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="agentName!=null and agentName!=''">
+                or t_agent.agentName=#{agentName}
+            </if>
+            <if test="agentPhone!=null and agentPhone!=''">
+                or t_agent.agentPhone=#{agentPhone}
+            </if>
+            <if test="areaTreePath!=null and areaTreePath!=''">
+                or t_agent.areaTreePath=#{areaTreePath}
+            </if>
+            <if test="agentAddr!=null and agentAddr!=''">
+                or t_agent.agentAddr=#{agentAddr}
+            </if>
+            <if test="expireDate!=null ">
+                or t_agent.expireDate=#{expireDate}
+            </if>
+            <if test="auditDate!=null ">
+                or t_agent.auditDate=#{auditDate}
+            </if>
+            <if test="status!=null">
+                or t_agent.status=#{status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+            </if>
+            <if test="sellerId!=null">
+                or t_agent.sellerId=#{sellerId}
+            </if>
+            <if test="buyerId!=null">
+                or t_agent.buyerId=#{buyerId}
+            </if>
+            <if test="parentId!=null">
+                or t_agent.parentId=#{parentId}
+            </if>
+            <if test="areaId!=null">
+                or t_agent.areaId=#{areaId}
+            </if>
+            <if test="createDate!=null">
+                or t_agent.createDate=#{createDate}
+            </if>
+            <if test="modifyDate!=null">
+                or t_agent.modifyDate=#{modifyDate}
+            </if>
+        </where>
+    </sql>
+
+    <select id="agent.select"  resultMap="agentResultMap">
+        select * from  t_menu
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="agent.count" parameterType="com.shop.model.Menu" resultType="java.lang.Integer">
+        select count(id) from  t_menu
+        <include refid="whereIf"/>
+    </select>
+
+    <sql id="listWhere">
+        from t_agent
+        lfet join t_user  on t_agent.buyerId = t_user.id and  t_user.flag=0 lfet join  (select count(parentId) as memberCount, parentId from t_agent group by parentId) parent on t_agent.id = parent.parentId
+        lfet join (select sum(totalPrice) as totalPrice, buyerId from t_order where paymentStatus=2) t_order on t_agent.buyerId = t_order.buyerId
+        <include refid="whereIf"/>
+    </sql>
+
+    <select id="agent.list"  parameterType="com.shop.model.Menu"   resultType="com.shop.result.AgentResult">
+        select t_user.headImgUrl, t_user.nick, t_agent.id, t_agent.agent_name, t_agent.agent_phone, t_agent.createDate, t_agent.auditDate, parent.memberCount, t_order.totalPrice
+        <include refid="listWhere"/>
+    </select>
+
+    <select id="agent.listCount" parameterType="com.shop.model.Menu" resultType="java.lang.Integer">
+        select count(t_agent.id)
+        <include refid="listWhere"/>
+    </select>
+
+    <select id="agent.selfAndParent" parameterType="java.lang.Integer"  resultType="com.shop.result.AgentResult">
+        select * from t_agent
+        <where>
+            <if test="agentId!=null"> id=#{id} or parentId=#{agentId}</if>
+        </where>
+    </select>
+
+
+</mapper>

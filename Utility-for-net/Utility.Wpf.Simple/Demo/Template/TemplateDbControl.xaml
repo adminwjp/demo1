@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="Utility.Wpf.Demo.Template.TemplateDbControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Utility.Wpf.Demo.Template"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <CheckBox x:Key="AllCheck" IsChecked="{Binding IsAllSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"  DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext}" />
+    </UserControl.Resources>
+    <Grid>
+        <DockPanel Name="dockPanel">
+            <WrapPanel DockPanel.Dock="Top" Height="170" >
+                <!-- 这种方式定位麻烦 坐标 最好用grid 定位 -->
+
+                <Label Height="40"  Margin="10,30,0,0"  HorizontalContentAlignment="Center">Id：</Label>
+                <TextBox Height="40" Width="100" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"   Margin="10,30,0,0"   Text="{Binding Query.Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                
+                <Label Height="40"  Margin="10,30,0,0"  HorizontalContentAlignment="Center">名称：</Label>
+                <TextBox Height="40" Width="100" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"   Margin="10,30,0,0"   Text="{Binding Query.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                <Label Height="40"  Margin="10,30,0,0"  HorizontalContentAlignment="Center">项目名称：</Label>
+                <TextBox  Height="40" Width="100" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Margin="10,30,0,0" Text="{Binding Query.ProgramName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                <Button Content="查询" Height="40" Width="80"   Name="btnQuery"  Margin="30,30,0,0"  Click="btnQuery_Click" />
+                <Button Content="清空" Height="40" Width="80"   Name="btnClean"  Margin="30,30,0,0"  Click="btnClean_Click" />
+                <Button Content="添加" Height="40" Width="80"   Name="btnAdd"  Margin="10,30,0,0"  Click="btnAdd_Click" />
+                <Button Content="编辑" Height="40" Width="80"   Name="btnModify" Margin="10,30,0,0" Click="btnModify_Click" />
+                <Button Content="删除" Height="40" Width="80"   Name="btnDelete" Margin="10,30,0,0" Click="btnDelete_Click" />
+            </WrapPanel>
+
+
+            <!--<wpf:Page   DockPanel.Dock="Bottom" x:Name="page" ></wpf:Page>-->
+
+
+            <DataGrid  DockPanel.Dock="Bottom" Name="dataGrid"  FrozenColumnCount="1" AutoGenerateColumns="False" ItemsSource="{Binding DataList,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  SelectionUnit="FullRow" CanUserAddRows="False" SelectionMode="Extended">
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <!--单元格被选中时 改变颜色-->
+                                <Setter Property="Background" Value="LightPink"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="LightBlue" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!--当鼠标经过时 改变颜色-->
+                                <Setter Property="Background" Value="SkyBlue"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <!--给整个表头添加颜色开始-->
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="LightBlue" Offset="0.5"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="FontSize" Value="13" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+                <!--给整个表头添加颜色结束-->
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn  Header="{StaticResource AllCheck}"  Width="40">
+                        <DataGridColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="White" Offset="0"/>
+                                            <GradientStop Color="Yellow" Offset="0.5"/>
+                                            <GradientStop Color="White" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="Width" Value="70"/>
+                            </Style>
+                        </DataGridColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="编号" Width="80" Binding="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="项目名称" Width="80" Binding="{Binding ProgramName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="名称" Width="80" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                 
+                    <DataGridTextColumn Header="Remark" Width="80" Binding="{Binding Remark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTemplateColumn  Header="操作"  Width="250">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="编辑" Height="30" Width="70" Tag="{Binding Id}"  Margin="10,0,0,0" Click="btnEdit_Click" />
+                                    <Button Content="删除" Height="30" Width="70" Tag="{Binding Id}"  Margin="10,0,0,0" Click="btnDele_Click" />
+                                    <Button Content="预览" Height="30" Width="70" Tag="{Binding Id}"  Margin="10,0,0,0" Click="btnPreview_Click" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
+</UserControl>

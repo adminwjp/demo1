@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+span.collapse::after {
+    content: "2";
+    /*"\/";*/
+}
+
+span.collapsed::after {
+    content: "1";
+    /*"/\";*/
+
+}
+
+span.arrUp,
+span.arrDown {
+    width: 0;
+    height: 0;
+    border: 40px solid transparent;
+    border-bottom-color: #ccc;
+    cursor: pointer;
+}

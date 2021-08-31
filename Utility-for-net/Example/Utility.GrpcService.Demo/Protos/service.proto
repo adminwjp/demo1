@@ -1,0 +1,14 @@
+syntax = "proto3";
+//import "google/protobuf/any.proto";
+option csharp_namespace = "Config.GrpcService";
+
+package service;
+
+service Service{
+	//rpc Register (ServiceRequest) returns (ResultReply);
+	//rpc Get (NameRequest) returns (AddressReply);
+    //rpc GetAddress(ServiceRequest) returns  (AddressReply);
+    //rpc GetAll(NoceRequest) returns  (ServiceReply);
+}
+
+

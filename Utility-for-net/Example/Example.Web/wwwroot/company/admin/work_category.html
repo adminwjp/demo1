@@ -1,0 +1,185 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="lib/html5shiv.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+    <!--<link href="lib/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" />-->
+    <!--<link rel="stylesheet" href="lib/jqgrid/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="lib/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+    <link rel="stylesheet" href="lib/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="lib/jqgrid/css/css/redmond/jquery-ui-1.8.16.custom.css" />-->
+
+    <link rel="stylesheet" href="lib/jqgrid1/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="lib/jqgrid1/css/css/redmond/jquery-ui-1.8.16.custom.css" />
+    <link rel="stylesheet" href="lib/jqgrid1/datepicker/jquery.ui.datepicker.css" />
+
+    <!--[if IE 6]>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>作品分类管理</title>
+    <style>
+              td.highlight {
+                  font-weight: bold;
+                  color: blue;
+              }
+
+              .table td {
+                  text-align: center;
+              }
+
+              .ui-jqgrid tr.jqgrow td {
+                  white-space: normal !important;
+                  height: auto;
+                  /*   vertical-align: text-top;
+        padding-top: 10px; */
+              }
+              div.layui-layer,.layui-layer-dialog,.layer-anim{
+                left:40%;
+              }
+    </style>
+</head>
+<body>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 官网中心 <span class="c-gray en">&gt;</span> 作品分类管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div class="text-c">
+            创建日期范围：
+            <input type="text" onfocus="WdatePicker({ createMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="createdatemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ createMinDate:'#F{$dp.$D(\'datemin\')}',createMaxDate:'%y-%M-%d' })" id="createdatemax" class="input-text Wdate" style="width:120px;">
+            修改日期范围：
+            <input type="text" onfocus="WdatePicker({ modifyMaxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="modifydatemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({ modifyMinDate:'#F{$dp.$D(\'datemin\')}',modifyMaxDate:'%y-%M-%d' })" id="modifydatemax" class="input-text Wdate" style="width:120px;">
+            <input type="text" class="input-text" style="width:250px" placeholder="输入名称 英文 名称" id="name" name="">
+            <span class="select-box" style="width:150px;">
+                <select id="enable" class="select">
+                    <option value="">请选择</option>
+                    <option value="true">启用</option>
+                    <option value="false">禁用</option>
+                </select>
+            </span>
+
+            <button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+            <button type="reset" class="btn btn-success radius" id="clear" name="">清空</button>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="l">
+                <a href="javascript:;" onclick="operatorJqGrid('', 'delete', urls.work_category.delete)" class="btn btn-danger radius">
+                    <i class="Hui-iconfont">&#xe6e2;</i>
+                    批量删除
+                </a> <a href="javascript:;" onclick="operatorJqGrid('添加作品分类信息', 'add', urls.work_category.add)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加作品分类信息</a>
+                <a href="javascript:;" onclick="operatorJqGrid('编辑作品分类信息', 'edit', urls.work_category.edit)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑作品分类信息</a>
+                <a href="javascript:;" onclick="setEditEnable(urls.work_category.editstatus, '', true, true, true)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe603;</i>发布</a>
+                <a href="javascript:;" onclick="setEditEnable(urls.work_category.editstatus, '', false, true, true)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6de;</i> 下架</a>
+            </span> <span class="r">共有数据：<strong>0</strong> 条</span>
+        </div>
+        <div class="mt-20">
+            <table id="table" class="table table-border table-bordered table-hover table-bg table-sort">
+            </table>
+            <div id="page"></div>
+
+        </div>
+    </div>
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <!--<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>-->
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+
+    <script type="text/javascript" src="lib/jqgrid1/js/jquery.jqGrid.src.js"></script>
+    <script type="text/javascript" src="lib/jqgrid1/js/i18n/grid.locale-cn.js"></script>
+    <script type="text/javascript" src="lib/jqgrid1/datepicker/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="lib/jqgrid1/datepicker/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="lib/jqgrid1/datepicker/jquery.ui.datepicker.js"></script>
+    <script src="/js/index.js"></script>
+    <script type="text/javascript">
+        var admin = new AdminJqGrid({ flag: 2 });
+        admin.url = urls.work_category;
+        var options = admin.options;
+        options.url = urls.work_category.query;
+        options.caption = "作品分类列表";
+        admin.search();
+        let categorys = [":请选择"];
+        let works = [":请选择"];
+        jQuery(function () {
+            var obj = { category: false, work: false };
+            jQuery.getJSON(urls.work_category.category, data => {
+                if (data.success) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        categorys.push(data.data[i].id + ":" + getName( data.data[i]));
+                    }
+                    obj.category = true;
+                    if (obj.category && obj.work) {
+                        init();
+                        obj.category = false;
+                        obj.work = false;
+                    }
+                }
+            });
+            jQuery.getJSON(urls.work.category, data => {
+                if (data.success) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        works.push(data.data[i].id + ":" + data.data[i].src);
+                    }
+                    //console.log(categorys);
+                    obj.work = true;
+                    if (obj.category && obj.work) {
+                        init();
+                        obj.category = false;
+                        obj.work = false;
+                    }
+                }
+            });
+            function init() {
+                admin.initColModel();
+                admin.options.colModel.splice(4, 1, {
+                    label: "Filter", name: 'filter', index: 'filter', width: 150, sortable: false, editable: true,
+                    editoptions: { size: "20", maxlength: "30" }, align: 'center'
+                }, {
+                        label: "作品分类", name: 'work_id', index: 'work_id', sortable: false, width: 90, editable: true, edittype: "select", editoptions: { value: works.join(';') }, align: 'center',
+                            formatter: function (cellvalue, options, rowObject) {
+                                if (rowObject.work_id != null) {
+                                    for (var i = 0; i < categorys.length; i++) {
+                                        if (works[i].split(':')[0] == rowObject.work_id.toString()) {
+                                            return works[i].split(':')[1];
+                                        }
+                                    }
+                                }
+                                return rowObject.work_id == "请选择" ||rowObject.work_id==null ? "无" : rowObject.work_id;
+                            }
+                        });
+                    //for (var i = 0; i < admin.options.colModel.length; i++) {
+                    //    console.log(admin.options.colModel[i]);
+                    //}
+                    jQuery("#table").jqGrid(options).jqGrid('setFrozenColumns');;
+                    $("#table").jqGrid('navGrid', '#page',
+                        { add: true, edit: true, del: false, search: false, refresh: false },
+                        {
+                            beforeShowForm: beforeShowForm
+                        }, {
+                        beforeShowForm: beforeShowForm
+                    });
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,328 @@
+﻿@model IEnumerable<PointTask>
+@{
+
+    ViewData["Title"] = new string[] { "积分任务" };
+    TempData["SidebarType"] = "PointTask";
+    var user = UserContext.CurrentUser;
+    var taskCompleted = ViewData.Get<IEnumerable<PointTaskRecord>>("taskCompleted", null);
+}
+
+<div class="row jh-space-setup">
+    @Html.Partial("_Sidebar")
+    <div class="col-xs-10">
+        <div class="jh-space-right jh-padding-white">
+            <ul class="nav nav-tabs tn-mb-20" role="tablist" id="myTab">
+                <li role="presentation" class="active">
+                    <a href="#taskList" data-href="#taskList" name="maintabnav"  role="button" data-toggle="tab">
+                        任务列表
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#performTast" data-href="#performTast" name="maintabnav" role="button" data-toggle="tab">
+                        已完成的任务
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content" id="_ListPointTasks">
+                @model IEnumerable<PointTask>
+                @{
+                    var user = UserContext.CurrentUser;
+                    var taskCompleted = ViewData.Get<IEnumerable<PointTaskRecord>>("taskCompleted", null);
+                    var taskCompletedName = ViewData["taskCompletedName"];
+                    var pointName = ViewData["pointName"];
+                    var goldName = ViewData["goldName"];
+                }
+                <div role="tabpanel" class="tab-pane active" id="taskList">
+                    <div class="jh-integral-task">
+                        @foreach (var pointTask in Model)
+                        {
+                            var taskUrl = string.Empty;
+                            if (!string.IsNullOrEmpty(pointTask.TaskType.TaskUrl))
+                            {
+                                if (!pointTask.TaskType.TaskUrl.StartsWith("http"))
+                                {
+                                    taskUrl = Tunynet.Utilities.WebUtility.ResolveUrl("~" + pointTask.TaskType.TaskUrl?.Replace("{username}", user.UserName).Replace("{taskId}", pointTask.TaskId.ToString()));
+                                }
+                                else
+                                {
+                                    taskUrl = pointTask.TaskType.TaskUrl;
+                                }
+                            }
+
+                            var tasktoUser = pointTask.GetTaskToUser(user.UserId);
+                            if (tasktoUser == null || tasktoUser.Status != TaskRecordStatus.Completed)
+                            {
+                                <div class="row taskinfogo">
+                                    <div class="col-xs-1">
+                                        <img src="@Tunynet.Utilities.WebUtility.ResolveUrl("~" +pointTask.TaskType.ImageUrl)" />
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <h5>
+                                                    <a class="taskdetail tn-cursor-pointer" data-taskname="@pointTask.TaskName" data-taskid="@pointTask.TaskId">@pointTask.TaskName</a>
+                                                    @if (tasktoUser != null && string.IsNullOrEmpty(pointTask.TaskType.CheckMethodName))
+                                                    {
+                                                        <input type="hidden" class="taskinfo" data-recordid="@tasktoUser.RecordId" data-taskname="@pointTask.TaskName" data-taskid="@pointTask.TaskId" data-method="@pointTask.TaskType.CheckMethodName" data-taskurl="@taskUrl" />
+                                                        if (string.IsNullOrEmpty(tasktoUser.ResultContent))
+                                                        {
+                                                            <a class="a tn-ml-15 tn-font-14 tn-cursor-pointer taskgo">提交任务</a>
+                                                        }
+                                                        else if (tasktoUser.Status == TaskRecordStatus.Applying)
+                                                        {
+                                                            <a class="a tn-ml-15 tn-font-14 tn-cursor-pointer taskgo">已提交任务，等待审核</a>
+                                                        }
+                                                        else if (tasktoUser.Status == TaskRecordStatus.Refused)
+                                                        {
+                                                            <a class="a tn-ml-15 tn-font-14 tn-cursor-pointer taskgo">未通过，点击查看反馈</a>
+                                                        }
+                                                    }
+                                                </h5>
+                                                <p class="detail">@pointTask.Description</p>
+                                            </div>
+                                            <div class="col-xs-5 text-right">
+                                                <ul class="list-inline">
+                                                    @if (pointTask.TaskType.IsShowProgressBar && tasktoUser != null && tasktoUser.Status == TaskRecordStatus.Doing)
+                                                    {
+                                                        var progress = pointTask.CheckUserTask(user);
+                                                        <li>
+                                                            <ul class="list-inline">
+                                                                <li>进度</li>
+                                                                <li>
+                                                                    <div class="progress" title="任务完成进度：@progress%">
+                                                                        <div class="progress-bar progress-bar-info" role="progressbar" style="width: @progress%"></div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                    <li>已有 @pointTask.GetTaskToUserNum() 人领取</li>
+                                                </ul>
+                                                <ul class="list-inline">
+                                                    @if (pointTask.TaskType.IsSetDeadline)
+                                                    {
+                                                        <li>任务截止时间：@pointTask.Deadline.ToyyyyMMddHHmm()</li>
+                                                    }
+                                                    <li>
+                                                        奖励：@(pointTask.AwardPoints > 0 ? pointTask.AwardPoints + pointName.ToString() : "")
+                                                        @((pointTask.AwardPoints > 0 && pointTask.AwardGolds > 0) ? "+" : "")
+                                                        @(pointTask.AwardGolds > 0 ? pointTask.AwardGolds + goldName.ToString() : "")
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        @if (tasktoUser != null && tasktoUser.Status != TaskRecordStatus.Abandoned)
+                                        {
+                                            if (string.IsNullOrEmpty(pointTask.TaskType.CheckMethodName))
+                                            {
+                                                if (!string.IsNullOrEmpty(tasktoUser.ResultContent) && tasktoUser.Status == TaskRecordStatus.Applying)
+                                                {
+                                                    <a class="btn btn-default taskgo">等待审核</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="btn btn-default taskgo">提交任务</a>
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-default" href="@taskUrl" target="_blank">去做任务</a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (pointTask.TaskType.IsSetDeadline && pointTask.Deadline < DateTime.Now)
+                                            {
+                                                <button class="btn btn-danger" id="deadlineover">领取任务</button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-danger newtask" data-taskurl="@taskUrl" data-taskname="@pointTask.TaskName" data-taskid="@pointTask.TaskId">领取任务</button>
+                                            }
+
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="performTast">
+                    @Html.Action("_ListCompletedPointTasks", "UserSpace")
+                </div>
+                <script>
+    require(['jquery', 'tnlayer', 'page'], function ($, tnlayer) {
+        $(function () {
+            var taskCompletedName = "@taskCompletedName";
+            if (taskCompletedName != "") {
+                layer.alert("您的任务" + taskCompletedName + "已经完成！");
+            }
+        })
+    })
+                </script>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+        //弹出详情页
+        $(document).on("click", ".taskdetail", function () {
+            var taskId = $(this).data("taskid");
+            var taskName = $(this).data("taskname");
+            var $taskinfo = $(this).parents(".taskinfogo").find(".taskinfo");
+            $(".taskinfo").removeClass("taskinfochecked");
+            $taskinfo.addClass("taskinfochecked");
+            var url = "@CachedUrlHelper.Action("_PointTaskDetail", "UserSpace")?t=" + (new Date).getTime();
+            //页面层
+            $.get(url, { taskId: taskId }, function (data) {
+                layer.closeAll();
+                layer.open({
+                    type: 1,
+                    title: taskName,
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ["500px", "500px"], //宽高
+                    content: data,
+                    scrollbar: true
+                });
+            });
+        }).on("click", "#newtask", function () {
+            //领取任务
+            var taskurl = $("#taskinfo").data("taskurl");
+            var url = "@CachedUrlHelper.Action("CreateTasktoUser", "UserSpace")";
+            $.post(url, { taskId: $("#taskinfo").data("taskid") }, function (data) {
+                if (data.MessageType == 1) {
+                    layer.closeAll();
+                    layer.msg(data.MessageContent, { icon: 1, time: 1000 }, function () {
+                        if (taskurl == "")
+                            getTaskList();
+                        else
+                            window.location.href = taskurl;
+                    });
+                }
+                else {
+                    layer.msg(data.MessageContent, { icon: 2 });
+                }
+            });
+        }).on("click", ".newtask", function () {
+            //领取任务
+            var $this = $(this);
+            var taskurl = $this.data("taskurl");
+            var url = "@CachedUrlHelper.Action("CreateTasktoUser", "UserSpace")";
+            $.post(url, { taskId: $this.data("taskid") }, function (data) {
+                if (data.MessageType == 1) {
+                    layer.closeAll();
+                    layer.msg(data.MessageContent, { icon: 1, time: 1000 }, function () {
+                        if (taskurl == "")
+                            getTaskList();
+                        else
+                            window.location.href = taskurl;
+                    });
+                }
+                else {
+                    layer.msg(data.MessageContent, { icon: 2 });
+                }
+            });
+        }).on("click", "#abandonedtask", function () {
+            //放弃任务
+            layer.confirm("确定放弃么？", {
+                btn: ['确认', '取消'],//按钮
+                scrollbar: false
+            }, function () {
+                var url = "@CachedUrlHelper.Action("AbandonedTask", "UserSpace")";
+                $.post(url, { recordId: $("#taskinfo").data("recordid") }, function (data) {
+                    if (data.MessageType == 1) {
+                        layer.closeAll();
+                        layer.msg(data.MessageContent, { icon: 1, time: 1000 });
+                        getTaskList();
+                    }
+                    else {
+                        layer.msg(data.MessageContent, { icon: 2 });
+                    }
+                });
+            });
+        }).on("click", "#taskgo", function () {
+            //点击人工审核任务弹出任务框
+            var taskName = $("#taskinfo").data("taskname");
+            var url = "@CachedUrlHelper.Action("_PointTaskEdit", "UserSpace")?t=" + (new Date).getTime();
+            //页面层
+            $.get(url, { recordId: $("#taskinfo").data("recordid") }, function (data) {
+                layer.open({
+                    type: 1,
+                    title: taskName,
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ["400px", "500px"], //宽高
+                    content: data,
+                    scrollbar: true
+                });
+            });
+        }).on("click", ".taskgo", function () {
+            layer.closeAll();
+            //点击人工审核任务弹出任务框
+            var $taskinfo = $(this).parents(".taskinfogo").find(".taskinfo");
+            $(".taskinfo").removeClass("taskinfochecked");
+            $taskinfo.addClass("taskinfochecked");
+            var taskName = $taskinfo.data("taskname");
+            var url = "@CachedUrlHelper.Action("_PointTaskEdit", "UserSpace")?t=" + (new Date).getTime();
+            //页面层
+            $.get(url, { recordId: $taskinfo.data("recordid") }, function (data) {
+                layer.open({
+                    type: 1,
+                    title: taskName,
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ["400px", "500px"], //宽高
+                    content: data,
+                    scrollbar: true
+                });
+            });
+        }).on("click", "#taskcancel", function () {
+            //取消按钮
+            layer.closeAll();
+        }).on("click", "#tasksubmit", function () {
+            //人工审核任务提交任务
+            var content = [];
+            var isEmpty = false;
+            $(".content").each(function () {
+                if ($(this).val() == "")
+                {
+                    isEmpty = true;
+                    return;
+                }
+                content.push($(this).val().replace(",", "，"));
+            });
+            if (isEmpty)
+            {
+                layer.msg("任务提交内容不能为空！", { icon: 2 });
+                return false;
+            }
+            var url = '@CachedUrlHelper.Action("PointTaskSubmit", "UserSpace")';
+            $.post(url, { recordId: $(".taskinfochecked").data("recordid"), content: content }, function (data) {
+                if (data.MessageType == 1) {
+                    layer.closeAll();
+                    layer.msg(data.MessageContent, { icon: 1, time: 1000 });
+                    getTaskList();
+                }
+                else {
+                    layer.msg(data.MessageContent, { icon: 2 });
+                }
+            });
+        }).on("click", "#deadlineover", function () {
+            //截止日期已过
+            layer.msg("任务截止时间已过，不能领取任务！", { icon: 2 });
+        });
+
+        function getTaskList() {
+            var url = '@CachedUrlHelper.Action("_ListPointTasks", "UserSpace")?t=' + (new Date).getTime();
+            $.get(url, function (data) {
+                $("#_ListPointTasks").html(data);
+            })
+        }
+    });
+
+</script>

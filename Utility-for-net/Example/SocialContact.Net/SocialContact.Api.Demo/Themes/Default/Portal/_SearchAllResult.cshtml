@@ -1,0 +1,109 @@
+﻿@model AllResultModel
+@{
+    var keyword = ViewData.Get<string>("keyword", string.Empty);
+}
+@if (Model.Data != null)
+{
+    <div class="col-xs-12 tn-mb-20">
+        <div class="tn-gray-bg">
+            <ul class="list-inline">
+                <li>@Model.Description</li>
+            </ul>
+        </div>
+    </div>
+    if (Model.Data.CmsResults != null && Model.Data.CmsResults.Count > 0)
+    {
+        <div class="col-xs-12">
+            <div class="jh-padding-white tn-mb-10">
+                <ul class="list-unstyled">
+                    @foreach (var item in Model.Data.CmsResults)
+                    {
+                        <li>
+                            <h5><a href="@SiteUrls.Instance().CMSDetail(item.Id)" target="_blank" class="a">@Html.Raw(item.Subject)</a></h5>
+                            <p>@Html.Raw(item.Body)</p>
+                            <ul class="list-inline text-muted">
+                                <li><a target="_blank" href="@SiteUrls.Instance().SpaceHome(item.UserId)">@item.Author</a></li>
+                                <li>@item.DateString</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <a href="@CachedUrlHelper.Action("Search","Portal",null,new RouteValueDictionary { { "keyword",keyword}, { "searchType","Cms"} })"><p class="pull-right">搜索“<span class="tn-theme-color">@keyword</span>”的所有 @Model.Page["Cms"]个资讯</p></a>
+        </div>
+    }
+
+    if (Model.Data.ThreadResults != null && Model.Data.ThreadResults.Count > 0)
+    {
+        <div class="col-xs-12">
+            <div class="jh-padding-white tn-mb-10">
+                <ul class="list-unstyled">
+                    @foreach (var item in Model.Data.ThreadResults)
+                    {
+                        <li>
+                            <h5><a href="@SiteUrls.Instance().ThreadDetail(item.Id)" target="_blank" class="a">@Html.Raw(item.Subject)</a></h5>
+                            <p>@Html.Raw(item.Body)</p>
+                            <ul class="list-inline text-muted">
+                                <li><a target="_blank" href="@SiteUrls.Instance().SpaceHome(item.UserId)">@item.Author</a></li>
+                                <li>@item.DateString</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <a href="@CachedUrlHelper.Action("Search","Portal",null,new RouteValueDictionary { { "keyword",keyword}, { "searchType","Thread"} })"><p class="pull-right">搜索“<span class="tn-theme-color">@keyword</span>”的所有 @Model.Page["Thread"]个贴子</p></a>
+        </div>
+    }
+
+    if (Model.Data.AskResults != null && Model.Data.AskResults.Count > 0)
+    {
+        <div class="col-xs-12">
+            <div class="jh-padding-white tn-mb-10">
+                <ul class="list-unstyled">
+                    @foreach (var item in Model.Data.AskResults)
+                    {
+                        <li>
+                            <h5><a href="@CachedUrlHelper.Action("AskDetail", "Ask",null,new RouteValueDictionary { { "questionId",item.Id}, { "answerId",0}, { "commentId",0} })" target="_blank" class="a">@Html.Raw(item.Subject)</a></h5>
+                            <p>@Html.Raw(item.Body)</p>
+                            <ul class="list-inline text-muted">
+                                <li><a target="_blank" href="@SiteUrls.Instance().SpaceHome(item.UserId)">@item.Author</a></li>
+                                <li>@item.DateString</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <a href="@CachedUrlHelper.Action("Search","Portal",null,new RouteValueDictionary { { "keyword",keyword}, { "searchType","Ask"} })"><p class="pull-right">搜索“<span class="tn-theme-color">@keyword</span>”的所有 @Model.Page["Ask"]个问题</p></a>
+        </div>
+    }
+
+    if (Model.Data.DocResults != null && Model.Data.DocResults.Count > 0)
+    {
+        <div class="col-xs-12">
+            <div class="jh-padding-white tn-mb-10">
+                <ul class="list-unstyled">
+                    @foreach (var item in Model.Data.DocResults)
+                    {
+                        <li>
+                            <h5><a href="@CachedUrlHelper.Action("DocumentDetail", "Document",null,new RouteValueDictionary { { "documentId",item.Id}, { "commentId",0} })" target="_blank" class="a">@Html.Raw(item.Subject)</a></h5>
+                            <p>@Html.Raw(item.Body)</p>
+                            <ul class="list-inline text-muted">
+                                <li><a target="_blank" href="@SiteUrls.Instance().SpaceHome(item.UserId)">@item.Author</a></li>
+                                <li>@item.DateString</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <a href="@CachedUrlHelper.Action("Search","Portal",null,new RouteValueDictionary { { "keyword",keyword}, { "searchType","Doc"} })"><p class="pull-right">搜索“<span class="tn-theme-color">@keyword</span>”的所有 @Model.Page["Document"]个文档</p></a>
+        </div>
+    }
+}
+else
+{
+    <div class="col-xs-12">
+        <div class="jh-padding-white">
+            <p>暂无搜索结果</p>
+        </div>
+    </div>
+}

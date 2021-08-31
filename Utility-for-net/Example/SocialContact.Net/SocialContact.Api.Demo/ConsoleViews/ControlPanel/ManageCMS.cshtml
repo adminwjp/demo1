@@ -1,0 +1,269 @@
+﻿@model ContentItem
+@{
+    TempData["subMenu-check"] = new string[] { "CMS", "ManageCMS" };
+    ViewData["Title"] = new string[] { "资讯管理" };
+    var user = UserContext.CurrentUser;
+    var contentCategoryId = Request.QueryString.Get("contentCategoryId", 0);
+    var isCategoryManager = new Authorizer().IsCategoryManager(TenantTypeIds.Instance().ContentItem(), user, contentCategoryId);
+}
+@Styles.Render("~/js/lib/zTree/css/zTreeStyle/zTree")
+
+
+<div class="tn-side-bar">
+    <div class="panel-group tn-column-menu tn-mb-20" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>
+                    栏目列表
+                    <a @if (!new Authorizer().IsCategoryManager(TenantTypeIds.Instance().ContentItem(), user, null)) { <text> class="pull-right small maintenance" href="javascript:;" </text>  } else { <text> class="pull-right small" href="@SiteUrls.Instance().ManageContentCategories()" </text> } style="color:#337ab7">管理</a>
+                </h4>
+            </div>
+
+        </div>
+        <div class="panel panel-default">
+            <div class="zTreeDemoBackground left jh-resetztree">
+                <ul id="treeDemo" class="ztree tn-mt-0"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tn-main" id="listCMS">
+    @Html.Action("_ListCMS", "ControlPanel")
+</div>
+@Styles.Render("~/js/lib/plupload/upload")
+@Styles.Render("~/js/lib/daterangepicker/daterangepicker")
+
+<script>
+    require(['jquery', 'livequery', 'datepicker', 'ztree', 'ztreeexhide'], function () {
+
+         $.get('@CachedUrlHelper.Action("CategoryJsons", "ControlPanel")', { id: 0, openZtree:@contentCategoryId, t: (new Date()).valueOf() }, function (data) {
+            var setting = {
+                view: {
+                    selectedMulti: false,
+                    fontCss: getFont,
+                    showLine: true,
+                    //showIcon: false,
+                    addDiyDom:addDiyDom
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    onClick: zTreeOnClick,
+                }
+            };
+            var zNodes = data;
+
+            function zTreeOnClick(event, treeId, treeNode) {
+                $("#ContentCategoryId").val(treeNode.id);
+                $("a[id^=treeDemo_]").attr("style", "")
+                categorySelectcms();
+                //window.location.href = "@CachedUrlHelper.Action("ManageProducts", "ControlPanel")?contentCategoryId=" + treeNode.id;
+                //console.log(treeNode.tId + ", " + treeNode.id + ", " + treeNode.name);
+            };
+            function getFont(treeId, node) {
+                return node.font ? node.font : {};
+            }
+            $(document).ready(function () {
+                $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                $.fn.checkNode(12)
+            });
+
+        });
+
+        $.fn.checkNode = function (id) {
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = treeObj.getNodesByParam("id", id, null);
+            if (nodes.length > 0)
+                treeObj.checkNode(nodes[0], true, true);
+        }
+
+        function addDiyDom(treeId, treeNode) {
+            var spaceWidth = 5;
+            var switchObj = $("#" + treeNode.tId + "_switch"),
+                icoObj = $("#" + treeNode.tId + "_ico");
+            switchObj.remove();
+            icoObj.before(switchObj);
+
+            if (treeNode.level > 0) {
+                var spaceStr = "<span style='display: inline-block;width:" + (spaceWidth * treeNode.level) + "px'></span>";
+                switchObj.before(spaceStr);
+            }
+
+            var spantxt = $("#" + treeNode.tId + "_span").html();
+            if (spantxt.length > 12) {
+                spantxt = spantxt.substring(0, 12) + "...";
+                $("#" + treeNode.tId + "_span").html(spantxt);
+            }
+        }
+
+        function categorySelectcms() {
+            var contentCategoryId = $("#ContentCategoryId").val();
+            var pageIndex = 1;
+            var parm = jQuery.param({ contentCategoryId: contentCategoryId, pageIndex: pageIndex, t: new Date().getTime() }, true);
+            $.get('@CachedUrlHelper.Action("_ListCMS", "ControlPanel")', parm, function (data) {
+                $("#listCMS").html(data);
+            });
+        }
+
+        function selectcms() {
+            var keyword = $("#keyword").val();
+            var auditStatus = $("#auditStatus").val();
+            var contentCategoryId = $("#ContentCategoryId").val();
+            var dateRange = $("#Daterangepicker").val();
+            var startDate = dateRange.split(' - ')[0];
+            var endDate = dateRange.split(' - ')[1];
+            var pageIndex = 1;
+            var parm = jQuery.param({ contentCategoryId: contentCategoryId, keyword: keyword, auditStatus: auditStatus, startDate: startDate, endDate: endDate, pageIndex: pageIndex, t: new Date().getTime() }, true);
+            $.get('@CachedUrlHelper.Action("_ListCMS", "ControlPanel")', parm, function (data) {
+                $("#listCMS").html(data);
+            });
+        }
+        //搜索
+        $(document).on('click', '#search', function () {
+            selectcms();
+        });
+
+        //菜单跳转
+        $(".activeUrl").click(function (e) {
+            var id = $(this).attr("href").replace(/[^0-9]/ig, "");
+            window.location.href = "@CachedUrlHelper.Action("ManageCMS", "ControlPanel")?contentCategoryId=" + id;
+        });
+
+        //删除
+        $(document).on('click', 'a[id^=delete-]', function () {
+            //添加时间戳
+            var id = $(this).attr("id").replace(/[^0-9]/ig, "");
+            layer.confirm("确定删除么？", {
+                btn: ['确认', '取消'],//按钮
+                scrollbar: false
+            }, function () {
+                var parm = jQuery.param({ contentItemId: id, t: new Date().getTime() }, true);
+                $.post('@CachedUrlHelper.Action("_DeleteCMS", "ControlPanel")', parm, function (data) {
+                    if (data.MessageType) {
+                        layer.msg(data.MessageContent, {
+                            icon: 1
+                        });
+                        selectcms();
+                    }
+                    else {
+                        layer.msg(data.MessageContent, {
+                            icon: 2
+                        });
+                    }
+                });
+            });
+        });
+
+        //批量删除
+        $("#delall").click(function (e) {
+            e.preventDefault();
+            if (!$("input[name='cmsIds']:checked").length) {
+                layer.msg("请至少选择一篇资讯进行操作", { icon: 2 })
+            } else {
+                layer.confirm("确定删除么？", {
+                    btn: ['确认', '取消'],//按钮
+                    scrollbar: false
+                }, function () {
+                    $.post('@CachedUrlHelper.Action("_DeleteCMSList", "ControlPanel")', $("#Form-CMS").serialize(), function (data) {
+                        if (data.MessageType) {
+                            layer.msg(data.MessageContent, {
+                                icon: 1
+                            });
+                            selectcms();
+                        }
+                        else {
+                            layer.msg(data.MessageContent, {
+                                icon: 2
+                            });
+                        }
+                    });
+                });
+            }
+        });
+        //置顶和取消置顶
+        $(document).on('click', '#Stickyf', function (e) {
+            e.preventDefault();
+            cmsSticky(false);
+        });
+        $(document).on('click', '#Stickyt', function (e) {
+            e.preventDefault();
+            cmsSticky(true);
+        });
+        
+        function cmsSticky(sticky) {
+            if (!$("input[name='cmsIds']:checked").length) {
+                layer.msg("请至少选择一篇资讯进行操作", { icon: 2 })
+            } else {
+                var condition = "确定置顶么？";
+                if (!sticky) {
+                    condition = "确定取消置顶么？";
+                }
+                layer.confirm(condition, {
+                    btn: ['确认', '取消'],//按钮
+                    scrollbar: false
+                }, function () {
+                    $.post('@CachedUrlHelper.Action("StickyCMSs", "ControlPanel")?isSticky=' + sticky, $("#Form-CMS").serialize(), function (data) {
+                        if (data.MessageType) {
+                            layer.msg(data.MessageContent, {
+                                icon: 1
+                            });
+                            selectcms();
+                        }
+                        else {
+                            layer.msg(data.MessageContent, {
+                                icon: 2
+                            });
+                        }
+                    });
+                });
+            }
+        }
+
+        //批量通过审核
+        $(document).on('click', '#passauditt', function (e) {
+            UpdateAuditStatus(true);
+        });
+        //批量不通过审核
+        $(document).on('click', '#passauditf', function (e) {
+            UpdateAuditStatus(false);
+        });
+
+        function UpdateAuditStatus(isApproved) {
+            if (!$("input[name='cmsIds']:checked").length) {
+                layer.msg("请至少选择一篇资讯进行操作", { icon: 2 })
+            } else {
+                var condition = "确定通过审核么？";
+                if (!isApproved) {
+                    condition = "确定不通过审核么？";
+                }
+                layer.confirm(condition, {
+                    btn: ['确认', '取消'],//按钮
+                    scrollbar: false
+                }, function () {
+                    $.post('@CachedUrlHelper.Action("AuditStatusCMS", "ControlPanel")?isApproved=' + isApproved, $("#Form-CMS").serialize(), function (data) {
+                        if (data.MessageType) {
+                            layer.msg(data.MessageContent, {
+                                icon: 1
+                            });
+                            selectcms();
+                        }
+                        else {
+                            layer.msg(data.MessageContent, {
+                                icon: 2
+                            });
+                        }
+                    });
+                });
+            }
+        };
+
+
+
+
+    })
+</script>
+

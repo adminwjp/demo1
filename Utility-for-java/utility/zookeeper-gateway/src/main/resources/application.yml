@@ -1,0 +1,34 @@
+###服务端口号
+server:
+  servlet:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+  port: ${port:5000}
+#  tomcat:
+#    uri-encoding: UTF-8
+
+###服务名称
+spring:
+  application:
+    name: ${name:zookeeper-gateway}
+  redis:
+    host: ${redisHost:192.168.1.3}
+    port: ${redisPort:6379}
+    password: ${redisPassword:wjp930514.}
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true #是否与服务发现组件进行组合，
+          #通过serviceId转发到具体的服务实例。默认为false，若为true便开启基于服务发现的路由规则
+          lower-case-service-id: true #当注册中心为Eureka时,设置为true标识开启用小写的serviceId进行基于服务路由转发
+      routes:
+        - id: clientb_route #在所有路由定义中需要唯一，不能重复
+          uri: lb://zookeeper-client-test # 目标服务地址 为固定写法，表示开启负载均衡； ** 即服务在 eureka 中注册的名字
+          order: 2
+          predicates:
+            - Path=/clientb/**
+          filters:
+            - StripPrefix=1 #前缀， 在当前路径匹配中表示去掉第一个前缀 /notity

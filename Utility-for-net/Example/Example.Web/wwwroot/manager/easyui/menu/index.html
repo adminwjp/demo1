@@ -1,0 +1,442 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>菜单列表</title>
+    <link rel="stylesheet" type="text/css" href="resources//jquery-easyui-1.7.0/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="resources//jquery-easyui-1.7.0/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="resources//jquery-easyui-1.7.0/demo/demo.css">
+    <script type="text/javascript" src="resources/jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="resources/jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+
+</head>
+<body>
+    <div style="width:100%;max-width:100%;margin:0 auto;">
+        <table id="tg_menu" class="easyui-treegrid" title="菜单列表" style="width:100%;height:auto;">
+            <thead>
+                <tr>
+                    <th data-options="field:'ck',checkbox:true"></th>
+                    <th data-options="field:'id',width:300,align:'center'">Id</th>
+                    <th data-options="field:'text',width:100,align:'center',editor:{type:'text',options:{required: true,validType: 'english'}}">名称</th>
+                    <th data-options="field:'state',width:100,align:'center',editor:{type:'checkbox',options:{on:'open',off:'closed'}}">状态</th>
+                    <th data-options="field:'checked',width:100,align:'center',editor:{type:'checkbox',options:{on:'true',off:'flase'}}">选中</th>
+                    <!--<th data-options="field:'_attributes',width:100,align:'center'">表示该节点是否被选中</th>-->
+                    <th data-options="field:'icon_cls',width:100,align:'center',editor:'text'">图标</th>
+                    <th data-options="field:'order_id',width:100,align:'center',styler:cellStyler,editor:{type:'numberbox',options:{precision:0}},sortable:true,sorter:numSorter">排序</th>
+                    <th data-options="field:'creation_time',width:200,align:'center',sortable:true,formatter:formatCreationTime,editor:'datebox'">创建时间</th>
+                    <th data-options="field:'last_modification_time',width:200,align:'center',sortable:true">更新时间</th>
+                    <th data-options="field:'deletion_time',width:200,align:'center',sortable:true">软删除时间</th>
+                    <th data-options="field:'is_deleted',width:100,align:'center',editor:{type:'checkbox'}">软删除</th>
+                    <th data-options="field:'operator',width:200,align:'center',formatter:formatOperator">操作</th>
+                </tr>
+            </thead>
+        </table>
+        <!-- bug dialog 表单(放在dialog这里失效具体原因未知 不能用easyui 表单) 分开(单独一个页面)可以-->
+        <div id="dialog_menu" title="My Dialog">
+            
+        </div>
+
+        <div id="mm" class="easyui-menu" style="width:120px;">
+            <div onclick="append()" data-options="iconCls:'icon-add'">Append</div>
+            <div onclick="removeIt()" data-options="iconCls:'icon-remove'">Remove</div>
+            <div class="menu-sep"></div>
+            <div onclick="collapse()">Collapse</div>
+            <div onclick="expand()">Expand</div>
+        </div>
+    </div>
+    <script type="text/javascript" src="resources/js/index.js"></script>
+    <script type="text/javascript" src="resources/js/treegrid-pager.js"></script>
+    <script type="text/javascript" src="resources/js/menu.js"></script>
+
+   
+    <script>
+        //https://localhost:44386/easyui/index.html 应该在 https://localhost:44386/easyui/menu/index.html 操作的
+        //添加 dialog 后 表格内部 编辑(edit) 失效 找不到对应函数 
+        //注意 页面 复选框 自动 选中 不知道 啥 原因(实际没用 不影响 其他 操作); 混合 搭配 操作  表格内部 编辑 有时报 找不到 edit function (跑到主页去了 tab 选项失去焦点造成的)
+        //有些 其他 问题 暂时 放弃 有空 再看  发送不必要 的 数据 浪费流量 重新 组装 数据 给 后台
+        var editingId;
+
+        function treeGridButtonShow(show,id) {
+            if (show) {
+                //编辑成功 编辑 按钮 隐藏 保存 取消显示
+                $($("tr[node-id=\"" + id + "\"]")).find("a.g_edit").hide();
+                $($("tr[node-id=\"" + id + "\"]")).find("a.g_save").show();
+                $($("tr[node-id=\"" + id + "\"]")).find("a.g_cancel").show();
+
+                //怎么 没反应
+                //$("tr[node-id=\"" + id + "\"] > a.g_edit").hide();
+                //$("tr[node-id=\"" + id + "\"] > a.g_save").show();
+                //$("tr[node-id=\"" + id + "\"] > a.g_cancel").show();
+            } else {
+                //编辑成功 编辑 按钮  显示  保存 取消  隐藏
+                $($("tr[node-id=\"" + id + "\"]")).find("a.g_edit").show();
+                $($("tr[node-id=\"" + id + "\"]")).find("a.g_save").hide();
+                $($("tr[node-id=\"" + id + "\"]")).find("a.g_cancel").hide();
+            }
+        }
+        //编辑 treegrid 行
+        //改个 名字  试试  edit
+        function edit2(flag) {
+            if (flag) {
+                //基于表格类编辑
+                var row = $(idName).treegrid('getSelected');
+                if (row) {
+                    if (editingId != undefined && editingId != row.id) {
+                        $(idName).treegrid('cancelEdit', editingId);
+                    }
+                    editingId = row.id;
+                    $(idName).treegrid('beginEdit', editingId);//这个怎么触发不了,表格内部触发2次才行
+                    treeGridButtonShow(true, row.id);
+                   // $.messager.alert("提示：", "当前编辑操作已触发已选中事件,请在选中后再触发22!", "warn");
+                }
+                else {
+                    //第一次触发才会执行 (前提没做任何操作)
+                   // $.messager.alert("提示：", "当前编辑操作已触发已选中事件,请在选中后再触发!", "warn");
+                }
+            } else {
+                var row = $(idName).treegrid('getChecked');
+                if (row && row.length > 0) {
+                    if (row.length > 1) {
+                        $.messager.alert("提示：", "当前编辑选中的行过多!", "warn");
+                        return false;
+                    }
+                    localStorage.setItem("menu", JSON.stringify(row[0]));
+                    return true;
+                }
+                row = $(idName).treegrid('getSelected');
+                if (row) {
+                    localStorage.setItem("menu", JSON.stringify(row));
+                    return true;
+                }
+            }
+            return false;
+        }
+        //保存  treegrid 行编辑
+        function save(flag) {
+            if (editingId != undefined) {
+                var row = $(idName).treegrid('getSelected');
+                if (row && row.id != editingId) {
+                    $.messager.alert("提示：", "当前操作不可用,请在选中同一行操作!", "warn");
+                    return;
+                }
+                var t = $(idName);
+                t.treegrid('endEdit', editingId);
+                row.checked = row._checked;//无论是否选中无意义
+                //保存数据库
+                $.post(urls.menu.update, row, function (data) {
+                    treeGridButtonShow(false, editingId);
+                    if (data.success) {
+                        $.messager.alert("提示：", "编辑成功", "info");
+                        initTreeGridByGetJson();
+                        //这 怎么 更新 主页 的菜单 了
+                        parent.instance.treeBind();//可以调 ? 菜单 重新 显示(打乱了)
+                    } else {
+                        $.messager.alert("提示：", "编辑失败", "warn");
+                    }
+
+                });
+
+            } else {
+                $.messager.alert("提示：", "当前操作不可用,请在编辑完成后再操作!", "warn");
+            }
+        }
+        //取消  treegrid 行编辑
+        function cancel(flag) {
+            if (editingId != undefined) {
+                $(idName).treegrid('cancelEdit', editingId);
+                editingId = undefined;
+                treeGridButtonShow(false, editingId);
+            }
+            if (!flag) {
+                $(idName).datagrid('clearSelections');
+            }
+        }
+
+        //根据 treegrid 复选框删除事件
+        function remove(flag) {
+            var row;
+            var ids = [];
+            if (!flag)
+            {
+                row = $(idName).treegrid('getChecked');
+                if (row) {
+                    var ids = [];
+                    for (var i = 0; i < row.length; i++) {
+                        ids.push(row[i].id)
+                    }
+                }
+            }
+            if (ids.length==0) {
+                row = $(idName).treegrid('getSelected');
+                if (row) {
+                    ids.push(row.id);
+                }
+            }
+            if (ids.length > 0) {
+                $.post(urls.menu.delete, { ids },
+                    (data) => {
+                        if (data.success) {
+                            $.messager.alert("提示：", "删除成功", "info");
+                            initTreeGridByGetJson();
+                            //这 怎么 更新 主页 的菜单 了
+                            parent.instance.treeBind();//可以调 ?
+                        }
+                        else {
+                            $.messager.alert('提示：',  '删除失败!','warn');
+                        }
+                    }
+                );
+            } else {
+                $.messager.alert('提示：', '未选中行!', 'warn');
+            }
+        }
+
+
+        var page = 1;
+        var size = 10;
+        var orderSort = "";
+        const idName = "#tg_menu";
+        var editIndex = undefined;
+   
+        function getUrl() {
+            var str = urls.menu.find + "/" + page + "/" + size;
+            if (orderSort != undefined && orderSort != "") {
+                str += "/" + orderSort;
+            } else {
+                str += "/null";
+            }
+            return str;
+        }
+        //获取数据 成功 并 触发 treegrid 一系列操作
+        function initTreeGridByGetJson() {
+            $.getJSON(getUrl(),
+                //success
+                function (data) {
+                    if (data.success) {
+                        //
+                        var res = data.data && data.data.data || [];
+                        if (res.length) {
+                            //var gridData = {
+                            //    total: 0,
+                            //    rows: [],
+                            //    footer: [{ "id": "order_id sum:", "order_id": 7, "iconCls": "icon-sum" }]//计算的
+                            //    //creation_time 报错 不支持
+                            //};
+                            //for (var i = 0; i < res.length; i++) {
+                            //    var item = res[i];
+                            //    gridData.rows.push(item);
+                            //    cursionGridData(gridData, item);
+                            //    gridData.total = gridData.total + 1;
+                            //}
+                            //gridData.footer[0]["order_id"] = gridData.total;
+
+                            //console.log(gridData);
+                            grid.initTreeGrid(treegrid, res);
+                            //$(idName).datagrid('clearSelections'); //每次添加 修改 成功 复选框 选中 bug 原来 设置 默认选中 级联 无效
+                        }
+                    } else {
+                        console.log("get fail! ");
+                    }
+                },
+                //error
+                data => {
+                    console.log("get error! ");
+                }
+            );
+        }
+
+        //加载数据并绑定 treegrid (只能这样绑定,要么数据格式按它规则来)
+        initTreeGridByGetJson();
+        //initTreeGrid();
+        //初始化 treegrid 配置 以及排序 触发事件
+        var customOptions = {
+            dialogId: "#dialog_menu",
+            add: { title: '添加菜单', href: 'menu/operator.html' },
+            edit: { title: '编辑菜单', href: 'menu/operator.html?edit', edit: edit2, },
+            remove: { remove: remove },
+            undo: { undo: cancel },
+            help: {},
+            init: initTreeGridByGetJson,
+            page: page,
+            size: size,
+            orderSort: orderSort
+        };
+        var grid = Grid(customOptions);
+        var options = grid.treeGridOptions;
+
+        options.toolbar.splice(0,0, {
+            text: "展开",
+            handler: function () {
+                $(idName).treegrid('expandAll'); //展开 treegrid所有 树形节点
+            }
+        },
+            {
+                text: "折叠",
+                handler: function () {
+                    $(idName).treegrid('collapseAll');  //折叠 treegrid 所有 树形节点
+                }
+            },
+            {
+                text: "指定位置展开",
+                handler: function () {
+                    $.messager.alert('提示：', '指定位置展开不支持!', 'warn');
+                    return;
+                    //展开 treegrid 到选中位置(数据格式1 才支持)
+                    //Cannot read property '_parentId' of null
+                    var row = $(idName).treegrid('getSelected');
+                    if (row) {
+                        $(idName).treegrid('expandTo', row.id).treegrid('select', row.id);//89e4b8fd61454e79a6f3e11c0054f3aa id
+                    }
+                }
+            });
+
+        options.onSelect= function (rowIndex, rowData) {
+            // 重新选中其它行时 取消表格内部编辑
+            if (rowIndex != editIndex && editingId != undefined) {
+                $(idName).treegrid('cancelEdit', editingId);
+                editingId = undefined;
+            }
+            editIndex = rowIndex;
+        },
+        
+        options.onContextMenu = onContextMenu;
+        var treegrid = $(idName).treegrid(options);
+
+     
+        //右键菜单点击
+        function onContextMenu(e, row) {
+            if (row) {
+                e.preventDefault();
+                $(this).treegrid('select', row.id);
+                $('#mm').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            }
+        }
+        var idIndex = 100;
+        //右键菜单点击 添加事件 (怎么追加空行编辑(添加)了?)
+        function append() {
+            $.messager.alert("提示：", "添加操作不可用!", "info");
+            return;
+            idIndex++;
+            var d1 = new Date();
+            var d2 = new Date();
+            d2.setMonth(d2.getMonth() + 1);
+            var node = $(idName).treegrid('getSelected');
+            //在原有树下添加子树(假数据)
+            $(idName).treegrid('append', {
+                parent: node.id,
+                data: [{
+                    id: idIndex,
+                    name: 'New Task' + idIndex,
+                    persons: parseInt(Math.random() * 10),
+                    begin: $.fn.datebox.defaults.formatter(d1),
+                    end: $.fn.datebox.defaults.formatter(d2),
+                    progress: parseInt(Math.random() * 100)
+                }]
+            });
+        }
+        //右键菜单点击 移除事件
+        function removeIt() {
+            var node = $(idName).treegrid('getSelected');
+            if (node) {
+                console.log(node);
+                //基于本地移除 ()
+                if (node.children && node.children.length > 0) {
+                    $(idName).treegrid('remove', node.id);//只能移除父类 不然浏览器卡死
+                } else if (!node._parentId) {
+                    $(idName).treegrid('remove', node.id);//只能移除父类 不然浏览器卡死
+                } else {
+                    $.messager.alert('提示：', '只支持移除父类!', 'warn');
+                    return;
+                }
+                //基于数据库删除(有外键约束,必须也要删除子集)
+                //$.getJSON(urls.menu.delete + "/" + node.id,
+                //    (data) => {
+                //        $.messager.alert('提示：', data.success ? '删除成功!' : '删除失败!');
+                //    },
+                //    (data) => {
+                //        $.messager.alert('提示：', '删除错误!', 'error');
+                //    }
+                //);
+            }
+        }
+        //右键菜单点击 折叠事件
+        function collapse() {
+            var node = $(idName).treegrid('getSelected');
+            if (node) {
+                $(idName).treegrid('collapse', node.id);
+            }
+        }
+        //右键菜单点击 展开事件
+        function expand() {
+            var node = $(idName).treegrid('getSelected');
+            if (node) {
+                $(idName).treegrid('expand', node.id);
+            }
+        }
+        //自定义排序
+        function numSorter(a, b) {
+            a = parseFloat(a);
+            b = parseFloat(b);
+            return a == b ? 0 : (a > b ? 1 : -1);
+        }
+
+        //格式化: 显示时间 红色 YYYY-MM-dd
+        function formatCreationTime(val) {
+            if (val) {
+                return '<span style="color:red;">' + val.slice(0, 10) + '</span>';
+            } else {
+                return val;
+            }
+        }
+        //格式化: 操作 文本(按钮)绑定
+        function formatOperator(val) {
+            //什么 破 vs 编辑器 改下 东西 就 不限亮 代码 需要 关闭该页面 再次打开编辑 有效 
+            //这里要触发2次才能执行,第一次触发 选中行(前提是没选中任何行)
+            //<span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">Save</span><span class="l-btn-icon icon-save">&nbsp;</span></span> 拼接的字符串无效(不知道调用啥js方法) 所以 原生
+          //  return ' <a href=\"javascript:void(0)\" class="easyui-linkbutton"  data-options=\"iconCls: \'icon-edit\'\" onclick=\"edit(1)\">编辑</a> <a href=\"javascript:void(0)\"  class="easyui-linkbutton" data-options=\"iconCls: \'icon-save\'\" onclick=\"save(1)\">保存</a> <a href=\"javascript:void(0)\" class="easyui-linkbutton" data-options=\"iconCls: \'icon-remove\'\" onclick=\"remove(1)\">删除</a> ';
+            return ' <a href=\"javascript:void(0)\" class="easyui-linkbutton g_edit"  data-options=\"iconCls: \'icon-edit\'\" onclick=\"edit2(1)\"><span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">编辑</span><span class="l-btn-icon icon-edit">&nbsp;</span></span></a> '
+                + '<a href=\"javascript:void(0)\"  class="easyui-linkbutton g_save" style=\"display:none;\" data-options=\"iconCls: \'icon-save\'\" onclick=\"save(1)\"><span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">保存</span><span class="l-btn-icon icon-save">&nbsp;</span></span></a>'
+                + '<a href=\"javascript:void(0)\"  class="easyui-linkbutton g_cancel" style=\"display:none;\" data-options=\"iconCls: \'icon-cancel\'\" onclick=\"cancel(1)\"><span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">取消</span><span class="l-btn-icon icon-cancel">&nbsp;</span></span></a>'
+                + ' <a href=\"javascript:void(0)\" class="easyui-linkbutton"  data-options=\"iconCls: \'icon-remove\'\" onclick=\"remove(1)\"><span class="l-btn-left l-btn-icon-left"><span class="l-btn-text">删除</span><span class="l-btn-icon icon-remove">&nbsp;</span></span></a> ';
+        }
+        //设置样式：  设置 排序 单元格 背景颜色 和 内容字体颜色
+        function cellStyler(value, row, index) {
+            if (value < 30) {
+                return 'background-color:#ffee00;color:red;';
+            }
+        }
+
+        var menuDetail=$('#dialog_menu').dialog({
+            width: 400,
+            height: 400,
+            closed: true,
+            cache: false,
+            resizable: true,
+            modal: true,
+            onClose: function () {
+                var data = menuDetail.dialog('options');
+                //console.log(data);
+                //if (data.outParam && data.outParam.success)
+                if (data.inParam && data.inParam.success)
+                {
+                    //1 2 3,  可以正常运行 
+                     // 2 3 1 ,2 取消可以正常运行 
+                    //任务 1
+                    $('#dialog_menu').dialog({ inParam: { success: false } });//防止 缓存 一直 没变 每次 操作完 修改状态  (不能放到最后面 )
+                    //任务 2
+                    initTreeGridByGetJson();//dialog 操作成功 则重新加载
+                    //这 怎么 更新 主页 的菜单 了
+                    // 任务 3
+                    parent.instance.treeBind();//可以调 ? 菜单 重新 显示(打乱了 或 添加)  //不要调用 这一步 影响 这个任务 没反应 啥玩意()
+                   // $('#dialog_menu').dialog({ inParam: { success: false } });
+                }
+            }
+        });
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+﻿@model IEnumerable<PointTask>
+@{
+    var user = UserContext.CurrentUser;
+    var taskCompleted = ViewData.Get<IEnumerable<PointTaskRecord>>("taskCompleted", null);
+    var taskCompletedName = ViewData["taskCompletedName"];
+    var pointName = ViewData["pointName"];
+    var goldName = ViewData["goldName"];
+}
+<div role="tabpanel" class="tab-pane active" id="taskList">
+    <div class="jh-integral-task">
+        @foreach (var pointTask in Model)
+        {
+            var taskUrl = string.Empty;
+            if (!string.IsNullOrEmpty(pointTask.TaskType.TaskUrl))
+            {
+                if (!pointTask.TaskType.TaskUrl.StartsWith("http"))
+                {
+                    taskUrl = Tunynet.Utilities.WebUtility.ResolveUrl("~" + pointTask.TaskType.TaskUrl?.Replace("{username}", user.UserName).Replace("{taskId}", pointTask.TaskId.ToString()));
+                }
+                else
+                {
+                    taskUrl = pointTask.TaskType.TaskUrl;
+                }
+            }
+
+            var tasktoUser = pointTask.GetTaskToUser(user.UserId);
+            if (tasktoUser == null || tasktoUser.Status != TaskRecordStatus.Completed)
+            {
+                <div class="row taskinfogo">
+                    <div class="col-xs-1">
+                        <img src="@Tunynet.Utilities.WebUtility.ResolveUrl("~" +pointTask.TaskType.ImageUrl)" />
+                    </div>
+                    <div class="col-xs-9">
+                        <div class="row">
+                            <div class="col-xs-7">
+                                <h5>
+                                    <a class="taskdetail tn-cursor-pointer" data-taskname="@pointTask.TaskName" data-taskid="@pointTask.TaskId">@pointTask.TaskName</a>
+                                    @if (tasktoUser != null && string.IsNullOrEmpty(pointTask.TaskType.CheckMethodName))
+                                    {
+                                        <input type="hidden" class="taskinfo" data-recordid="@tasktoUser.RecordId" data-taskname="@pointTask.TaskName" data-taskid="@pointTask.TaskId" data-method="@pointTask.TaskType.CheckMethodName" data-taskurl="@taskUrl" />
+                                        if (string.IsNullOrEmpty(tasktoUser.ResultContent))
+                                        {
+                                            <a class="a tn-ml-15 tn-font-14 tn-cursor-pointer taskgo">提交任务</a>
+                                        }
+                                        else if (tasktoUser.Status == TaskRecordStatus.Applying)
+                                        {
+                                            <a class="a tn-ml-15 tn-font-14 tn-cursor-pointer taskgo">已提交任务，等待审核</a>
+                                        }
+                                        else if (tasktoUser.Status == TaskRecordStatus.Refused)
+                                        {
+                                            <a class="a tn-ml-15 tn-font-14 tn-cursor-pointer taskgo">未通过，点击查看反馈</a>
+                                        }
+                                    }
+                                </h5>
+                                <p class="detail">@pointTask.Description</p>
+                            </div>
+                            <div class="col-xs-5 text-right">
+                                <ul class="list-inline">
+                                    @if (pointTask.TaskType.IsShowProgressBar && tasktoUser != null && tasktoUser.Status == TaskRecordStatus.Doing)
+                                    {
+                                        var progress = pointTask.CheckUserTask(user);
+                                        <li>
+                                            <ul class="list-inline">
+                                                <li>进度</li>
+                                                <li>
+                                                    <div class="progress" title="任务完成进度：@progress%">
+                                                        <div class="progress-bar progress-bar-info" role="progressbar" style="width: @progress%"></div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    <li>已有 @pointTask.GetTaskToUserNum() 人领取</li>
+                                </ul>
+                                <ul class="list-inline">
+                                    @if (pointTask.TaskType.IsSetDeadline)
+                                    {
+                                        <li>任务截止时间：@pointTask.Deadline.ToyyyyMMddHHmm()</li>
+                                    }
+                                    <li>
+                                        奖励：@(pointTask.AwardPoints > 0 ? pointTask.AwardPoints + pointName.ToString() : "")
+                                        @((pointTask.AwardPoints > 0 && pointTask.AwardGolds > 0) ? "+" : "")
+                                        @(pointTask.AwardGolds > 0 ? pointTask.AwardGolds + goldName.ToString() : "")
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        @if (tasktoUser != null && tasktoUser.Status != TaskRecordStatus.Abandoned)
+                        {
+                            if (string.IsNullOrEmpty(pointTask.TaskType.CheckMethodName))
+                            {
+                                if (!string.IsNullOrEmpty(tasktoUser.ResultContent) && tasktoUser.Status == TaskRecordStatus.Applying)
+                                {
+                                    <a class="btn btn-default taskgo">等待审核</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-default taskgo">提交任务</a>
+                                }
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-default" href="@taskUrl" target="_blank">去做任务</a>
+                            }
+                        }
+                        else
+                        {
+                            if (pointTask.TaskType.IsSetDeadline && pointTask.Deadline < DateTime.Now)
+                            {
+                                <button class="btn btn-danger" id="deadlineover">领取任务</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-danger newtask" data-taskurl="@taskUrl" data-taskname="@pointTask.TaskName" data-taskid="@pointTask.TaskId">领取任务</button>
+                            }
+
+                        }
+                    </div>
+                </div>
+            }
+
+        }
+    </div>
+</div>
+<div role="tabpanel" class="tab-pane" id="performTast">
+    @Html.Action("_ListCompletedPointTasks", "UserSpace")
+</div>
+<script>
+    require(['jquery', 'tnlayer', 'page'], function ($, tnlayer) {
+        $(function () {
+            var taskCompletedName = "@taskCompletedName";
+            if (taskCompletedName != "") {
+                layer.alert("您的任务" + taskCompletedName + "已经完成！");
+            }
+        })
+    })
+</script>

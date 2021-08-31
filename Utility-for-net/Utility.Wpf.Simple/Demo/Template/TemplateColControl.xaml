@@ -1,0 +1,144 @@
+﻿<UserControl x:Class="Utility.Wpf.Demo.Template.TemplateColControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Utility.Wpf.Demo.Template"
+              xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <!--<ObjectDataProvider x:Key="Flag" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters >
+                <x:Type Type="config:Flag"></x:Type>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>-->
+        <CheckBox x:Key="AllCheck" IsChecked="{Binding IsAllSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"  DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext}" />
+    </UserControl.Resources>
+    <Grid>
+        <DockPanel Name="dockPanel">
+            <WrapPanel DockPanel.Dock="Top" Height="170" >
+                <!-- 这种方式定位麻烦 坐标 最好用grid 定位 -->
+
+                <Label  Height="40"  Margin="30,30,0,0" HorizontalContentAlignment="Center">TableId：</Label>
+                <ComboBox  Height="40" Width="100" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"    Margin="30,30,0,0" SelectedValuePath="Value" DisplayMemberPath="Label"  ItemsSource="{Binding items, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" SelectedValue="{Binding Query.TableId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+
+                <Label Height="40"  Margin="10,30,0,0"  HorizontalContentAlignment="Center">CloumName：</Label>
+                <TextBox Height="40" Width="100" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"   Margin="10,30,0,0"   Text="{Binding Query.CloumName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                <Label Height="40"  Margin="10,30,0,0"  HorizontalContentAlignment="Center">PropertyName：</Label>
+                <TextBox  Height="40" Width="100" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Margin="10,30,0,0" Text="{Binding Query.PropertyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+
+                <Label Height="40"  Margin="10,30,0,0"  HorizontalContentAlignment="Center">CsharepPropertyType：</Label>
+                <TextBox  Height="40" Width="100" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"    Margin="10,30,0,0" Text="{Binding Query.CsharepPropertyType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                <Label Height="40"  Margin="10,30,0,0"  HorizontalContentAlignment="Center">Length：</Label>
+                <TextBox  Height="40" Width="100" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"    Margin="10,30,0,0" Text="{Binding Query.Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                <Label Height="40"  Margin="10,30,0,0"  HorizontalContentAlignment="Center">Title：</Label>
+                <TextBox  Height="40" Width="100" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"    Margin="10,30,0,0" Text="{Binding Query.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                <Button Content="查询" Height="40" Width="80"   Name="btnQuery"  Margin="30,30,0,0"  Click="btnQuery_Click" />
+                <Button Content="清空" Height="40" Width="80"   Name="btnClean"  Margin="30,30,0,0"  Click="btnClean_Click" />
+                <Button Content="添加" Height="40" Width="80"   Name="btnAdd"  Margin="10,30,0,0"  Click="btnAdd_Click" />
+                <Button Content="编辑" Height="40" Width="80"   Name="btnModify" Margin="10,30,0,0" Click="btnModify_Click" />
+                <Button Content="删除" Height="40" Width="80"   Name="btnDelete" Margin="10,30,0,0" Click="btnDelete_Click" />
+            </WrapPanel>
+            <!--<wpf:Page   DockPanel.Dock="Bottom" x:Name="page" ></wpf:Page>-->
+
+            <DataGrid  DockPanel.Dock="Bottom" Name="dataGrid"  FrozenColumnCount="1" AutoGenerateColumns="False" ItemsSource="{Binding DataList,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  SelectionUnit="FullRow" CanUserAddRows="False" SelectionMode="Extended">
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <!--单元格被选中时 改变颜色-->
+                                <Setter Property="Background" Value="LightPink"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="LightBlue" />
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!--当鼠标经过时 改变颜色-->
+                                <Setter Property="Background" Value="SkyBlue"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <!--给整个表头添加颜色开始-->
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="LightBlue" Offset="0.5"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="FontSize" Value="13" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+                <!--给整个表头添加颜色结束-->
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn  Header="{StaticResource AllCheck}"  Width="40">
+                        <DataGridColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="White" Offset="0"/>
+                                            <GradientStop Color="Yellow" Offset="0.5"/>
+                                            <GradientStop Color="White" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="FontSize" Value="13"/>
+                                <Setter Property="Width" Value="70"/>
+                            </Style>
+                        </DataGridColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></CheckBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="编号" Width="80" Binding="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="CloumName" Width="80" Binding="{Binding CloumName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="PropertyName" Width="80" Binding="{Binding PropertyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridComboBoxColumn Header="TableId" SelectedValueBinding="{Binding TableId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value" DisplayMemberPath="Label" ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Items, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <DataGridTextColumn Header="Remark" Width="80" Binding="{Binding Remark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="CsharepPropertyType" Width="80" Binding="{Binding CsharepPropertyType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="Length" Width="80" Binding="{Binding CsharepPropertyType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataGridTextColumn Header="Title" Width="80" Binding="{Binding CsharepPropertyType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                    <DataGridTemplateColumn  Header="操作"  Width="250">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="编辑" Height="30" Width="70" Tag="{Binding Id}"  Margin="10,0,0,0" Click="btnEdit_Click" />
+                                    <Button Content="删除" Height="30" Width="70" Tag="{Binding Id}"  Margin="10,0,0,0" Click="btnDele_Click" />
+                                    <Button Content="预览" Height="30" Width="70" Tag="{Binding Id}"  Margin="10,0,0,0" Click="btnPreview_Click" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </DockPanel>
+    </Grid>
+</UserControl>

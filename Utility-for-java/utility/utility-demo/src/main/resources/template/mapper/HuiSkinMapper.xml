@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="huiSkin">
+    <resultMap id="huiSkinResultMap" type="com.template.dao.model.huiadmin.HuiSkin">
+        <result property="id" column="id" javaType="long"></result>
+        <result property="name" column="name" javaType="java.lang.String"></result>
+        <result property="englishName" column="english_name" javaType="java.lang.String"></result>
+        <result property="color" column="color" javaType="java.lang.String"></result>
+    </resultMap>
+
+
+    <insert id="huiSkin.add" parameterType="com.template.dao.model.huiadmin.HuiSkin" useGeneratedKeys="true" keyProperty="id">
+        insert into t_hui_skin
+        <trim suffixOverrides=",">
+        (
+           <if test="name!=null and name!=''">
+               name,
+           </if>
+           <if test="englishName!=null and englishName!=''">
+               english_name,
+           </if>
+           <if test="color!=null and color!=''">
+               color,
+           </if>
+        </trim>
+        )
+        values
+        (
+        <trim suffixOverrides=",">
+           <if test="name!=null and name!=''">
+               #{name},
+           </if>
+           <if test="englishName!=null and englishName!=''">
+               #{englishName},
+           </if>
+           <if test="color!=null and color!=''">
+               #{color},
+           </if>
+        </trim>
+        )
+        </insert>
+
+    <update id="huiSkin.modify" parameterType="com.template.dao.model.huiadmin.HuiSkin" >
+        update  t_hui_skin  
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null and name!=''">
+               name=#{name},
+            </if>
+            <if test="englishName!=null and englishName!=''">
+               english_name=#{englishName},
+            </if>
+            <if test="color!=null and color!=''">
+               color=#{color},
+            </if>
+        </trim>
+         where id =#{id}
+    </update>
+
+    <sql id="deleteSql">delete from  t_hui_skin where id </sql>
+
+    <delete id="huiSkin.delete" parameterType="long" >
+        <include refid="deleteSql"  /> =#{id}
+     </delete>
+
+    <delete id="huiSkin.deleteMany" >
+       <include refid="deleteSql"  />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+     </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="id!=0">
+                or  id=#{id}
+            </if>
+            <if test="name!=null and name!=''">
+                or  name=#{name}
+            </if>
+            <if test="englishName!=null and englishName!=''">
+                or  english_name=#{englishName}
+            </if>
+            <if test="color!=null and color!=''">
+                or  color=#{color}
+            </if>
+        </where>
+    </sql>
+
+    <select id="huiSkin.select" parameterType="com.template.dao.model.huiadmin.HuiSkin" resultMap="huiSkinResultMap">
+        select * from  t_hui_skin
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="huiSkin.count" parameterType="com.template.dao.model.huiadmin.HuiSkin" resultType="java.lang.Integer">
+        select count(id) from  t_hui_skin
+        <include refid="whereIf"/>
+    </select>
+
+</mapper>

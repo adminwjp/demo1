@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--<PackageReference Include="Utility.Dappper.Simple" Version="1.0.0.0" />
+    <PackageReference Include="Utility.Ef.Simple" Version="1.0.0.0" />-->
+    
+    <!--<PackageReference Include="Utility.Nhibernate.Simple" Version="1.0.0" />
+    <PackageReference Include="Utility" Version="1.0.0" />-->
+
+    <ProjectReference Include="..\..\Utility.Dapper.Simple\Utility.Dapper.Simple.csproj" />
+     <ProjectReference Include="..\..\Utility.Nhibernate.Simple\Utility.Nhibernate.Simple.csproj" />
+    <ProjectReference Include="..\..\Utility\Utility.csproj" />
+    <!--
+    <ProjectReference Include="..\..\Utility.Ef.Simple\Utility.Ef.Simple.csproj" />
+   <ProjectReference Include="..\..\Utility.Simple\Utility.Simple.csproj" />
+   -->
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Menu Header="爬虫管理">
+    <Children>
+      <Menu Header="爬虫任务" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.Crawl.CrawlFlag.Task" />
+      <Menu Header="51job爬虫">
+        <Children>
+          <Menu Header="分类" TypeName="Utility.Wpf.Ctrls.MDTListTemplateCtrl,Utility.Wpf" Flag="Wpf.Crawl.CrawlFlag.Category" />
+        </Children>
+      </Menu>
+    </Children>
+  </Menu>
+</Root>

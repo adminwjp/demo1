@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+">
+
+
+    <!-- 自动扫描与装配bean -->
+    <import resource="spring-dao.xml" />
+    <!-- spring -hibernate -->
+    <import resource="spring-orm.xml" />
+
+    <!-- 自动扫描与装配 controller -->
+<!--    <bean class="com.shop.controllers.TestController" />-->
+    <context:component-scan base-package="com.template.ctrl"></context:component-scan>
+
+
+
+    <!-- swagger   -->
+<!--    <bean class="com.utility.swagger.SwaggerConfig" >
+        <property name="controllerPackage" value="com.shop.controllers"></property>
+        <property name="address" value="http:127.0.0.1:8080"></property>
+        <property name="author" value="test author"></property>
+        <property name="version" value="1.0"></property>
+        <property name="title" value="test"></property>
+        <property name="desc" value="test desc"></property>
+    </bean>-->
+    <!-- Enables swgger ui-->
+<!--    <mvc:resources location="classpath:/META-INF/resources/" mapping="swagger-ui.html"/>
+    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>-->
+
+    <!-- 注解 @Controller 映射的支持  rest api response  乱码 这里 配置 才有效 其他 地方 无效  -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean id="messageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" />
+            </bean>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper" ref="objectMapper" />
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                        <value>text/javascript;charset=UTF-8</value>
+                        <value>text/plain;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <property name="dateFormat">
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
+            </bean>
+        </property>
+        <!-- 为null字段时不显示 -->
+<!--        <property name="serializationInclusion">
+            <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+        </property>
+        <property name="propertyNamingStrategy" >
+            <bean class="com.utility.jackson.MyCamemlToUnderlineCaseStrategy"></bean>
+        </property>-->
+    </bean>
+
+    <!-- 注意： cors 全局 配置 都 无效 只能 控制器上或方法 配置 有效-->
+
+
+    <!-- 捕获所有 异常 -->
+<!--    <bean  class="com.utility.interceptor.GlobalExceptionHandler"/>
+    <bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="objectMapper" ref="objectMapper" />
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
+                <value>text/javascript;charset=UTF-8</value>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJackson2HttpMessageConverter" />
+            </list>
+        </property>
+    </bean>-->
+
+</beans>

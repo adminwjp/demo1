@@ -1,0 +1,128 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <!--<TargetFrameworks>net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netcoreapp3.1;net50-windows;net50-mac;</TargetFrameworks>-->
+    <TargetFrameworks>net50-windows</TargetFrameworks>
+      <UseWPF>true</UseWPF>
+     <RepositoryUrl>E:\work\Package\Utility.Wpf.Simple</RepositoryUrl>
+    <Version>1.0.0.0</Version>
+    <OutputPath>E:\work\Package\Utility.Wpf.Simple</OutputPath>
+        <DocumentationFile>e:\work\Package\Utility.Wpf.Simple\Utility.Wpf.Simple.xml</DocumentationFile>
+      <OutputType>Library</OutputType>
+      <SignAssembly>true</SignAssembly>
+      <DelaySign>false</DelaySign>
+      <Authors>wjp</Authors>
+      <RootNamespace>Utility.Wpf</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)'=='netcoreapp3.0' OR '$(TargetFramework)'=='netcoreapp3.1' OR '$(TargetFramework)'=='netcoreapp5.0'">
+    <Compile Link="$(MSBuildThisFileDirectory)Utils\ConfigUtils.cs" Include="..\Shared\Utility.Simple.Shared\Utils\ConfigUtils.cs" />
+  </ItemGroup>
+  
+    <!-- wpf netframework  -->
+  <ItemGroup Condition=" '$(TargetFramework)'=='net45' OR '$(TargetFramework)'=='net46' OR '$(TargetFramework)'=='net461' OR '$(TargetFramework)'=='net462' OR '$(TargetFramework)'=='net47' OR '$(TargetFramework)'=='net471' OR '$(TargetFramework)'=='net472' OR '$(TargetFramework)'=='net48'">
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Management" />
+  </ItemGroup>
+
+
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Utility.Simple\Utility.Simple.csproj" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <None Update="Admin\Config\config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Admin\Config\Menu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Admin\Tool\tool.cfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Page Update="Admin\resoure1\AccessTokenPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Admin\Tool\Ctrls\CodeControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Admin\Tool\Ctrls\DockerToolControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Admin\Tool\Ctrls\TabTestControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Admin\Tool\Ctrls\UCTabItemWithClose.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Admin\Tool\MainWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Login.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Demo\Order\Order.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Order\OrderDetail.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Order\OrderLog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Order\OrderPay.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Order\OrderShip.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Product\Brand.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Product\Catagory.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Product\CatagoryAttr.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Product\Product.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Product\Spec.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Product\SpecAttr.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Template\TemplateColControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Demo\Template\TemplateControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Demo\Template\TemplateDbControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Demo\Template\TemplateTabControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Compile Update="Demo\Template\TemplateColControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Demo\Template\TemplateDbControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

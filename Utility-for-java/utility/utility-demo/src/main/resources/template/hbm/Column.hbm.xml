@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.template.model">
+    <class name="com.template.dao.model.Column" table="t_column" >
+        <id name="id" column="id" unsaved-value="0" >
+            <generator class="identity" />
+        </id>
+        <property name="database" column="`database`" type="java.lang.String"></property>
+        <property name="table" column="`table`" type="java.lang.String" ></property>
+        <property name="referenceTable" column="reference_table" type="java.lang.String" ></property>
+        <property name="referenceColumn" column="reference_column" type="java.lang.String" ></property>
+        <property name="isPk" column="is_pk" type="boolean" ></property>
+        <property name="isIdentity" column="is_identity" type="boolean" ></property>
+        <property name="isFk" column="is_fk" type="boolean" ></property>
+        <property name="column" column="`column`" type="java.lang.String" ></property>
+        <property name="dataType" column="data_type" type="java.lang.String" ></property>
+        <property name="isNull" column="is_null" type="boolean" ></property>
+        <property name="length" column="length" type="int" ></property>
+        <property name="comment" column="comment" type="java.lang.String" ></property>
+        <property name="title" column="title" type="java.lang.String" ></property>
+        <property name="flag" column="flag" type="com.template.dao.model.enums.DataFlag" >
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.template.dao.model.enums.DataFlag</param>
+            </type>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="huiMenu">
+    <resultMap id="huiMenuResultMap" type="com.template.dao.model.huiadmin.HuiMenu">
+        <result property="id" column="id" javaType="long"></result>
+        <result property="href" column="href" javaType="java.lang.String"></result>
+        <result property="name" column="name" javaType="java.lang.String"></result>
+        <result property="iconId" column="icon_id" javaType="long"></result>
+        <result property="parentId" column="parent_id" javaType="long"></result>
+    </resultMap>
+
+
+    <insert id="huiMenu.add" parameterType="com.template.dao.model.huiadmin.HuiMenu" useGeneratedKeys="true" keyProperty="id">
+        insert into t_hui_menu
+        <trim suffixOverrides=",">
+            (
+            <if test="href!=null and href!=''">
+                href,
+            </if>
+            <if test="name!=null and name!=''">
+                name,
+            </if>
+            <if test="iconId!=0">
+                icon_id,
+            </if>
+            <if test="parentId!=0">
+                parent_id,
+            </if>
+        </trim>
+        )
+        values
+        (
+        <trim suffixOverrides=",">
+            <if test="href!=null and href!=''">
+                #{href},
+            </if>
+            <if test="name!=null and name!=''">
+                #{name},
+            </if>
+            <if test="iconId!=0">
+                #{iconId},
+            </if>
+            <if test="parentId!=0">
+                #{parentId},
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <update id="huiMenu.modify" parameterType="com.template.dao.model.huiadmin.HuiMenu" >
+        update  t_hui_menu
+        <trim prefix="set" suffixOverrides=",">
+            <if test="href!=null and href!=''">
+                href=#{href},
+            </if>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="iconId!=0">
+                icon_id=#{iconId},
+            </if>
+            <if test="parentId!=0">
+                parent_id=#{parentId},
+            </if>
+        </trim>
+        where id =#{id}
+    </update>
+
+    <sql id="deleteSql">delete from  t_hui_menu where id </sql>
+
+    <delete id="huiMenu.delete" parameterType="long" >
+        <include refid="deleteSql"  /> =#{id}
+    </delete>
+
+    <delete id="huiMenu.deleteMany" >
+        <include refid="deleteSql"  />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="id!=0">
+                or  id=#{id}
+            </if>
+            <if test="href!=null and href!=''">
+                or  href=#{href}
+            </if>
+            <if test="name!=null and name!=''">
+                or  name=#{name}
+            </if>
+            <if test="iconId!=0">
+                or  icon_id=#{iconId}
+            </if>
+            <if test="parentId!=0">
+                or  parent_id=#{parentId}
+            </if>
+        </where>
+    </sql>
+
+    <select id="huiMenu.select" parameterType="com.template.dao.model.huiadmin.HuiMenu" resultMap="huiMenuResultMap">
+        select * from  t_hui_menu
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="huiMenu.count" parameterType="com.template.dao.model.huiadmin.HuiMenu" resultType="java.lang.Integer">
+        select count(id) from  t_hui_menu
+        <include refid="whereIf"/>
+    </select>
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shop.model">
+    <class name="UserCode" table="t_user_code">
+        <id name="id" column="id" unsaved-value="0">
+            <generator class="identity"></generator>
+        </id>
+        <property name="phone" column="phone" type="java.lang.String" length="11"></property>
+        <property name="code" column="code" type="java.lang.String" length="6"></property>
+        <property name="ip" column="ip" type="java.lang.String" length="15"></property>
+        <property name="status" column="status" type="java.lang.Integer" ></property>
+        <property name="createDate" column="create_date" type="java.util.Date" ></property>
+        <property name="modifyDate" column="modify_date" type="java.util.Date"></property>
+    </class>
+</hibernate-mapping>

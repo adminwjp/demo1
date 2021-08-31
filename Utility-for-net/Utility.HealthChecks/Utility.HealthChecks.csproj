@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!--<TargetFrameworks>net40;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0;
+     netstandard2.0;netstandard2.1;</TargetFrameworks>-->
+    <TargetFrameworks>net5.0; </TargetFrameworks>
+    <AssemblyName>Utility.HealthChecks</AssemblyName>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>e:\work\Package\Utility.HealthChecks\</OutputPath>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <RepositoryUrl>e:\work\Package\Utility.HealthChecks\</RepositoryUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>e:\work\Package\Utility.HealthChecks\</PackageProjectUrl>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>e:\work\Package\Utility.HealthChecks\Utility.HealthChecks.xml</DocumentationFile>
+    <Version>1.0.0.0</Version>
+    <Description>支持 mysql sqlite sqlserver postgre oracle es redis HealthChecks</Description>
+    <SignAssembly>false</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <Authors>wjp</Authors>
+    <Company>wjp</Company>
+    <RootNamespace>Utility</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+    <!-- 健康检查 -->
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="3.0.0" />
+    <!--<PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.2.0" />-->
+    <!-- 兼容 ef core mysql -->
+    <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Elasticsearch" Version="3.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Sqlite" Version="3.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Oracle" Version="3.1.2" />
+
+    <PackageReference Include="Steeltoe.Discovery.ClientCore" Version="2.0.0" />
+
+
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.3" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' OR '$(TargetFramework)' == 'net5.0' OR '$(TargetFramework)' == 'net6.0' ">
+    <!-- 健康检查 -->
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.1.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.2.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="3.1.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="3.1.1" />
+    <!--<PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.2.0" />-->
+    <!-- 兼容 ef core mysql -->
+    <PackageReference Include="AspNetCore.HealthChecks.MySql" Version="3.1.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Elasticsearch" Version="3.1.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Sqlite" Version="3.1.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Oracle" Version="3.1.2" />
+
+
+
+
+
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utility.Simple\Utility.Simple.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,435 @@
+
+<div id="main" class="clearfix">
+  {{ template "user.menu.html"}}
+
+  <div id="right">
+
+    {{ template "user.curlocal.html"}}
+
+    <div class="wrapful">
+
+      {{ template "user.submenu.html"}}
+
+      {{if .settings}}
+      {{ template "buyer_settings.html"}}
+      {else}
+
+      {{if .passwpod}}
+      {{ template "buyer_password.html"}}
+      {{else}}
+
+      {{if .profile}}
+      {{ template "buyer_profile.html"}}
+      {{else}}
+
+      {{if .teambuy}}
+      <div class="wrap">
+        <div class="public_select table">
+          <div class="promotool">
+            <div class="bundle bundle-list">
+              {if not !appAvailable }
+              <div class="notice-word">
+                <p>{{.appAvailable.msg}}</p>
+              </div>
+              {{else}}
+              <table>
+                <tr class="line_bold">
+                  <th colspan="7"> <div class="search_div clearfix">
+                    <form method="get" class="clearfix">
+                      <div class="float-left">
+                        <label>{{.lang.title}}{{.lang.colon}}</label>
+                        <input type="text" name="title" value="{{.smarty.get.title}}"/>
+                        <input type="submit" class="btn" value="{{.lang.search}}" />
+                      </div>
+                      {{if .filtered}}
+                      <a class="detlink" href="teambuy/index">{{.lang.cancel_query}}</a>
+                      {{end}}
+                    </form>
+                  </div>
+                  </th>
+                </tr>
+                <tr class="sep-row" height="20">
+                  <td colspan="7"></td>
+                </tr>
+                {{if .teambuys}}
+                <tr class="gray">
+                  <th width="50">{$lang.goods_image}</th>
+                  <th width="140">{$lang.goods_name}</th>
+                  <th width="60"><span>{$lang.title}</span></th>
+                  <th width="80"><span>{$lang.price}</span></th>
+                  <th width="80"><span>{$lang.teambuy_price}</span></th>
+                  <th width="80"><span>{$lang.status}</span></th>
+                  <th width="150"><span>{$lang.handle}</span></th>
+                </tr>
+                {{end}}
+                {{if .teambuys}}
+                {{range  $teambuy := .teambuys}}
+                <tr class="line {{if eq $teambuy -1}}last_line{{end}}}">
+                  <td width="50"><a href="goods/index?id={{$teambuy.goods_id}}" target="_blank"><img src="{{.teambuy.default_image}}" width="50" height="50"  /></a></td>
+                  <td width="140"><a href="goods/index?id={{$teambuy.goods_id}}" target="_blank">{{$teambuy.goods_name}}</a></td>
+                  <td width="60" class="align2">{{$teambuy.title}}</td>
+                  <td width="80" class="align2">{{$teambuy.price}}</td>
+                  <td width="80" class="align2">{{$teambuy.pro_price}}</td>
+                  <td width="80" class="align2">{{if $teambuy.status}}{{.lang.normal}}{{end}}<font class="f60">{{.lang.invalid}}</font></td>
+                  <td width="150" class="align2 last">
+                    <div class="btn">
+                      <a class="mr5" href="teambuy/edit?id={{.teambuy.id}}" style="border:1px #f60 solid; border-radius:4px; padding:3px 5px;color: #f60">{{.lang.edit}}</a>
+                      {{if .teambuy.status}}
+                      <a class="ml5 J_AjaxRequest" href="javascript:;" uri="teambuy/closed?id={{.teambuy.id}}" style="border:1px #f60 solid; border-radius:4px; padding:3px 5px;color: #f60">{{.lang.teambuy_closed}}</a>
+                      {{end}}
+                      <a class="ml5" href="teambuy/delete?id={{.teambuy.id}}" style="border:1px #19ACF7 solid; border-radius:4px; padding:3px 5px; color:#19ACF7;">{{.lang.drop}}</a>
+                    </div>
+                  </td>
+                </tr>
+                {{end}}
+                {{else}}
+                <tr>
+                  <td class="align2" colspan="7"><div class="notice-word">
+                    <p>{{.lang.no_records}}</p>
+                  </div></td>
+                </tr>
+                {{end}}
+                {{if .teambuys}}
+                <tr class="line_bold line_bold_bottom">
+                  <td colspan="7"></td>
+                </tr>
+                <tr>
+                  <th colspan="7"> <div class="position2 clearfix">{include file="page.bottom.html"}</div>
+                  </th>
+                </tr>
+              </table>
+              {{end}}
+            </div>
+          </div>
+        </div>
+      </div>
+      {{else}}
+
+      {{if .teambuy.form}}
+      <style>
+        .txt { margin-right:20px}
+        .spec ul { width: 630px; overflow: hidden; }
+        .spec .td { padding-bottom: 10px; }
+        .spec li { float: left; margin-left: 6px; display: inline; }
+        .spec li input { text-align: center; }
+        .spec .th { padding: 3px 0; margin-bottom: 10px; background: #f8f8f8; }
+      </style>
+      <div id="seller_limitbuy_form" class="wrap">
+        <div class="public">
+          <div class="promotool">
+            <div class="bundle bundle-list">
+              {{if neq .appAvailable  'true'}}
+              <div class="notice-word">
+                <p>{$appAvailable.msg}</p>
+              </div>
+              {{else}}
+              <div class="notice-word">
+                <p class="yellow-big">{{.}lang.note_for_create}}</p>
+              </div>
+              <form method="post">
+                <div class="information_index">
+                  <h4>{{.lang.basic_info}}</h4>
+                  <div class="add_wrap">
+                    <div class="assort">
+                      <p class="txt">{{.lang.title}}:</p>
+                      <p>
+                        <input type="text" placeholder="{{.lang.twopeople}}" name="title" value="{{.teambuy.title|.lang.twopeople}}" class="text" />
+                        <span class="red">*</span></p>
+                    </div>
+                  </div>
+                  <div class="add_wrap">
+                    <div class="assort">
+                      <p class="txt">{$lang.teamnum}:</p>
+                      <p>
+                        <select name="people">
+                          <option value="2" {{if eq .teambuy.people  2}} selected{{end}}>2</option>
+                          <option value="3" {{if  eq .teambuy.people  3}} selected{{end}}>3</option>
+                        </select>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="add_wrap">
+                    <div class="assort">
+                      <p class="txt">{{.lang.select_goods}}:</p>
+                      <p class="lst-products" style="width:630px;"> <a href="javascript:;" gs_id="teambuy" gs_name="goods_name" gs_callback="gs_callback1" gs_title="{{.lang.gselector}}" gs_width="690" gs_type="goods" gs_store_id="{$visitor.store_id}" ectype="gselector" gs_uri="{url route='gselector/goods'}" class="btn-add-product">{$lang.gselector}</a>
+                        <span class="block mt10" id="goods_name"></span>
+                        <input type="hidden" id="teambuy" name="goods_id" value="{{.teambuy.goods_id}}" />
+                      </p>
+                    </div>
+                  </div>
+                  <div class="add_wrap">
+                    <div class="assort clearfix">
+                      <p class="txt float-left">{$lang.spec_price}: </p>
+                      <div ectype="spec_list" class="spec float-left">
+                        <ul class="th">
+                          <li id="spec_name" class="distance2">{$lang.spec}</li>
+                          <li class="distance1">{{.lang.stock}}</li>
+                          <li class="distance1">{{.lang.price}}</li>
+                          <li class="distance2" style="width:130px;">{{.lang.preference}}</li>
+                          <li class="distance1">{{.lang.pro_type}}</li>
+                        </ul>
+                      </div>
+                      <div ectype="template" class="hidden">
+                        <ul ectype="spec_item" class="td">
+                          <li class="distance2">
+                            <input value="[1]" type="hidden" />
+                            [2]</li>
+                          <li class="distance1">[3]</li>
+                          <li class="distance1">[4]</li>
+                          <li class="distance1" style="width:130px;">
+                            <input placeholder="0.01-9.99" ecname="specs[[5]][price]" type="text" class="text width2" value="[6]" />
+                          </li>
+                          <li class="distance1">
+                            <select ecname="specs[[7]][type]" >
+                              <option value="discount" selected>{{.lang.discount}}</option>
+                            </select>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="assort issuance">
+                      <p class="txt"></p>
+                      <p>
+                        <input type="submit" class="J_AjaxSubmit5 btn-alipay" style="width:200px;" value="{{.lang.submit}}" />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              {{end}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        $(function(){
+          gs_query_info1({{.teambuy.goods_id}}, {{.teambuy.id}});
+        });
+        function gs_submit_check(id,name,callback)
+        {
+          if(DATA_LIST_TEMP.length != 1) {
+            msg(lang.records_error);
+          }
+          else {
+            gs_submit(id,name,callback);
+          }
+        }
+        function gs_callback1(id)
+        {
+          var goods_id = '';
+          $.each(DATA_LIST_TEMP, function(i,item){
+            goods_id = item.goods_id;
+          });
+          if(goods_id.length == 0 || (goods_id == 0)){
+            //$('.J_ListAdded').hide();
+            msg(lang.add_records);
+          }
+          else {
+            $('#'+id).val($('#gs_goods_id').val());
+            gs_query_info1(goods_id);
+            DialogManager.close(id);
+          }
+        }
+        function gs_query_info1(goods_id, toolId)
+        {
+          $.getJSON(url(['teambuy/query']),{ id:goods_id, toolId: toolId}, function(data) {
+            if(data.done){
+              if(data.retval) {
+                var goods = data.retval;
+
+                $('#teambuy').val(goods_id);
+                $('#goods_name').html(goods.goods_name);
+                $('#spec_name').html(goods.spec_name);
+                $('*[ectype="spec_list"]').find('ul[ectype="spec_item"]').remove();
+
+                var html = '';
+                var template = $('*[ectype="template"]').clone(true);
+                $.each(goods.goodsSpec, function(i,item) {
+                  html += sprintf(replace_all(template.html(), 'ecname', 'name'), item.spec_id, item.spec, item.stock, item.price, item.spec_id, item.pro_price ? item.pro_price : '', item.spec_id);
+                });
+                html = replace_all(html, 'selected=""', '');
+                $('*[ectype="spec_list"]').append(html);
+              }
+            }
+          });
+        }
+      </script>
+      {{else}}
+
+      {{if .address}}
+      {{ template "buyer_address.html"}}
+      {{else}}
+
+      <div class="profile clearfix">
+        <div class="photo">
+          <p><img src="{{.visitor.portrait}}" width="70" height="70" /></p>
+        </div>
+        <div class="info clearfix">
+          <dl class="col-1 float-left">
+            <dt> <span>{{.lang.welcome}}</span><strong>{{.visitor.username}}</strong> <a href="user/profile">{{.lang.edit_profile}}</a> </dt>
+            <dd class="gray"> <span>{{.lang.last_ip}}{{.lang.colon}}{{.visitor.last_login}}</span> <span>{{.lang.last_ip}}{{.lang.colon}}{{.visitor.last_ip}}</span> </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="platform clearfix">
+
+        {{if .is_seller}}
+        <div class="clearfix w-full deal">
+          <div class="welitem clearfix"> <a class="wrap" href="store/credit?id={{.store.store_id}}">
+            <p>{{.lang.credit_value}}</p>
+            <h3><img src="{{.store.credit_image}}" align="absmiddle" /></h3>
+            </a> </div>
+          <div class="welitem clearfix"> <a class="wrap" href="store/credit{{.store.store_id}}">
+            <p>{$lang.praise_rate}</p>
+            <h3>{$store.praise_rate|default:0}%</h3>
+            </a> </div>
+          <div class="welitem clearfix"> <a class="wrap" href="store/credit?id={{.store.store_id}}">
+            <p>卖家等级</p>
+            <h3 style="font-size:15px">{{.sgrade.grade_name}}</h3>
+            </a> </div>
+        </div>
+        {{else}}
+        <div class="clearfix w-full">
+          <div class="welitem clearfix"> <a class="wrap" href="my_message/index?newpm">
+            <p>未读短信息</p>
+            <h3>{{.new_message}}}</h3>
+            </a> </div>
+          <div class="welitem clearfix"> <a class="wrap" href="friend/index">
+            <p>好友数</p>
+            <h3>{{.visitor.friends}}}</h3>
+            </a> </div>
+          <div class="welitem clearfix"> <a class="wrap" href="my_integral/index">
+            <p>商城积分</p>
+            <h3>{{.visitor.integral}}}</h3>
+            </a> </div>
+        </div>
+ 
+        <div class="buyer-notice">
+          <div class="box-notice box">
+            <div class="hd">
+              <h2>{{.lang.buyer_remind}}</h2>
+            </div>
+            <div class="bd dealt">
+              <div class="list clearfix">
+                <dl>
+                  <dd> <span>{sprintf($lang.order_for_pay_remind, Url::toRoute(['buyer_order/index', 'type' => 'pending']), $buyer_stat.pending|default:0)}</span> </dd>
+                </dl>
+                <dl>
+                  <dd> <span>{sprintf($lang.order_for_confirm_remind, Url::toRoute(['buyer_order/index', 'type' => 'shipped']), $buyer_stat.shipped|default:0)}</span> </dd>
+                </dl>
+                <dl>
+                  <dd><span>{sprintf($lang.order_for_evaluate_remind, Url::toRoute(['buyer_order/index', 'type' => 'finished']), $buyer_stat.finished|default:0)}</span> </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="buyer-notice">
+          <div class="box-notice box">
+            <div class="hd">
+              <h2>本月消费统计图</h2>
+            </div>
+            <div class="bd dealt J_BuyerTrend">
+        		<script language="javascript">
+				$(function(){
+					$('.J_BuyerTrend').load(url(['buyer_order/trend']));
+				});
+				</script>
+            </div>
+          </div>
+        </div>
+        <!--{/if}-->
+        
+        <!--{if $store && in_array($smarty.session.userRole, array('seller'))}-->
+        <div class="seller-notice">
+          <div class="box-notice box">
+            <div class="hd">
+              <h2>{$lang.seller_remind}</h2>
+            </div>
+            <div class="bd dealt">
+              <div class="list clearfix">
+                <dl>
+                  <dd> <span>{sprintf($lang.order_for_settle_remind, Url::toRoute(['seller_order/index', 'type' => 'submitted']), $seller_stat.submitted|default:0)}</span></dd>
+                </dl>
+                <dl>
+                  <dd> <span>{sprintf($lang.order_for_ship_remind, Url::toRoute(['seller_order/index', 'type' => 'accepted']), $seller_stat.accepted|default:0)}</span> </dd>
+                </dl>
+                <dl>
+                  <dd> <span>{{sprintf(.lang.question_to_reply_remind, 'my_qa/index?type=to_reply_qa'), .seller_stat.replied)}}</span> </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <div class="box-notice box">
+            <div class="hd">
+              <h2>{{.lang.store_remind}}</h2>
+            </div>
+            <div class="bd dealt">
+              <div class="list clearfix">
+                <dl>
+                  <dd> <span>{{.lang.expire_time}}<em class="block" style="font-size:14px">{{if .sgrade.add_time}}{{sprintf (.lang.leaving_day, .sgrade.add_time)}}{{else}}{{.lang.no_limit}}{{end}}</em></span> </dd>
+                </dl>
+                <dl>
+                  <dd><span>{{.lang.goods_put}}<em class="block" style="font-size:14px">{{.sgrade.goods.used}}/{{if .sgrade.space.total}}{{.sgrade.space.total}}M{{else}}{{.lang.no_limit}}{{end}}</em></span></dd>
+                </dl>
+                <dl>
+                  <dd><span>{{.lang.space_use}}<em class="block" style="font-size:14px">{{.sgrade.space.used}}M/{{if .sgrade.space.total}}{{.sgrade.space.total}}M{{else}}{{.lang.no_limit}}{{end}}</em></span></dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{end}}
+        {{if ._usermenu.menus.overview}}
+        <div class="apply-notice box-notice box">
+          <div class="hd">
+            <h2>{{.lang.apply_remind}}</h2>
+          </div>
+          <div class="bd">
+            <div class="extra"> 
+              <div class="notice-word">
+                <p class="yellow">
+                {{if  eq .store.state  .STORE_APPLYING}}
+                {{if .store.apply_remark}}
+                {{sprintf($lang.store_applying_reject, $apply_remark, 'apply/fill')} }
+                {{else}}
+                {{sprintf(.lang.store_applying, 'apply/fill')}}
+                {{end}}
+                {{else}}
+                {{.lang.not_seller}}{{.lang.colon}}<a href="{{._usermenu.menus.overview.url}}" title="{{._usermenu.menus.overview.text}}">{{._usermenu.menus.overview.text}}</a>
+                {{end}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{end}}
+        {{if .is_seller}}
+        <div class="rate-info box">
+        	<div class="hd">
+            <h2>店铺评分</h2>
+          </div>
+          <ul>
+            <li> {{.lang.goods_evaluation}} <span class="credit">{{.store.dynamicEvaluation.goods.value}}</span> <span class="compare">{{.lang.compare_insdusty}}</span>
+                <span class="{{.store.dynamicEvaluation.goods.compare.name}}"> <i></i> {{.store.dynamicEvaluation.goods.compare.name}} <em>{{if eq .store.dynamicEvaluation.goods.compare.value  0}}----{{else}}{{.store.dynamicEvaluation.goods.compare.value}}{{end}}</em></span> </li>
+            <li> {{.lang.service_evaluation} }<span class="credit">{{.store.dynamicEvaluation.service.value}}</span> <span class="compare">{{.lang.compare_insdusty}}</span>
+                <span class="{{.store.dynamicEvaluation.service.compare.name}}"> <i></i> {{.store.dynamicEvaluation.service.compare.name}} <em>{{{if eq .store.dynamicEvaluation.service.compare.value  0}}}----{{else}}{{.store.dynamicEvaluation.service.compare.value}}{{end}}</em></span> </li>
+            <li> {{.lang.shipped_evaluation}} <span class="credit">{{.store.dynamicEvaluation.shipped.value}}</span> <span class="compare">{{.lang.compare_insdusty}}</span>
+                <span class="{{.store.dynamicEvaluation.shipped.compare.name}}"> <i></i> {{.store.dynamicEvaluation.shipped.compare.name}} <em>{{if eq store.dynamicEvaluation.shipped.compare.value  0}}----{{else}}{{.store.dynamicEvaluation.shipped.compare.value}}{{end}}</em></span> </li>
+            <li> {{.lang.all_evaluation}} <span class="credit" style="color:#f50;">{{.store.dynamicEvaluation.comprehensive.value}}</span></li>
+          </ul>
+        </div>
+        {{end}}
+      </div>
+
+      {{end}}
+    </div>
+  </div>
+</div>
+{{if .address}}
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{{end}}
+
+
+

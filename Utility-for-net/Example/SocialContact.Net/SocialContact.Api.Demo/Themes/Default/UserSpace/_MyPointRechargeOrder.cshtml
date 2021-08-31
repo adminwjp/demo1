@@ -1,0 +1,103 @@
+﻿@model PagingDataSet<PointRechargeOrder>
+@{
+    var trade = ViewData["trade"];
+}
+
+
+<div role="tabpanel" class="active" >
+    <button id="Recharge" class="btn btn-primary">我要充值</button>
+    <hr />
+@if (Model.Any())
+{
+    <table class="table table-hover jh-record-table">
+        <thead>
+            <tr>
+                <th width="9%">时间</th>
+                <th width="3%">交易号</th>
+                <th width="5%">支付方式</th>
+                <th width="11%">支付账号</th>
+                <th width="5%">充值金额</th>
+                <th width="5%">获得@(trade)</th>
+                <th width="5%">支付状态</th>
+                <th width="5%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DateCreated.ToyyyyMMddHHmm()</td>
+                    <td>@(string.IsNullOrEmpty(item.TradeNo)?"--":item.TradeNo)</td>
+                    <td>@(item.Buyway>0?item.Buyway.GetDisplayName():"--")</td>
+                    <td>@(string.IsNullOrEmpty(item.TradingAccount) ? "--" : item.TradingAccount)</td>
+                    <td>@(item.TotalPrice)元</td>
+                    <td>@item.TradePoints</td>
+                    <td>@item.Status.GetDisplayName()</td>
+                    <td>
+                       @if (item.Status == RechargeOrdeStatus.NotPay)
+                       {  
+                           <a  name="CompletePay"  data-ID="@item.Id" class="a tn-cursor-pointer">付款</a><a name="Cancel" data-id="@item.Id" class="a tn-ml-10 tn-cursor-pointer">取消</a>
+
+                       }
+                  
+                    
+                    </td>
+                </tr>
+            }
+            
+          
+        </tbody>
+    </table>
+    }
+else
+{
+    <div class="text-center tn-mb-20 tn-mt-20 text-warning">
+        暂无充值记录
+    </div>
+}
+</div>
+
+<div class="text-center">
+    @Html.AjaxPagingButton(Model, "showinfo", CachedUrlHelper.Action("_MyPointRechargeOrder", "UserSpace"))
+
+</div>
+<input id="indexid" type="hidden" value="" />
+<script type="text/javascript">
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+        //充值
+        $('#Recharge').click(function () {
+            tnlayer.layermodal('我要充值', '@CachedUrlHelper.Action("_CreateOrder", "UserSpace")?t=' + new Date().getTime(), '500px', 'auto')
+        });
+        //付款
+        $("[name='CompletePay']").click(function () {
+
+            var $this = $(this);
+            var id = $this.data("id");
+            tnlayer.layermodal('订单详情', '@CachedUrlHelper.Action("_OrderDetail", "UserSpace")?orderId=' + id + '&t=' + new Date().getTime(), '500px', 'auto');
+           
+        });
+
+        $("[name='Cancel']").click(function myfunction() {
+            var $this = $(this);
+            var id = $this.data("id");
+            layer.confirm("是否确认取消订单", { btn: ['确认', '取消'] }, function () {
+                $.post("@CachedUrlHelper.Action("DeleteOrder","UserSpace")", { "orderId": id }, function myfunction(data) {
+                    if (data.state) {
+                        layer.msg(data.msg, {
+                            icon
+                        : 1
+                        });
+                        $this.parents("tr").remove();
+                    } else {
+                        layer.msg(data.msg, {
+                            icon
+                        : 2
+                        });
+                    }
+
+                });
+            });
+        });
+
+    })
+</script>

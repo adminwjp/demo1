@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="authUser">
+    <resultMap id="authUserResultMap" type="com.shop.model.AuthUser">
+        <result property="id" column="id" javaType="java.lang.Integer"></result>
+        <result property="enable" column="enable" javaType="boolean"></result>
+        <result property="modifyDate" column="modify_date" javaType="java.util.Date"></result>
+        <result property="createDate" column="create_date" javaType="java.util.Date"></result>
+        <result property="certFile" column="cert_file" javaType="byte[]"></result>
+        <result property="expiresIn" column="expires_in" javaType="java.lang.Integer"></result>
+        <result property="isUsed" column="is_used" javaType="boolean"></result>
+        <result property="sellerId" column="seller_id" javaType="java.lang.Long"></result>
+        <result property="Table" column="table" javaType="java.lang.String"></result>
+        <result property="appId" column="app_id" javaType="java.lang.String"></result>
+        <result property="authorizerAccessToken" column="authorizer_access_token" javaType="java.lang.String"></result>
+        <result property="authorizerRefreshToken" column="authorizer_refresh_token" javaType="java.lang.String"></result>
+        <result property="selectFuncInfo" column="select_func_info" javaType="java.lang.String"></result>
+        <result property="nickName" column="nick_name" javaType="java.lang.String"></result>
+        <result property="headImg" column="head_img" javaType="java.lang.String"></result>
+        <result property="serviceTypeInfo" column="service_type_info" javaType="java.lang.String"></result>
+        <result property="verifyTypeInfo" column="verify_type_info" javaType="java.lang.String"></result>
+        <result property="userName" column="user_name" javaType="java.lang.String"></result>
+        <result property="principalName" column="principal_name" javaType="java.lang.String"></result>
+        <result property="businessInfo" column="business_info" javaType="java.lang.String"></result>
+        <result property="alias" column="alias" javaType="java.lang.String"></result>
+        <result property="qrCodeUrl" column="qr_code_url" javaType="java.lang.String"></result>
+        <result property="funcInfo" column="func_info" javaType="java.lang.String"></result>
+        <result property="payMchId" column="pay_mch_id" javaType="java.lang.String"></result>
+        <result property="paySecretKey" column="pay_secret_key" javaType="java.lang.String"></result>
+    </resultMap>
+
+
+    <insert id="authUser.add" parameterType="java.lang.Integer" useGeneratedKeys="true" keyProperty="id">
+        insert into t_auth_user
+        (create_date,
+        <if test="enable!=null">
+            ,enable
+        </if>
+        <if test="certFile!=null">
+            ,cert_file
+        </if>
+        <if test="expiresIn!=null">
+            ,expires_in
+        </if>
+        <if test="isUsed!=null">
+            ,is_used
+        </if>
+        <if test="sellerId!=null">
+            ,seller_id
+        </if>
+        <if test="Table!=null and Table!=''">
+            ,table
+        </if>
+        <if test="appId!=null and appId!=''">
+            ,app_id
+        </if>
+        <if test="authorizerAccessToken!=null and authorizerAccessToken!=''">
+            ,authorizer_access_token
+        </if>
+        <if test="authorizerRefreshToken!=null and authorizerRefreshToken!=''">
+            ,authorizer_refresh_token
+        </if>
+        <if test="selectFuncInfo!=null and selectFuncInfo!=''">
+            ,select_func_info
+        </if>
+        <if test="nickName!=null and nickName!=''">
+            ,nick_name
+        </if>
+        <if test="headImg!=null and headImg!=''">
+            ,head_img
+        </if>
+        <if test="serviceTypeInfo!=null and serviceTypeInfo!=''">
+            ,service_type_info
+        </if>
+        <if test="verifyTypeInfo!=null and verifyTypeInfo!=''">
+            ,verify_type_info
+        </if>
+        <if test="userName!=null and userName!=''">
+            ,user_name
+        </if>
+        <if test="principalName!=null and principalName!=''">
+            ,principal_name
+        </if>
+        <if test="businessInfo!=null and businessInfo!=''">
+            ,business_info
+        </if>
+        <if test="alias!=null and alias!=''">
+            ,alias
+        </if>
+        <if test="qrCodeUrl!=null and qrCodeUrl!=''">
+            ,qr_code_url
+        </if>
+        <if test="funcInfo!=null and funcInfo!=''">
+            ,func_info
+        </if>
+        <if test="payMchId!=null and payMchId!=''">
+            ,pay_mch_id
+        </if>
+        <if test="paySecretKey!=null and paySecretKey!=''">
+            ,pay_secret_key
+        </if>
+        )
+        values
+        (now()
+        <if test="enable!=null">
+            ,#{enable}
+        </if>
+        <if test="certFile!=null">
+            ,#{certFile}
+        </if>
+        <if test="expiresIn!=null">
+            ,#{expiresIn}
+        </if>
+        <if test="isUsed!=null">
+            ,#{isUsed}
+        </if>
+        <if test="sellerId!=null">
+            ,#{sellerId}
+        </if>
+        <if test="Table!=null and Table!=''">
+            ,#{Table}
+        </if>
+        <if test="appId!=null and appId!=''">
+            ,#{appId}
+        </if>
+        <if test="authorizerAccessToken!=null and authorizerAccessToken!=''">
+            ,#{authorizerAccessToken}
+        </if>
+        <if test="authorizerRefreshToken!=null and authorizerRefreshToken!=''">
+            ,#{authorizerRefreshToken}
+        </if>
+        <if test="selectFuncInfo!=null and selectFuncInfo!=''">
+            ,#{selectFuncInfo}
+        </if>
+        <if test="nickName!=null and nickName!=''">
+            ,#{nickName}
+        </if>
+        <if test="headImg!=null and headImg!=''">
+            ,#{headImg}
+        </if>
+        <if test="serviceTypeInfo!=null and serviceTypeInfo!=''">
+            ,#{serviceTypeInfo}
+        </if>
+        <if test="verifyTypeInfo!=null and verifyTypeInfo!=''">
+            ,#{verifyTypeInfo}
+        </if>
+        <if test="userName!=null and userName!=''">
+            ,#{userName}
+        </if>
+        <if test="principalName!=null and principalName!=''">
+            ,#{principalName}
+        </if>
+        <if test="businessInfo!=null and businessInfo!=''">
+            ,#{businessInfo}
+        </if>
+        <if test="alias!=null and alias!=''">
+            ,#{alias}
+        </if>
+        <if test="qrCodeUrl!=null and qrCodeUrl!=''">
+            ,#{qrCodeUrl}
+        </if>
+        <if test="funcInfo!=null and funcInfo!=''">
+            ,#{funcInfo}
+        </if>
+        <if test="payMchId!=null and payMchId!=''">
+            ,#{payMchId}
+        </if>
+        <if test="paySecretKey!=null and paySecretKey!=''">
+            ,#{paySecretKey}
+        </if>
+        )
+    </insert>
+
+    <update id="authUser.modify" parameterType="com.shop.model.AuthUser" >
+        update  t_auth_user set modify_date=now(),
+        <if test="enable!=null">
+            ,enable=#{enable}
+        </if>
+        <if test="certFile!=null">
+            ,cert_file=#{certFile}
+        </if>
+        <if test="expiresIn!=null">
+            ,expires_in=#{expiresIn}
+        </if>
+        <if test="isUsed!=null">
+            ,is_used=#{isUsed}
+        </if>
+        <if test="sellerId!=null">
+            ,seller_id=#{sellerId}
+        </if>
+        <if test="Table!=null and Table!=''">
+            ,table=#{Table}
+        </if>
+        <if test="appId!=null and appId!=''">
+            ,app_id=#{appId}
+        </if>
+        <if test="authorizerAccessToken!=null and authorizerAccessToken!=''">
+            ,authorizer_access_token=#{authorizerAccessToken}
+        </if>
+        <if test="authorizerRefreshToken!=null and authorizerRefreshToken!=''">
+            ,authorizer_refresh_token=#{authorizerRefreshToken}
+        </if>
+        <if test="selectFuncInfo!=null and selectFuncInfo!=''">
+            ,select_func_info=#{selectFuncInfo}
+        </if>
+        <if test="nickName!=null and nickName!=''">
+            ,nick_name=#{nickName}
+        </if>
+        <if test="headImg!=null and headImg!=''">
+            ,head_img=#{headImg}
+        </if>
+        <if test="serviceTypeInfo!=null and serviceTypeInfo!=''">
+            ,service_type_info=#{serviceTypeInfo}
+        </if>
+        <if test="verifyTypeInfo!=null and verifyTypeInfo!=''">
+            ,verify_type_info=#{verifyTypeInfo}
+        </if>
+        <if test="userName!=null and userName!=''">
+            ,user_name=#{userName}
+        </if>
+        <if test="principalName!=null and principalName!=''">
+            ,principal_name=#{principalName}
+        </if>
+        <if test="businessInfo!=null and businessInfo!=''">
+            ,business_info=#{businessInfo}
+        </if>
+        <if test="alias!=null and alias!=''">
+            ,alias=#{alias}
+        </if>
+        <if test="qrCodeUrl!=null and qrCodeUrl!=''">
+            ,qr_code_url=#{qrCodeUrl}
+        </if>
+        <if test="funcInfo!=null and funcInfo!=''">
+            ,func_info=#{funcInfo}
+        </if>
+        <if test="payMchId!=null and payMchId!=''">
+            ,pay_mch_id=#{payMchId}
+        </if>
+        <if test="paySecretKey!=null and paySecretKey!=''">
+            ,pay_secret_key=#{paySecretKey}
+        </if>
+        where id =#{id}
+    </update>
+
+    <sql id="deleteSql">delete from  t_auth_user where id </sql>
+
+    <delete id="authUser.delete" parameterType="java.lang.Integer" >
+        <include refid="deleteSql"  /> =#{id}
+    </delete>
+
+    <delete id="authUser.deleteMany" >
+        <include refid="deleteSql"  />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="enable!=null">
+                or  enable=#{enable}
+            </if>
+            <if test="modifyDate!=null">
+                or  modify_date=#{modifyDate}
+            </if>
+            <if test="createDate!=null">
+                or  create_date=#{createDate}
+            </if>
+            <if test="certFile!=null">
+                or  cert_file=#{certFile}
+            </if>
+            <if test="expiresIn!=null">
+                or  expires_in=#{expiresIn}
+            </if>
+            <if test="isUsed!=null">
+                or  is_used=#{isUsed}
+            </if>
+            <if test="sellerId!=null">
+                or  seller_id=#{sellerId}
+            </if>
+            <if test="Table!=null and Table!=''">
+                or  table=#{Table}
+            </if>
+            <if test="appId!=null and appId!=''">
+                or  app_id=#{appId}
+            </if>
+            <if test="authorizerAccessToken!=null and authorizerAccessToken!=''">
+                or  authorizer_access_token=#{authorizerAccessToken}
+            </if>
+            <if test="authorizerRefreshToken!=null and authorizerRefreshToken!=''">
+                or  authorizer_refresh_token=#{authorizerRefreshToken}
+            </if>
+            <if test="selectFuncInfo!=null and selectFuncInfo!=''">
+                or  select_func_info=#{selectFuncInfo}
+            </if>
+            <if test="nickName!=null and nickName!=''">
+                or  nick_name=#{nickName}
+            </if>
+            <if test="headImg!=null and headImg!=''">
+                or  head_img=#{headImg}
+            </if>
+            <if test="serviceTypeInfo!=null and serviceTypeInfo!=''">
+                or  service_type_info=#{serviceTypeInfo}
+            </if>
+            <if test="verifyTypeInfo!=null and verifyTypeInfo!=''">
+                or  verify_type_info=#{verifyTypeInfo}
+            </if>
+            <if test="userName!=null and userName!=''">
+                or  user_name=#{userName}
+            </if>
+            <if test="principalName!=null and principalName!=''">
+                or  principal_name=#{principalName}
+            </if>
+            <if test="businessInfo!=null and businessInfo!=''">
+                or  business_info=#{businessInfo}
+            </if>
+            <if test="alias!=null and alias!=''">
+                or  alias=#{alias}
+            </if>
+            <if test="qrCodeUrl!=null and qrCodeUrl!=''">
+                or  qr_code_url=#{qrCodeUrl}
+            </if>
+            <if test="funcInfo!=null and funcInfo!=''">
+                or  func_info=#{funcInfo}
+            </if>
+            <if test="payMchId!=null and payMchId!=''">
+                or  pay_mch_id=#{payMchId}
+            </if>
+            <if test="paySecretKey!=null and paySecretKey!=''">
+                or  pay_secret_key=#{paySecretKey}
+            </if>
+            <if test="id!=null">
+                or  id=#{id}
+            </if>
+        </where>
+    </sql>
+
+    <select id="authUser.select" parameterType="com.shop.model.AuthUser" resultMap="authUserResultMap">
+        select * from  t_auth_user
+        <include refid="whereIf"/>
+    </select>
+
+    <select id="authUser.count" parameterType="com.shop.model.AuthUser" resultType="java.lang.Integer">
+        select count(id) from  t_auth_user
+        <include refid="whereIf"/>
+    </select>
+
+</mapper>

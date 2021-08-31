@@ -1,0 +1,220 @@
+﻿@model IEnumerable<AccountBinding>
+@{
+    ViewData["Title"] = new string[] { "帐号绑定" };
+    TempData["SidebarType"] = "AccountBinding";
+    var weChats = Model.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().WeChat());
+    var qq = Model.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().QQ());
+    var sina = Model.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().SinaWeibo());
+    var aliPay = Model.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().AliPay());
+    var statusMessageData = TempData.Get<StatusMessageData>("StatusMessageData", null);
+    var accountTypes = ViewData.Get<IEnumerable<AccountType>>("accountTypes", null);
+}
+<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+
+<div class="row jh-space-setup">
+    @{
+        var sidebarType = TempData.Get<string>("SidebarType", string.Empty);
+
+        Func<string, string> subMenu = (SidebarType) =>
+        {
+
+            if (sidebarType == SidebarType)
+                return "class=active";
+            else
+                return string.Empty;
+        };
+        var accountTypes = new AccountBindingService().GetAccountTypes(true);
+        var user = UserContext.CurrentUser;
+    }
+    @Styles.Render("~/js/lib/plupload/upload")
+    <div class="col-xs-2">
+        <div class="jh-space-left">
+            <div class="jh-user-head">
+                @Html.ShowUserAvatar(userId: user.UserId, avatarSizeType: AvatarSizeType.Big, enableClientCaching: false, enableNavigate: true, isShowUserCard: false)
+                <button class="btn btn-default layerAvatar"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+            </div>
+            <ul class="list-unstyled">
+                <li @subMenu("UserSetting")><a href="@SiteUrls.Instance().UserSetting()">用户资料</a></li>
+                @if (accountTypes != null && accountTypes.Any() && Utility.CheckThirdPartyLogin())
+                {
+                    <li @subMenu("AccountBinding")><a href="@SiteUrls.Instance().AccountBinding()">帐号绑定</a></li>
+                }
+                <li @subMenu("MyNotice")><a href="@SiteUrls.Instance().MyNotice()">我的通知</a></li>
+                <li @subMenu("MyPoints")><a href="@SiteUrls.Instance().MyPoints()">我的积分</a></li>
+                <li @subMenu("PointTask")><a href="@SiteUrls.Instance().PointTask()">积分任务</a></li>
+                <li><a href="@SiteUrls.Instance().MedalShop()">勋章馆</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+        $(".layerAvatar").click(function () {
+            tnlayer.layermodal('头像设置', '@CachedUrlHelper.Action("_Avatar", "UserSpace")', '550px', '510px');
+        });
+    })
+    </script>
+
+    <div class="col-xs-10">
+        <div class="jh-space-right jh-padding-white">
+            <div class="tn-title">
+                <h4>帐号绑定</h4>
+            </div>
+            @if (accountTypes != null && accountTypes.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().WeChat()).Count() > 0)
+            {
+                <div class="row jh-space-bd">
+                    <div class="col-xs-1">
+                        <i class="fa fa-weixin" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-xs-11">
+                        <h5>
+                            <span style="margin-right:28px;">微信</span>@if (weChats != null && weChats.Any())
+                            {<span class="tn-gray-color">已绑定</span>}
+                        </h5>
+
+                        @if (weChats != null && weChats.Any())
+                        {
+                            <a role="button" href="javascript:;" class="cancelbinding" data-type="@AccountTypeKeys.Instance().WeChat()">取消绑定</a>
+                        }
+                        else
+                        {
+
+                            <button class="btn btn-default btn-sm layerWeChat">立即绑定</button>
+                        }
+                        <span class="tn-gray-color">绑定成功后可用微信帐号登录</span>
+                    </div>
+                </div>
+                <hr />
+            }
+            @if (accountTypes != null && accountTypes.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().QQ()).Count() > 0)
+            {
+                <div class="row jh-space-bd">
+                    <div class="col-xs-1">
+                        <i class="fa fa-qq" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-xs-11">
+                        <h5>
+                            <span style="margin-right:35px;">QQ</span>@if (qq != null && qq.Any())
+                            {<span class="tn-gray-color tn-ml-20">已绑定</span>}
+                        </h5>
+                        @if (qq != null && qq.Any())
+                        {
+                            <a role="button" href="javascript:;" data-type="@AccountTypeKeys.Instance().QQ()" class="cancelbinding">取消绑定</a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-default btn-sm" onclick="window.location='@SiteUrls.Instance().ThirdBinding(AccountTypeKeys.Instance().QQ())'">立即绑定</button>
+                        }
+                        <span class="tn-gray-color">绑定成功后可用QQ帐号登录</span>
+                    </div>
+                </div>
+                <hr />
+            }
+            @if (accountTypes != null && accountTypes.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().SinaWeibo()).Count() > 0)
+            {
+                <div class="row jh-space-bd">
+                    <div class="col-xs-1">
+                        <i class="fa fa-weibo" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-xs-11">
+                        <h5>
+                            <span style="margin-right:35px;">新浪微博</span>@if (sina != null && sina.Any())
+                            {<span class="tn-gray-color tn-ml-20">已绑定</span>}
+                        </h5>
+                        @if (sina != null && sina.Any())
+                        {
+                            <a role="button" href="javascript:;" data-type="@AccountTypeKeys.Instance().SinaWeibo()" class="cancelbinding">取消绑定</a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-default btn-sm" onclick="window.location='@SiteUrls.Instance().ThirdBinding(AccountTypeKeys.Instance().SinaWeibo())'">立即绑定</button>
+                        }
+                        <span class="tn-gray-color">绑定成功后可用新浪微博帐号登录</span>
+                    </div>
+                </div>
+                <hr />
+            }
+            @if (accountTypes != null && accountTypes.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().AliPay()).Count() > 0)
+            {
+                <div class="row jh-space-bd">
+                    <div class="col-xs-1">
+                        <img src="../img/alipay-icon.png" width="50" height="50" />
+                    </div>
+                    <div class="col-xs-11">
+                        <h5>
+                            <span style="margin-right:35px;">支付宝</span>@if (aliPay != null && aliPay.Any())
+                            {<span class="tn-gray-color tn-ml-20">已绑定</span>}
+                        </h5>
+                        @if (aliPay != null && aliPay.Any())
+                        {
+                            <a role="button" href="javascript:;" data-type="@AccountTypeKeys.Instance().AliPay()" cl class="cancelbinding">取消绑定</a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-default btn-sm" onclick="window.location='@SiteUrls.Instance().ThirdBinding(AccountTypeKeys.Instance().AliPay())'">立即绑定</button>
+                        }
+                        <span class="tn-gray-color">绑定成功后可用支付宝帐号登录</span>
+                    </div>
+                </div>
+                <hr />
+            }
+        </div>
+    </div>
+</div>
+
+@if (statusMessageData != null)
+{
+    <script type="text/javascript">
+        require(['jquery', 'tnlayer'], function ($) {
+            //提示消息
+            $(document).ready(function () {
+                switch ('@statusMessageData.MessageType') {
+                    case 'Success':
+                        layer.msg('@statusMessageData.MessageContent', {
+                            icon: 1
+                        });
+                        break;
+                    case 'Hint':
+                        layer.msg('@statusMessageData.MessageContent', {
+                            icon: 1
+                        });
+                        break;
+                    case 'Error':
+                        layer.msg('@statusMessageData.MessageContent', {
+                            icon: 1
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            });
+        });
+    </script>
+}
+
+
+<script type="text/javascript">
+    require(['jquery', 'tnlayer'], function ($, tnlayer) {
+
+        $(".layerWeChat").click(function () {
+            tnlayer.layermodal('微信绑定', '@SiteUrls.Instance().ThirdBinding(AccountTypeKeys.Instance().WeChat())', '550px', '550px');
+        });
+
+        $('.cancelbinding').on('click', function () {
+            var $this = $(this);
+            //询问框
+            layer.confirm("是否取消绑定", {
+                btn: ['确认', '取消'] //按钮
+            }, function () {
+                $.post('@CachedUrlHelper.Action("CancelBinding", "UserSpace")', { accountTypeKey: $this.data('type') }, function myfunction(data) {
+                    if (data.state == 1) {
+                        layer.msg(data.msg, {
+                            icon: 1
+                        });
+                        setTimeout(function () { window.location.reload(); }, 600);
+                    }
+                })
+            });
+        })
+    })
+</script>

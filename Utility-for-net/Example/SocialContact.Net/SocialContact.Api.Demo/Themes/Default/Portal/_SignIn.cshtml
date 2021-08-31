@@ -1,0 +1,87 @@
+﻿@model UserSignIn
+@{
+    var pointService = DIContainer.Resolve<PointService>();
+    var experiencePoints = pointService.GetPointCategory(PointCategoryKeys.Instance().TradePoints());
+    var pointSignIn = pointService.GetPointItem(PointItemKeys.Instance().SignIn());
+    var point = string.Empty;
+    if (pointSignIn != null)
+    {
+        point = pointSignIn.TradePoints > 0 ? "+" + pointSignIn.TradePoints.ToString() : pointSignIn.TradePoints.ToString();
+    }
+}
+
+@Styles.Render("~/js/lib/SignIn/css/BundleCalendar")
+@if (!Model.IsSign || Model.UserId == 0)
+{
+    <div class="row jh-sign-in">
+        <div class="col-xs-5">
+            <i class="fa fa-calendar tn-theme-color fa-2x"></i>
+            <span class="tn-font-16 "><a href="javascript:;" class="calendar-show calendar-sign">签到</a></span>
+        </div>
+        <div class="col-xs-7">
+            每日签到奖励@(point)@(experiencePoints?.CategoryName)<br />连续7天签到有惊喜
+        </div>
+    </div>
+}
+else
+{
+    <div class="row jh-signed-in">
+        <div class="col-xs-6">
+            <i class="fa fa-calendar tn-green-color fa-2x"></i>
+            <span class="tn-font-16 calendar-show" href="javascript:;"><a href="javascript:;">已签到</a></span>
+        </div>
+        <div class="col-xs-6">
+            已连续签到 @Model.ContinuedSignCount 天<br />累计签到 @Model.SignCount 天
+        </div>
+    </div>
+}
+
+
+@if (Model.UserId != 0)
+{
+    <div class="jh-calendar" id="calendar">
+
+
+
+    </div>
+}
+
+<style>
+    .sign .on {
+        background: url('@Tunynet.Utilities.WebUtility.ResolveUrl("~/img/sign_have.png")') no-repeat;
+    }
+</style>
+
+<script type="text/javascript">
+
+    require(['jquery', 'calendar'], function ($, calendar) {
+        var recentMonths = 0;
+        var Gold='@Model.TradePointSum.ToString()';
+        var GoldEnd = '@(experiencePoints?.CategoryName)';
+
+        $(function () {
+            if (recentMonths == 0) {
+                loadcalendar();
+            }
+
+        });
+        function loadcalendar() {
+            var time=new Date().getTime() ;
+            $.get("@CachedUrlHelper.Action("GetSignInDetail", "Portal")", { recentMonths: recentMonths, status: '0', time:time}, function (data) {
+                recentMonths = data.recentMonths;
+                Gold = data.goldSum;
+                eventName = "load";
+                $(".sign_cal").remove();
+                calendar.calUtilup(data.signList, eventName,Gold,GoldEnd);
+            });
+        };
+
+
+        $(function () {
+            $("#gold").attr("class", "tn-green-color");
+        });
+
+    });
+</script>
+
+

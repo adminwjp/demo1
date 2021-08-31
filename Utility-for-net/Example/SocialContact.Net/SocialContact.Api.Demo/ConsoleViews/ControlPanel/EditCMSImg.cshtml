@@ -1,0 +1,253 @@
+﻿@model ContentItemEditModel
+@{
+    TempData["subMenu-check"] = new string[] { "CMS", "ManageCMS" };
+    ViewData["Title"] = new string[] { (Model.ContentItemId > 0 ? "编辑" : "发布") + "组图" };
+    var user = UserContext.CurrentUser;
+    var category = ViewData.Get<ContentCategory>("contentCategory", new ContentCategory());
+    var associateId = Model.ContentItemId > 0 ? Model.ContentItemId : IdGenerator.Next();
+    var contentCategories = ViewData.Get<List<SelectListItem>>("contentCategories", null);
+
+    var attachmentList = ViewData.Get<IEnumerable<Attachment>>("attachmentList", new List<Attachment>());
+    attachmentList = attachmentList.OrderBy(n => n.DisplayOrder);
+    var index = 0;
+}
+
+<div class="row tn-page-heading tn-mb-10">
+    <div class="col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href="@SiteUrls.Instance().ManageCMS()">资讯管理</a></li>
+            @if (!string.IsNullOrEmpty(category.CategoryName))
+            {
+                <li><a href="@CachedUrlHelper.Action("ManageCMS","ControlPanel")?contentCategoryId=@category.CategoryId">@category.CategoryName</a></li>
+            }
+            <li class="tn-active">发布资讯</li>
+        </ol>
+    </div>
+</div>
+<div class="tn-box tn-box-v1">
+    @using (Html.BeginForm("EditCMS", "ControlPanel", FormMethod.Post, new { @class = "form-horizontal tn-form-validation", @id = "EditCMS" }))
+    {
+        @Html.HiddenFor(n => n.ContentItemId)
+        @Html.HiddenFor(n => n.ContentModelId)
+        @Html.Hidden("Author", user.DisplayName)
+        @Html.ValidationMessageFor(n => n.ContentItemId)
+        @Html.ValidationMessageFor(n => n.ContentModelId)
+        @Html.ValidationMessage("Author")
+        @Html.HiddenFor(n => n.AttachmentIds)
+        @Html.ValidationMessageFor(n => n.AttachmentIds)
+        <input id="imageAttachments" type="hidden" name="CMSImageAttachmentsJson" value="" />
+        <div class="form-group">
+            <label for="" class="col-xs-2 control-label tn-width-90">标题</label>
+            <div class="col-xs-4">
+                @Html.TextBoxFor(n => n.Subject, new { @class = "form-control", @placeholder = "标题" })
+                @Html.ValidationMessageFor(n => n.Subject)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-xs-2 control-label tn-width-90">所属栏目</label>
+            <div class="col-xs-4">
+                @Html.DropDownList("CategoryId", contentCategories, new { @class = "form-control jn-select-sm" })
+                @Html.ValidationMessage("CategoryId")
+            </div>
+        </div>
+        <div class="form-group has-feedback">
+            <label for="" class="col-xs-2 control-label tn-width-90">发布时间</label>
+            <div class="col-xs-3 input-group tn-width-300">
+                @Html.DateTimePickerFor(n => n.DatePublished)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-xs-2 control-label tn-width-90">设置</label>
+            <div class="col-xs-4">
+                <label class="checkbox-inline">
+                    <input value="true" name="IsComment" type="checkbox" @(Model.IsComment ? "checked" : "")>
+                    禁止评论
+                </label>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <div class="col-xs-8">
+                <label for="" class="col-xs-2 control-label tn-width-90"></label>
+                <button id="answer" type="button" class="btn btn-primary btn-submit tn-btn-wp">确定</button>
+                <a type="button" class="btn btn-default tn-btn-wp" href="@CachedUrlHelper.Action("ManageCMS","ControlPanel")?contentCategoryId=@category.CategoryId">取消</a>
+            </div>
+        </div>
+    }
+    <div class="form-group">
+        <div class="text-left">
+            @Html.FileUploader(setting =>
+               {
+                   setting.Name = "UploadFile";
+                   setting.TenantTypeId = TenantTypeIds.Instance().CMS_Image();
+                   setting.InnerContent = "<i class=\"fa fa-upload\"></i> 上传图片";
+                   setting.Extensions = "jpg,jpeg,png,bmp,gif";
+                   setting.IsPreview = true;
+                   setting.Position = AttachmentPosition.Body;
+                   setting.Key = "Small";
+                   setting.MaxCount = 10;
+                   setting.Callbacks.Add("uploadSuccess", "succeedImageSyntony");
+                   setting.Multiple = true;
+               })
+        </div>
+    </div>
+    <div class="row tn-mt-20 tn-album-list" id="attachmentList">
+        @if (attachmentList.Any())
+        {
+            foreach (var item in attachmentList)
+            {
+                index++;
+                @Html.Partial("_EditCMSImgAttachment", new ViewDataDictionary() {
+                             new KeyValuePair<string, object>("index", index),
+                             new KeyValuePair<string, object>("attachment", item),
+                           })
+            }
+        }
+        @*@Html.Partial("_EditCMSImgAttachment", new ViewDataDictionary() {
+              new KeyValuePair<string, object>("index", index),
+              new KeyValuePair<string, object>("attachment", new AttachmentService(TenantTypeIds.Instance().CMS_Image()).Get(8809)),
+            })*@
+    </div>
+
+</div>
+
+@Styles.Render("~/js/lib/datetimepicker/css/datetimepicker")
+@Styles.Render("~/js/lib/plupload/upload")
+
+<script>
+    require(['jquery', 'datepicker', 'tnlayer', 'validate.unobtrusive', 'uploader'], function () {
+        var index = Number('@index');
+
+        function refreshUpAndDownButton() {
+            var attachments = $('#attachmentList .imageAttachment');
+            var totalCount = attachments.length;
+            if (totalCount >1) {
+                for (var i = 0; i < totalCount; i++) {
+                    var $this = $(attachments[i]);
+                    if (i == 0) {
+                        $this.find('.up').addClass('hidden');
+                        $this.find('.down').removeClass('hidden');
+                    } else if (i == totalCount - 1) {
+                        $this.find('.up').removeClass('hidden');
+                        $this.find('.down').addClass('hidden');
+                    } else {
+                        $this.find('.up').removeClass('hidden');
+                        $this.find('.down').removeClass('hidden');
+                    }
+                }
+            }
+        }
+
+        $(refreshUpAndDownButton());
+
+        //上传成功回调
+        $.fn.succeedImageSyntony = function (file, data, uploader) {
+            index++;
+            var parm = jQuery.param({ attachmentId: data.attachmentId, index: index, t: new Date().getTime() }, true);
+             $.get("@CachedUrlHelper.Action("_EditCMSImgAttachment", "ControlPanel")", parm, function (data) {
+                 $("#attachmentList").append(data)
+                 refreshUpAndDownButton()
+            });
+        }
+
+        function haveContent() {
+            if ($("#attachmentList").find('img').length > 0) {return true;}
+            if ($("#Subject").val().length>0) {return true;}
+            return false;
+        }
+
+        //提交表单
+        $('.btn-submit').on('click', function () {
+            if ($("#attachmentList").find('img').length > 0) {
+                $.fn.getAttachmentIds();
+                var imageAttachments = [];
+                $('.imageAttachment').each(function () {
+                    var $this = $(this);
+                    var attachmentId = $this.find('[name="AttachmentId"]').val().toString();
+                    var discription = $this.find('[name="Discription"]').val().toString();
+                    imageAttachments.push({ attachmentId: attachmentId, discription: discription });
+                })
+                $('#imageAttachments').val(JSON.stringify(imageAttachments));
+                $('#EditCMS').submit();
+            }
+            else {
+                layer.msg("请上传图片", {
+                    icon: 2
+                });
+            }
+        });
+
+        $('a[id^=delete-]').on('click', function (e) {
+            var $this = $(this);
+            layer.confirm("确定删除么？", {
+                btn: ['确认', '取消'],//按钮
+                scrollbar: false
+            }, function () {
+                var id = $this.attr("id").replace(/[^0-9]/ig, "");
+                $("[id^='imageAttachment-']").each(function () {
+                    if ($(this).data('id') == id) {
+                        $(this).remove();
+                        //layer.msg('删除成功', { icon: 1 });
+                        layer.closeAll();
+                    }
+                })
+            });
+        });
+
+        //上移
+        $(document).on('click', '.up', function (e) {
+            var id = $(this).data('index');
+            var $thisImageAttachment;
+            var $beforeImageAttachment;
+            var next = false;
+            var attachments = $('#attachmentList .imageAttachment');
+            var totalCount = attachments.length;
+            if (totalCount > 1) {
+                for (var i = totalCount-1; i >=0; i--) {
+                    var $this = $(attachments[i]);
+                    if ($this.data('index')==id) {
+                        $thisImageAttachment = $this;
+                        next = true;
+                        continue;
+                    }
+                    if (next) {
+                        $beforeImageAttachment = $this;
+                        break;
+                    }
+                }
+            }
+            $beforeImageAttachment.before($thisImageAttachment);
+            refreshUpAndDownButton();
+        });
+        //下移
+        $(document).on('click', '.down', function (e) {
+            var id = $(this).data('index');
+            var $thisImageAttachment;
+            var $nextImageAttachment;
+            var next = false;
+            var attachments = $('#attachmentList .imageAttachment');
+            var totalCount = attachments.length;
+            if (totalCount > 1) {
+                for (var i = 0; i < totalCount; i++) {
+                    var $this = $(attachments[i]);
+                    if ($this.data('index')==id) {
+                        $thisImageAttachment = $this;
+                        next = true;
+                        continue;
+                    }
+                    if (next) {
+                        $nextImageAttachment = $this;
+                        break;
+                    }
+                }
+            }
+            $nextImageAttachment.after($thisImageAttachment);
+            refreshUpAndDownButton();
+        });
+
+    })
+
+</script>
+
+
+

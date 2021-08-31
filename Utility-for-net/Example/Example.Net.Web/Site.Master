@@ -1,0 +1,57 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="Example.Web.Site" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <ul >
+                    <%
+                        if (Application.AllKeys.ToList().Contains(Request.Url.Host))
+                        {
+                            var c = Application[Request.Url.Host];
+                            Application[Request.Url.Host]=((long)c)+1;
+                        }
+                        else
+                        {
+                            Application.Add(Request.Url.Host,1l);
+                        }
+                        if (Request.Cookies["user_id"]!=null)
+                        {
+                            Response.Write("<li>欢迎 " +
+                                Request.Cookies["user_name"].Value + " !</li>");
+                            loginInfo();
+                        }
+                        else if (Session["user_id"]!=null)
+                        {
+                            Response.Write("<li>欢迎 " + Session["user_name"] + " !");
+                            loginInfo();
+                        }
+                        else
+                        {
+
+                            Response.Write("<li>欢迎 游客 !</li>");
+                            Response.Write("<li>");
+                            Response.Write("<a href=\"Login.aspx\">[登录]</a>&nbsp;&nbsp;|");
+                            Response.Write("<a href=\"Register.aspx\">[注册]</a>");
+                            Response.Write("</li>");
+                        }
+                        %>
+                
+               
+            </ul>
+        </header>
+        <div>
+            <asp:ContentPlaceHolder ID="contentPlaceHolder" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>

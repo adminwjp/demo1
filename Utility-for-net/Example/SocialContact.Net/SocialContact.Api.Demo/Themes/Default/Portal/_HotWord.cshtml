@@ -1,0 +1,21 @@
+﻿@{
+    var searchWord = ViewData.Get<IEnumerable<SearchWord>>("searchWord", null);
+
+}
+
+
+@if (searchWord!=null)
+{
+<table>
+    <tr>
+        @foreach (var item in searchWord)
+        {
+            <td style="overflow:hidden;"><a href="javascript:;" data-word="@item.Word" id="word-@item.Id" style="margin-left:10px; " title="@item.Word">@StringUtility.Trim(item.Word, 5)</a></td>
+        }
+    </tr>
+</table>
+
+}else
+{
+    <span>暂无搜索词</span>
+}

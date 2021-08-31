@@ -1,0 +1,79 @@
+﻿@model PagingDataSet<UserSignIn>
+@{
+    TempData["subMenu-check"] = new string[] { "User", "ManageUserSignIn" };
+    ViewData["Title"] = new string[] { "用户签到" };
+    var signInTodayCount = ViewData["SignInTodayCount"];
+}
+
+<div class="row tn-page-heading tn-mb-10">
+    <div class="col-lg-12">
+        <h3>用户签到</h3>
+    </div>
+</div>
+
+<ul class="nav nav-tabs tn-nav-tabs">
+    <li role="presentation" class="TotalCount active"><a href="####">总排行</a></li>
+    <li role="presentation" class="MonthCount"><a href="####">月排行</a></li>
+</ul>
+
+<div class="panel panel-default">
+    <div class="form-inline tn-tool-column" style="margin-top:10px">
+        <div class="form-group" style="width:900px;">
+            <p class="tn-green-color tn-font-24" style="margin-left:20px;">今日签到：@(signInTodayCount)人</p>
+        </div>
+        <div style="float:right;clear:both;">
+            <div class="form-group " style="width:245px;">
+                <label for="keyword">关键字：</label>
+                @Html.TextBox("keyword", null,"", new RouteValueDictionary { { "class", "color form-control" }, { "placeholder", "昵称/姓名/邮箱/手机号" } })
+            </div>
+            <div class="form-group" style="width:65px;">
+                <button class="btn btn-primary smssubmit" type="button">搜索</button>
+            </div>
+        </div>
+
+    </div>
+    <hr />
+
+    <div id="_ListUserSignIn" class="panel-body">
+        @Html.Action("_ListUserSignIn", "ControlPanel")
+    </div>
+</div>
+<script>
+    require(['jquery', 'tnlayer', 'page', 'datepicker'], function () {
+        //搜索
+        $(".smssubmit").click(function () {
+            var userSignInOrder = "";
+            if ($('.TotalCount').hasClass("active")) {
+                userSignInOrder = '@UserSignInOrder.SignCount_Desc';
+            } else {
+                userSignInOrder = '@UserSignInOrder.MonthSignCount_Desc';
+            }
+            Search(userSignInOrder);
+        })
+        //总累计
+        $('.TotalCount').on("click", function () {
+            $(this).siblings().removeClass("active");
+            $(this).addClass("active");
+            Search('@UserSignInOrder.SignCount_Desc');
+        });
+        //月累计
+        $('.MonthCount').on("click", function () {
+            $(this).siblings().removeClass("active");
+            $(this).addClass("active");
+            Search('@UserSignInOrder.MonthSignCount_Desc');
+        });
+
+        function Search(userSignInOrder) {
+
+            var keyword = $("#keyword").val();
+            $.get('@CachedUrlHelper.Action("_ListUserSignIn", "ControlPanel")?t=' + new Date().getTime(),
+              { keyword: keyword, userSignInOrder: userSignInOrder }
+              , function (data) {
+                  $("#_ListUserSignIn").html(data)
+              })
+
+        };
+    });
+
+</script>
+

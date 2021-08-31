@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- create by autoCode,v1.0.0 -->
+<mapper namespace="user">
+
+    <resultMap id="userResultMap" type="com.shop.model.User">
+        <result property="id" column="id" javaType="java.lang.Integer"></result>
+        <result property="nick" column="nick" javaType="java.lang.String"></result>
+        <result property="flag" column="flag"  javaType="com.shop.model.enums.UserFlag"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"></result>
+        <result property="phone" column="phone" javaType="java.lang.String"></result>
+        <result property="password" column="password" javaType="java.lang.String"></result>
+        <result property="headImgUrl" column="head_img_url" javaType="java.lang.String"></result>
+        <result property="userLevel" column="user_level" javaType="java.lang.Integer"></result>
+        <result property="loginDate" column="login_date" javaType="java.util.Date"></result>
+        <result property="email" column="email" javaType="java.lang.String"></result>
+        <result property="startDate" column="start_date" javaType="java.util.Date"></result>
+        <result property="endDate" column="end_date" javaType="java.util.Date"></result>
+        <result property="versionNo" column="version_no" javaType="java.lang.Integer"></result>
+        <result property="loginIp" column="login_ip" javaType="java.lang.String"></result>
+        <result property="loginFailureCount" column="login_failure_count" javaType="java.lang.Integer"></result>
+        <result property="registerDate" column="register_date" javaType="java.util.Date"></result>
+        <result property="modifyDate" column="modify_date" javaType="java.util.Date"></result>
+    </resultMap>
+
+
+
+    <insert id="user.add" parameterType="com.shop.model.User" useGeneratedKeys="true" keyProperty="id">
+
+        insert into t_user
+        (
+        registerDate
+        <if test="nick!=null and nick!=''">
+            ,nick
+        </if>
+        <if test="flag!=null">
+            ,flag
+        </if>
+        <if test="phone!=null and phone!=''">
+            ,phone
+        </if>
+        <if test="password!=null and password!=''">
+            ,password
+        </if>
+        <if test="userLevel!=null">
+            ,userLevel
+        </if>
+        <if test="email!=null  and email!=''">
+            ,email
+        </if>
+        <if test="versionNo!=null">
+            ,versionNo
+        </if>
+        <if test="loginIp!=null  and loginIp!=''">
+            ,loginIp
+        </if>
+        )
+        values
+        (
+        now()
+        <if test="nick!=null and nick!=''">
+            , #{nick}
+        </if>
+        <if test="flag!=null">
+            , #{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        <if test="phone!=null and phone!=''">
+            , #{phone}
+        </if>
+        <if test="password!=null and password!=''">
+            , #{password}
+        </if>
+        <if test="userLevel!=null">
+            , #{userLevel}
+        </if>
+        <if test="email!=null  and email!=''">
+            , #{email}
+        </if>
+        <if test="versionNo!=null">
+            , #{versionNo}
+        </if>
+        <if test="loginIp!=null  and loginIp!=''">
+            , #{loginIp}
+        </if>
+        )
+    </insert>
+
+    <update id="user.modify" parameterType="com.shop.model.User" >
+        update  t_user set loginDate=now()
+        <if test="nick!=null and nick!=''">
+            ,nick=#{nick}
+        </if>
+        <if test="flag!=null">
+            ,flag=#{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        </if>
+        <if test="phone!=null and phone!=''">
+            ,phone=#{phone}
+        </if>
+        <if test="password!=null and password!=''">
+            ,password=#{password}
+        </if>
+        <if test="userLevel!=null">
+            ,userLevel=#{userLevel}
+        </if>
+        <if test="email!=null  and email!=''">
+            ,email=#{email}
+        </if>
+        <if test="startDate!=null">
+            ,startDate=#{startDate}
+        </if>
+        <if test="endDate!=null">
+            ,endDate=#{endDate}
+        </if>
+        <if test="versionNo!=null">
+            ,versionNo=#{versionNo}
+        </if>
+        <if test="loginIp!=null  and loginIp!=''">
+            ,loginIp=#{loginIp}
+        </if>
+        <if test="loginFailureCount!=null">
+            ,loginFailureCount=#{loginFailureCount}
+        </if>
+        <if test="modifyDate!=null">
+            ,modifyDate=#{modifyDate}
+        </if>
+        where id =#{id}
+    </update>
+
+    <sql id="deleteSql">delete from  t_user where id </sql>
+
+    <delete id="user.delete" parameterType="java.lang.Integer" >
+        <include refid="deleteSql"/>=#{id}
+     </delete>
+
+    <delete id="user.deleteMany" >
+       <include refid="deleteSql" />  in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <sql id="whereIf">
+        <where>
+            <if test="nick!=null and nick!=''">
+                or nick= #{nick}
+            </if>
+            <if test="flag!=null">
+                or flag= #{flag, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+            </if>
+            <if test="phone!=null and phone!=''">
+                or phone= #{phone}
+            </if>
+            <if test="password!=null and password!=''">
+                or password= #{password}
+            </if>
+            <if test="userLevel!=null">
+                or userLevel= #{userLevel}
+            </if>
+            <if test="versionNo!=null">
+                or versionNo= #{versionNo}
+            </if>
+            <if test="loginIp!=null  and loginIp!=''">
+                or loginIp= #{loginIp}
+            </if>
+            <if test="startDate!=null">
+                or startDate=#{startDate}
+            </if>
+            <if test="endDate!=null">
+                or endDate=#{endDate}
+            </if>
+            <if test="versionNo!=null">
+                or versionNo=#{versionNo}
+            </if>
+            <if test="loginIp!=null  and loginIp!=''">
+                or email=#{email}
+            </if>
+            <if test="loginFailureCount!=null">
+                or loginFailureCount=#{loginFailureCount}
+            </if>
+            <if test="registerDate!=null">
+                or registerDate=#{registerDate}
+            </if>
+            <if test="modifyDate!=null">
+                or modifyDate=#{modifyDate}
+            </if>
+        </where>
+    </sql>
+
+    <select id="user.select" parameterType="com.shop.model.User" resultMap="userResultMap">
+        select * from  t_user
+        <include refid="whereIf"></include>
+    </select>
+
+    <select id="user.count" parameterType="com.shop.model.User" resultType="java.lang.Integer">
+        select count(id) from  t_user
+        <include refid="whereIf"></include>
+    </select>
+
+
+</mapper>

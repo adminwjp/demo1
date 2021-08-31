@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="current_session_context_class">thread</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/shop?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">wjp930514.</property>
+        <!--数据库连接池的大小-->
+        <property name="hibernate.connection.pool.size">20</property>
+        <!--jdbc.fetch_size是指Hibernate每次从数据库中取出并放到JDBC的Statement中的记录条数
+        。Fetch Size设的越大，读数据库的次数越少，速度越快，Fetch Size越小，读数据库的次数越多，速度越慢-->
+        <property name="jdbc.fetch_size">50</property>
+        <!--jdbc.batch_size是指Hibernate批量插入,删除和更新时每次操作的记录数。
+        Batch Size越大，批量操作的向数据库发送Sql的次数越少，速度就越快，同样耗用内存就越大-->
+        <property name="jdbc.batch_size">100</property>
+        <!--jdbc.use_scrollable_resultset是否允许Hibernate用JDBC的可滚动的结果集。对分页的结果集。对分页时的设置非常有帮助-->
+        <!-- <property name="jdbc.use_scrollable_resultset">false</property>-->
+        <!--connection.useUnicode连接数据库时是否使用Unicode编码-->
+        <!--<property name="Connection.useUnicode">true</property>-->
+        <!--connection.characterEncoding连接数据库时数据的传输字符集编码方式，最好设置为gbk，用gb2312有的字符不全-->
+        <!-- <property name="connection.characterEncoding">gbk</property>-->
+        <property name="use_sql_comments">true</property>
+        <property name="command_timeout">30</property>
+        <property name="order_inserts">true</property>
+        <property name="order_updates">true</property>
+        <property name="batch_versioned_data">true</property>
+<!--        <property name="hbm2ddl.auto">create-drop</property>-->
+        <property name="hbm2ddl.auto">update</property>
+<!--        <property name="hbm2ddl.auto">create</property>-->
+
+        <!-- 可以将向数据库发送的SQL语句显示出来 -->
+        <property name="show_sql">true</property>
+        <!-- 格式化SQL语句 -->
+        <property name="format_sql">true</property>
+
+        <!-- hibernate的方言 -->
+        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+
+        <!-- 引入orm注解类  -->
+        <mapping resource="hbm/shop/Agent.hbm.xml" />
+        <mapping resource="hbm/shop/AgentAduitLog.hbm.xml" />
+        <mapping resource="hbm/shop/AgentCommission.hbm.xml" />
+        <mapping resource="hbm/shop/AgentRank.hbm.xml" />
+        <mapping resource="hbm/shop/Area.hbm.xml" />
+        <mapping resource="hbm/shop/AuthUser.hbm.xml" />
+        <mapping resource="hbm/shop/Cart.hbm.xml" />
+        <mapping resource="hbm/shop/Cashback.hbm.xml" />
+        <mapping resource="hbm/shop/CashbackSet.hbm.xml" />
+        <mapping resource="hbm/shop/CommissionRate.hbm.xml" />
+        <mapping resource="hbm/shop/Order.hbm.xml" />
+        <mapping resource="hbm/shop/OrderItem.hbm.xml" />
+        <mapping resource="hbm/shop/Prize.hbm.xml" />
+        <mapping resource="hbm/shop/Product.hbm.xml" />
+        <mapping resource="hbm/shop/ProductCategory.hbm.xml" />
+        <mapping resource="hbm/shop/Refund.hbm.xml" />
+        <mapping resource="hbm/shop/Shop.hbm.xml" />
+        <mapping resource="hbm/shop/Sign.hbm.xml" />
+        <mapping resource="hbm/shop/SignRecord.hbm.xml" />
+        <mapping resource="hbm/shop/SignUser.hbm.xml" />
+        <mapping resource="hbm/shop/Specification.hbm.xml" />
+        <mapping resource="hbm/shop/SpecificationValue.hbm.xml" />
+        <mapping resource="hbm/shop/User.hbm.xml" />
+        <mapping resource="hbm/shop/UserAddress.hbm.xml" />
+        <mapping resource="hbm/shop/UserCode.hbm.xml" />
+        <mapping resource="hbm/shop/UserRecharge.hbm.xml" />
+
+        <!-- 无效 -->
+        <!--        <mapping package="com.shop.model"/>-->
+    </session-factory>
+</hibernate-configuration>

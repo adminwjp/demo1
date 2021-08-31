@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Medal>
+@{
+    var medaltoUsers = ViewData.Get<IEnumerable<MedalToUser>>("medaltoUsers", null);
+    var trCount = Model.Count() / 6 + (Model.Count() % 6 == 0 ? 0 : 1);
+    int tdIndex = 0;
+    var _currentUser = UserContext.CurrentUser;
+}
+@if (Model.Any())
+            {
+    <div class="jh-padding-white  tn-mb-20">
+        <table class="table table-bordered jh-medal-hall">
+            <tbody>
+                @for (int i = 0; i < trCount; i++)
+                {
+                    <tr>
+                        @for (int j = tdIndex; j < Model.Count(); j++)
+                        {
+                            Medal medal = Model.ElementAtOrDefault(j);
+                            tdIndex++;
+                            <td>
+                                <img height="36" src="@medal.GetImageUrl()" />
+                                <p>
+                                    @StringUtility.Trim(medal.MedalName, 15)
+                                    @if (medal.AwardStatus == AwardStatus.StopAward)
+                                    {
+                                        <a>(停止授予)</a>
+                                    }
+                                </p>
+                                @if (_currentUser != null)
+                                {
+                                    if (medal.HasMedaltoUser(_currentUser.UserId) > 0)
+                                    {
+                                        <p>
+                                            <a class="a medaltouserdeal  tn-cursor-pointer" data-method="Abandoned" data-medaltouserid="@medal.HasMedaltoUser(_currentUser.UserId)">放弃</a>
+                                        </p>
+                                        <div class="tn-position-absolute"></div>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            @if (medal.AwardType == AwardType.AwardBySelf && medal.AwardStatus == AwardStatus.AllowAward)
+                                            {
+                                                if (medal.HasMedaltoUser(_currentUser.UserId, UserAwardStatus.Applying) > 0)
+                                                {
+                                                    <text>
+                                                        申请中（<a data-medaltouserid="@medal.HasMedaltoUser(_currentUser.UserId,UserAwardStatus.Applying)" data-method="CancelApplying" class="a medaltouserdeal  tn-cursor-pointer">取消申请</a>）</text>
+                                                }
+                                                else
+                                                {
+                                                    <a data-medaltouserid="@medal.MedalId" data-method="Applying" class="a medaltouserdeal  tn-cursor-pointer">申请</a>
+                                                }
+                                            }
+                                        </p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>
+                                        @if (medal.AwardType == AwardType.AwardBySelf && medal.AwardStatus == AwardStatus.AllowAward)
+                                        {
+                                            <a class="a tn-cursor-pointer" href="@SiteUrls.Instance().Login()">申请</a>
+                                        }
+                                    </p>
+                                }
+                                <div class="jh-medal-hover">
+                                    <h6>授予方式：@(medal.AwardType == AwardType.AwardByOther ? "人工授予" : "自主申请")</h6>
+                                    <h6>说明：</h6>
+                                    <p>@StringUtility.Trim(medal.Description, 35)</p>
+                                </div>
+                            </td>
+                            if ((j + 1) % 6 == 0)
+                            {
+                                break;
+                            }
+
+                        }
+                        @if (tdIndex == Model.Count())
+                        {
+                            for (int m = Model.Count(); m < trCount * 6; m++)
+                            {
+                                <td></td>
+                            }
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="text-center text-warning">
+        还没有任何勋章
+    </div>
+}

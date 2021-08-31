@@ -1,0 +1,205 @@
+﻿@model LoginEditModel
+@{
+    ViewData["Title"] = new string[] { "登录" };
+    //var cacheService = DIContainer.Resolve<Tunynet.Caching.ICacheService>();
+    //var notice = cacheService.Get<Notice>("Notice");
+}
+<style type="text/css">
+    .form-horizontal .form-group {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+</style>
+<!--微信第三方登录js-->
+<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+
+@{
+    var errorMessage = TempData.Get<string>("errorMessage", string.Empty);
+    var SiteName = ViewData.Get<string>("SiteName", string.Empty);
+    var registerType = 1;
+    var accountTypes = ViewData.Get<IEnumerable<AccountType>>("accountTypes", null);
+    var placeholder = string.Empty;
+    switch (registerType)
+    {
+        case 1:
+            placeholder = "手机号码/昵称";
+            break;
+        case 2:
+            placeholder = "邮箱/昵称";
+            break;
+        case 3:
+            placeholder = "手机号码/邮箱/昵称";
+            break;
+        case 4:
+            placeholder = "邮箱/手机号码/昵称";
+            break;
+
+    }
+    var touchScreenUrlGetter = TouchScreenUrlGetterFactory.Get(TenantTypeIds.Instance().User());
+    var touchUrl = touchScreenUrlGetter.GetTouchScreenDetailUrl(0);
+}
+<script src="~/js/tn_IsPC.js"></script>
+<script>
+    ///支持手机访问页面跳转手机客户端
+    (function () {
+        var url = "@Utility.GetTouchScreenUrl()";
+        if (!IsPC() && url != "") {
+            window.location.href = "@touchUrl";
+        }
+    })();
+</script>
+<div class="jh-login-home">
+    <h1 class="tn-mb-30 tn-space-xlg-hor">欢迎登录@(SiteName)</h1>
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @id = "LoginForm", @class = "tn-space-xlg-hor tn-form-validation form-horizontal " }))
+    {
+        @Html.HiddenFor(n => n.ReturnUrl)
+        <div class="form-group ">
+            @Html.TextBoxFor(n => n.Name, new { @class = "form-control", @placeholder = @placeholder, @style = "padding-left:35.5px" })
+            <span style="left:0px" class="glyphicon  form-control-feedback" aria-hidden="true"><i class="fa fa-user"></i></span>
+            @Html.ValidationMessageFor(n => n.Name)
+        </div>
+        <div class="form-group">
+            @Html.PasswordFor(n => n.PassWord, new { @class = "form-control", @placeholder = "请输入密码", @style = "padding-left:35.5px" })
+            <span style="left:0px" class="glyphicon  form-control-feedback" aria-hidden="true"><i class="fa fa-lock"></i></span>
+            @Html.ValidationMessageFor(n => n.PassWord)
+            <span id="qtts" style="color:red;display:none">@errorMessage</span>
+        </div>
+        <div id="captchaDiv">
+            @Html.Partial("_Captcha")
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary btn-block btn-submit">登录</button>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-5">
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(n => n.RememberPassword)<small> 下次自动登录</small>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <a href="" class="btn btn-link a">忘记密码？</a>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <a onclick="window.location.href=''" class="btn btn-link a">注册帐号</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @if (accountTypes != null && accountTypes.Any() && Utility.CheckThirdPartyLogin())
+            {
+                <hr class="tn-m
+                    t-0 tn-mb-10" />
+                <ul class="list-inline jh-share-icon">
+                    <li>第三方登录</li>
+                    @if (accountTypes.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().QQ()).Count() > 0)
+                    {
+                        <li><button type="button" class="btn btn-link" onclick="window.location='@SiteUrls.Instance().LoginToThird(AccountTypeKeys.Instance().QQ())'"><i class="fa fa-qq"></i></button></li>
+                    }
+                    @if (accountTypes.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().WeChat()).Count() > 0)
+                    {
+                        <li><button type="button" class="btn btn-link layerwechat"><i class="fa fa-weixin"></i></button></li>
+                    }
+                    @if (accountTypes.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().SinaWeibo()).Count() > 0)
+                    {
+                        <li><button type="button" class="btn btn-link" onclick="window.location='@SiteUrls.Instance().LoginToThird(AccountTypeKeys.Instance().SinaWeibo())'"><i class="fa fa-weibo"></i></button></li>
+                    }
+                    @if (accountTypes.Where(n => n.AccountTypeKey == AccountTypeKeys.Instance().AliPay()).Count() > 0)
+                    {
+                        <li><button type="button" class="btn btn-link" onclick="window.location='@SiteUrls.Instance().LoginToThird(AccountTypeKeys.Instance().AliPay())'"><img src="@Tunynet.Utilities.WebUtility.ResolveUrl("~/img/alipay-icon.png")" width="20" height="20" /></button></li>
+                    }
+                </ul>
+
+            }
+        </div>
+    }
+
+</div>
+
+<script>
+    require(['jquery', 'tnlayer', "validate"], function ($, tnlayer) {
+        $(".layerwechat").click(function () {
+            tnlayer.layermodal('微信登录', '@SiteUrls.Instance().LoginToThird(AccountTypeKeys.Instance().WeChat())', '550px', '550px')
+        })
+
+        $.validator.setDefaults({
+            //光标移出时
+            onfocusout: function (element) {
+                if (element.id != "PassWord") {
+                    this.element(element);
+                }
+            },
+            //光标移入时
+            onfocusin: function (element, event) {
+                //if (element.id != "PassWord") {
+                //找到显示错误提示的标签并移除,针对jquery.validate.unobtrusive
+                var errorElement = $(element).next().next('span.field-validation-error').removeClass('field-validation-error').addClass('field-validation-valid');
+                if (errorElement) {
+                    errorElement.children().remove();
+                }
+                $(element).removeClass('input-validation-error');
+                //}
+            },
+            onkeyup: function (element, event) {
+            }
+        });
+
+        $('.btn-submit').on('click', function () {
+            $("#LoginForm").validate();
+            if ($("#LoginForm").valid()) {
+                $.post("@CachedUrlHelper.Action("Login","Account")", $("#LoginForm").serialize(), function (data) {
+                    if (data.MessageType == undefined) {
+                        $('#captchaDiv').html(data)
+                    }
+                    if (data.MessageType == 1) {
+                        window.location = data.MessageContent;
+                    }
+                    if (data.MessageType == -1) {
+                        $('#captchaDiv').html(data)
+                        //layer.msg(data.MessageContent, { icon: 2 });
+                        //window.location.reload();
+                    }
+                    if (data.MessageType == 0) {
+                        layer.msg(data.MessageContent, { icon: 2 });
+                    }
+                })
+            }
+        })
+
+       var keyMap = {
+            BACKSPACE: 8,
+            ESC: 27,
+            TAB: 9,
+            ENTER: 13,
+            ALT: 16,
+            CTRL: 17,
+            SHIFT: 18,
+            LEFT: 37,
+            UP: 38,
+            RIGHT: 39,
+            DOWN: 40
+        };
+
+        $("#LoginForm input").on("keyup",  function (ev) {
+            switch (ev.keyCode) {
+                case keyMap.ENTER:
+                    $('.btn-submit').trigger('click');
+                    break;
+                case keyMap.LEFT:
+                case keyMap.RIGHT:
+                case keyMap.UP:
+                case keyMap.DOWN:
+                case keyMap.ESC:
+                case keyMap.CTRL:
+                case keyMap.ALT:
+                case keyMap.SHIFT:
+                    break;
+                default:
+                    break;
+            }
+        })
+
+    })
+</script>

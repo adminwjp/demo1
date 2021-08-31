@@ -1,0 +1,227 @@
+﻿@{
+    ISettingsManager<SiteSettings> siteSettingsManager = DIContainer.Resolve<ISettingsManager<SiteSettings>>();
+    var siteSettings = siteSettingsManager.Get();
+    var user = UserContext.CurrentUser;
+    var isCMSDetail = TempData.Get<bool>("isCMSDetail", false);
+    var keyword = TempData.Get<string>("keyword", null);
+    var description = TempData.TryGetValue<string>("description", null);
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>@Formatter.GenerateTitle(true, ViewData.Get<string[]>("Title", null))</title>
+    @if (!string.IsNullOrEmpty(keyword))
+    {
+        <meta name="keywords" content="@keyword">
+    }
+    @if (!string.IsNullOrEmpty(description))
+    {
+        <meta name="description" content="@description">
+    }
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @Styles.Render("~/css/Site")
+    @Styles.Render("~/css/SiteThemes")
+    @Styles.Render("~/js/lib/tipsy/tipsy")
+    @Styles.Render("~/js/lib/layer/skin/layer")
+    <script src="~/js/jquery-1.12.0.min.js"></script>
+    <script src="~/js/require.js"></script>
+    <script src="~/js/config.js" id="configjs"></script>
+    <script src="~/js/frameThemes.js"></script>
+
+    @*去掉浏览器记住密码后的黄色背景*@
+    <style type="text/css">
+        input:-webkit-autofill, select:-webkit-autofill, textarea:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="@Tunynet.Utilities.WebUtility.ResolveUrl("~/js/html5shiv.min.js")"></script>
+       <script type="text/javascript" src="@Tunynet.Utilities.WebUtility.ResolveUrl("~/js/respond.js")"></script>
+    <![endif]-->
+ 
+    <link rel="icon" type="image/x-icon" href="@Tunynet.Utilities.WebUtility.ResolveUrl("~/favicon.ico")" />
+    <link rel="shortcut icon" type="image/x-icon" href="@Tunynet.Utilities.WebUtility.ResolveUrl("~/favicon.ico")" />
+</head>
+<body data-spy="scroll" data-target="#myScrollspy" style="word-wrap:break-word">
+    <div class="tn-doc">
+        @Html.Action("_Header", "Portal")
+
+        <div class="tn-content">
+            <div class="container">
+                @Html.AntiForgeryToken()
+                @RenderBody()
+            </div>
+        </div>
+        <div class="tn-footer">
+            <div class="container text-center">
+
+                @Html.Action("_Footer", "Portal")
+                <input type="hidden" id="randomSignalr" />
+            </div>
+        </div>
+        @if (!isCMSDetail)
+        {
+            @*返回顶部*@
+            <div class="jh-position-fixed">
+                <ul class="list-unstyled jh-share-style">
+                    <li id="topid"><a href="#"><i class="fa fa-chevron-up "></i><br>顶部</a></li>
+                </ul>
+            </div>
+        }
+    </div>
+
+    @if (Tunynet.Common.Utility.IsMiniProfilerEnabled())
+    {
+        @StackExchange.Profiling.MiniProfiler.RenderIncludes(position: StackExchange.Profiling.RenderPosition.Left, showTrivial: false, showTimeWithChildren: false, startHidden: false);
+    }
+
+    @if (user != null)
+    {
+        <script>
+
+         
+           
+            /****返回顶部js代码 add by zhoums*****/
+            $(function () {
+                $("#topid").hide();
+            });
+            $(window).scroll(function () {
+                if ($(window).scrollTop() > 0) {
+                    if ($(window).scrollTop() > 100) {
+                        $("#topid").show();
+                    }
+                }
+                else {
+                    $("#topid").hide();
+                }
+            })
+            $(document).on("click", "#topid", function () {
+                $('body,html').animate({ scrollTop: 0 }, 700);
+            });
+
+
+            /***************end add*************/
+
+            require(['jquery', 'tnlayer', 'signalr.hubs'], function ($, tnlayer) {
+
+                var jschars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+                function generateMixed(n) {
+                    var res = "";
+                    for (var i = 0; i < n; i++) {
+                        var id = Math.ceil(Math.random() * 35);
+                        res += jschars[id];
+                    }
+                    return res;
+                }
+
+                function htmlEncode(str) {
+                    var div = document.createElement("div");
+                    div.appendChild(document.createTextNode(str));
+                    return div.innerHTML;
+                }
+
+                function htmlDecode(str) {
+                    var div = document.createElement("div");
+                    div.innerHTML = str;
+                    return div.innerText;
+                }
+
+                $(function () {
+                    $("#randomSignalr").val(generateMixed(9));
+                    //判断是否有发送通知权限
+                    if (window.Notification && Notification.permission !== "granted") {
+                        //向用户请求获取通知权限
+                        Notification.requestPermission(function (status) {
+                            if (Notification.permission != status) {
+                                Notification.permission = status;
+                            }
+                        })
+                    };
+                    if ($.connection.NoticeHub != null) {
+                        var chat = $.connection.NoticeHub;
+                        $.connection.hub.logging = false;
+                        // 设置查询字符串
+                        $.connection.hub.qs = { "randomSignalr": $("#randomSignalr").val() };
+                        
+
+                        //停止其他链接
+                        chat.client.hubStop = function hubStop(randomSignalr) {
+                            if (randomSignalr != $("#randomSignalr").val()) {
+                                $.connection.hub.stop();
+                            }
+                        }
+                        //初始化连接
+                        chat.client.noticeUser = function sendNotice(id, message, userAvatarUrl, relativeObjectUrl) {
+
+                            if (localStorage["lastNoticeId"] != id) {
+                                localStorage["lastNoticeId"] = id;
+                                //如果用户允许发送通知 推送通知
+                                if (window.Notification && Notification.permission === "granted") {
+                                    var n = new window.Notification(message, { icon: userAvatarUrl });
+                                    if (relativeObjectUrl.length > 0) {
+                                        n.onclick = function () {
+                                            window.open(relativeObjectUrl);
+                                        }
+                                    }
+                                }
+                                else if (window.Notification && Notification.permission !== "denied") {
+                                    Notification.requestPermission(function (status) {
+                                        if (Notification.permission !== status) {
+                                            Notification.permission = status;
+                                        }
+                                        if (status === "granted") {
+                                            var n = new Notification(message);
+                                        }
+                                        else {
+                                            if (relativeObjectUrl.length > 0) {
+                                                layer.alert(htmlDecode(message), function () {
+                                                    window.open(relativeObjectUrl);
+                                                });
+                                            } else {
+                                                layer.alert(htmlDecode(message));
+                                            }
+                                        }
+                                    })
+                                }
+                                else {
+                                    if (relativeObjectUrl.length > 0) {
+                                        layer.alert(htmlDecode(message), function () {
+                                            window.open(relativeObjectUrl);
+                                        });
+                                    } else {
+                                        layer.alert(htmlDecode(message));
+                                    }
+                                }
+                            }
+                        }
+                        $.connection.hub.start();
+                    }
+                });
+
+
+                //断开hub连接
+                $("a[href='/account/signout']").click(function () {
+                    $.connection.hub.stop();
+                })
+
+            })
+
+        </script>
+    }
+    else
+    {
+        <script>
+            require(['jquery', 'signalr.hubs'], function ($) {
+                $(function () {
+                    try {
+                        $.connection.hub.stop();
+                    } catch (e) { }
+                });
+            })
+        </script>
+    }
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = new string[] { "积分充值" };
+    TempData["subMenu-check"] = new string[] { "User", "ManagePointRechargeOrder" };
+}
+
+<div class="row tn-page-heading tn-mb-10">
+    <div class="col-xs-12">
+        <h3>积分充值</h3>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="form-inline tn-tool-column">
+            <div class="form-group">
+                用户：
+            </div>
+            <div class="form-group">
+                @Html.UserSelector("selectUser", mode: UserOrOrgSelectorMode.User, selectionUserIds: null, selectionNum: 1, innerText: "选择用户", validation: false, sourceUrl: SiteUrls.Instance().GetAllOguUser())
+            </div>
+
+            <div class="form-group">
+                发布时间
+                <div class="input-group tn-width-300">
+                    @Html.DateRangePicker("Daterangepicker")
+                </div>
+            </div>
+            <button class="btn btn-primary smssubmit" type="button">搜索</button>
+            <div class="form-group  pull-right">
+                <a id="setting" data-url="" class="a text-right tn-cursor-pointer">积分充值选项设置</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body" id="listPointRechargeOrder">
+        @Html.Action("_ListPointRechargeOrder", "ControlPanel")
+    </div>
+</div>
+@Styles.Render("~/js/lib/daterangepicker/daterangepicker")
+@Styles.Render("~/js/lib/zTree/css/zTreeStyle/zTree")
+
+
+<script>
+    require(['jquery', 'tnlayer', 'moment', 'daterangepicker', 'datepicker', 'page', 'ztree', 'userSelector'], function ($, tnlayer) {
+        //搜索
+        $(".smssubmit").on("click", function myfunction() {
+            var dateRange = $("#Daterangepicker").val();
+            var startDate = dateRange.split(' - ')[0];
+            var endDate = dateRange.split(' - ')[1];
+            var param = jQuery.param({ userId: $(".tn-choice-item").data("value"), startDate: startDate, endDate: endDate });
+            $.get("@CachedUrlHelper.Action("_ListPointRechargeOrder", "ControlPanel")", param, function (data) {
+                $("#listPointRechargeOrder").html(data)
+            })
+        });
+        $('#setting').click(function () {
+            tnlayer.layermodal('积分充值选项设置', '@CachedUrlHelper.Action("_ChangePointSetting", "ControlPanel")?t=' + new Date().getTime(), '400px', '400px')
+        });
+    })
+</script>

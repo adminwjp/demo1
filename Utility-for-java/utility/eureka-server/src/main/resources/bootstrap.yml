@@ -1,0 +1,57 @@
+###服务端口号
+#eureka-server 4000-4010 作为端口 ip 最好 使用固定 ip 不然容易出现问题
+#127.0.0.1 频繁修改ip麻烦 使用 域名也麻烦 每次变动ip host 文件 也 要改动
+#集群 解取方案 https://blog.csdn.net/huang007guo/article/details/81484317
+#测试 搭建 3 个集群 eureka-server #https://www.pianshen.com/article/5521211854/ 其他文档 有些 坑人 都是错误的 属于单机
+server:
+  port: ${port:4000}
+#  tomcat:
+#    uri-encoding: UTF-8
+
+###服务名称
+spring:
+  application:
+    name:  ${name:eureka-server}
+  redis:
+    host: ${redisHost:192.168.1.3}  #127.0.0.1
+    port: ${redisPort:6379}
+    password: ${redisPassword:wjp930514.}
+
+  datasource:
+      driver-class-name: ${driver:com.mysql.cj.jdbc.Driver}
+      username: ${username:root}
+      password: ${password:wjp930514.}
+      url: ${url:"jdbc:mysql://192.168.1.3:3306/shop?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"}
+
+#  http:
+#    encoding:
+#      force: true
+#      charset: utf-8
+#      enabled: true
+
+  servlet:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+
+eureka:
+  instance:
+     #注册中心地址 centos 8 docker ,centos8 ， window，window7 docker （win7 无法通信 注册 失败） .net core 5 docker 支持  eureka 异常
+     hostname:  ${hostname:192.168.1.3}   #127.0.0.1
+     #port: 8079
+     #lease-renewal-interval-in-seconds: 10 #集群 每个实例都需要将其租约更新到Eureka Server
+     #lease-renewal-interval-in-seconds: 10 # 每隔10s发送一次心跳
+     #lease-expiration-duration-in-seconds: 30 # 告知服务端30秒还未收到心跳的话，就将该服务移除列表
+  ###客户端调用地址
+  client:
+     serviceUrl:
+       defaultZone: ${defaultZone:http://${eureka.instance.hostname}:4000/eureka/} #http://${eureka.instance.hostname}:4001/eureka/,http://${eureka.instance.hostname}:4000/eureka/ #集群另 几 台 集群机器
+       #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/ #单机
+     register-with-eureka: ${register-with-eureka:false} #是否将自己注册到Eureka服务中,因为该应用本身就是注册中心，不需要再注册自己（集群的时候为true）
+     fetch-registry: ${fetch-registry:false} #是否从Eureka中获取注册信息,因为自己为注册中心,不会在该应用中的检索服务信息
+  server:
+    renewal-percent-threshold: 0.85 #Eureka Server 在运行期间会去统计心跳失败比例在 15 分钟之内是否低于 85%
+    my-url: null
+    enable-self-preservation: true # 关闭自我保护机制集群 true
+    eviction-interval-timer-in-ms: 10000 # 每隔10s扫描服务列表，移除失效服务

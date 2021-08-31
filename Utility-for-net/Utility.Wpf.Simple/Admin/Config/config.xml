@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <Menu Header="配置管理">
+    <Children>
+      <Menu Header="配置样例" TypeName="Utility.Wpf.Ctrls.ListTemplateCtrl" Flag="Config.Config"  />
+    </Children>
+  </Menu>
+
+</Root>

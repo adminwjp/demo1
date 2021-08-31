@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>8fa75a51-a3bf-4add-a256-ffc889d02582</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Utility.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Ioc\AutofacIocManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ioc\NetCoreIocManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IO\ZipHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mappers\AutoMapperMapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parse\DefaultParse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Timer\JobTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Timer\QuartzHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)error.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Xml\" />
+  </ItemGroup>
+</Project>
